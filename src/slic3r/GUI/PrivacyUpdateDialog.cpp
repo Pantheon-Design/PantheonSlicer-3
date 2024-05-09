@@ -25,7 +25,7 @@ static std::string url_encode(const std::string& value) {
 
 		// Any other characters are percent-encoded
 		escaped << std::uppercase;
-		escaped << '%' << std::setw(2) << int((unsigned char)c);PantheonSlicerTitle
+		escaped << '%' << std::setw(2) << int((unsigned char)c);
 		escaped << std::nouppercase;
 	}
 	return escaped.str();
