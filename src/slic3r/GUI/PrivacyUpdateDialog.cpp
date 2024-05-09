@@ -25,7 +25,7 @@ static std::string url_encode(const std::string& value) {
 
 		// Any other characters are percent-encoded
 		escaped << std::uppercase;
-		escaped << '%' << std::setw(2) << int((unsigned char)c);
+		escaped << '%' << std::setw(2) << int((unsigned char)c);PantheonSlicerTitle
 		escaped << std::nouppercase;
 	}
 	return escaped.str();
@@ -34,7 +34,7 @@ static std::string url_encode(const std::string& value) {
 PrivacyUpdateDialog::PrivacyUpdateDialog(wxWindow* parent, wxWindowID id, const wxString& title, enum ButtonStyle btn_style, const wxPoint& pos, const wxSize& size, long style)
     :DPIDialog(parent, id, title, pos, size, style)
 {
-    std::string icon_path = (boost::format("%1%/images/OrcaSlicerTitle.ico") % resources_dir()).str();
+    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
     SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
     SetBackgroundColour(*wxWHITE);
