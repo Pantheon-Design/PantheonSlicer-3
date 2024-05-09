@@ -1,0 +1,68 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj": {}
+  },
+  "projects": {
+    "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
+        "projectName": "PantheonSlicer_2.6.3.0",
+        "projectPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
+        "packagesPath": "C:\\Users\\azio\\.nuget\\packages\\",
+        "outputPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\azio\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "native"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "native": {
+            "targetAlias": "native",
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "native": {
+          "targetAlias": "native",
+          "dependencies": {
+            "WixToolset.Heat": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "WixToolset.Netfx.wixext": {
+              "target": "Package",
+              "version": "[5.*, )"
+            },
+            "WixToolset.UI.wixext": {
+              "target": "Package",
+              "version": "[5.0.0, )"
+            },
+            "WixToolset.Util.wixext": {
+              "target": "Package",
+              "version": "[5.*, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,22 @@
+﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+	<Package Name="$(var.ProductName)" Manufacturer="Pantheon Design Ltd." Version="2.6.3.0" UpgradeCode="18480C1C-9B9B-4E34-938F-AC5163946ED0">
+		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
+
+		<Feature Id="Main">
+			<ComponentGroupRef Id="HeatGenerated" />
+			<ComponentRef Id="ApplicationShortcut" />
+		</Feature>
+		
+		<UI Id="UI">
+			<!-- Creates a basic UI for the installer -->
+			<ui:WixUI Id="WixUI_Minimal" />
+		</UI>
+		<!-- Load the GNU License -->
+		<WixVariable Id="WixUILicenseRtf" Value="GNU_LICENSE.rtf" />
+		<WixVariable Id="WixUIBannerBmp" Value="PantheonBanner.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="PantheonLogo.bmp" />
+
+	</Package>
+	
+</Wix>

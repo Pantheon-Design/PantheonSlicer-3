@@ -1,0 +1,11 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+      <MediaTemplate EmbedCab="yes"/>
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLFOLDER" Name="!(bind.Property.Manufacturer)\!(bind.Property.ProductName)" />
+    </StandardDirectory>
+	<StandardDirectory Id="ProgramMenuFolder">
+	  <Directory Id="ApplicationProgramsFolder" Name="!(bind.Property.Manufacturer)"/>
+	</StandardDirectory>
+  </Fragment>
+</Wix>
