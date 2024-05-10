@@ -1779,8 +1779,8 @@
                     <Component Id="OrcaSlicerTitle.png" Guid="*">
                         <File Id="OrcaSlicerTitle.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicerTitle.png" />
                     </Component>
-                    <Component Id="OrcaSlicer_32px.png" Guid="*">
-                        <File Id="OrcaSlicer_32px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_32px.png" />
+                    <Component Id="PantheonSlicer_32px.png" Guid="*">
+                        <File Id="PantheonSlicer_32px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_32px.png" />
                     </Component>
                     <Component Id="OrcaSlicer_about.svg" Guid="*">
                         <File Id="OrcaSlicer_about.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_about.svg" />
@@ -17221,7 +17221,7 @@
             <ComponentRef Id="OrcaSlicer_mac_128px.png" />
             <ComponentRef Id="OrcaSlicer_mac_256px.ico" />
             <ComponentRef Id="OrcaSlicerTitle.png" />
-            <ComponentRef Id="OrcaSlicer_32px.png" />
+            <ComponentRef Id="PantheonSlicer_32px.png" />
             <ComponentRef Id="OrcaSlicer_about.svg" />
             <ComponentRef Id="oss_picture_loading.png" />
             <ComponentRef Id="oss_picture_load_failed.png" />
