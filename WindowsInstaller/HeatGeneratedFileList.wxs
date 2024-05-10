@@ -32,7 +32,7 @@
                 <File Id="msvcp140_codecvt_ids.dll" KeyPath="yes" Source="$(var.HarvestPath)\msvcp140_codecvt_ids.dll" />
             </Component>
             <Component Id="orca_slicer.exe" Guid="*">
-                <File Id="orca_slicer.exe" KeyPath="yes" Source="$(var.HarvestPath)\orca-slicer.exe" />
+                <File Id="orca_slicer.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer.exe" />
             </Component>
             <Component Id="OrcaSlicer.dll" Guid="*">
                 <File Id="OrcaSlicer.dll" KeyPath="yes" Source="$(var.HarvestPath)\OrcaSlicer.dll" />
