@@ -1,7 +1,7 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.0">
   <PropertyGroup>
     <SignOutput>false</SignOutput>
-    <ReleasePath>..\build\OrcaSlicer</ReleasePath>
+    <ReleasePath>..\build\PantheonSlicer</ReleasePath>
     <DefineConstants>$(DefineConstants);
     HarvestPath=$(ReleasePath);
     ProductName=PantheonSlicer</DefineConstants>

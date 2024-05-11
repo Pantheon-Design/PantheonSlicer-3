@@ -31,11 +31,11 @@
             <Component Id="msvcp140_codecvt_ids.dll" Guid="*">
                 <File Id="msvcp140_codecvt_ids.dll" KeyPath="yes" Source="$(var.HarvestPath)\msvcp140_codecvt_ids.dll" />
             </Component>
-            <Component Id="orca_slicer.exe" Guid="*">
-                <File Id="orca_slicer.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer.exe" />
-            </Component>
             <Component Id="OrcaSlicer.dll" Guid="*">
                 <File Id="OrcaSlicer.dll" KeyPath="yes" Source="$(var.HarvestPath)\OrcaSlicer.dll" />
+            </Component>
+            <Component Id="PantheonSlicer.exe" Guid="*">
+                <File Id="PantheonSlicer.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer.exe" />
             </Component>
             <Component Id="TKBO.dll" Guid="*">
                 <File Id="TKBO.dll" KeyPath="yes" Source="$(var.HarvestPath)\TKBO.dll" />
@@ -1770,26 +1770,35 @@
                     <Component Id="open_project.svg" Guid="*">
                         <File Id="open_project.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\open_project.svg" />
                     </Component>
-                    <Component Id="OrcaSlicer_mac_128px.png" Guid="*">
-                        <File Id="OrcaSlicer_mac_128px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer-mac_128px.png" />
-                    </Component>
-                    <Component Id="OrcaSlicer_mac_256px.ico" Guid="*">
-                        <File Id="OrcaSlicer_mac_256px.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer-mac_256px.ico" />
-                    </Component>
-                    <Component Id="OrcaSlicerTitle.png" Guid="*">
-                        <File Id="OrcaSlicerTitle.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicerTitle.png" />
-                    </Component>
-                    <Component Id="PantheonSlicer_32px.png" Guid="*">
-                        <File Id="PantheonSlicer_32px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_32px.png" />
+                    <Component Id="OrcaSlicer.svg" Guid="*">
+                        <File Id="OrcaSlicer.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer.svg" />
                     </Component>
                     <Component Id="OrcaSlicer_about.svg" Guid="*">
                         <File Id="OrcaSlicer_about.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_about.svg" />
+                    </Component>
+                    <Component Id="OrcaSlicer_gradient.svg" Guid="*">
+                        <File Id="OrcaSlicer_gradient.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gradient.svg" />
+                    </Component>
+                    <Component Id="OrcaSlicer_gradient_circle.svg" Guid="*">
+                        <File Id="OrcaSlicer_gradient_circle.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gradient_circle.svg" />
+                    </Component>
+                    <Component Id="OrcaSlicer_gradient_narrow.svg" Guid="*">
+                        <File Id="OrcaSlicer_gradient_narrow.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gradient_narrow.svg" />
+                    </Component>
+                    <Component Id="OrcaSlicer_gray.svg" Guid="*">
+                        <File Id="OrcaSlicer_gray.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gray.svg" />
                     </Component>
                     <Component Id="oss_picture_loading.png" Guid="*">
                         <File Id="oss_picture_loading.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_loading.png" />
                     </Component>
                     <Component Id="oss_picture_load_failed.png" Guid="*">
                         <File Id="oss_picture_load_failed.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_load_failed.png" />
+                    </Component>
+                    <Component Id="PantheonSlicer_mac_128px.png" Guid="*">
+                        <File Id="PantheonSlicer_mac_128px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-mac_128px.png" />
+                    </Component>
+                    <Component Id="PantheonSlicer_mac_256px.ico" Guid="*">
+                        <File Id="PantheonSlicer_mac_256px.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-mac_256px.ico" />
                     </Component>
                     <Component Id="PantheonSlicer.icns" Guid="*">
                         <File Id="PantheonSlicer.icns" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer.icns" />
@@ -1806,6 +1815,9 @@
                     <Component Id="PantheonSlicerTitle.ico" Guid="*">
                         <File Id="PantheonSlicerTitle.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicerTitle.ico" />
                     </Component>
+                    <Component Id="PantheonSlicerTitle.png" Guid="*">
+                        <File Id="PantheonSlicerTitle.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicerTitle.png" />
+                    </Component>
                     <Component Id="PantheonSlicer_128px.png" Guid="*">
                         <File Id="PantheonSlicer_128px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_128px.png" />
                     </Component>
@@ -1817,6 +1829,12 @@
                     </Component>
                     <Component Id="PantheonSlicer_192px_transparent.png" Guid="*">
                         <File Id="PantheonSlicer_192px_transparent.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_192px_transparent.png" />
+                    </Component>
+                    <Component Id="PantheonSlicer_32px.png" Guid="*">
+                        <File Id="PantheonSlicer_32px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_32px.png" />
+                    </Component>
+                    <Component Id="PantheonSlicer_about.svg" Guid="*">
+                        <File Id="PantheonSlicer_about.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_about.svg" />
                     </Component>
                     <Component Id="PantheonSlicer_narrow.svg" Guid="*">
                         <File Id="PantheonSlicer_narrow.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_narrow.svg" />
@@ -16661,8 +16679,8 @@
             <ComponentRef Id="msvcp140_2.dll" />
             <ComponentRef Id="msvcp140_atomic_wait.dll" />
             <ComponentRef Id="msvcp140_codecvt_ids.dll" />
-            <ComponentRef Id="orca_slicer.exe" />
             <ComponentRef Id="OrcaSlicer.dll" />
+            <ComponentRef Id="PantheonSlicer.exe" />
             <ComponentRef Id="TKBO.dll" />
             <ComponentRef Id="TKBRep.dll" />
             <ComponentRef Id="TKCAF.dll" />
@@ -17218,22 +17236,28 @@
             <ComponentRef Id="open.svg" />
             <ComponentRef Id="open_in_browser.svg" />
             <ComponentRef Id="open_project.svg" />
-            <ComponentRef Id="OrcaSlicer_mac_128px.png" />
-            <ComponentRef Id="OrcaSlicer_mac_256px.ico" />
-            <ComponentRef Id="OrcaSlicerTitle.png" />
-            <ComponentRef Id="PantheonSlicer_32px.png" />
+            <ComponentRef Id="OrcaSlicer.svg" />
             <ComponentRef Id="OrcaSlicer_about.svg" />
+            <ComponentRef Id="OrcaSlicer_gradient.svg" />
+            <ComponentRef Id="OrcaSlicer_gradient_circle.svg" />
+            <ComponentRef Id="OrcaSlicer_gradient_narrow.svg" />
+            <ComponentRef Id="OrcaSlicer_gray.svg" />
             <ComponentRef Id="oss_picture_loading.png" />
             <ComponentRef Id="oss_picture_load_failed.png" />
+            <ComponentRef Id="PantheonSlicer_mac_128px.png" />
+            <ComponentRef Id="PantheonSlicer_mac_256px.ico" />
             <ComponentRef Id="PantheonSlicer.icns" />
             <ComponentRef Id="PantheonSlicer.ico" />
             <ComponentRef Id="PantheonSlicer.png" />
             <ComponentRef Id="PantheonSlicer.svg" />
             <ComponentRef Id="PantheonSlicerTitle.ico" />
+            <ComponentRef Id="PantheonSlicerTitle.png" />
             <ComponentRef Id="PantheonSlicer_128px.png" />
             <ComponentRef Id="PantheonSlicer_192px.png" />
             <ComponentRef Id="PantheonSlicer_192px_grayscale.png" />
             <ComponentRef Id="PantheonSlicer_192px_transparent.png" />
+            <ComponentRef Id="PantheonSlicer_32px.png" />
+            <ComponentRef Id="PantheonSlicer_about.svg" />
             <ComponentRef Id="PantheonSlicer_narrow.svg" />
             <ComponentRef Id="param_3dhoneycomb.svg" />
             <ComponentRef Id="param_acceleration.svg" />

@@ -33,3 +33,5 @@ src/OrcaSlicer-doc/
 /deps/DL_CACHE/
 /deps/DL_CACHE
 resources/profiles/user/default
+/WindowsInstaller/bin/
+/WindowsInstaller/obj/
