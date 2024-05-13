@@ -271,7 +271,7 @@ UpdateVersionDialog::UpdateVersionDialog(wxWindow *parent)
 
     
 
-    auto sm    = create_scaled_bitmap("PantheonSlicerSlicer", nullptr, 70);
+    auto sm    = create_scaled_bitmap("PantheonSlicer", nullptr, 70);
     m_brand = new wxStaticBitmap(this, wxID_ANY, sm, wxDefaultPosition, wxSize(FromDIP(70), FromDIP(70)));
 
     
