@@ -739,7 +739,7 @@ static void generic_exception_handle()
         // and terminate the app so it is at least certain to happen now.
         BOOST_LOG_TRIVIAL(error) << boost::format("std::bad_alloc exception: %1%") % ex.what();
         flush_logs();
-        wxString errmsg = wxString::Format(_L("OrcaSlicer will terminate because of running out of memory."
+        wxString errmsg = wxString::Format(_L("PantheonSlicer will terminate because of running out of memory."
                                               "It may be a bug. It will be appreciated if you report the issue to our team."));
         wxMessageBox(errmsg + "\n\n" + wxString(ex.what()), _L("Fatal error"), wxOK | wxICON_ERROR);
 
@@ -748,13 +748,13 @@ static void generic_exception_handle()
      } catch (const boost::io::bad_format_string& ex) {
      	BOOST_LOG_TRIVIAL(error) << boost::format("Uncaught exception: %1%") % ex.what();
         	flush_logs();
-        wxString errmsg = _L("OrcaSlicer will terminate because of a localization error. "
+        wxString errmsg = _L("PantheonSlicer will terminate because of a localization error. "
                              "It will be appreciated if you report the specific scenario this issue happened.");
         wxMessageBox(errmsg + "\n\n" + wxString(ex.what()), _L("Critical error"), wxOK | wxICON_ERROR);
         std::terminate();
         //throw;
     } catch (const std::exception& ex) {
-        wxLogError(format_wxstr(_L("OrcaSlicer got an unhandled exception: %1%"), ex.what()));
+        wxLogError(format_wxstr(_L("PantheonSlicer got an unhandled exception: %1%"), ex.what()));
         BOOST_LOG_TRIVIAL(error) << boost::format("Uncaught exception: %1%") % ex.what();
         flush_logs();
         throw;
@@ -1091,7 +1091,7 @@ GUI_App::GUI_App()
 	, m_removable_drive_manager(std::make_unique<RemovableDriveManager>())
 	, m_other_instance_message_handler(std::make_unique<OtherInstanceMessageHandler>())
 {
-	//app config initializes early becasuse it is used in instance checking in OrcaSlicer.cpp
+	//app config initializes early becasuse it is used in instance checking in PantheonSlicer.cpp
     this->init_app_config();
     this->init_download_path();
 #if wxUSE_WEBVIEW_EDGE
@@ -2220,7 +2220,7 @@ bool GUI_App::on_init_inner()
     }
 #endif
 
-    BOOST_LOG_TRIVIAL(info) << boost::format("gui mode, Current OrcaSlicer Version %1%")%SoftFever_VERSION;
+    BOOST_LOG_TRIVIAL(info) << boost::format("gui mode, Current PantheonSlicer Version %1%")%SoftFever_VERSION;
     // Enable this to get the default Win32 COMCTRL32 behavior of static boxes.
 //    wxSystemOptions::SetOption("msw.staticbox.optimized-paint", 0);
     // Enable this to disable Windows Vista themes for all wxNotebooks. The themes seem to lead to terrible
@@ -2237,7 +2237,7 @@ bool GUI_App::on_init_inner()
             RichMessageDialog
                 dlg(nullptr,
                     wxString::Format(_L("%s\nDo you want to continue?"), msg),
-                    "OrcaSlicer", wxICON_QUESTION | wxYES_NO);
+                    "PantheonSlicer", wxICON_QUESTION | wxYES_NO);
             dlg.ShowCheckBox(_L("Remember my choice"));
             if (dlg.ShowModal() != wxID_YES) return false;
 
@@ -2639,7 +2639,7 @@ bool GUI_App::on_init_inner()
         m_config_corrupted = false;
         show_error(nullptr,
                    _u8L(
-                       "The OrcaSlicer configuration file may be corrupted and cannot be parsed.\nOrcaSlicer has attempted to recreate the "
+                       "The PantheonSlicer configuration file may be corrupted and cannot be parsed.\nPantheonSlicer has attempted to recreate the "
                        "configuration file.\nPlease note, application settings will be lost, but printer profiles will not be affected."));
     }
     return true;
@@ -5089,7 +5089,7 @@ bool GUI_App::load_language(wxString language, bool initial)
 	}
 
 	if (language_info != nullptr && language_info->LayoutDirection == wxLayout_RightToLeft) {
-    	BOOST_LOG_TRIVIAL(trace) << boost::format("The following language code requires right to left layout, which is not supported by OrcaSlicer: %1%") % language_info->CanonicalName.ToUTF8().data();
+    	BOOST_LOG_TRIVIAL(trace) << boost::format("The following language code requires right to left layout, which is not supported by PantheonSlicer: %1%") % language_info->CanonicalName.ToUTF8().data();
 		language_info = nullptr;
 	}
 
@@ -6543,7 +6543,7 @@ void GUI_App::associate_files(std::wstring extend)
 
     std::wstring prog_path = L"\"" + std::wstring(app_path) + L"\"";
     std::wstring prog_id = L" Orca.Slicer.1";
-    std::wstring prog_desc = L"OrcaSlicer";
+    std::wstring prog_desc = L"PantheonSlicer";
     std::wstring prog_command = prog_path + L" \"%1\"";
     std::wstring reg_base = L"Software\\Classes";
     std::wstring reg_extension = reg_base + L"\\." + extend;
@@ -6566,7 +6566,7 @@ void GUI_App::disassociate_files(std::wstring extend)
 
     std::wstring prog_path = L"\"" + std::wstring(app_path) + L"\"";
     std::wstring prog_id = L" Orca.Slicer.1";
-    std::wstring prog_desc = L"OrcaSlicer";
+    std::wstring prog_desc = L"PantheonSlicer";
     std::wstring prog_command = prog_path + L" \"%1\"";
     std::wstring reg_base = L"Software\\Classes";
     std::wstring reg_extension = reg_base + L"\\." + extend;
