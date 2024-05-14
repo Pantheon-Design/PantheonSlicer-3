@@ -1,6 +1,6 @@
 ﻿<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"  xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-	<Package Name="$(var.ProductName)" Manufacturer="Pantheon Design Ltd." Version="2.6.3.0" UpgradeCode="18480C1C-9B9B-4E34-938F-AC5163946ED0">
+	<Package Name="$(var.ProductName)" Manufacturer="Pantheon Design Ltd." Version="1.0.0" UpgradeCode="7b4aed6f-b554-4e37-ab0f-6f28734e150a">
 		<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" />
 
 		<Feature Id="Main">
