@@ -34,8 +34,8 @@
             <Component Id="OrcaSlicer.dll" Guid="*">
                 <File Id="OrcaSlicer.dll" KeyPath="yes" Source="$(var.HarvestPath)\OrcaSlicer.dll" />
             </Component>
-            <Component Id="PantheonSlicer.exe" Guid="*">
-                <File Id="PantheonSlicer.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer.exe" />
+            <Component Id="PantheonSlicer_2.exe" Guid="*">
+                <File Id="PantheonSlicer_2.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer-2.exe" />
             </Component>
             <Component Id="TKBO.dll" Guid="*">
                 <File Id="TKBO.dll" KeyPath="yes" Source="$(var.HarvestPath)\TKBO.dll" />
@@ -162,8 +162,8 @@
                         </Component>
                     </Directory>
                     <Directory Id="tolerance_test" Name="tolerance_test">
-                        <Component Id="OrcaToleranceTest.stl" Guid="*">
-                            <File Id="OrcaToleranceTest.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\tolerance_test\OrcaToleranceTest.stl" />
+                        <Component Id="PantheonToleranceTest.stl" Guid="*">
+                            <File Id="PantheonToleranceTest.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\tolerance_test\PantheonToleranceTest.stl" />
                         </Component>
                     </Directory>
                     <Directory Id="vfa" Name="vfa">
@@ -1794,6 +1794,9 @@
                     <Component Id="oss_picture_load_failed.png" Guid="*">
                         <File Id="oss_picture_load_failed.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_load_failed.png" />
                     </Component>
+                    <Component Id="PantheonSlicer_2.ico" Guid="*">
+                        <File Id="PantheonSlicer_2.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-2.ico" />
+                    </Component>
                     <Component Id="PantheonSlicer_mac_128px.png" Guid="*">
                         <File Id="PantheonSlicer_mac_128px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-mac_128px.png" />
                     </Component>
@@ -1802,9 +1805,6 @@
                     </Component>
                     <Component Id="PantheonSlicer.icns" Guid="*">
                         <File Id="PantheonSlicer.icns" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer.icns" />
-                    </Component>
-                    <Component Id="PantheonSlicer.ico" Guid="*">
-                        <File Id="PantheonSlicer.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer.ico" />
                     </Component>
                     <Component Id="PantheonSlicer.png" Guid="*">
                         <File Id="PantheonSlicer.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer.png" />
@@ -1836,8 +1836,17 @@
                     <Component Id="PantheonSlicer_about.svg" Guid="*">
                         <File Id="PantheonSlicer_about.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_about.svg" />
                     </Component>
-                    <Component Id="PantheonSlicer_narrow.svg" Guid="*">
-                        <File Id="PantheonSlicer_narrow.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_narrow.svg" />
+                    <Component Id="PantheonSlicer_gradient.svg" Guid="*">
+                        <File Id="PantheonSlicer_gradient.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_gradient.svg" />
+                    </Component>
+                    <Component Id="PantheonSlicer_gradient_circle.svg" Guid="*">
+                        <File Id="PantheonSlicer_gradient_circle.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_gradient_circle.svg" />
+                    </Component>
+                    <Component Id="PantheonSlicer_gradient_narrow.svg" Guid="*">
+                        <File Id="PantheonSlicer_gradient_narrow.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_gradient_narrow.svg" />
+                    </Component>
+                    <Component Id="PantheonSlicer_gray.svg" Guid="*">
+                        <File Id="PantheonSlicer_gray.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer_gray.svg" />
                     </Component>
                     <Component Id="param_3dhoneycomb.svg" Guid="*">
                         <File Id="param_3dhoneycomb.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\param_3dhoneycomb.svg" />
@@ -2846,6 +2855,9 @@
                     </Component>
                     <Component Id="OrcaArena.json" Guid="*">
                         <File Id="OrcaArena.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\OrcaArena.json" />
+                    </Component>
+                    <Component Id="PantheonDesign.json" Guid="*">
+                        <File Id="PantheonDesign.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign.json" />
                     </Component>
                     <Component Id="Peopoly.json" Guid="*">
                         <File Id="Peopoly.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly.json" />
@@ -9965,6 +9977,167 @@
                             </Component>
                         </Directory>
                     </Directory>
+                    <Directory Id="PantheonDesign" Name="PantheonDesign">
+                        <Component Id="Anker_M5_All_Metal_Hot_End_cover.png_1" Guid="*">
+                            <File Id="Anker_M5_All_Metal_Hot_End_cover.png_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\Anker M5 All-Metal Hot End_cover.png" />
+                        </Component>
+                        <Component Id="Anker_M5C_cover.png_1" Guid="*">
+                            <File Id="Anker_M5C_cover.png_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\Anker M5C_cover.png" />
+                        </Component>
+                        <Component Id="Anker_M5_cover.png_1" Guid="*">
+                            <File Id="Anker_M5_cover.png_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\Anker M5_cover.png" />
+                        </Component>
+                        <Component Id="M5_bed.stl" Guid="*">
+                            <File Id="M5_bed.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-bed.stl" />
+                        </Component>
+                        <Component Id="M5_CE_bed.stl_1" Guid="*">
+                            <File Id="M5_CE_bed.stl_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-CE-bed.stl" />
+                        </Component>
+                        <Component Id="M5_CE_texture.svg_1" Guid="*">
+                            <File Id="M5_CE_texture.svg_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-CE-texture.svg" />
+                        </Component>
+                        <Component Id="M5_texture.svg" Guid="*">
+                            <File Id="M5_texture.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-texture.svg" />
+                        </Component>
+                        <Component Id="M5_texture_v2.svg" Guid="*">
+                            <File Id="M5_texture_v2.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-texture_v2.svg" />
+                        </Component>
+                        <Component Id="M5C_CE_bed.stl_1" Guid="*">
+                            <File Id="M5C_CE_bed.stl_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5C-CE-bed.stl" />
+                        </Component>
+                        <Component Id="Pantheon_HS300_new_hotend__cover.png" Guid="*">
+                            <File Id="Pantheon_HS300_new_hotend__cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\Pantheon HS300(new hotend)_cover.png" />
+                        </Component>
+                        <Component Id="Pantheon_HS3_cover.png" Guid="*">
+                            <File Id="Pantheon_HS3_cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\Pantheon HS3_cover.png" />
+                        </Component>
+                        <Directory Id="filament_18" Name="filament">
+                            <Component Id="fdm_filament_common.json_18" Guid="*">
+                                <File Id="fdm_filament_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_common.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pet.json_18" Guid="*">
+                                <File Id="fdm_filament_pet.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pet.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pla.json_18" Guid="*">
+                                <File Id="fdm_filament_pla.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pla.json" />
+                            </Component>
+                            <Component Id="fdm_filament_tpu.json_15" Guid="*">
+                                <File Id="fdm_filament_tpu.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_tpu.json" />
+                            </Component>
+                            <Component Id="Wanhao_Generic_PETG.json" Guid="*">
+                                <File Id="Wanhao_Generic_PETG.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\Wanhao Generic PETG.json" />
+                            </Component>
+                            <Component Id="Wanhao_Generic_PLA.json" Guid="*">
+                                <File Id="Wanhao_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\Wanhao Generic PLA.json" />
+                            </Component>
+                            <Component Id="Wanhao_Generic_TPU.json" Guid="*">
+                                <File Id="Wanhao_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\Wanhao Generic TPU.json" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="machine_18" Name="machine">
+                            <Component Id="fdm_machine_common.json_18" Guid="*">
+                                <File Id="fdm_machine_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\fdm_machine_common.json" />
+                            </Component>
+                            <Component Id="fdm_marlin_common.json_1" Guid="*">
+                                <File Id="fdm_marlin_common.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\fdm_marlin_common.json" />
+                            </Component>
+                            <Component Id="Pantheon_HS3_0.2_nozzle.json" Guid="*">
+                                <File Id="Pantheon_HS3_0.2_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS3 0.2 nozzle.json" />
+                            </Component>
+                            <Component Id="Pantheon_HS3_0.4_nozzle.json" Guid="*">
+                                <File Id="Pantheon_HS3_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS3 0.4 nozzle.json" />
+                            </Component>
+                            <Component Id="Pantheon_HS3.json" Guid="*">
+                                <File Id="Pantheon_HS3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS3.json" />
+                            </Component>
+                            <Component Id="Pantheon_HS300_new_hotend__0.4_nozzle.json" Guid="*">
+                                <File Id="Pantheon_HS300_new_hotend__0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS300(new hotend) 0.4 nozzle.json" />
+                            </Component>
+                            <Component Id="Pantheon_HS300_new_hotend_.json" Guid="*">
+                                <File Id="Pantheon_HS300_new_hotend_.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS300(new hotend).json" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="process_18" Name="process">
+                            <Component Id="_0.05mm_Optimal_0.2_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.05mm_Optimal_0.2_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.05mm Optimal 0.2 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.05mm_Optimal_0.25_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.05mm_Optimal_0.25_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.05mm Optimal 0.25 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.05mm_Ultradetail__Anker.json_1" Guid="*">
+                                <File Id="_0.05mm_Ultradetail__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.05mm Ultradetail @Anker.json" />
+                            </Component>
+                            <Component Id="_0.10mm_Detail__Anker.json_1" Guid="*">
+                                <File Id="_0.10mm_Detail__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.10mm Detail @Anker.json" />
+                            </Component>
+                            <Component Id="_0.10mm_Standard_0.2_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.10mm_Standard_0.2_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.10mm Standard 0.2 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.10mm_Standard_0.25_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.10mm_Standard_0.25_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.10mm Standard 0.25 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Detail_0.6_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.15mm_Detail_0.6_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.15mm Detail 0.6 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Draft_0.2_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.15mm_Draft_0.2_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.15mm Draft 0.2 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Draft_0.25_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.15mm_Draft_0.25_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.15mm Draft 0.25 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Fast__Anker.json_1" Guid="*">
+                                <File Id="_0.15mm_Fast__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.15mm Fast @Anker.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Optimal__Anker.json_1" Guid="*">
+                                <File Id="_0.15mm_Optimal__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.15mm Optimal @Anker.json" />
+                            </Component>
+                            <Component Id="_0.20mm_Fast__Anker.json_1" Guid="*">
+                                <File Id="_0.20mm_Fast__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.20mm Fast @Anker.json" />
+                            </Component>
+                            <Component Id="_0.20mm_Optimal_0.6_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.20mm_Optimal_0.6_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.20mm Optimal 0.6 nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.20mm_Standard__Anker.json_1" Guid="*">
+                                <File Id="_0.20mm_Standard__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.20mm Standard @Anker.json" />
+                            </Component>
+                            <Component Id="_0.25mm_Draft__Anker.json_1" Guid="*">
+                                <File Id="_0.25mm_Draft__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.25mm Draft @Anker.json" />
+                            </Component>
+                            <Component Id="_0.25mm_Fast__Anker.json_1" Guid="*">
+                                <File Id="_0.25mm_Fast__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.25mm Fast @Anker.json" />
+                            </Component>
+                            <Component Id="_0.30mm_Standard_0.6mm_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.30mm_Standard_0.6mm_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.30mm Standard 0.6mm nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.30mm_Superdraft__Anker.json_1" Guid="*">
+                                <File Id="_0.30mm_Superdraft__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.30mm Superdraft @Anker.json" />
+                            </Component>
+                            <Component Id="_0.35mm_Draft_0.6mm_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.35mm_Draft_0.6mm_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.35mm Draft 0.6mm nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="_0.40mm_Superdraft_0.6mm_nozzle__Anker.json_1" Guid="*">
+                                <File Id="_0.40mm_Superdraft_0.6mm_nozzle__Anker.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.40mm Superdraft 0.6mm nozzle @Anker.json" />
+                            </Component>
+                            <Component Id="fdm_process_anker_common.json_1" Guid="*">
+                                <File Id="fdm_process_anker_common.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_anker_common.json" />
+                            </Component>
+                            <Component Id="fdm_process_anker_common_0_2.json_1" Guid="*">
+                                <File Id="fdm_process_anker_common_0_2.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_anker_common_0_2.json" />
+                            </Component>
+                            <Component Id="fdm_process_anker_common_0_25.json_1" Guid="*">
+                                <File Id="fdm_process_anker_common_0_25.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_anker_common_0_25.json" />
+                            </Component>
+                            <Component Id="fdm_process_anker_common_0_6.json_1" Guid="*">
+                                <File Id="fdm_process_anker_common_0_6.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_anker_common_0_6.json" />
+                            </Component>
+                            <Component Id="fdm_process_anker_fast_common.json_1" Guid="*">
+                                <File Id="fdm_process_anker_fast_common.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_anker_fast_common.json" />
+                            </Component>
+                            <Component Id="fdm_process_common.json_18" Guid="*">
+                                <File Id="fdm_process_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\fdm_process_common.json" />
+                            </Component>
+                        </Directory>
+                    </Directory>
                     <Directory Id="Peopoly" Name="Peopoly">
                         <Component Id="magnetox_model_400x300.stl" Guid="*">
                             <File Id="magnetox_model_400x300.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\magnetox_model-400x300.stl" />
@@ -9984,18 +10157,18 @@
                         <Component Id="Peopoly_Magneto_X_cover.png" Guid="*">
                             <File Id="Peopoly_Magneto_X_cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\Peopoly Magneto X_cover.png" />
                         </Component>
-                        <Directory Id="filament_18" Name="filament">
+                        <Directory Id="filament_19" Name="filament">
                             <Component Id="fdm_filament_abs.json_17" Guid="*">
                                 <File Id="fdm_filament_abs.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_abs.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_18" Guid="*">
-                                <File Id="fdm_filament_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_19" Guid="*">
+                                <File Id="fdm_filament_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_petg.json" Guid="*">
                                 <File Id="fdm_filament_petg.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_petg.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_18" Guid="*">
-                                <File Id="fdm_filament_pla.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_19" Guid="*">
+                                <File Id="fdm_filament_pla.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="Peopoly_Generic_ABS.json" Guid="*">
                                 <File Id="Peopoly_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\Peopoly Generic ABS.json" />
@@ -10016,12 +10189,12 @@
                                 <File Id="Peopoly_Lancer_PLA_C.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\filament\Peopoly Lancer PLA-C.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_18" Name="machine">
+                        <Directory Id="machine_19" Name="machine">
                             <Component Id="fdm_klipper_common.json_6" Guid="*">
                                 <File Id="fdm_klipper_common.json_6" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_18" Guid="*">
-                                <File Id="fdm_machine_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_19" Guid="*">
+                                <File Id="fdm_machine_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Peopoly_Magneto_X_0.4_nozzle.json" Guid="*">
                                 <File Id="Peopoly_Magneto_X_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\machine\Peopoly Magneto X 0.4 nozzle.json" />
@@ -10033,7 +10206,7 @@
                                 <File Id="Peopoly_Magneto_X.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\machine\Peopoly Magneto X.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_18" Name="process">
+                        <Directory Id="process_19" Name="process">
                             <Component Id="_0.16mm_Optimal__MagnetoX.json" Guid="*">
                                 <File Id="_0.16mm_Optimal__MagnetoX.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\process\0.16mm Optimal @MagnetoX.json" />
                             </Component>
@@ -10052,8 +10225,8 @@
                             <Component Id="_0.40mm_Standard__Magneto_X_0.8_nozzle.json" Guid="*">
                                 <File Id="_0.40mm_Standard__Magneto_X_0.8_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\process\0.40mm Standard @Magneto X 0.8 nozzle.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_18" Guid="*">
-                                <File Id="fdm_process_common.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_19" Guid="*">
+                                <File Id="fdm_process_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_peopoly_common.json" Guid="*">
                                 <File Id="fdm_process_peopoly_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Peopoly\process\fdm_process_peopoly_common.json" />
@@ -10121,15 +10294,15 @@
                         <Component Id="mk4_bed.stl" Guid="*">
                             <File Id="mk4_bed.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\mk4_bed.stl" />
                         </Component>
-                        <Directory Id="filament_19" Name="filament">
+                        <Directory Id="filament_20" Name="filament">
                             <Component Id="fdm_filament_abs.json_18" Guid="*">
                                 <File Id="fdm_filament_abs.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_13" Guid="*">
                                 <File Id="fdm_filament_asa.json_13" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_19" Guid="*">
-                                <File Id="fdm_filament_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_20" Guid="*">
+                                <File Id="fdm_filament_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_13" Guid="*">
                                 <File Id="fdm_filament_pa.json_13" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pa.json" />
@@ -10137,17 +10310,17 @@
                             <Component Id="fdm_filament_pc.json_13" Guid="*">
                                 <File Id="fdm_filament_pc.json_13" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_18" Guid="*">
-                                <File Id="fdm_filament_pet.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_19" Guid="*">
+                                <File Id="fdm_filament_pet.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_19" Guid="*">
-                                <File Id="fdm_filament_pla.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_20" Guid="*">
+                                <File Id="fdm_filament_pla.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_10" Guid="*">
                                 <File Id="fdm_filament_pva.json_10" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_15" Guid="*">
-                                <File Id="fdm_filament_tpu.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_16" Guid="*">
+                                <File Id="fdm_filament_tpu.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Prusa_Generic_ABS__MINIIS.json" Guid="*">
                                 <File Id="Prusa_Generic_ABS__MINIIS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\Prusa Generic ABS @MINIIS.json" />
@@ -10210,9 +10383,9 @@
                                 <File Id="Prusa_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\filament\Prusa Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_19" Name="machine">
-                            <Component Id="fdm_machine_common.json_19" Guid="*">
-                                <File Id="fdm_machine_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_20" Name="machine">
+                            <Component Id="fdm_machine_common.json_20" Guid="*">
+                                <File Id="fdm_machine_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Prusa_MINI_0.25_nozzle.json" Guid="*">
                                 <File Id="Prusa_MINI_0.25_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\machine\Prusa MINI 0.25 nozzle.json" />
@@ -10275,7 +10448,7 @@
                                 <File Id="Prusa_MK4.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\machine\Prusa MK4.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_19" Name="process">
+                        <Directory Id="process_20" Name="process">
                             <Component Id="_0.05mm_Detail__MINIIS.json" Guid="*">
                                 <File Id="_0.05mm_Detail__MINIIS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\process\0.05mm Detail @MINIIS.json" />
                             </Component>
@@ -10444,8 +10617,8 @@
                             <Component Id="_0.56mm_Standard__MK4.json" Guid="*">
                                 <File Id="_0.56mm_Standard__MK4.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\process\0.56mm Standard @MK4.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_19" Guid="*">
-                                <File Id="fdm_process_common.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_20" Guid="*">
+                                <File Id="fdm_process_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="process_common_miniis.json" Guid="*">
                                 <File Id="process_common_miniis.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Prusa\process\process_common_miniis.json" />
@@ -10534,15 +10707,15 @@
                         <Component Id="qidi_xsmart3_buildplate_texture.png" Guid="*">
                             <File Id="qidi_xsmart3_buildplate_texture.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\qidi_xsmart3_buildplate_texture.png" />
                         </Component>
-                        <Directory Id="filament_20" Name="filament">
+                        <Directory Id="filament_21" Name="filament">
                             <Component Id="fdm_filament_abs.json_19" Guid="*">
                                 <File Id="fdm_filament_abs.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_14" Guid="*">
                                 <File Id="fdm_filament_asa.json_14" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_20" Guid="*">
-                                <File Id="fdm_filament_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_21" Guid="*">
+                                <File Id="fdm_filament_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_14" Guid="*">
                                 <File Id="fdm_filament_pa.json_14" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pa.json" />
@@ -10550,17 +10723,17 @@
                             <Component Id="fdm_filament_pc.json_14" Guid="*">
                                 <File Id="fdm_filament_pc.json_14" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_19" Guid="*">
-                                <File Id="fdm_filament_pet.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_20" Guid="*">
+                                <File Id="fdm_filament_pet.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_20" Guid="*">
-                                <File Id="fdm_filament_pla.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_21" Guid="*">
+                                <File Id="fdm_filament_pla.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_11" Guid="*">
                                 <File Id="fdm_filament_pva.json_11" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_16" Guid="*">
-                                <File Id="fdm_filament_tpu.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_17" Guid="*">
+                                <File Id="fdm_filament_tpu.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="QIDI_ABS_Odorless__0.2_nozzle.json" Guid="*">
                                 <File Id="QIDI_ABS_Odorless__0.2_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\QIDI ABS Odorless @0.2 nozzle.json" />
@@ -10962,9 +11135,9 @@
                                 <File Id="Tinmorry_PETG_ECO.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\filament\Tinmorry PETG-ECO.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_20" Name="machine">
-                            <Component Id="fdm_machine_common.json_20" Guid="*">
-                                <File Id="fdm_machine_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_21" Name="machine">
+                            <Component Id="fdm_machine_common.json_21" Guid="*">
+                                <File Id="fdm_machine_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="fdm_qidi_common.json" Guid="*">
                                 <File Id="fdm_qidi_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\machine\fdm_qidi_common.json" />
@@ -11051,7 +11224,7 @@
                                 <File Id="Qidi_X_Smart_3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\machine\Qidi X-Smart 3.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_20" Name="process">
+                        <Directory Id="process_21" Name="process">
                             <Component Id="_0.06mm_Standard__Qidi_Q1_Pro_0.2_nozzle.json" Guid="*">
                                 <File Id="_0.06mm_Standard__Qidi_Q1_Pro_0.2_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\process\0.06mm Standard @Qidi Q1 Pro 0.2 nozzle.json" />
                             </Component>
@@ -11376,8 +11549,8 @@
                             <Component Id="_0.56mm_Standard__Qidi_XSmart3_0.8_nozzle.json" Guid="*">
                                 <File Id="_0.56mm_Standard__Qidi_XSmart3_0.8_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\process\0.56mm Standard @Qidi XSmart3 0.8 nozzle.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_20" Guid="*">
-                                <File Id="fdm_process_common.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_21" Guid="*">
+                                <File Id="fdm_process_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_QIDI_0.06_nozzle_0.2.json" Guid="*">
                                 <File Id="fdm_process_QIDI_0.06_nozzle_0.2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Qidi\process\fdm_process_QIDI_0.06_nozzle_0.2.json" />
@@ -11451,24 +11624,24 @@
                         <Component Id="raise3d_pro3_buildplate_texture.png" Guid="*">
                             <File Id="raise3d_pro3_buildplate_texture.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\raise3d_pro3_buildplate_texture.png" />
                         </Component>
-                        <Directory Id="filament_21" Name="filament">
+                        <Directory Id="filament_22" Name="filament">
                             <Component Id="fdm_filament_asa.json_15" Guid="*">
                                 <File Id="fdm_filament_asa.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_21" Guid="*">
-                                <File Id="fdm_filament_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_22" Guid="*">
+                                <File Id="fdm_filament_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_common.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_20" Guid="*">
-                                <File Id="fdm_filament_pet.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_21" Guid="*">
+                                <File Id="fdm_filament_pet.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_21" Guid="*">
-                                <File Id="fdm_filament_pla.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_22" Guid="*">
+                                <File Id="fdm_filament_pla.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_12" Guid="*">
                                 <File Id="fdm_filament_pva.json_12" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_17" Guid="*">
-                                <File Id="fdm_filament_tpu.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_18" Guid="*">
+                                <File Id="fdm_filament_tpu.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Raise3D_Generic_ASA.json" Guid="*">
                                 <File Id="Raise3D_Generic_ASA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\Raise3D Generic ASA.json" />
@@ -11486,9 +11659,9 @@
                                 <File Id="Raise3D_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\filament\Raise3D Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_21" Name="machine">
-                            <Component Id="fdm_machine_common.json_21" Guid="*">
-                                <File Id="fdm_machine_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_22" Name="machine">
+                            <Component Id="fdm_machine_common.json_22" Guid="*">
+                                <File Id="fdm_machine_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Raise3D_Pro3_0.4_nozzle__Dual_.json" Guid="*">
                                 <File Id="Raise3D_Pro3_0.4_nozzle__Dual_.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\machine\Raise3D Pro3 0.4 nozzle (Dual).json" />
@@ -11515,7 +11688,7 @@
                                 <File Id="Raise3D_Pro3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\machine\Raise3D Pro3.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_21" Name="process">
+                        <Directory Id="process_22" Name="process">
                             <Component Id="_0.10mm_Fine__Raise3D_Pro3.json" Guid="*">
                                 <File Id="_0.10mm_Fine__Raise3D_Pro3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\process\0.10mm Fine @Raise3D Pro3.json" />
                             </Component>
@@ -11534,8 +11707,8 @@
                             <Component Id="_0.25mm_Draft__Raise3D_Pro3Plus.json" Guid="*">
                                 <File Id="_0.25mm_Draft__Raise3D_Pro3Plus.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\process\0.25mm Draft @Raise3D Pro3Plus.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_21" Guid="*">
-                                <File Id="fdm_process_common.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_22" Guid="*">
+                                <File Id="fdm_process_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Raise3D\process\fdm_process_common.json" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -11579,15 +11752,15 @@
                         <Component Id="ratrig_logo.svg" Guid="*">
                             <File Id="ratrig_logo.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\ratrig_logo.svg" />
                         </Component>
-                        <Directory Id="filament_22" Name="filament">
+                        <Directory Id="filament_23" Name="filament">
                             <Component Id="fdm_filament_abs.json_20" Guid="*">
                                 <File Id="fdm_filament_abs.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_16" Guid="*">
                                 <File Id="fdm_filament_asa.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_22" Guid="*">
-                                <File Id="fdm_filament_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_23" Guid="*">
+                                <File Id="fdm_filament_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_15" Guid="*">
                                 <File Id="fdm_filament_pa.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pa.json" />
@@ -11595,17 +11768,17 @@
                             <Component Id="fdm_filament_pc.json_15" Guid="*">
                                 <File Id="fdm_filament_pc.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_21" Guid="*">
-                                <File Id="fdm_filament_pet.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_22" Guid="*">
+                                <File Id="fdm_filament_pet.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_22" Guid="*">
-                                <File Id="fdm_filament_pla.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_23" Guid="*">
+                                <File Id="fdm_filament_pla.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_13" Guid="*">
                                 <File Id="fdm_filament_pva.json_13" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_18" Guid="*">
-                                <File Id="fdm_filament_tpu.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_19" Guid="*">
+                                <File Id="fdm_filament_tpu.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="RatRig_Generic_ABS.json" Guid="*">
                                 <File Id="RatRig_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\RatRig Generic ABS.json" />
@@ -11638,12 +11811,12 @@
                                 <File Id="RatRig_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\filament\RatRig Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_22" Name="machine">
+                        <Directory Id="machine_23" Name="machine">
                             <Component Id="fdm_klipper_common.json_7" Guid="*">
                                 <File Id="fdm_klipper_common.json_7" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_22" Guid="*">
-                                <File Id="fdm_machine_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_23" Guid="*">
+                                <File Id="fdm_machine_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="RatRig_V_Cast_0.4_nozzle.json" Guid="*">
                                 <File Id="RatRig_V_Cast_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\machine\RatRig V-Cast 0.4 nozzle.json" />
@@ -11685,7 +11858,7 @@
                                 <File Id="RatRig_V_Minion.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\machine\RatRig V-Minion.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_22" Name="process">
+                        <Directory Id="process_23" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__RatRig.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__RatRig.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\process\0.08mm Extra Fine @RatRig.json" />
                             </Component>
@@ -11707,8 +11880,8 @@
                             <Component Id="_0.28mm_Extra_Draft__RatRig.json" Guid="*">
                                 <File Id="_0.28mm_Extra_Draft__RatRig.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\process\0.28mm Extra Draft @RatRig.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_22" Guid="*">
-                                <File Id="fdm_process_common.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_23" Guid="*">
+                                <File Id="fdm_process_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_ratrig_common.json" Guid="*">
                                 <File Id="fdm_process_ratrig_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Ratrig\process\fdm_process_ratrig_common.json" />
@@ -11734,15 +11907,15 @@
                         <Component Id="SK_Tank_Bed.stl" Guid="*">
                             <File Id="SK_Tank_Bed.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\SK-Tank_Bed.stl" />
                         </Component>
-                        <Directory Id="filament_23" Name="filament">
+                        <Directory Id="filament_24" Name="filament">
                             <Component Id="fdm_filament_abs.json_21" Guid="*">
                                 <File Id="fdm_filament_abs.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_17" Guid="*">
                                 <File Id="fdm_filament_asa.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_23" Guid="*">
-                                <File Id="fdm_filament_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_24" Guid="*">
+                                <File Id="fdm_filament_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_16" Guid="*">
                                 <File Id="fdm_filament_pa.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pa.json" />
@@ -11750,17 +11923,17 @@
                             <Component Id="fdm_filament_pc.json_16" Guid="*">
                                 <File Id="fdm_filament_pc.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_22" Guid="*">
-                                <File Id="fdm_filament_pet.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_23" Guid="*">
+                                <File Id="fdm_filament_pet.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_23" Guid="*">
-                                <File Id="fdm_filament_pla.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_24" Guid="*">
+                                <File Id="fdm_filament_pla.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_14" Guid="*">
                                 <File Id="fdm_filament_pva.json_14" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_19" Guid="*">
-                                <File Id="fdm_filament_tpu.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_20" Guid="*">
+                                <File Id="fdm_filament_tpu.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="SecKit_Generic_ABS.json" Guid="*">
                                 <File Id="SecKit_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\SecKit Generic ABS.json" />
@@ -11793,12 +11966,12 @@
                                 <File Id="SecKit_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\filament\SecKit Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_23" Name="machine">
+                        <Directory Id="machine_24" Name="machine">
                             <Component Id="fdm_klipper_common.json_8" Guid="*">
                                 <File Id="fdm_klipper_common.json_8" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_23" Guid="*">
-                                <File Id="fdm_machine_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_24" Guid="*">
+                                <File Id="fdm_machine_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="SecKit_Go3_0.4_nozzle.json" Guid="*">
                                 <File Id="SecKit_Go3_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\machine\SecKit Go3 0.4 nozzle.json" />
@@ -11813,7 +11986,7 @@
                                 <File Id="SecKit_SK_Tank.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\machine\SecKit SK-Tank.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_23" Name="process">
+                        <Directory Id="process_24" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__SecKit.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__SecKit.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\process\0.08mm Extra Fine @SecKit.json" />
                             </Component>
@@ -11835,8 +12008,8 @@
                             <Component Id="_0.30mm_Fast__SecKit.json" Guid="*">
                                 <File Id="_0.30mm_Fast__SecKit.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\process\0.30mm Fast @SecKit.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_23" Guid="*">
-                                <File Id="fdm_process_common.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_24" Guid="*">
+                                <File Id="fdm_process_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_seckit_common.json" Guid="*">
                                 <File Id="fdm_process_seckit_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\SecKit\process\fdm_process_seckit_common.json" />
@@ -11895,27 +12068,27 @@
                         <Component Id="Snapmaker_J1_texture.svg" Guid="*">
                             <File Id="Snapmaker_J1_texture.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\Snapmaker J1_texture.svg" />
                         </Component>
-                        <Directory Id="filament_24" Name="filament">
+                        <Directory Id="filament_25" Name="filament">
                             <Component Id="fdm_filament_abs.json_22" Guid="*">
                                 <File Id="fdm_filament_abs.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_18" Guid="*">
                                 <File Id="fdm_filament_asa.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_24" Guid="*">
-                                <File Id="fdm_filament_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_25" Guid="*">
+                                <File Id="fdm_filament_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_17" Guid="*">
                                 <File Id="fdm_filament_pa.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pa.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_23" Guid="*">
-                                <File Id="fdm_filament_pet.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_24" Guid="*">
+                                <File Id="fdm_filament_pet.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pet.json" />
                             </Component>
                             <Component Id="fdm_filament_petg.json_1" Guid="*">
                                 <File Id="fdm_filament_petg.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_petg.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_24" Guid="*">
-                                <File Id="fdm_filament_pla.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_25" Guid="*">
+                                <File Id="fdm_filament_pla.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pla_eco.json" Guid="*">
                                 <File Id="fdm_filament_pla_eco.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pla_eco.json" />
@@ -11923,8 +12096,8 @@
                             <Component Id="fdm_filament_pva.json_15" Guid="*">
                                 <File Id="fdm_filament_pva.json_15" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_20" Guid="*">
-                                <File Id="fdm_filament_tpu.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_21" Guid="*">
+                                <File Id="fdm_filament_tpu.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="PolyLite_J1_PLA__0.2_nozzle.json" Guid="*">
                                 <File Id="PolyLite_J1_PLA__0.2_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\PolyLite J1 PLA @0.2 nozzle.json" />
@@ -12179,7 +12352,7 @@
                                 <File Id="Snapmaker_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\filament\Snapmaker TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_24" Name="machine">
+                        <Directory Id="machine_25" Name="machine">
                             <Component Id="fdm_a250.json" Guid="*">
                                 <File Id="fdm_a250.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\machine\fdm_a250.json" />
                             </Component>
@@ -12352,7 +12525,7 @@
                                 <File Id="Snapmaker_J1.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\machine\Snapmaker J1.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_24" Name="process">
+                        <Directory Id="process_25" Name="process">
                             <Component Id="_0.06_Standard__Snapmaker__0.2_nozzle_.json" Guid="*">
                                 <File Id="_0.06_Standard__Snapmaker__0.2_nozzle_.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\process\0.06 Standard @Snapmaker (0.2 nozzle).json" />
                             </Component>
@@ -12488,8 +12661,8 @@
                             <Component Id="_0.48_Draft__Snapmaker_J1__0.8_nozzle_.json" Guid="*">
                                 <File Id="_0.48_Draft__Snapmaker_J1__0.8_nozzle_.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\process\0.48 Draft @Snapmaker J1 (0.8 nozzle).json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_24" Guid="*">
-                                <File Id="fdm_process_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_25" Guid="*">
+                                <File Id="fdm_process_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_idex.json" Guid="*">
                                 <File Id="fdm_process_idex.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Snapmaker\process\fdm_process_idex.json" />
@@ -12554,18 +12727,18 @@
                         <Component Id="sovol_sv07_buildplate_texture.png" Guid="*">
                             <File Id="sovol_sv07_buildplate_texture.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\sovol_sv07_buildplate_texture.png" />
                         </Component>
-                        <Directory Id="filament_25" Name="filament">
+                        <Directory Id="filament_26" Name="filament">
                             <Component Id="fdm_filament_abs.json_23" Guid="*">
                                 <File Id="fdm_filament_abs.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_abs.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_25" Guid="*">
-                                <File Id="fdm_filament_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_26" Guid="*">
+                                <File Id="fdm_filament_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_common.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_24" Guid="*">
-                                <File Id="fdm_filament_pet.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_25" Guid="*">
+                                <File Id="fdm_filament_pet.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_25" Guid="*">
-                                <File Id="fdm_filament_pla.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_26" Guid="*">
+                                <File Id="fdm_filament_pla.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="Sovol_Generic_ABS.json" Guid="*">
                                 <File Id="Sovol_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\Sovol Generic ABS.json" />
@@ -12577,9 +12750,9 @@
                                 <File Id="Sovol_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\filament\Sovol Generic PLA.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_25" Name="machine">
-                            <Component Id="fdm_machine_common.json_24" Guid="*">
-                                <File Id="fdm_machine_common.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_26" Name="machine">
+                            <Component Id="fdm_machine_common.json_25" Guid="*">
+                                <File Id="fdm_machine_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Sovol_SV01_Pro_0.4_nozzle.json" Guid="*">
                                 <File Id="Sovol_SV01_Pro_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\machine\Sovol SV01 Pro 0.4 nozzle.json" />
@@ -12624,7 +12797,7 @@
                                 <File Id="Sovol_SV07.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\machine\Sovol SV07.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_25" Name="process">
+                        <Directory Id="process_26" Name="process">
                             <Component Id="_0.18mm_Optimal__Sovol_SV01Pro.json" Guid="*">
                                 <File Id="_0.18mm_Optimal__Sovol_SV01Pro.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\process\0.18mm Optimal @Sovol SV01Pro.json" />
                             </Component>
@@ -12667,8 +12840,8 @@
                             <Component Id="_0.20mm_Standard__Sovol_SV07Plus.json" Guid="*">
                                 <File Id="_0.20mm_Standard__Sovol_SV07Plus.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\process\0.20mm Standard @Sovol SV07Plus.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_25" Guid="*">
-                                <File Id="fdm_process_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_26" Guid="*">
+                                <File Id="fdm_process_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Sovol\process\fdm_process_common.json" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -12682,15 +12855,15 @@
                         <Component Id="tronxy_v0_logo.png" Guid="*">
                             <File Id="tronxy_v0_logo.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\tronxy_v0_logo.png" />
                         </Component>
-                        <Directory Id="filament_26" Name="filament">
+                        <Directory Id="filament_27" Name="filament">
                             <Component Id="fdm_filament_abs.json_24" Guid="*">
                                 <File Id="fdm_filament_abs.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_19" Guid="*">
                                 <File Id="fdm_filament_asa.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_26" Guid="*">
-                                <File Id="fdm_filament_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_27" Guid="*">
+                                <File Id="fdm_filament_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_18" Guid="*">
                                 <File Id="fdm_filament_pa.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pa.json" />
@@ -12698,17 +12871,17 @@
                             <Component Id="fdm_filament_pc.json_17" Guid="*">
                                 <File Id="fdm_filament_pc.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_25" Guid="*">
-                                <File Id="fdm_filament_pet.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_26" Guid="*">
+                                <File Id="fdm_filament_pet.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_26" Guid="*">
-                                <File Id="fdm_filament_pla.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_27" Guid="*">
+                                <File Id="fdm_filament_pla.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_16" Guid="*">
                                 <File Id="fdm_filament_pva.json_16" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_21" Guid="*">
-                                <File Id="fdm_filament_tpu.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_22" Guid="*">
+                                <File Id="fdm_filament_tpu.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Tronxy_Generic_ABS.json" Guid="*">
                                 <File Id="Tronxy_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\Tronxy Generic ABS.json" />
@@ -12741,9 +12914,9 @@
                                 <File Id="Tronxy_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\filament\Tronxy Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_26" Name="machine">
-                            <Component Id="fdm_machine_common.json_25" Guid="*">
-                                <File Id="fdm_machine_common.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_27" Name="machine">
+                            <Component Id="fdm_machine_common.json_26" Guid="*">
+                                <File Id="fdm_machine_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Tronxy_X5SA_400_0.4_nozzle.json" Guid="*">
                                 <File Id="Tronxy_X5SA_400_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\machine\Tronxy X5SA 400 0.4 nozzle.json" />
@@ -12752,7 +12925,7 @@
                                 <File Id="Tronxy_X5SA_400_Marlin_Firmware.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\machine\Tronxy X5SA 400 Marlin Firmware.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_26" Name="process">
+                        <Directory Id="process_27" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__Tronxy.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__Tronxy.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\process\0.08mm Extra Fine @Tronxy.json" />
                             </Component>
@@ -12771,8 +12944,8 @@
                             <Component Id="_0.28mm_Extra_Draft__Tronxy.json" Guid="*">
                                 <File Id="_0.28mm_Extra_Draft__Tronxy.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\process\0.28mm Extra Draft @Tronxy.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_26" Guid="*">
-                                <File Id="fdm_process_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_27" Guid="*">
+                                <File Id="fdm_process_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_tronxy_common.json" Guid="*">
                                 <File Id="fdm_process_tronxy_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Tronxy\process\fdm_process_tronxy_common.json" />
@@ -12795,15 +12968,15 @@
                         <Component Id="TwoTrees_SP_5_Klipper_cover.png" Guid="*">
                             <File Id="TwoTrees_SP_5_Klipper_cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\TwoTrees SP-5 Klipper_cover.png" />
                         </Component>
-                        <Directory Id="filament_27" Name="filament">
+                        <Directory Id="filament_28" Name="filament">
                             <Component Id="fdm_filament_abs.json_25" Guid="*">
                                 <File Id="fdm_filament_abs.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_20" Guid="*">
                                 <File Id="fdm_filament_asa.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_27" Guid="*">
-                                <File Id="fdm_filament_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_28" Guid="*">
+                                <File Id="fdm_filament_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_19" Guid="*">
                                 <File Id="fdm_filament_pa.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pa.json" />
@@ -12811,17 +12984,17 @@
                             <Component Id="fdm_filament_pc.json_18" Guid="*">
                                 <File Id="fdm_filament_pc.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_26" Guid="*">
-                                <File Id="fdm_filament_pet.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_27" Guid="*">
+                                <File Id="fdm_filament_pet.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_27" Guid="*">
-                                <File Id="fdm_filament_pla.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_28" Guid="*">
+                                <File Id="fdm_filament_pla.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_17" Guid="*">
                                 <File Id="fdm_filament_pva.json_17" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_22" Guid="*">
-                                <File Id="fdm_filament_tpu.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_23" Guid="*">
+                                <File Id="fdm_filament_tpu.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="TwoTrees_Generic_95A_TPU__SK1.json" Guid="*">
                                 <File Id="TwoTrees_Generic_95A_TPU__SK1.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\TwoTrees Generic 95A TPU @SK1.json" />
@@ -12875,12 +13048,12 @@
                                 <File Id="TwoTrees_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\filament\TwoTrees Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_27" Name="machine">
+                        <Directory Id="machine_28" Name="machine">
                             <Component Id="fdm_klipper_common.json_9" Guid="*">
                                 <File Id="fdm_klipper_common.json_9" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_26" Guid="*">
-                                <File Id="fdm_machine_common.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_27" Guid="*">
+                                <File Id="fdm_machine_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="TwoTrees_SK1_0.4_nozzle.json" Guid="*">
                                 <File Id="TwoTrees_SK1_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\machine\TwoTrees SK1 0.4 nozzle.json" />
@@ -12895,7 +13068,7 @@
                                 <File Id="TwoTrees_SP_5_Klipper.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\machine\TwoTrees SP-5 Klipper.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_27" Name="process">
+                        <Directory Id="process_28" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__SK1.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__SK1.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\process\0.08mm Extra Fine @SK1.json" />
                             </Component>
@@ -12938,8 +13111,8 @@
                             <Component Id="_0.28mm_Extra_Draft__TwoTrees.json" Guid="*">
                                 <File Id="_0.28mm_Extra_Draft__TwoTrees.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\process\0.28mm Extra Draft @TwoTrees.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_27" Guid="*">
-                                <File Id="fdm_process_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_28" Guid="*">
+                                <File Id="fdm_process_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_TwoTrees_common.json" Guid="*">
                                 <File Id="fdm_process_TwoTrees_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\TwoTrees\process\fdm_process_TwoTrees_common.json" />
@@ -12959,18 +13132,18 @@
                         <Component Id="ultimaker_hotend.stl" Guid="*">
                             <File Id="ultimaker_hotend.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\ultimaker_hotend.stl" />
                         </Component>
-                        <Directory Id="filament_28" Name="filament">
+                        <Directory Id="filament_29" Name="filament">
                             <Component Id="fdm_filament_abs.json_26" Guid="*">
                                 <File Id="fdm_filament_abs.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_abs.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_28" Guid="*">
-                                <File Id="fdm_filament_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_29" Guid="*">
+                                <File Id="fdm_filament_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_common.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_27" Guid="*">
-                                <File Id="fdm_filament_pet.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_28" Guid="*">
+                                <File Id="fdm_filament_pet.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_28" Guid="*">
-                                <File Id="fdm_filament_pla.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_29" Guid="*">
+                                <File Id="fdm_filament_pla.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="UltiMaker_Generic_ABS.json" Guid="*">
                                 <File Id="UltiMaker_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\UltiMaker Generic ABS.json" />
@@ -12982,9 +13155,9 @@
                                 <File Id="UltiMaker_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\filament\UltiMaker Generic PLA.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_28" Name="machine">
-                            <Component Id="fdm_machine_common.json_27" Guid="*">
-                                <File Id="fdm_machine_common.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_29" Name="machine">
+                            <Component Id="fdm_machine_common.json_28" Guid="*">
+                                <File Id="fdm_machine_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="UltiMaker_2_0.4_nozzle.json" Guid="*">
                                 <File Id="UltiMaker_2_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\machine\UltiMaker 2 0.4 nozzle.json" />
@@ -12993,7 +13166,7 @@
                                 <File Id="UltiMaker_2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\machine\UltiMaker 2.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_28" Name="process">
+                        <Directory Id="process_29" Name="process">
                             <Component Id="_0.12mm_Fine__UltiMaker_2.json" Guid="*">
                                 <File Id="_0.12mm_Fine__UltiMaker_2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\process\0.12mm Fine @UltiMaker 2.json" />
                             </Component>
@@ -13003,8 +13176,8 @@
                             <Component Id="_0.25mm_Darft__UltiMaker_2.json" Guid="*">
                                 <File Id="_0.25mm_Darft__UltiMaker_2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\process\0.25mm Darft @UltiMaker 2.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_28" Guid="*">
-                                <File Id="fdm_process_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_29" Guid="*">
+                                <File Id="fdm_process_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\UltiMaker\process\fdm_process_common.json" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -13018,15 +13191,15 @@
                         <Component Id="Troodon_2.0___RRF_cover.png" Guid="*">
                             <File Id="Troodon_2.0___RRF_cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\Troodon 2.0 - RRF_cover.png" />
                         </Component>
-                        <Directory Id="filament_29" Name="filament">
+                        <Directory Id="filament_30" Name="filament">
                             <Component Id="fdm_filament_abs.json_27" Guid="*">
                                 <File Id="fdm_filament_abs.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_21" Guid="*">
                                 <File Id="fdm_filament_asa.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_29" Guid="*">
-                                <File Id="fdm_filament_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_30" Guid="*">
+                                <File Id="fdm_filament_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_20" Guid="*">
                                 <File Id="fdm_filament_pa.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pa.json" />
@@ -13034,17 +13207,17 @@
                             <Component Id="fdm_filament_pc.json_19" Guid="*">
                                 <File Id="fdm_filament_pc.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_28" Guid="*">
-                                <File Id="fdm_filament_pet.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_29" Guid="*">
+                                <File Id="fdm_filament_pet.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_29" Guid="*">
-                                <File Id="fdm_filament_pla.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_30" Guid="*">
+                                <File Id="fdm_filament_pla.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_18" Guid="*">
                                 <File Id="fdm_filament_pva.json_18" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_23" Guid="*">
-                                <File Id="fdm_filament_tpu.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_24" Guid="*">
+                                <File Id="fdm_filament_tpu.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Troodon_Generic_ABS.json" Guid="*">
                                 <File Id="Troodon_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\Troodon Generic ABS.json" />
@@ -13077,12 +13250,12 @@
                                 <File Id="Troodon_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\filament\Troodon Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_29" Name="machine">
+                        <Directory Id="machine_30" Name="machine">
                             <Component Id="fdm_klipper_common.json_10" Guid="*">
                                 <File Id="fdm_klipper_common.json_10" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_28" Guid="*">
-                                <File Id="fdm_machine_common.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_29" Guid="*">
+                                <File Id="fdm_machine_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="fdm_rrf_common.json_1" Guid="*">
                                 <File Id="fdm_rrf_common.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\machine\fdm_rrf_common.json" />
@@ -13100,7 +13273,7 @@
                                 <File Id="Troodon2RRF.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\machine\Troodon2RRF.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_29" Name="process">
+                        <Directory Id="process_30" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__Troodon2.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__Troodon2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\process\0.08mm Extra Fine @Troodon2.json" />
                             </Component>
@@ -13119,8 +13292,8 @@
                             <Component Id="_0.28mm_Extra_Draft__Troodon2.json" Guid="*">
                                 <File Id="_0.28mm_Extra_Draft__Troodon2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\process\0.28mm Extra Draft @Troodon2.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_29" Guid="*">
-                                <File Id="fdm_process_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_30" Guid="*">
+                                <File Id="fdm_process_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_klipper_common.json_1" Guid="*">
                                 <File Id="fdm_process_klipper_common.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vivedino\process\fdm_process_klipper_common.json" />
@@ -13170,15 +13343,15 @@
                         <Component Id="voron_switchwire_logo.png" Guid="*">
                             <File Id="voron_switchwire_logo.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\voron_switchwire_logo.png" />
                         </Component>
-                        <Directory Id="filament_30" Name="filament">
+                        <Directory Id="filament_31" Name="filament">
                             <Component Id="fdm_filament_abs.json_28" Guid="*">
                                 <File Id="fdm_filament_abs.json_28" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_22" Guid="*">
                                 <File Id="fdm_filament_asa.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_30" Guid="*">
-                                <File Id="fdm_filament_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_31" Guid="*">
+                                <File Id="fdm_filament_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_21" Guid="*">
                                 <File Id="fdm_filament_pa.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pa.json" />
@@ -13186,17 +13359,17 @@
                             <Component Id="fdm_filament_pc.json_20" Guid="*">
                                 <File Id="fdm_filament_pc.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_29" Guid="*">
-                                <File Id="fdm_filament_pet.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_30" Guid="*">
+                                <File Id="fdm_filament_pet.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_30" Guid="*">
-                                <File Id="fdm_filament_pla.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_31" Guid="*">
+                                <File Id="fdm_filament_pla.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_19" Guid="*">
                                 <File Id="fdm_filament_pva.json_19" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_24" Guid="*">
-                                <File Id="fdm_filament_tpu.json_24" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_25" Guid="*">
+                                <File Id="fdm_filament_tpu.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Voron_Generic_ABS.json" Guid="*">
                                 <File Id="Voron_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\Voron Generic ABS.json" />
@@ -13229,12 +13402,12 @@
                                 <File Id="Voron_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\filament\Voron Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_30" Name="machine">
+                        <Directory Id="machine_31" Name="machine">
                             <Component Id="fdm_klipper_common.json_11" Guid="*">
                                 <File Id="fdm_klipper_common.json_11" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_29" Guid="*">
-                                <File Id="fdm_machine_common.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_30" Guid="*">
+                                <File Id="fdm_machine_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Voron_0.1_0.15_nozzle.json" Guid="*">
                                 <File Id="Voron_0.1_0.15_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\machine\Voron 0.1 0.15 nozzle.json" />
@@ -13429,7 +13602,7 @@
                                 <File Id="Voron_Trident_350.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\machine\Voron Trident 350.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_30" Name="process">
+                        <Directory Id="process_31" Name="process">
                             <Component Id="_0.05mm_Fine_0.15_nozzle__Voron.json" Guid="*">
                                 <File Id="_0.05mm_Fine_0.15_nozzle__Voron.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\process\0.05mm Fine 0.15 nozzle @Voron.json" />
                             </Component>
@@ -13532,8 +13705,8 @@
                             <Component Id="_0.80mm_Extra_Draft_1.0_nozzle__Voron.json" Guid="*">
                                 <File Id="_0.80mm_Extra_Draft_1.0_nozzle__Voron.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\process\0.80mm Extra Draft 1.0 nozzle @Voron.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_30" Guid="*">
-                                <File Id="fdm_process_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_31" Guid="*">
+                                <File Id="fdm_process_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_voron_common.json" Guid="*">
                                 <File Id="fdm_process_voron_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voron\process\fdm_process_voron_common.json" />
@@ -13568,18 +13741,18 @@
                         <Component Id="voxelab_aquilax2_buildplate_texture.png" Guid="*">
                             <File Id="voxelab_aquilax2_buildplate_texture.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\voxelab_aquilax2_buildplate_texture.png" />
                         </Component>
-                        <Directory Id="filament_31" Name="filament">
+                        <Directory Id="filament_32" Name="filament">
                             <Component Id="fdm_filament_abs.json_29" Guid="*">
                                 <File Id="fdm_filament_abs.json_29" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_abs.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_31" Guid="*">
-                                <File Id="fdm_filament_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_32" Guid="*">
+                                <File Id="fdm_filament_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_common.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_30" Guid="*">
-                                <File Id="fdm_filament_pet.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_31" Guid="*">
+                                <File Id="fdm_filament_pet.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_31" Guid="*">
-                                <File Id="fdm_filament_pla.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_32" Guid="*">
+                                <File Id="fdm_filament_pla.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="Voxelab_Generic_ABS.json" Guid="*">
                                 <File Id="Voxelab_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\Voxelab Generic ABS.json" />
@@ -13591,9 +13764,9 @@
                                 <File Id="Voxelab_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\filament\Voxelab Generic PLA.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_31" Name="machine">
-                            <Component Id="fdm_machine_common.json_30" Guid="*">
-                                <File Id="fdm_machine_common.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_32" Name="machine">
+                            <Component Id="fdm_machine_common.json_31" Guid="*">
+                                <File Id="fdm_machine_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Voxelab_Aquila_X2_0.4_nozzle.json" Guid="*">
                                 <File Id="Voxelab_Aquila_X2_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\machine\Voxelab Aquila X2 0.4 nozzle.json" />
@@ -13602,15 +13775,15 @@
                                 <File Id="Voxelab_Aquila_X2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\machine\Voxelab Aquila X2.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_31" Name="process">
+                        <Directory Id="process_32" Name="process">
                             <Component Id="_0.16mm_Optimal__Voxelab_AquilaX2.json" Guid="*">
                                 <File Id="_0.16mm_Optimal__Voxelab_AquilaX2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\process\0.16mm Optimal @Voxelab AquilaX2.json" />
                             </Component>
                             <Component Id="_0.20mm_Standard__Voxelab_AquilaX2.json" Guid="*">
                                 <File Id="_0.20mm_Standard__Voxelab_AquilaX2.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\process\0.20mm Standard @Voxelab AquilaX2.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_31" Guid="*">
-                                <File Id="fdm_process_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_32" Guid="*">
+                                <File Id="fdm_process_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Voxelab\process\fdm_process_common.json" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -13639,15 +13812,15 @@
                         <Component Id="VzBot_PS_bed_330.svg" Guid="*">
                             <File Id="VzBot_PS_bed_330.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\VzBot_PS_bed_330.svg" />
                         </Component>
-                        <Directory Id="filament_32" Name="filament">
+                        <Directory Id="filament_33" Name="filament">
                             <Component Id="fdm_filament_abs.json_30" Guid="*">
                                 <File Id="fdm_filament_abs.json_30" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_abs.json" />
                             </Component>
                             <Component Id="fdm_filament_asa.json_23" Guid="*">
                                 <File Id="fdm_filament_asa.json_23" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_asa.json" />
                             </Component>
-                            <Component Id="fdm_filament_common.json_32" Guid="*">
-                                <File Id="fdm_filament_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_common.json" />
+                            <Component Id="fdm_filament_common.json_33" Guid="*">
+                                <File Id="fdm_filament_common.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_common.json" />
                             </Component>
                             <Component Id="fdm_filament_pa.json_22" Guid="*">
                                 <File Id="fdm_filament_pa.json_22" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pa.json" />
@@ -13655,17 +13828,17 @@
                             <Component Id="fdm_filament_pc.json_21" Guid="*">
                                 <File Id="fdm_filament_pc.json_21" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pc.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_31" Guid="*">
-                                <File Id="fdm_filament_pet.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_32" Guid="*">
+                                <File Id="fdm_filament_pet.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_32" Guid="*">
-                                <File Id="fdm_filament_pla.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_33" Guid="*">
+                                <File Id="fdm_filament_pla.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pla.json" />
                             </Component>
                             <Component Id="fdm_filament_pva.json_20" Guid="*">
                                 <File Id="fdm_filament_pva.json_20" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_pva.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_25" Guid="*">
-                                <File Id="fdm_filament_tpu.json_25" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_26" Guid="*">
+                                <File Id="fdm_filament_tpu.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\fdm_filament_tpu.json" />
                             </Component>
                             <Component Id="Vzbot_Generic_ABS.json" Guid="*">
                                 <File Id="Vzbot_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\Vzbot Generic ABS.json" />
@@ -13698,12 +13871,12 @@
                                 <File Id="Vzbot_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\filament\Vzbot Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_32" Name="machine">
+                        <Directory Id="machine_33" Name="machine">
                             <Component Id="fdm_klipper_common.json_12" Guid="*">
                                 <File Id="fdm_klipper_common.json_12" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\machine\fdm_klipper_common.json" />
                             </Component>
-                            <Component Id="fdm_machine_common.json_31" Guid="*">
-                                <File Id="fdm_machine_common.json_31" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\machine\fdm_machine_common.json" />
+                            <Component Id="fdm_machine_common.json_32" Guid="*">
+                                <File Id="fdm_machine_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="Vzbot_235_AWD_0.4_nozzle.json" Guid="*">
                                 <File Id="Vzbot_235_AWD_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\machine\Vzbot 235 AWD 0.4 nozzle.json" />
@@ -13730,7 +13903,7 @@
                                 <File Id="Vzbot_330_AWD.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\machine\Vzbot 330 AWD.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_32" Name="process">
+                        <Directory Id="process_33" Name="process">
                             <Component Id="_0.08mm_Extra_Fine__Vzbot.json" Guid="*">
                                 <File Id="_0.08mm_Extra_Fine__Vzbot.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\process\0.08mm Extra Fine @Vzbot.json" />
                             </Component>
@@ -13785,8 +13958,8 @@
                             <Component Id="_0.28mm_Extra_Draft__Vzbot_0.6_nozzle.json" Guid="*">
                                 <File Id="_0.28mm_Extra_Draft__Vzbot_0.6_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\process\0.28mm Extra Draft @Vzbot_0.6_nozzle.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_32" Guid="*">
-                                <File Id="fdm_process_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_33" Guid="*">
+                                <File Id="fdm_process_common.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_common_0.5_nozzle.json" Guid="*">
                                 <File Id="fdm_process_common_0.5_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Vzbot\process\fdm_process_common_0.5_nozzle.json" />
@@ -13815,32 +13988,32 @@
                         <Component Id="Wanhao_D12_300_buildplate_texture.png" Guid="*">
                             <File Id="Wanhao_D12_300_buildplate_texture.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\Wanhao_D12-300_buildplate_texture.png" />
                         </Component>
-                        <Directory Id="filament_33" Name="filament">
-                            <Component Id="fdm_filament_common.json_33" Guid="*">
-                                <File Id="fdm_filament_common.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_common.json" />
+                        <Directory Id="filament_34" Name="filament">
+                            <Component Id="fdm_filament_common.json_34" Guid="*">
+                                <File Id="fdm_filament_common.json_34" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_common.json" />
                             </Component>
-                            <Component Id="fdm_filament_pet.json_32" Guid="*">
-                                <File Id="fdm_filament_pet.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_pet.json" />
+                            <Component Id="fdm_filament_pet.json_33" Guid="*">
+                                <File Id="fdm_filament_pet.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_pet.json" />
                             </Component>
-                            <Component Id="fdm_filament_pla.json_33" Guid="*">
-                                <File Id="fdm_filament_pla.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_pla.json" />
+                            <Component Id="fdm_filament_pla.json_34" Guid="*">
+                                <File Id="fdm_filament_pla.json_34" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_pla.json" />
                             </Component>
-                            <Component Id="fdm_filament_tpu.json_26" Guid="*">
-                                <File Id="fdm_filament_tpu.json_26" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_tpu.json" />
+                            <Component Id="fdm_filament_tpu.json_27" Guid="*">
+                                <File Id="fdm_filament_tpu.json_27" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\fdm_filament_tpu.json" />
                             </Component>
-                            <Component Id="Wanhao_Generic_PETG.json" Guid="*">
-                                <File Id="Wanhao_Generic_PETG.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic PETG.json" />
+                            <Component Id="Wanhao_Generic_PETG.json_1" Guid="*">
+                                <File Id="Wanhao_Generic_PETG.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic PETG.json" />
                             </Component>
-                            <Component Id="Wanhao_Generic_PLA.json" Guid="*">
-                                <File Id="Wanhao_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic PLA.json" />
+                            <Component Id="Wanhao_Generic_PLA.json_1" Guid="*">
+                                <File Id="Wanhao_Generic_PLA.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic PLA.json" />
                             </Component>
-                            <Component Id="Wanhao_Generic_TPU.json" Guid="*">
-                                <File Id="Wanhao_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic TPU.json" />
+                            <Component Id="Wanhao_Generic_TPU.json_1" Guid="*">
+                                <File Id="Wanhao_Generic_TPU.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\filament\Wanhao Generic TPU.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="machine_33" Name="machine">
-                            <Component Id="fdm_machine_common.json_32" Guid="*">
-                                <File Id="fdm_machine_common.json_32" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\machine\fdm_machine_common.json" />
+                        <Directory Id="machine_34" Name="machine">
+                            <Component Id="fdm_machine_common.json_33" Guid="*">
+                                <File Id="fdm_machine_common.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\machine\fdm_machine_common.json" />
                             </Component>
                             <Component Id="fdm_wanhao_common.json" Guid="*">
                                 <File Id="fdm_wanhao_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\machine\fdm_wanhao_common.json" />
@@ -13852,7 +14025,7 @@
                                 <File Id="Wanhao_D12_300.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\machine\Wanhao D12-300.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_33" Name="process">
+                        <Directory Id="process_34" Name="process">
                             <Component Id="_0.12mm_Fine__Wanhao_D12_300.json" Guid="*">
                                 <File Id="_0.12mm_Fine__Wanhao_D12_300.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\process\0.12mm Fine @Wanhao D12-300.json" />
                             </Component>
@@ -13865,8 +14038,8 @@
                             <Component Id="_0.24mm_Draft__Wanhao_D12_300.json" Guid="*">
                                 <File Id="_0.24mm_Draft__Wanhao_D12_300.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\process\0.24mm Draft @Wanhao D12-300.json" />
                             </Component>
-                            <Component Id="fdm_process_common.json_33" Guid="*">
-                                <File Id="fdm_process_common.json_33" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\process\fdm_process_common.json" />
+                            <Component Id="fdm_process_common.json_34" Guid="*">
+                                <File Id="fdm_process_common.json_34" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\process\fdm_process_common.json" />
                             </Component>
                             <Component Id="fdm_process_wanhao_common.json" Guid="*">
                                 <File Id="fdm_process_wanhao_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Wanhao\process\fdm_process_wanhao_common.json" />
@@ -13879,7 +14052,7 @@
                         <File Id="Template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template.json" />
                     </Component>
                     <Directory Id="Template" Name="Template">
-                        <Directory Id="filament_34" Name="filament">
+                        <Directory Id="filament_35" Name="filament">
                             <Component Id="filament_abs_template.json" Guid="*">
                                 <File Id="filament_abs_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\filament\filament_abs_template.json" />
                             </Component>
@@ -13914,7 +14087,7 @@
                                 <File Id="filament_tpu_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\filament\filament_tpu_template.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_34" Name="process">
+                        <Directory Id="process_35" Name="process">
                             <Component Id="process_template.json" Guid="*">
                                 <File Id="process_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\process\process template.json" />
                             </Component>
@@ -16680,7 +16853,7 @@
             <ComponentRef Id="msvcp140_atomic_wait.dll" />
             <ComponentRef Id="msvcp140_codecvt_ids.dll" />
             <ComponentRef Id="OrcaSlicer.dll" />
-            <ComponentRef Id="PantheonSlicer.exe" />
+            <ComponentRef Id="PantheonSlicer_2.exe" />
             <ComponentRef Id="TKBO.dll" />
             <ComponentRef Id="TKBRep.dll" />
             <ComponentRef Id="TKCAF.dll" />
@@ -16719,7 +16892,7 @@
             <ComponentRef Id="tower_with_seam.stl" />
             <ComponentRef Id="retraction_tower.stl" />
             <ComponentRef Id="temperature_tower.stl" />
-            <ComponentRef Id="OrcaToleranceTest.stl" />
+            <ComponentRef Id="PantheonToleranceTest.stl" />
             <ComponentRef Id="VFA.stl" />
             <ComponentRef Id="SpeedTestStructure.step" />
             <ComponentRef Id="SpeedTestStructure.stp" />
@@ -17244,10 +17417,10 @@
             <ComponentRef Id="OrcaSlicer_gray.svg" />
             <ComponentRef Id="oss_picture_loading.png" />
             <ComponentRef Id="oss_picture_load_failed.png" />
+            <ComponentRef Id="PantheonSlicer_2.ico" />
             <ComponentRef Id="PantheonSlicer_mac_128px.png" />
             <ComponentRef Id="PantheonSlicer_mac_256px.ico" />
             <ComponentRef Id="PantheonSlicer.icns" />
-            <ComponentRef Id="PantheonSlicer.ico" />
             <ComponentRef Id="PantheonSlicer.png" />
             <ComponentRef Id="PantheonSlicer.svg" />
             <ComponentRef Id="PantheonSlicerTitle.ico" />
@@ -17258,7 +17431,10 @@
             <ComponentRef Id="PantheonSlicer_192px_transparent.png" />
             <ComponentRef Id="PantheonSlicer_32px.png" />
             <ComponentRef Id="PantheonSlicer_about.svg" />
-            <ComponentRef Id="PantheonSlicer_narrow.svg" />
+            <ComponentRef Id="PantheonSlicer_gradient.svg" />
+            <ComponentRef Id="PantheonSlicer_gradient_circle.svg" />
+            <ComponentRef Id="PantheonSlicer_gradient_narrow.svg" />
+            <ComponentRef Id="PantheonSlicer_gray.svg" />
             <ComponentRef Id="param_3dhoneycomb.svg" />
             <ComponentRef Id="param_acceleration.svg" />
             <ComponentRef Id="param_accessory.svg" />
@@ -17593,6 +17769,7 @@
             <ComponentRef Id="Kingroon.json" />
             <ComponentRef Id="MagicMaker.json" />
             <ComponentRef Id="OrcaArena.json" />
+            <ComponentRef Id="PantheonDesign.json" />
             <ComponentRef Id="Peopoly.json" />
             <ComponentRef Id="Prusa.json" />
             <ComponentRef Id="Qidi.json" />
@@ -19915,6 +20092,57 @@
             <ComponentRef Id="fdm_process_bbl_0.56_nozzle_0.8.json_1" />
             <ComponentRef Id="fdm_process_bbl_common.json_1" />
             <ComponentRef Id="fdm_process_common.json_17" />
+            <ComponentRef Id="Anker_M5_All_Metal_Hot_End_cover.png_1" />
+            <ComponentRef Id="Anker_M5C_cover.png_1" />
+            <ComponentRef Id="Anker_M5_cover.png_1" />
+            <ComponentRef Id="M5_bed.stl" />
+            <ComponentRef Id="M5_CE_bed.stl_1" />
+            <ComponentRef Id="M5_CE_texture.svg_1" />
+            <ComponentRef Id="M5_texture.svg" />
+            <ComponentRef Id="M5_texture_v2.svg" />
+            <ComponentRef Id="M5C_CE_bed.stl_1" />
+            <ComponentRef Id="Pantheon_HS300_new_hotend__cover.png" />
+            <ComponentRef Id="Pantheon_HS3_cover.png" />
+            <ComponentRef Id="fdm_filament_common.json_18" />
+            <ComponentRef Id="fdm_filament_pet.json_18" />
+            <ComponentRef Id="fdm_filament_pla.json_18" />
+            <ComponentRef Id="fdm_filament_tpu.json_15" />
+            <ComponentRef Id="Wanhao_Generic_PETG.json" />
+            <ComponentRef Id="Wanhao_Generic_PLA.json" />
+            <ComponentRef Id="Wanhao_Generic_TPU.json" />
+            <ComponentRef Id="fdm_machine_common.json_18" />
+            <ComponentRef Id="fdm_marlin_common.json_1" />
+            <ComponentRef Id="Pantheon_HS3_0.2_nozzle.json" />
+            <ComponentRef Id="Pantheon_HS3_0.4_nozzle.json" />
+            <ComponentRef Id="Pantheon_HS3.json" />
+            <ComponentRef Id="Pantheon_HS300_new_hotend__0.4_nozzle.json" />
+            <ComponentRef Id="Pantheon_HS300_new_hotend_.json" />
+            <ComponentRef Id="_0.05mm_Optimal_0.2_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.05mm_Optimal_0.25_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.05mm_Ultradetail__Anker.json_1" />
+            <ComponentRef Id="_0.10mm_Detail__Anker.json_1" />
+            <ComponentRef Id="_0.10mm_Standard_0.2_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.10mm_Standard_0.25_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.15mm_Detail_0.6_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.15mm_Draft_0.2_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.15mm_Draft_0.25_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.15mm_Fast__Anker.json_1" />
+            <ComponentRef Id="_0.15mm_Optimal__Anker.json_1" />
+            <ComponentRef Id="_0.20mm_Fast__Anker.json_1" />
+            <ComponentRef Id="_0.20mm_Optimal_0.6_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.20mm_Standard__Anker.json_1" />
+            <ComponentRef Id="_0.25mm_Draft__Anker.json_1" />
+            <ComponentRef Id="_0.25mm_Fast__Anker.json_1" />
+            <ComponentRef Id="_0.30mm_Standard_0.6mm_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.30mm_Superdraft__Anker.json_1" />
+            <ComponentRef Id="_0.35mm_Draft_0.6mm_nozzle__Anker.json_1" />
+            <ComponentRef Id="_0.40mm_Superdraft_0.6mm_nozzle__Anker.json_1" />
+            <ComponentRef Id="fdm_process_anker_common.json_1" />
+            <ComponentRef Id="fdm_process_anker_common_0_2.json_1" />
+            <ComponentRef Id="fdm_process_anker_common_0_25.json_1" />
+            <ComponentRef Id="fdm_process_anker_common_0_6.json_1" />
+            <ComponentRef Id="fdm_process_anker_fast_common.json_1" />
+            <ComponentRef Id="fdm_process_common.json_18" />
             <ComponentRef Id="magnetox_model_400x300.stl" />
             <ComponentRef Id="magnetox_model_back.stl" />
             <ComponentRef Id="magnetox_model.stl" />
@@ -19922,9 +20150,9 @@
             <ComponentRef Id="magnetox_model_texture.png" />
             <ComponentRef Id="Peopoly_Magneto_X_cover.png" />
             <ComponentRef Id="fdm_filament_abs.json_17" />
-            <ComponentRef Id="fdm_filament_common.json_18" />
+            <ComponentRef Id="fdm_filament_common.json_19" />
             <ComponentRef Id="fdm_filament_petg.json" />
-            <ComponentRef Id="fdm_filament_pla.json_18" />
+            <ComponentRef Id="fdm_filament_pla.json_19" />
             <ComponentRef Id="Peopoly_Generic_ABS.json" />
             <ComponentRef Id="Peopoly_Generic_PETG.json" />
             <ComponentRef Id="Peopoly_Generic_PLA_0.8_nozzle.json" />
@@ -19932,7 +20160,7 @@
             <ComponentRef Id="Peopoly_Lancer_PETG_C.json" />
             <ComponentRef Id="Peopoly_Lancer_PLA_C.json" />
             <ComponentRef Id="fdm_klipper_common.json_6" />
-            <ComponentRef Id="fdm_machine_common.json_18" />
+            <ComponentRef Id="fdm_machine_common.json_19" />
             <ComponentRef Id="Peopoly_Magneto_X_0.4_nozzle.json" />
             <ComponentRef Id="Peopoly_Magneto_X_0.8_nozzle.json" />
             <ComponentRef Id="Peopoly_Magneto_X.json" />
@@ -19942,7 +20170,7 @@
             <ComponentRef Id="_0.24mm_Draft__MagnetoX.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__MagnetoX.json" />
             <ComponentRef Id="_0.40mm_Standard__Magneto_X_0.8_nozzle.json" />
-            <ComponentRef Id="fdm_process_common.json_18" />
+            <ComponentRef Id="fdm_process_common.json_19" />
             <ComponentRef Id="fdm_process_peopoly_common.json" />
             <ComponentRef Id="fdm_process_peopoly_common_0_2.json" />
             <ComponentRef Id="fdm_process_pply_0.16.json" />
@@ -19966,13 +20194,13 @@
             <ComponentRef Id="mk4_bed.stl" />
             <ComponentRef Id="fdm_filament_abs.json_18" />
             <ComponentRef Id="fdm_filament_asa.json_13" />
-            <ComponentRef Id="fdm_filament_common.json_19" />
+            <ComponentRef Id="fdm_filament_common.json_20" />
             <ComponentRef Id="fdm_filament_pa.json_13" />
             <ComponentRef Id="fdm_filament_pc.json_13" />
-            <ComponentRef Id="fdm_filament_pet.json_18" />
-            <ComponentRef Id="fdm_filament_pla.json_19" />
+            <ComponentRef Id="fdm_filament_pet.json_19" />
+            <ComponentRef Id="fdm_filament_pla.json_20" />
             <ComponentRef Id="fdm_filament_pva.json_10" />
-            <ComponentRef Id="fdm_filament_tpu.json_15" />
+            <ComponentRef Id="fdm_filament_tpu.json_16" />
             <ComponentRef Id="Prusa_Generic_ABS__MINIIS.json" />
             <ComponentRef Id="Prusa_Generic_ABS__MK4.json" />
             <ComponentRef Id="Prusa_Generic_ABS.json" />
@@ -19993,7 +20221,7 @@
             <ComponentRef Id="Prusa_Generic_TPU__MINIIS.json" />
             <ComponentRef Id="Prusa_Generic_TPU__MK4.json" />
             <ComponentRef Id="Prusa_Generic_TPU.json" />
-            <ComponentRef Id="fdm_machine_common.json_19" />
+            <ComponentRef Id="fdm_machine_common.json_20" />
             <ComponentRef Id="Prusa_MINI_0.25_nozzle.json" />
             <ComponentRef Id="Prusa_MINI_0.4_nozzle.json" />
             <ComponentRef Id="Prusa_MINI_0.6_nozzle.json" />
@@ -20070,7 +20298,7 @@
             <ComponentRef Id="_0.40mm_Standard__MK4.json" />
             <ComponentRef Id="_0.55mm_Draft__MK3S_0.8.json" />
             <ComponentRef Id="_0.56mm_Standard__MK4.json" />
-            <ComponentRef Id="fdm_process_common.json_19" />
+            <ComponentRef Id="fdm_process_common.json_20" />
             <ComponentRef Id="process_common_miniis.json" />
             <ComponentRef Id="process_common_mk3.json" />
             <ComponentRef Id="process_common_mk4.json" />
@@ -20101,13 +20329,13 @@
             <ComponentRef Id="qidi_xsmart3_buildplate_texture.png" />
             <ComponentRef Id="fdm_filament_abs.json_19" />
             <ComponentRef Id="fdm_filament_asa.json_14" />
-            <ComponentRef Id="fdm_filament_common.json_20" />
+            <ComponentRef Id="fdm_filament_common.json_21" />
             <ComponentRef Id="fdm_filament_pa.json_14" />
             <ComponentRef Id="fdm_filament_pc.json_14" />
-            <ComponentRef Id="fdm_filament_pet.json_19" />
-            <ComponentRef Id="fdm_filament_pla.json_20" />
+            <ComponentRef Id="fdm_filament_pet.json_20" />
+            <ComponentRef Id="fdm_filament_pla.json_21" />
             <ComponentRef Id="fdm_filament_pva.json_11" />
-            <ComponentRef Id="fdm_filament_tpu.json_16" />
+            <ComponentRef Id="fdm_filament_tpu.json_17" />
             <ComponentRef Id="QIDI_ABS_Odorless__0.2_nozzle.json" />
             <ComponentRef Id="QIDI_ABS_Odorless__0.8_nozzle.json" />
             <ComponentRef Id="QIDI_ABS_Odorless__Qidi_Q1_Pro_0.2_nozzle.json" />
@@ -20241,7 +20469,7 @@
             <ComponentRef Id="Qidi_TPU_95A_HF__Qidi_Q1_Pro_0.8_nozzle.json" />
             <ComponentRef Id="Qidi_TPU_95A_HF.json" />
             <ComponentRef Id="Tinmorry_PETG_ECO.json" />
-            <ComponentRef Id="fdm_machine_common.json_20" />
+            <ComponentRef Id="fdm_machine_common.json_21" />
             <ComponentRef Id="fdm_qidi_common.json" />
             <ComponentRef Id="fdm_qidi_x3_common.json" />
             <ComponentRef Id="Qidi_Q1_Pro_0.2_nozzle.json" />
@@ -20378,7 +20606,7 @@
             <ComponentRef Id="_0.56mm_Standard__Qidi_XMax3_0.8_nozzle.json" />
             <ComponentRef Id="_0.56mm_Standard__Qidi_XPlus3_0.8_nozzle.json" />
             <ComponentRef Id="_0.56mm_Standard__Qidi_XSmart3_0.8_nozzle.json" />
-            <ComponentRef Id="fdm_process_common.json_20" />
+            <ComponentRef Id="fdm_process_common.json_21" />
             <ComponentRef Id="fdm_process_QIDI_0.06_nozzle_0.2.json" />
             <ComponentRef Id="fdm_process_QIDI_0.08_nozzle_0.2.json" />
             <ComponentRef Id="fdm_process_QIDI_0.10_nozzle_0.2.json" />
@@ -20403,17 +20631,17 @@
             <ComponentRef Id="raise3d_pro3_buildplate_model.stl" />
             <ComponentRef Id="raise3d_pro3_buildplate_texture.png" />
             <ComponentRef Id="fdm_filament_asa.json_15" />
-            <ComponentRef Id="fdm_filament_common.json_21" />
-            <ComponentRef Id="fdm_filament_pet.json_20" />
-            <ComponentRef Id="fdm_filament_pla.json_21" />
+            <ComponentRef Id="fdm_filament_common.json_22" />
+            <ComponentRef Id="fdm_filament_pet.json_21" />
+            <ComponentRef Id="fdm_filament_pla.json_22" />
             <ComponentRef Id="fdm_filament_pva.json_12" />
-            <ComponentRef Id="fdm_filament_tpu.json_17" />
+            <ComponentRef Id="fdm_filament_tpu.json_18" />
             <ComponentRef Id="Raise3D_Generic_ASA.json" />
             <ComponentRef Id="Raise3D_Generic_PETG.json" />
             <ComponentRef Id="Raise3D_Generic_PLA.json" />
             <ComponentRef Id="Raise3D_Generic_PVA.json" />
             <ComponentRef Id="Raise3D_Generic_TPU.json" />
-            <ComponentRef Id="fdm_machine_common.json_21" />
+            <ComponentRef Id="fdm_machine_common.json_22" />
             <ComponentRef Id="Raise3D_Pro3_0.4_nozzle__Dual_.json" />
             <ComponentRef Id="Raise3D_Pro3_0.4_nozzle__Left_.json" />
             <ComponentRef Id="Raise3D_Pro3_0.4_nozzle__Right_.json" />
@@ -20428,7 +20656,7 @@
             <ComponentRef Id="_0.20mm_Standard__Raise3D_Pro3Plus.json" />
             <ComponentRef Id="_0.25mm_Draft__Raise3D_Pro3.json" />
             <ComponentRef Id="_0.25mm_Draft__Raise3D_Pro3Plus.json" />
-            <ComponentRef Id="fdm_process_common.json_21" />
+            <ComponentRef Id="fdm_process_common.json_22" />
             <ComponentRef Id="RatRig_V_Cast_cover.png" />
             <ComponentRef Id="RatRig_V_Core_3_200_cover.png" />
             <ComponentRef Id="RatRig_V_Core_3_300_cover.png" />
@@ -20444,13 +20672,13 @@
             <ComponentRef Id="ratrig_logo.svg" />
             <ComponentRef Id="fdm_filament_abs.json_20" />
             <ComponentRef Id="fdm_filament_asa.json_16" />
-            <ComponentRef Id="fdm_filament_common.json_22" />
+            <ComponentRef Id="fdm_filament_common.json_23" />
             <ComponentRef Id="fdm_filament_pa.json_15" />
             <ComponentRef Id="fdm_filament_pc.json_15" />
-            <ComponentRef Id="fdm_filament_pet.json_21" />
-            <ComponentRef Id="fdm_filament_pla.json_22" />
+            <ComponentRef Id="fdm_filament_pet.json_22" />
+            <ComponentRef Id="fdm_filament_pla.json_23" />
             <ComponentRef Id="fdm_filament_pva.json_13" />
-            <ComponentRef Id="fdm_filament_tpu.json_18" />
+            <ComponentRef Id="fdm_filament_tpu.json_19" />
             <ComponentRef Id="RatRig_Generic_ABS.json" />
             <ComponentRef Id="RatRig_Generic_ASA.json" />
             <ComponentRef Id="RatRig_Generic_PA_CF.json" />
@@ -20462,7 +20690,7 @@
             <ComponentRef Id="RatRig_Generic_PVA.json" />
             <ComponentRef Id="RatRig_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_7" />
-            <ComponentRef Id="fdm_machine_common.json_22" />
+            <ComponentRef Id="fdm_machine_common.json_23" />
             <ComponentRef Id="RatRig_V_Cast_0.4_nozzle.json" />
             <ComponentRef Id="RatRig_V_Cast_0.6_nozzle.json" />
             <ComponentRef Id="RatRig_V_Cast.json" />
@@ -20483,7 +20711,7 @@
             <ComponentRef Id="_0.20mm_Standard__RatRig.json" />
             <ComponentRef Id="_0.24mm_Draft__RatRig.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__RatRig.json" />
-            <ComponentRef Id="fdm_process_common.json_22" />
+            <ComponentRef Id="fdm_process_common.json_23" />
             <ComponentRef Id="fdm_process_ratrig_common.json" />
             <ComponentRef Id="Seckit_Go3_cover.png" />
             <ComponentRef Id="SecKit_SK_Tank_cover.png" />
@@ -20493,13 +20721,13 @@
             <ComponentRef Id="SK_Tank_Bed.stl" />
             <ComponentRef Id="fdm_filament_abs.json_21" />
             <ComponentRef Id="fdm_filament_asa.json_17" />
-            <ComponentRef Id="fdm_filament_common.json_23" />
+            <ComponentRef Id="fdm_filament_common.json_24" />
             <ComponentRef Id="fdm_filament_pa.json_16" />
             <ComponentRef Id="fdm_filament_pc.json_16" />
-            <ComponentRef Id="fdm_filament_pet.json_22" />
-            <ComponentRef Id="fdm_filament_pla.json_23" />
+            <ComponentRef Id="fdm_filament_pet.json_23" />
+            <ComponentRef Id="fdm_filament_pla.json_24" />
             <ComponentRef Id="fdm_filament_pva.json_14" />
-            <ComponentRef Id="fdm_filament_tpu.json_19" />
+            <ComponentRef Id="fdm_filament_tpu.json_20" />
             <ComponentRef Id="SecKit_Generic_ABS.json" />
             <ComponentRef Id="SecKit_Generic_ASA.json" />
             <ComponentRef Id="SecKit_Generic_PA_CF.json" />
@@ -20511,7 +20739,7 @@
             <ComponentRef Id="SecKit_Generic_PVA.json" />
             <ComponentRef Id="SecKit_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_8" />
-            <ComponentRef Id="fdm_machine_common.json_23" />
+            <ComponentRef Id="fdm_machine_common.json_24" />
             <ComponentRef Id="SecKit_Go3_0.4_nozzle.json" />
             <ComponentRef Id="Seckit_Go3.json" />
             <ComponentRef Id="SecKit_SK_Tank_0.4_nozzle.json" />
@@ -20523,7 +20751,7 @@
             <ComponentRef Id="_0.24mm_Draft__SecKit.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__SecKit.json" />
             <ComponentRef Id="_0.30mm_Fast__SecKit.json" />
-            <ComponentRef Id="fdm_process_common.json_23" />
+            <ComponentRef Id="fdm_process_common.json_24" />
             <ComponentRef Id="fdm_process_seckit_common.json" />
             <ComponentRef Id="Snapmaker_A250_Dual_QSKit_cover.png" />
             <ComponentRef Id="Snapmaker_A250_Dual_cover.png" />
@@ -20544,14 +20772,14 @@
             <ComponentRef Id="Snapmaker_J1_texture.svg" />
             <ComponentRef Id="fdm_filament_abs.json_22" />
             <ComponentRef Id="fdm_filament_asa.json_18" />
-            <ComponentRef Id="fdm_filament_common.json_24" />
+            <ComponentRef Id="fdm_filament_common.json_25" />
             <ComponentRef Id="fdm_filament_pa.json_17" />
-            <ComponentRef Id="fdm_filament_pet.json_23" />
+            <ComponentRef Id="fdm_filament_pet.json_24" />
             <ComponentRef Id="fdm_filament_petg.json_1" />
-            <ComponentRef Id="fdm_filament_pla.json_24" />
+            <ComponentRef Id="fdm_filament_pla.json_25" />
             <ComponentRef Id="fdm_filament_pla_eco.json" />
             <ComponentRef Id="fdm_filament_pva.json_15" />
-            <ComponentRef Id="fdm_filament_tpu.json_20" />
+            <ComponentRef Id="fdm_filament_tpu.json_21" />
             <ComponentRef Id="PolyLite_J1_PLA__0.2_nozzle.json" />
             <ComponentRef Id="PolyLite_J1_PLA.json" />
             <ComponentRef Id="PolyLite_PLA__0.2_nozzle.json" />
@@ -20738,7 +20966,7 @@
             <ComponentRef Id="_0.42_Draft__Snapmaker_J1__0.6_nozzle_.json" />
             <ComponentRef Id="_0.48_Draft__Snapmaker__0.8_nozzle_.json" />
             <ComponentRef Id="_0.48_Draft__Snapmaker_J1__0.8_nozzle_.json" />
-            <ComponentRef Id="fdm_process_common.json_24" />
+            <ComponentRef Id="fdm_process_common.json_25" />
             <ComponentRef Id="fdm_process_idex.json" />
             <ComponentRef Id="Sovol_SV01_Pro_cover.png" />
             <ComponentRef Id="Sovol_SV02_cover.png" />
@@ -20760,13 +20988,13 @@
             <ComponentRef Id="sovol_sv07plus_buildplate_texture.png" />
             <ComponentRef Id="sovol_sv07_buildplate_texture.png" />
             <ComponentRef Id="fdm_filament_abs.json_23" />
-            <ComponentRef Id="fdm_filament_common.json_25" />
-            <ComponentRef Id="fdm_filament_pet.json_24" />
-            <ComponentRef Id="fdm_filament_pla.json_25" />
+            <ComponentRef Id="fdm_filament_common.json_26" />
+            <ComponentRef Id="fdm_filament_pet.json_25" />
+            <ComponentRef Id="fdm_filament_pla.json_26" />
             <ComponentRef Id="Sovol_Generic_ABS.json" />
             <ComponentRef Id="Sovol_Generic_PETG.json" />
             <ComponentRef Id="Sovol_Generic_PLA.json" />
-            <ComponentRef Id="fdm_machine_common.json_24" />
+            <ComponentRef Id="fdm_machine_common.json_25" />
             <ComponentRef Id="Sovol_SV01_Pro_0.4_nozzle.json" />
             <ComponentRef Id="Sovol_SV01_Pro.json" />
             <ComponentRef Id="Sovol_SV02_0.4_nozzle.json" />
@@ -20795,19 +21023,19 @@
             <ComponentRef Id="_0.20mm_Standard__Sovol_SV06Plus.json" />
             <ComponentRef Id="_0.20mm_Standard__Sovol_SV07.json" />
             <ComponentRef Id="_0.20mm_Standard__Sovol_SV07Plus.json" />
-            <ComponentRef Id="fdm_process_common.json_25" />
+            <ComponentRef Id="fdm_process_common.json_26" />
             <ComponentRef Id="Tronxy_X5SA_400_Marlin_Firmware_cover.png" />
             <ComponentRef Id="tronxy_logo.png" />
             <ComponentRef Id="tronxy_v0_logo.png" />
             <ComponentRef Id="fdm_filament_abs.json_24" />
             <ComponentRef Id="fdm_filament_asa.json_19" />
-            <ComponentRef Id="fdm_filament_common.json_26" />
+            <ComponentRef Id="fdm_filament_common.json_27" />
             <ComponentRef Id="fdm_filament_pa.json_18" />
             <ComponentRef Id="fdm_filament_pc.json_17" />
-            <ComponentRef Id="fdm_filament_pet.json_25" />
-            <ComponentRef Id="fdm_filament_pla.json_26" />
+            <ComponentRef Id="fdm_filament_pet.json_26" />
+            <ComponentRef Id="fdm_filament_pla.json_27" />
             <ComponentRef Id="fdm_filament_pva.json_16" />
-            <ComponentRef Id="fdm_filament_tpu.json_21" />
+            <ComponentRef Id="fdm_filament_tpu.json_22" />
             <ComponentRef Id="Tronxy_Generic_ABS.json" />
             <ComponentRef Id="Tronxy_Generic_ASA.json" />
             <ComponentRef Id="Tronxy_Generic_PA_CF.json" />
@@ -20818,7 +21046,7 @@
             <ComponentRef Id="Tronxy_Generic_PLA.json" />
             <ComponentRef Id="Tronxy_Generic_PVA.json" />
             <ComponentRef Id="Tronxy_Generic_TPU.json" />
-            <ComponentRef Id="fdm_machine_common.json_25" />
+            <ComponentRef Id="fdm_machine_common.json_26" />
             <ComponentRef Id="Tronxy_X5SA_400_0.4_nozzle.json" />
             <ComponentRef Id="Tronxy_X5SA_400_Marlin_Firmware.json" />
             <ComponentRef Id="_0.08mm_Extra_Fine__Tronxy.json" />
@@ -20827,7 +21055,7 @@
             <ComponentRef Id="_0.20mm_Standard__Tronxy.json" />
             <ComponentRef Id="_0.24mm_Draft__Tronxy.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__Tronxy.json" />
-            <ComponentRef Id="fdm_process_common.json_26" />
+            <ComponentRef Id="fdm_process_common.json_27" />
             <ComponentRef Id="fdm_process_tronxy_common.json" />
             <ComponentRef Id="SP_5_bed.stl" />
             <ComponentRef Id="SP5_texture.png" />
@@ -20836,13 +21064,13 @@
             <ComponentRef Id="TwoTrees_SP_5_Klipper_cover.png" />
             <ComponentRef Id="fdm_filament_abs.json_25" />
             <ComponentRef Id="fdm_filament_asa.json_20" />
-            <ComponentRef Id="fdm_filament_common.json_27" />
+            <ComponentRef Id="fdm_filament_common.json_28" />
             <ComponentRef Id="fdm_filament_pa.json_19" />
             <ComponentRef Id="fdm_filament_pc.json_18" />
-            <ComponentRef Id="fdm_filament_pet.json_26" />
-            <ComponentRef Id="fdm_filament_pla.json_27" />
+            <ComponentRef Id="fdm_filament_pet.json_27" />
+            <ComponentRef Id="fdm_filament_pla.json_28" />
             <ComponentRef Id="fdm_filament_pva.json_17" />
-            <ComponentRef Id="fdm_filament_tpu.json_22" />
+            <ComponentRef Id="fdm_filament_tpu.json_23" />
             <ComponentRef Id="TwoTrees_Generic_95A_TPU__SK1.json" />
             <ComponentRef Id="TwoTrees_Generic_ABS.json" />
             <ComponentRef Id="TwoTrees_Generic_ASA.json" />
@@ -20861,7 +21089,7 @@
             <ComponentRef Id="TwoTrees_Generic_PVA.json" />
             <ComponentRef Id="TwoTrees_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_9" />
-            <ComponentRef Id="fdm_machine_common.json_26" />
+            <ComponentRef Id="fdm_machine_common.json_27" />
             <ComponentRef Id="TwoTrees_SK1_0.4_nozzle.json" />
             <ComponentRef Id="TwoTrees_SK1.json" />
             <ComponentRef Id="TwoTrees_SP_5_Klipper_0.4_nozzle.json" />
@@ -20880,38 +21108,38 @@
             <ComponentRef Id="_0.24mm_HSpeed__SK1.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__SK1.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__TwoTrees.json" />
-            <ComponentRef Id="fdm_process_common.json_27" />
+            <ComponentRef Id="fdm_process_common.json_28" />
             <ComponentRef Id="fdm_process_TwoTrees_common.json" />
             <ComponentRef Id="UltiMaker_2_cover.png" />
             <ComponentRef Id="ultimaker_2_buildplate_model.stl" />
             <ComponentRef Id="ultimaker_2_buildplate_texture.png" />
             <ComponentRef Id="ultimaker_hotend.stl" />
             <ComponentRef Id="fdm_filament_abs.json_26" />
-            <ComponentRef Id="fdm_filament_common.json_28" />
-            <ComponentRef Id="fdm_filament_pet.json_27" />
-            <ComponentRef Id="fdm_filament_pla.json_28" />
+            <ComponentRef Id="fdm_filament_common.json_29" />
+            <ComponentRef Id="fdm_filament_pet.json_28" />
+            <ComponentRef Id="fdm_filament_pla.json_29" />
             <ComponentRef Id="UltiMaker_Generic_ABS.json" />
             <ComponentRef Id="UltiMaker_Generic_PETG.json" />
             <ComponentRef Id="UltiMaker_Generic_PLA.json" />
-            <ComponentRef Id="fdm_machine_common.json_27" />
+            <ComponentRef Id="fdm_machine_common.json_28" />
             <ComponentRef Id="UltiMaker_2_0.4_nozzle.json" />
             <ComponentRef Id="UltiMaker_2.json" />
             <ComponentRef Id="_0.12mm_Fine__UltiMaker_2.json" />
             <ComponentRef Id="_0.18mm_Standard__UltiMaker_2.json" />
             <ComponentRef Id="_0.25mm_Darft__UltiMaker_2.json" />
-            <ComponentRef Id="fdm_process_common.json_28" />
+            <ComponentRef Id="fdm_process_common.json_29" />
             <ComponentRef Id="OrcaSlicer_Troodon2_Bed_Texture.png" />
             <ComponentRef Id="Troodon_2.0___Klipper_cover.png" />
             <ComponentRef Id="Troodon_2.0___RRF_cover.png" />
             <ComponentRef Id="fdm_filament_abs.json_27" />
             <ComponentRef Id="fdm_filament_asa.json_21" />
-            <ComponentRef Id="fdm_filament_common.json_29" />
+            <ComponentRef Id="fdm_filament_common.json_30" />
             <ComponentRef Id="fdm_filament_pa.json_20" />
             <ComponentRef Id="fdm_filament_pc.json_19" />
-            <ComponentRef Id="fdm_filament_pet.json_28" />
-            <ComponentRef Id="fdm_filament_pla.json_29" />
+            <ComponentRef Id="fdm_filament_pet.json_29" />
+            <ComponentRef Id="fdm_filament_pla.json_30" />
             <ComponentRef Id="fdm_filament_pva.json_18" />
-            <ComponentRef Id="fdm_filament_tpu.json_23" />
+            <ComponentRef Id="fdm_filament_tpu.json_24" />
             <ComponentRef Id="Troodon_Generic_ABS.json" />
             <ComponentRef Id="Troodon_Generic_ASA.json" />
             <ComponentRef Id="Troodon_Generic_PA_CF.json" />
@@ -20923,7 +21151,7 @@
             <ComponentRef Id="Troodon_Generic_PVA.json" />
             <ComponentRef Id="Troodon_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_10" />
-            <ComponentRef Id="fdm_machine_common.json_28" />
+            <ComponentRef Id="fdm_machine_common.json_29" />
             <ComponentRef Id="fdm_rrf_common.json_1" />
             <ComponentRef Id="Troodon_2.0_Klipper_0.4_nozzle.json" />
             <ComponentRef Id="Troodon_2.0_RRF_0.4_nozzle.json" />
@@ -20935,7 +21163,7 @@
             <ComponentRef Id="_0.20mm_Standard__Troodon2.json" />
             <ComponentRef Id="_0.24mm_Draft__Troodon2.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__Troodon2.json" />
-            <ComponentRef Id="fdm_process_common.json_29" />
+            <ComponentRef Id="fdm_process_common.json_30" />
             <ComponentRef Id="fdm_process_klipper_common.json_1" />
             <ComponentRef Id="Voron_0.1_cover.png" />
             <ComponentRef Id="Voron_2.4_250_cover.png" />
@@ -20953,13 +21181,13 @@
             <ComponentRef Id="voron_switchwire_logo.png" />
             <ComponentRef Id="fdm_filament_abs.json_28" />
             <ComponentRef Id="fdm_filament_asa.json_22" />
-            <ComponentRef Id="fdm_filament_common.json_30" />
+            <ComponentRef Id="fdm_filament_common.json_31" />
             <ComponentRef Id="fdm_filament_pa.json_21" />
             <ComponentRef Id="fdm_filament_pc.json_20" />
-            <ComponentRef Id="fdm_filament_pet.json_29" />
-            <ComponentRef Id="fdm_filament_pla.json_30" />
+            <ComponentRef Id="fdm_filament_pet.json_30" />
+            <ComponentRef Id="fdm_filament_pla.json_31" />
             <ComponentRef Id="fdm_filament_pva.json_19" />
-            <ComponentRef Id="fdm_filament_tpu.json_24" />
+            <ComponentRef Id="fdm_filament_tpu.json_25" />
             <ComponentRef Id="Voron_Generic_ABS.json" />
             <ComponentRef Id="Voron_Generic_ASA.json" />
             <ComponentRef Id="Voron_Generic_PA_CF.json" />
@@ -20971,7 +21199,7 @@
             <ComponentRef Id="Voron_Generic_PVA.json" />
             <ComponentRef Id="Voron_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_11" />
-            <ComponentRef Id="fdm_machine_common.json_29" />
+            <ComponentRef Id="fdm_machine_common.json_30" />
             <ComponentRef Id="Voron_0.1_0.15_nozzle.json" />
             <ComponentRef Id="Voron_0.1_0.2_nozzle.json" />
             <ComponentRef Id="Voron_0.1_0.25_nozzle.json" />
@@ -21070,7 +21298,7 @@
             <ComponentRef Id="_0.56mm_Extra_Draft_0.8_nozzle__Voron.json" />
             <ComponentRef Id="_0.60mm_Draft_1.0_nozzle__Voron.json" />
             <ComponentRef Id="_0.80mm_Extra_Draft_1.0_nozzle__Voron.json" />
-            <ComponentRef Id="fdm_process_common.json_30" />
+            <ComponentRef Id="fdm_process_common.json_31" />
             <ComponentRef Id="fdm_process_voron_common.json" />
             <ComponentRef Id="fdm_process_voron_common_0_1_5.json" />
             <ComponentRef Id="fdm_process_voron_common_0_2.json" />
@@ -21082,18 +21310,18 @@
             <ComponentRef Id="voxelab_aquilax2_buildplate_model.stl" />
             <ComponentRef Id="voxelab_aquilax2_buildplate_texture.png" />
             <ComponentRef Id="fdm_filament_abs.json_29" />
-            <ComponentRef Id="fdm_filament_common.json_31" />
-            <ComponentRef Id="fdm_filament_pet.json_30" />
-            <ComponentRef Id="fdm_filament_pla.json_31" />
+            <ComponentRef Id="fdm_filament_common.json_32" />
+            <ComponentRef Id="fdm_filament_pet.json_31" />
+            <ComponentRef Id="fdm_filament_pla.json_32" />
             <ComponentRef Id="Voxelab_Generic_ABS.json" />
             <ComponentRef Id="Voxelab_Generic_PETG.json" />
             <ComponentRef Id="Voxelab_Generic_PLA.json" />
-            <ComponentRef Id="fdm_machine_common.json_30" />
+            <ComponentRef Id="fdm_machine_common.json_31" />
             <ComponentRef Id="Voxelab_Aquila_X2_0.4_nozzle.json" />
             <ComponentRef Id="Voxelab_Aquila_X2.json" />
             <ComponentRef Id="_0.16mm_Optimal__Voxelab_AquilaX2.json" />
             <ComponentRef Id="_0.20mm_Standard__Voxelab_AquilaX2.json" />
-            <ComponentRef Id="fdm_process_common.json_31" />
+            <ComponentRef Id="fdm_process_common.json_32" />
             <ComponentRef Id="goliath.stl" />
             <ComponentRef Id="Vz235SlicerBedModel_cnc.stl" />
             <ComponentRef Id="Vz330SlicerBedModel_cnc.stl" />
@@ -21104,13 +21332,13 @@
             <ComponentRef Id="VzBot_PS_bed_330.svg" />
             <ComponentRef Id="fdm_filament_abs.json_30" />
             <ComponentRef Id="fdm_filament_asa.json_23" />
-            <ComponentRef Id="fdm_filament_common.json_32" />
+            <ComponentRef Id="fdm_filament_common.json_33" />
             <ComponentRef Id="fdm_filament_pa.json_22" />
             <ComponentRef Id="fdm_filament_pc.json_21" />
-            <ComponentRef Id="fdm_filament_pet.json_31" />
-            <ComponentRef Id="fdm_filament_pla.json_32" />
+            <ComponentRef Id="fdm_filament_pet.json_32" />
+            <ComponentRef Id="fdm_filament_pla.json_33" />
             <ComponentRef Id="fdm_filament_pva.json_20" />
-            <ComponentRef Id="fdm_filament_tpu.json_25" />
+            <ComponentRef Id="fdm_filament_tpu.json_26" />
             <ComponentRef Id="Vzbot_Generic_ABS.json" />
             <ComponentRef Id="Vzbot_Generic_ASA.json" />
             <ComponentRef Id="Vzbot_Generic_PA_CF.json" />
@@ -21122,7 +21350,7 @@
             <ComponentRef Id="Vzbot_Generic_PVA.json" />
             <ComponentRef Id="Vzbot_Generic_TPU.json" />
             <ComponentRef Id="fdm_klipper_common.json_12" />
-            <ComponentRef Id="fdm_machine_common.json_31" />
+            <ComponentRef Id="fdm_machine_common.json_32" />
             <ComponentRef Id="Vzbot_235_AWD_0.4_nozzle.json" />
             <ComponentRef Id="Vzbot_235_AWD_0.5_nozzle.json" />
             <ComponentRef Id="Vzbot_235_AWD_0.6_nozzle.json" />
@@ -21149,7 +21377,7 @@
             <ComponentRef Id="_0.28mm_Extra_Draft__Vzbot.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__Vzbot_0.5_nozzle.json" />
             <ComponentRef Id="_0.28mm_Extra_Draft__Vzbot_0.6_nozzle.json" />
-            <ComponentRef Id="fdm_process_common.json_32" />
+            <ComponentRef Id="fdm_process_common.json_33" />
             <ComponentRef Id="fdm_process_common_0.5_nozzle.json" />
             <ComponentRef Id="fdm_process_common_0.6_nozzle.json" />
             <ComponentRef Id="fdm_process_Vzbot_common.json" />
@@ -21158,14 +21386,14 @@
             <ComponentRef Id="Wanhao_D12_300_cover.png" />
             <ComponentRef Id="Wanhao_D12_300_hotend.stl" />
             <ComponentRef Id="Wanhao_D12_300_buildplate_texture.png" />
-            <ComponentRef Id="fdm_filament_common.json_33" />
-            <ComponentRef Id="fdm_filament_pet.json_32" />
-            <ComponentRef Id="fdm_filament_pla.json_33" />
-            <ComponentRef Id="fdm_filament_tpu.json_26" />
-            <ComponentRef Id="Wanhao_Generic_PETG.json" />
-            <ComponentRef Id="Wanhao_Generic_PLA.json" />
-            <ComponentRef Id="Wanhao_Generic_TPU.json" />
-            <ComponentRef Id="fdm_machine_common.json_32" />
+            <ComponentRef Id="fdm_filament_common.json_34" />
+            <ComponentRef Id="fdm_filament_pet.json_33" />
+            <ComponentRef Id="fdm_filament_pla.json_34" />
+            <ComponentRef Id="fdm_filament_tpu.json_27" />
+            <ComponentRef Id="Wanhao_Generic_PETG.json_1" />
+            <ComponentRef Id="Wanhao_Generic_PLA.json_1" />
+            <ComponentRef Id="Wanhao_Generic_TPU.json_1" />
+            <ComponentRef Id="fdm_machine_common.json_33" />
             <ComponentRef Id="fdm_wanhao_common.json" />
             <ComponentRef Id="Wanhao_D12_300_0.4_nozzle.json" />
             <ComponentRef Id="Wanhao_D12_300.json" />
@@ -21173,7 +21401,7 @@
             <ComponentRef Id="_0.15mm_Optimal__Wanhao_D12_300.json" />
             <ComponentRef Id="_0.20mm_Standard__Wanhao_D12_300.json" />
             <ComponentRef Id="_0.24mm_Draft__Wanhao_D12_300.json" />
-            <ComponentRef Id="fdm_process_common.json_33" />
+            <ComponentRef Id="fdm_process_common.json_34" />
             <ComponentRef Id="fdm_process_wanhao_common.json" />
             <ComponentRef Id="Template.json" />
             <ComponentRef Id="filament_abs_template.json" />
