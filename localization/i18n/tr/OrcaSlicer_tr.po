@@ -1457,7 +1457,7 @@ msgstr "Yapılandırma yükleniyor"
 msgid "Click to download new version in default browser: %s"
 msgstr "Yeni sürümü varsayılan tarayıcıda indirmek için tıklayın: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Dilimleyicinin yükseltilmesi gerekiyor"
 
 msgid "This is the newest version."
@@ -4603,7 +4603,7 @@ msgstr "Basınç avansı"
 msgid "Retraction test"
 msgstr "Geri çekme testi"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Orca Tolerans Testi"
 
 msgid "Max flowrate"

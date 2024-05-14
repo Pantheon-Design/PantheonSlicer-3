@@ -1440,7 +1440,7 @@ msgstr "Načítání konfigurace"
 msgid "Click to download new version in default browser: %s"
 msgstr "Kliknutím stáhnete novou verzi ve výchozím prohlížeči: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer potřebuje aktualizaci"
 
 msgid "This is the newest version."
@@ -4553,7 +4553,7 @@ msgstr "Předstih tlaku"
 msgid "Retraction test"
 msgstr "Test Retrakce"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Orca Test Tolerance"
 
 msgid "Max flowrate"

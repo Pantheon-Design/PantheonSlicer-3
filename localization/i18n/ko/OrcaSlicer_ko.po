@@ -1449,7 +1449,7 @@ msgstr "구성 파일 로드 중"
 msgid "Click to download new version in default browser: %s"
 msgstr "기본 브라우저에서 새 버전을 다운로드하려면 클릭: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer 업그레이드가 필요합니다"
 
 msgid "This is the newest version."
@@ -4548,7 +4548,7 @@ msgstr "프레셔 어드밴스"
 msgid "Retraction test"
 msgstr "후퇴 테스트"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Orca 공차 테스트"
 
 msgid "Max flowrate"

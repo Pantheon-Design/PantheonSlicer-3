@@ -1420,7 +1420,7 @@ msgstr "正在加载配置"
 msgid "Click to download new version in default browser: %s"
 msgstr "在默认浏览器中点击下载最新版本: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "逆戟鲸需要进行升级"
 
 msgid "This is the newest version."
@@ -4428,7 +4428,7 @@ msgstr "压力提前"
 msgid "Retraction test"
 msgstr "回抽测试"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Orca误差测试"
 
 msgid "Max flowrate"

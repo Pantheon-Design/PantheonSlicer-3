@@ -1487,7 +1487,7 @@ msgstr ""
 "Cliquez pour télécharger la nouvelle version dans le navigateur par défaut : "
 "%s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer a besoin d’être mis à jour"
 
 msgid "This is the newest version."
@@ -4674,7 +4674,7 @@ msgstr "Pressure Advance"
 msgid "Retraction test"
 msgstr "Test de rétraction"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Test de tolérance Orca"
 
 msgid "Max flowrate"

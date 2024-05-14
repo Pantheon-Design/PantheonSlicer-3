@@ -1474,7 +1474,7 @@ msgstr "S'està carregant la configuració"
 msgid "Click to download new version in default browser: %s"
 msgstr "Feu clic per descarregar la nova versió al navegador predeterminat: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "L'Orca Slicer necessita una actualització"
 
 msgid "This is the newest version."
@@ -4627,7 +4627,7 @@ msgstr "Avanç de Pressió Lineal( Pressure advance )"
 msgid "Retraction test"
 msgstr "Prova de retracció"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Prova de tolerància d'Orca"
 
 msgid "Max flowrate"

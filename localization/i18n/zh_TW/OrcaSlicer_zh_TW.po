@@ -1458,7 +1458,7 @@ msgid "Click to download new version in default browser: %s"
 msgstr "在預設瀏覽器中點擊下載最新版本： %s"
 
 #, fuzzy
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr " Orca Slicer 需要進行升級"
 
 msgid "This is the newest version."
@@ -4612,7 +4612,7 @@ msgstr "壓力提前"
 msgid "Retraction test"
 msgstr "回抽測試"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Orca 誤差測試"
 
 msgid "Max flowrate"

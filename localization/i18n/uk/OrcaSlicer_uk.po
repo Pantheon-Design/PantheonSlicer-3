@@ -1433,7 +1433,7 @@ msgstr "Завантаження конфігурації"
 msgid "Click to download new version in default browser: %s"
 msgstr "Натисніть, щоб завантажити нову версію в стандартному браузері: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer потребує оновлення"
 
 msgid "This is the newest version."
@@ -4532,7 +4532,7 @@ msgstr "Випередження тиску PA"
 msgid "Retraction test"
 msgstr "Тест на втягування"
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr "Тест на переносимість ORCA"
 
 msgid "Max flowrate"

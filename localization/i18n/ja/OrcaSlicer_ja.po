@@ -1416,7 +1416,7 @@ msgstr "構成を読込み中"
 msgid "Click to download new version in default browser: %s"
 msgstr "新バージョンをダウンロードするにはクリックしてください: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer をアップデートする必要があります"
 
 msgid "This is the newest version."
@@ -4434,7 +4434,7 @@ msgstr ""
 msgid "Retraction test"
 msgstr ""
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr ""
 
 msgid "Max flowrate"

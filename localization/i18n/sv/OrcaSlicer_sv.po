@@ -1419,7 +1419,7 @@ msgstr "Konfigurationen laddas"
 msgid "Click to download new version in default browser: %s"
 msgstr "Tryck på ladda ner ny version ifrån standard webbläsaren: %s"
 
-msgid "The Orca Slicer needs an upgrade"
+msgid "The Pantheon Slicer needs an upgrade"
 msgstr "Orca Slicer behöver uppdateras"
 
 msgid "This is the newest version."
@@ -4504,7 +4504,7 @@ msgstr ""
 msgid "Retraction test"
 msgstr ""
 
-msgid "Orca Tolerance Test"
+msgid "Pantheon Tolerance Test"
 msgstr ""
 
 msgid "Max flowrate"

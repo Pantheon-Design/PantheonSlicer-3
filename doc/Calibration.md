@@ -5,7 +5,7 @@
   3. [Tower method](#Tower-method)
 - [Temp tower](#Temp-tower)
 - [Retraction test](#Retraction-test)
-- [Orca Tolerance Test](#Orca-Tolerance-Test)
+- [Pantheon Tolerance Test](#Orca-Tolerance-Test)
 - [Advanced calibration](#Advanced-Calibration)
   1. [Max Volumetric speed](#Max-Volumetric-speed)
   2. [VFA]  
@@ -99,13 +99,13 @@ In the dialog, you can select the start and end retraction length, as well as th
 On the other hand, if there is still a lot of stringing at the top of the tower, it is recommended to dry your filament and ensure that your nozzle is properly installed without any leaks.  
 ![image](./images/retraction_test_print.jpg)  
 
-# Orca Tolerance Test
+# Pantheon Tolerance Test
 This tolerance test is specifically designed to assess the dimensional accuracy of your printer and filament. The model comprises a base and a hexagon tester. The base contains six hexagon hole, each with a different tolerance: 0.0mm, 0.05mm, 0.1mm, 0.2mm, 0.3mm, and 0.4mm. The dimensions of the hexagon tester are illustrated in the image.  
 ![image](./images/tolerance_hole.jpg) 
 
 You can assess the tolerance using either an M6 Allen key or the printed hexagon tester.  
-![image](./images/OrcaToleranceTes_m6.jpg)  
-![image](./images/OrcaToleranceTest_print.jpg)  
+![image](./images/PantheonToleranceTes_m6.jpg)  
+![image](./images/PantheonToleranceTest_print.jpg)  
 
 # Advanced Calibration
 

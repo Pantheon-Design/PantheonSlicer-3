@@ -2837,10 +2837,10 @@ void MainFrame::init_menubar_as_editor()
         }, "", nullptr,
         [this]() {return m_plater->is_view3D_shown();; }, this);
         
-    append_menu_item(m_topbar->GetCalibMenu(), wxID_ANY, _L("Orca Tolerance Test"), _L("Orca Tolerance Test"),
+    append_menu_item(m_topbar->GetCalibMenu(), wxID_ANY, _L("Pantheon Tolerance Test"), _L("Pantheon Tolerance Test"),
         [this](wxCommandEvent&) {
             m_plater->new_project();
-        m_plater->add_model(false, Slic3r::resources_dir() + "/calib/tolerance_test/OrcaToleranceTest.stl");
+        m_plater->add_model(false, Slic3r::resources_dir() + "/calib/tolerance_test/PantheonToleranceTest.stl");
         }, "", nullptr,
         [this]() {return m_plater->is_view3D_shown();; }, this);
     // Advance calibrations
@@ -2930,10 +2930,10 @@ void MainFrame::init_menubar_as_editor()
         [this]() {return m_plater->is_view3D_shown();; }, this);
 
     // Tolerance Test
-    append_menu_item(calib_menu, wxID_ANY, _L("Orca Tolerance Test"), _L("Orca Tolerance Test"),
+    append_menu_item(calib_menu, wxID_ANY, _L("Pantheon Tolerance Test"), _L("Pantheon Tolerance Test"),
         [this](wxCommandEvent&) {
             m_plater->new_project();
-            m_plater->add_model(false, Slic3r::resources_dir() + "/calib/tolerance_test/OrcaToleranceTest.stl");
+            m_plater->add_model(false, Slic3r::resources_dir() + "/calib/tolerance_test/PantheonToleranceTest.stl");
         }, "", nullptr,
         [this]() {return m_plater->is_view3D_shown();; }, this);
 
