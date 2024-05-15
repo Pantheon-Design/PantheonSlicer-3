@@ -971,7 +971,7 @@ void UnsavedChangesDialog::build(Preset::Type type, PresetCollection *dependent_
 
      // Add Buttons
     wxFont      btn_font = this->GetFont().Scaled(1.4f);
-    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                             std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
 
     auto add_btn = [this, m_sizer_button, btn_font, dependent_presets, btn_bg_green](Button **btn, int &btn_id, const std::string &icon_name, Action close_act, const wxString &label,
@@ -1941,7 +1941,7 @@ void DiffPresetDialog::create_buttons()
     wxFont font = this->GetFont().Scaled(1.4f);
     StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(206, 206, 206), StateColor::Disabled),
                             std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-                            std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+                            std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                             std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     m_buttons   = new wxBoxSizer(wxHORIZONTAL);
 

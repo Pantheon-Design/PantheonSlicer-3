@@ -88,7 +88,7 @@ PublishDialog::PublishDialog(Plater *plater)
     m_btn_cancel = new Button(this, _L("Cancel"));
     m_progress_sizer->Add(m_btn_cancel, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(5));
     StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-                            std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+                            std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                             std::pair<wxColour, int>(wxColour(255, 255, 255), StateColor::Normal));
     StateColor text_color(std::pair<wxColour, int>(wxColour(255, 255, 255), StateColor::Pressed),
                           std::pair<wxColour, int>(wxColour(255, 255, 255), StateColor::Hovered),

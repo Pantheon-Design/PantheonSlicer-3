@@ -203,7 +203,7 @@ body
 
 .BtnItem:hover
 {
-	background-color: #B5FFD6;
+	background-color: #81AA93;
 }
 
 .BtnItemSelected
@@ -278,7 +278,7 @@ body
 .MenuItem:hover
 {
 	border-color: #4db6ac;
-	background-color: #B5FFD6;
+	background-color: #81AA93;
 }
 
 .MenuIcon

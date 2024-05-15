@@ -42,7 +42,7 @@ static const char g_min_cluster_color = 1;
 //static const char g_max_cluster_color = 15;
 static const char g_max_color = 16;
 const  StateColor ok_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-                     std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+                     std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                      std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
 const StateColor  ok_btn_disable_bg(std::pair<wxColour, int>(wxColour(205, 201, 201), StateColor::Pressed),
                                    std::pair<wxColour, int>(wxColour(205, 201, 201), StateColor::Hovered),
@@ -71,7 +71,7 @@ wxBoxSizer* ObjColorDialog::create_btn_sizer(long flags)
     );
     StateColor calc_btn_bg(
         std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-        std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
         std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal)
     );
     StateColor calc_btn_bd(
@@ -413,7 +413,7 @@ void ObjColorPanel::update_filament_ids()
 wxBoxSizer *ObjColorPanel::create_approximate_match_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                            std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));
@@ -438,7 +438,7 @@ wxBoxSizer *ObjColorPanel::create_approximate_match_btn_sizer(wxWindow *parent)
 wxBoxSizer *ObjColorPanel::create_add_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                            std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));
@@ -463,7 +463,7 @@ wxBoxSizer *ObjColorPanel::create_add_btn_sizer(wxWindow *parent)
 wxBoxSizer *ObjColorPanel::create_reset_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                            std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));

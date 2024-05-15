@@ -140,7 +140,7 @@ PingCodeBindDialog::PingCodeBindDialog(Plater* plater /*= nullptr*/)
 
     StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(206, 206, 206), StateColor::Disabled),
         std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-        std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
         std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     m_button_bind->SetBackgroundColor(btn_bg_green);
     m_button_bind->SetBorderColor(*wxWHITE);
@@ -681,7 +681,7 @@ PingCodeBindDialog::~PingCodeBindDialog() {
 
      StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(206, 206, 206), StateColor::Disabled),
          std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-         std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+         std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
          std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
      m_button_bind->SetBackgroundColor(btn_bg_green);
      m_button_bind->SetBorderColor(*wxWHITE);
@@ -1030,7 +1030,7 @@ std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % r
 
      m_sizer_button->Add(0, 0, 1, wxEXPAND, 5);
      m_button_unbind = new Button(this, _L("Confirm"));
-     StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+     StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                              std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
      m_button_unbind->SetBackgroundColor(btn_bg_green);
      m_button_unbind->SetBorderColor(wxColour(148, 209, 176));

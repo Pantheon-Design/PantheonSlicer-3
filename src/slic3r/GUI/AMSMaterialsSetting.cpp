@@ -43,7 +43,7 @@ void AMSMaterialsSetting::create()
     m_sizer_button->Add(0, 0, 1, wxEXPAND, 0);
 
     m_button_confirm = new Button(this, _L("Confirm"));
-    m_btn_bg_green   = StateColor(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(181, 255, 214), StateColor::Hovered),
+    m_btn_bg_green   = StateColor(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
                             std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
     m_button_confirm->SetBackgroundColor(m_btn_bg_green);
     m_button_confirm->SetBorderColor(wxColour(148, 209, 176));
