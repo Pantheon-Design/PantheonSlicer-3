@@ -170,7 +170,7 @@ body
 	height: 24px;
 	line-height: 24px;
 	color: #4db6ac;
-	border: 1px solid  #009688;
+	border: 1px solid  #94D1B0;
 	border-radius: 4px;
 	cursor: pointer;
 	margin-top: 5px;
@@ -203,7 +203,7 @@ body
 
 .BtnItem:hover
 {
-	background-color: #E0FCEB;
+	background-color: #B5FFD6;
 }
 
 .BtnItemSelected
@@ -278,7 +278,7 @@ body
 .MenuItem:hover
 {
 	border-color: #4db6ac;
-	background-color: #E0FCEB;
+	background-color: #B5FFD6;
 }
 
 .MenuIcon
@@ -701,7 +701,7 @@ body
 #HotModel_RIGHT_Title:hover
 {
 	cursor: pointer;	
-	color:#009688;	
+	color:#94D1B0;	
 }
 
 .HotModelPiece

@@ -6,7 +6,7 @@ static bool gDarkMode = false;
 static bool operator<(wxColour const &l, wxColour const &r) { return l.GetRGBA() < r.GetRGBA(); }
 
 static std::map<wxColour, wxColour> gDarkColors{
-    {"#009688", "#00675b"},
+    {"#94D1B0", "#00675b"},
     {"#1F8EEA", "#2778D2"},
     {"#FF6F00", "#D15B00"},
     {"#D01B1B", "#BB2A3A"},
@@ -41,7 +41,7 @@ static std::map<wxColour, wxColour> gDarkColors{
     {"#D9D9D9", "#2D2D32"},
     //{"#F0F0F0", "#4C4C54"},
 	// ORCA
-    {"#BFE1DE", "#223C3C"}, // rgb(191, 225, 222)	Dropdown checked item background color > ORCA color with %25 opacity
+    {"#B5FFD6", "#223C3C"}, // rgb(191, 225, 222)	Dropdown checked item background color > ORCA color with %25 opacity
     {"#E5F0EE", "#283232"}, // rgb(229, 240, 238)	Combo / Dropdown focused background color > ORCA color with %10 opacity
 };
 

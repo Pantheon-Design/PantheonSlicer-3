@@ -20,7 +20,7 @@ body
 
 #Title div
 {
-	color: #009688;
+	color: #94D1B0;
 }
 
 /*-----Button-----*/
@@ -63,7 +63,7 @@ body
 
 .RegionSelected:hover
 {
-	background-color:#009688;
+	background-color:#94D1B0;
 	color: #fff;	
 }
 
