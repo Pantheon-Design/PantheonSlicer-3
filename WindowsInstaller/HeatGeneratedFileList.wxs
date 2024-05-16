@@ -35,7 +35,7 @@
                 <File Id="OrcaSlicer.dll" KeyPath="yes" Source="$(var.HarvestPath)\OrcaSlicer.dll" />
             </Component>
             <Component Id="PantheonSlicer_2.exe" Guid="*">
-                <File Id="PantheonSlicer_2.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer-2.exe" />
+                <File Id="PantheonSlicer_2.exe" KeyPath="yes" Source="$(var.HarvestPath)\PantheonSlicer-3.exe" />
             </Component>
             <Component Id="TKBO.dll" Guid="*">
                 <File Id="TKBO.dll" KeyPath="yes" Source="$(var.HarvestPath)\TKBO.dll" />
@@ -1795,7 +1795,7 @@
                         <File Id="oss_picture_load_failed.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_load_failed.png" />
                     </Component>
                     <Component Id="PantheonSlicer_2.ico" Guid="*">
-                        <File Id="PantheonSlicer_2.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-2.ico" />
+                        <File Id="PantheonSlicer_2.ico" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-3.ico" />
                     </Component>
                     <Component Id="PantheonSlicer_mac_128px.png" Guid="*">
                         <File Id="PantheonSlicer_mac_128px.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\PantheonSlicer-mac_128px.png" />

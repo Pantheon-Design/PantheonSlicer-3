@@ -33,7 +33,7 @@ function usage() {
     echo "   -h: this help output"
     echo "   -i: Generate appimage (optional)"
     echo "   -r: skip ram and disk checks (low ram compiling)"
-    echo "   -s: build PantheonSlicer-2 (optional)"
+    echo "   -s: build PantheonSlicer-3 (optional)"
     echo "   -u: update and build dependencies (optional and need sudo)"
     echo "For a first use, you want to 'sudo ./BuildLinux.sh -u'"
     echo "   and then './BuildLinux.sh -dsi'"
@@ -141,7 +141,7 @@ fi
 
 if [[ -n "${BUILD_ORCA}" ]]
 then
-    echo "Configuring PantheonSlicer-2..."
+    echo "Configuring PantheonSlicer-3..."
     if [[ -n "${CLEAN_BUILD}" ]]
     then
         rm -fr build

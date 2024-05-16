@@ -1,17 +1,17 @@
 ﻿<Project Sdk="WixToolset.Sdk/5.0.0">
   <PropertyGroup>
     <SignOutput>false</SignOutput>
-    <ReleasePath>..\build\PantheonSlicer-2</ReleasePath>
+    <ReleasePath>..\build\PantheonSlicer-3</ReleasePath>
     <DefineConstants>$(DefineConstants);
     HarvestPath=$(ReleasePath);
-    ProductName=PantheonSlicer-2</DefineConstants>
+    ProductName=PantheonSlicer-3</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
     <OutputPath>..\build\WindowsInstaller</OutputPath>
   </PropertyGroup>
   <PropertyGroup>
     <!-- Set the output name and optionally the extension -->
-    <OutputName>PantheonSlicer-2_1.0.0</OutputName>
+    <OutputName>PantheonSlicer-3_1.0.0</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <Target Name="HeatHarvest" BeforeTargets="BeforeBuild">
