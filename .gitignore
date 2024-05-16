@@ -35,3 +35,4 @@ src/OrcaSlicer-doc/
 resources/profiles/user/default
 /WindowsInstaller/bin/*
 /WindowsInstaller/obj/*
+/WindowsInstaller/HeatGeneratedFileList.wxs

@@ -1814,7 +1814,7 @@ Vec3d PartPlate::get_center_origin()
 
 void PartPlate::generate_plate_name_texture()
 {
-    m_plate_name_icon.reset();
+	m_plate_name_icon.reset();
 
 	// generate m_name_texture texture from m_name with generate_from_text_string
 	m_name_texture.reset();
@@ -1823,38 +1823,39 @@ void PartPlate::generate_plate_name_texture()
 
 	auto* font = &Label::Head_32;
 
-	wxColour foreground(0xf2, 0x75, 0x4e, 0xff);
-    if (!m_name_texture.generate_from_text_string(text.ToUTF8().data(), *font, *wxBLACK, foreground))
+	wxColour foreground(0xf0, 0xD3, 0xB0, 0xff);
+	if (!m_name_texture.generate_from_text_string(text.ToUTF8().data(), *font, *wxBLACK, foreground))
 		BOOST_LOG_TRIVIAL(error) << "PartPlate::generate_plate_name_texture(): generate_from_text_string() failed";
-    auto bed_ext = get_extents(m_shape);
-    auto factor = bed_ext.size()(1) / 200.0;
+	auto bed_ext = get_extents(m_shape);
+	auto factor = bed_ext.size()(1) / 200.0;
 	ExPolygon poly;
 	float offset_x = 1;
-    w = int(factor * (m_name_texture.get_width() * 16) / m_name_texture.get_height());
-    h = int(factor * 16);
-    Vec2d p = bed_ext[3] + Vec2d(0, 1 + h * m_name_texture.m_original_height / m_name_texture.get_height());
+	w = int(factor * (m_name_texture.get_width() * 16) / m_name_texture.get_height());
+	h = int(factor * 16);
+
+	Vec2d p = bed_ext[3] + Vec2d(0, 1 + h * m_name_texture.m_original_height / m_name_texture.get_height());
 	poly.contour.append({ scale_(p(0) + PARTPLATE_ICON_GAP_LEFT + offset_x), scale_(p(1) - h + PARTPLATE_TEXT_OFFSET_Y) });
 	poly.contour.append({ scale_(p(0) + PARTPLATE_ICON_GAP_LEFT + w - offset_x), scale_(p(1) - h + PARTPLATE_TEXT_OFFSET_Y) });
 	poly.contour.append({ scale_(p(0) + PARTPLATE_ICON_GAP_LEFT + w - offset_x), scale_(p(1) - PARTPLATE_TEXT_OFFSET_Y)});
 	poly.contour.append({ scale_(p(0) + PARTPLATE_ICON_GAP_LEFT + offset_x), scale_(p(1) - PARTPLATE_TEXT_OFFSET_Y) });
 
-    if (!init_model_from_poly(m_plate_name_icon, poly, GROUND_Z))
-        BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << "Unable to generate geometry buffers for icons\n";
+	if (!init_model_from_poly(m_plate_name_icon, poly, GROUND_Z))
+		BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << "Unable to generate geometry buffers for icons\n";
 
 	auto canvas = this->m_partplate_list->m_plater->get_view3D_canvas3D();
-    canvas->remove_raycasters_for_picking(SceneRaycaster::EType::Bed, picking_id_component(6));
-    calc_vertex_for_plate_name_edit_icon(&m_name_texture, 0, m_plate_name_edit_icon);
-    register_model_for_picking(*canvas, m_plate_name_edit_icon, picking_id_component(6));
+	canvas->remove_raycasters_for_picking(SceneRaycaster::EType::Bed, picking_id_component(6));
+	calc_vertex_for_plate_name_edit_icon(&m_name_texture, 0, m_plate_name_edit_icon);
+	register_model_for_picking(*canvas, m_plate_name_edit_icon, picking_id_component(6));
 }
 void PartPlate::set_plate_name(const std::string& name) 
 { 
 	// compare if name equal to m_name, case sensitive
-    if (boost::equals(m_name, name))
-        return;
+	if (boost::equals(m_name, name))
+		return;
 
 	m_name = name;
-    if (m_print != nullptr)
-        m_print->set_plate_name(name);
+	if (m_print != nullptr)
+		m_print->set_plate_name(name);
 
 	generate_plate_name_texture();
 }
@@ -3316,7 +3317,7 @@ void PartPlateList::generate_icon_textures()
 			else
 				file_name = std::to_string(i+1);
 
-			wxColour foreground(0xf2, 0x75, 0x4e, 0xff);
+			wxColour foreground(0xf0, 0xD3, 0xB0, 0xff);
 			if (!m_idx_textures[i].generate_from_text_string(file_name, *font, *wxBLACK, foreground)) {
 				BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(":load file %1% failed") % file_name;
 			}
@@ -5472,6 +5473,8 @@ void PartPlateList::load_cali_textures()
 	}
 	PartPlateList::is_load_cali_texture = true;
 }
+
+
 
 }//end namespace GUI
 }//end namespace slic3r
