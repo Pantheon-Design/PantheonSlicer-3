@@ -1,6 +1,6 @@
 var LangText = {
   en: {
-    t1: "Welcome to Pantheon Slicer-2",
+    t1: "Welcome to Pantheon Slicer-3",
     t2: "PantheonSlicer-3 will be setup in several steps. Let's start!",
     t3: "User Agreement",
     t4: "Disagree",

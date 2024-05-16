@@ -3178,7 +3178,8 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
         case '4': { select_view("rear"); break; }
         case '5': { select_view("left"); break; }
         case '6': { select_view("right"); break; }
-        case '7': { select_plate(); break; }
+        case '7': { select_view("topright"); break; }
+        case '8': { select_plate(); break; }
 
         //case WXK_BACK:
         //case WXK_DELETE:
@@ -3556,6 +3557,9 @@ void GLCanvas3D::on_key(wxKeyEvent& evt)
                             { select_view("right"); break; }
                         case '7':
                         case WXK_NUMPAD7: //7 on numpad
+                            { select_view("topright"); break; }
+                        case '8':
+                        case WXK_NUMPAD8: //8 on numpad
                             { select_plate(); break; }
                         default: break;
                     }
