@@ -2222,6 +2222,8 @@ static void add_common_view_menu_items(wxMenu* view_menu, MainFrame* mainFrame, 
         "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);
     append_menu_item(view_menu, wxID_ANY, _L("Right") + "\t" + ctrl + "6", _L("Right View"), [mainFrame](wxCommandEvent&) { mainFrame->select_view("right"); },
         "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);
+    append_menu_item(view_menu, wxID_ANY, _L("Top Right") + "\t" + ctrl + "7", _L("Top Right View"), [mainFrame](wxCommandEvent&) { mainFrame->select_view("topright"); },
+        "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);
 }
 
 void MainFrame::init_menubar_as_editor()

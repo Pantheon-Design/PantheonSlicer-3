@@ -101,9 +101,10 @@ void Camera::select_view(const std::string& direction)
         look_at(m_target + m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
     else if (direction == "topfront")
         look_at(m_target - 0.707 * m_distance * Vec3d::UnitY() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY() + Vec3d::UnitZ());
-    else if (direction == "plate") {
+    else if (direction == "topright")
+        look_at(m_target + 0.707 * m_distance * Vec3d::UnitX() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY() + Vec3d::UnitZ());
+    else if (direction == "plate") 
         look_at(m_target - 0.707 * m_distance * Vec3d::UnitY() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY() + Vec3d::UnitZ());
-    }
 }
 
 double Camera::get_near_left() const
