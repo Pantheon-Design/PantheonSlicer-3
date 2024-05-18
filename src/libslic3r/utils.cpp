@@ -1518,27 +1518,39 @@ void copy_directory_recursively(const boost::filesystem::path &source, const boo
     if (boost::filesystem::exists(target))
         boost::filesystem::remove_all(target);
     boost::filesystem::create_directories(target);
-    for (auto &dir_entry : boost::filesystem::directory_iterator(source))
-    {
-        std::string source_file = dir_entry.path().string();
-        std::string name = dir_entry.path().filename().string();
-        std::string target_file = target.string() + "/" + name;
+    try {
+        for (auto& dir_entry : boost::filesystem::directory_iterator(source)) {
+            std::string source_file = dir_entry.path().string();
+            std::string name        = dir_entry.path().filename().string();
+            std::string target_file = target.string() + "/" + name;
 
-        if (boost::filesystem::is_directory(dir_entry)) {
-            const auto target_path = target / name;
-            copy_directory_recursively(dir_entry, target_path);
-        }
-        else {
-			if(filter && filter(name))
-				continue;
-            CopyFileResult cfr = copy_file(source_file, target_file, error_message, false);
-            if (cfr != CopyFileResult::SUCCESS) {
-                BOOST_LOG_TRIVIAL(error) << "Copying failed(" << cfr << "): " << error_message;
-                throw Slic3r::CriticalException(Slic3r::format(
-                    ("Copying directory %1% to %2% failed: %3%"),
-                    source, target, error_message));
+            if (boost::filesystem::is_directory(dir_entry)) {
+                const auto target_path = target / name;
+                copy_directory_recursively(dir_entry, target_path, filter);
+            } else {
+                if (filter && filter(name))
+                    continue;
+
+                CopyFileResult cfr = copy_file(source_file, target_file, error_message, false);
+                if (cfr != CopyFileResult::SUCCESS) {
+                    BOOST_LOG_TRIVIAL(error) << "Copying failed(" << cfr << "): " << error_message;
+                    throw Slic3r::CriticalException(
+                        Slic3r::format("Copying directory %1% to %2% failed: %3%", source, target, error_message));
+                }
             }
         }
+    } catch (const boost::filesystem::filesystem_error& e) {
+        BOOST_LOG_TRIVIAL(error) << "Filesystem error: " << e.what();
+        throw; // rethrow the exception after logging
+    } catch (const Slic3r::CriticalException& e) {
+        BOOST_LOG_TRIVIAL(error) << "Critical exception: " << e.what();
+        throw; // rethrow the exception after logging
+    } catch (const std::exception& e) {
+        BOOST_LOG_TRIVIAL(error) << "Standard exception: " << e.what();
+        throw; // rethrow the exception after logging
+    } catch (...) {
+        BOOST_LOG_TRIVIAL(error) << "Unknown exception occurred.";
+        throw; // rethrow the exception after logging
     }
     return;
 }

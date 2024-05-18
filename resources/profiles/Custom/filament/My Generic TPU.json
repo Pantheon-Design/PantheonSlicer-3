@@ -13,5 +13,8 @@
       "MyKlipper 0.4 nozzle",
       "MyMarlin 0.4 nozzle",
       "MyRRF 0.4 nozzle"
+    ],
+    "compatible_prints": [
+      "0.15mm Optimal @MyKlipper"
     ]
 }

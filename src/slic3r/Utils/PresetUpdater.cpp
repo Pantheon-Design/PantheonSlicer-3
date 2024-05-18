@@ -186,6 +186,7 @@ struct PresetUpdater::priv
 	bool enabled_version_check;
 	bool enabled_config_update;
 	std::string version_check_url;
+    std::string profile_check_url;
 
 	fs::path cache_path;
 	fs::path rsrc_path;
@@ -257,6 +258,7 @@ void PresetUpdater::priv::set_download_prefs(AppConfig *app_config)
 	version_check_url = app_config->version_check_url();
 
 	auto profile_update_url = app_config->profile_update_url();
+    profile_check_url       = profile_update_url;
 	if (!profile_update_url.empty())
 		enabled_config_update = true;
 	else
@@ -664,10 +666,11 @@ void PresetUpdater::priv::sync_config()
     }
     AppConfig *app_config = GUI::wxGetApp().app_config;
 
-    auto profile_update_url = app_config->profile_update_url() + "/" + SoftFever_VERSION;
+    //auto profile_update_url = app_config->profile_update_url() + "/" + SoftFever_VERSION;
+    auto profile_update_url = profile_check_url;
     // parse the assets section and get the latest asset by comparing the name
 
-    Http::get(profile_update_url)
+    Http::get(profile_check_url)
         .on_error([cache_profile_path, cache_profile_update_file](std::string body, std::string error, unsigned http_status) {
             // Orca: we check the response body to see if it's "Not Found", if so, it means for the current Orca version we don't have OTA
             // updates, we can delete the cache file
@@ -700,21 +703,26 @@ void PresetUpdater::priv::sync_config()
                     int         ver = -9999;
                 } latest_update;
 
-                if (!(j.contains("message") && j["message"].get<std::string>() == "Not Found")) {
-                    json assets = j.at("assets");
-                    if (assets.is_array()) {
-                        for (auto asset : assets) {
-                            std::string name          = asset["name"].get<std::string>();
-                            int         versionNumber = -1;
-                            std::regex  regexPattern("orcaslicer-profiles_ota_.*\\.([0-9]+)\\.zip$");
-                            std::smatch matches;
-                            if (std::regex_search(name, matches, regexPattern) && matches.size() > 1) {
-                                versionNumber = std::stoi(matches[1].str());
-                            }
-                            if (versionNumber > 0 && versionNumber > latest_update.ver) {
-                                latest_update.url  = asset["browser_download_url"].get<std::string>();
-                                latest_update.name = name;
-                                latest_update.ver  = versionNumber;
+                if (j.is_array() && !j.empty()) {
+                    json first_element = j.at(0);
+                    if (!(first_element.contains("message") && first_element.at("message").get<std::string>() == "Not Found")) {
+                        json assets = first_element.at("assets");
+                        if (assets.is_array()) {
+                            for (auto& asset : assets) {
+                                std::string name = asset.at("name").get<std::string>();
+                                int versionNumber = -1;
+                                //std::regex regexPattern("Anker_([0-9]+(?:\.[0-9]+)*)\.zip$");
+                                std::regex  regexPattern("orcaslicer-profiles_ota_.*\\.([0-9]+)\\.zip$");
+
+                                std::smatch matches;
+                                if (std::regex_search(name, matches, regexPattern) && matches.size() > 1) {
+                                    versionNumber = std::stoi(matches[1].str());
+                                }
+                                if (versionNumber > 0 && versionNumber > latest_update.ver) {
+                                    latest_update.url = asset.at("browser_download_url").get<std::string>();
+                                    latest_update.name = name;
+                                    latest_update.ver = versionNumber;
+                                }
                             }
                         }
                     }
@@ -757,7 +765,14 @@ void PresetUpdater::priv::sync_config()
                         fs::remove(cache_profile_update_file);
                 }
 
-            } catch (...) {}
+            } catch (const std::exception& e) {
+            BOOST_LOG_TRIVIAL(error) << "Exception in on_complete handler: " << e.what();
+            std::cerr << "Exception in on_complete handler: " << e.what() << std::endl;
+            // Optionally, you can set a breakpoint here for debugging.
+        } catch (...) {
+            BOOST_LOG_TRIVIAL(error) << "Unknown exception in on_complete handler.";
+            std::cerr << "Unknown exception in on_complete handler." << std::endl;
+        }
         })
         .perform_sync();
 }
@@ -1233,7 +1248,7 @@ Updates PresetUpdater::priv::get_config_updates(const Semver &old_slic3r_version
                         updates.updates.emplace_back(std::move(file_path), std::move(path_in_vendor.string()), std::move(version), vendor_name, changelog, "", force_update, false);
 
                         //BBS: add directory support
-                        updates.updates.emplace_back(cache_path / vendor_name, vendor_path / vendor_name, Version(), vendor_name, "", "", force_update, true);
+                        updates.updates.emplace_back(cache_profile_path / vendor_name, vendor_path / vendor_name, Version(), vendor_name, "", "", force_update, true);
                 }
             }
         }
@@ -1270,6 +1285,7 @@ bool PresetUpdater::priv::perform_updates(Updates &&updates, bool snapshot) cons
 
         BOOST_LOG_TRIVIAL(info) << format("[Orca Updater]:Performing %1% updates", updates.updates.size());
 
+        
         for (const auto &update : updates.updates) {
             BOOST_LOG_TRIVIAL(info) << '\t' << update;
 
