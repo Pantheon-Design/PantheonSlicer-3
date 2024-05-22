@@ -2437,7 +2437,8 @@ void TabPrint::update()
     m_update_cnt--;
 
     if (m_update_cnt==0) {
-        toggle_options();
+        if (m_active_page && !(m_active_page->title() == "Dependencies"))
+            toggle_options();
 
         // update() could be called during undo/redo execution
         // Update of objectList can cause a crash in this case (because m_objects doesn't match ObjectList)
