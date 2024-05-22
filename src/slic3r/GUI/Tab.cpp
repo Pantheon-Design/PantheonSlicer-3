@@ -5061,7 +5061,8 @@ void Tab::activate_selected_page(std::function<void()> throw_if_canceled)
     m_active_page->activate(m_mode, throw_if_canceled);
     update_changed_ui();
     update_description_lines();
-    toggle_options();
+    if (m_active_page && !(m_active_page->title() == "Dependencies"))
+        toggle_options();
     m_active_page->update_visibility(m_mode, true); // for taggle line
 }
 

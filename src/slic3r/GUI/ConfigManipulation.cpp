@@ -48,12 +48,29 @@ void ConfigManipulation::toggle_field(const std::string &opt_key, const bool tog
 
 void ConfigManipulation::toggle_line(const std::string& opt_key, const bool toggle)
 {
-    if (local_config) {
-        if (local_config->option(opt_key) == nullptr)
-            return;
+    try {
+        if (local_config) {
+            if (local_config->option(opt_key) == nullptr)
+                return;
+        }
+        if (cb_toggle_line) {
+            try {
+                cb_toggle_line(opt_key, toggle);
+            } catch (const std::exception& e) {
+                // Log the exception or handle it as needed
+                std::cerr << "Exception in cb_toggle_line: " << e.what() << std::endl;
+            } catch (...) {
+                // Handle any other types of exceptions
+                std::cerr << "Unknown exception in cb_toggle_line." << std::endl;
+            }
+        }
+    } catch (const std::exception& e) {
+        // Log the exception or handle it as needed
+        std::cerr << "Exception in toggle_line: " << e.what() << std::endl;
+    } catch (...) {
+        // Handle any other types of exceptions
+        std::cerr << "Unknown exception in toggle_line." << std::endl;
     }
-    if (cb_toggle_line)
-        cb_toggle_line(opt_key, toggle);
 }
 
 void ConfigManipulation::check_nozzle_recommended_temperature_range(DynamicPrintConfig *config) {
