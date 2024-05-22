@@ -739,16 +739,18 @@ wxBoxSizer *PreferencesDialog::create_item_checkbox(wxString title, wxWindow *pa
     return m_sizer_checkbox;
 }
 
-wxBoxSizer *PreferencesDialog::create_item_button(wxString title, wxString title2, wxWindow *parent, wxString tooltip, std::function<void()> onclick)
+wxBoxSizer* PreferencesDialog::create_item_button(
+    wxString title, wxString title2, wxWindow* parent, wxString tooltip, wxString tooltip2, std::function<void()> onclick)
 {
     wxBoxSizer *m_sizer_checkbox = new wxBoxSizer(wxHORIZONTAL);
 
     m_sizer_checkbox->Add(0, 0, 0, wxEXPAND | wxLEFT, 23);
     auto m_staticTextPath = new wxStaticText(parent, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END);
-    // m_staticTextPath->SetMaxSize(wxSize(FromDIP(440), -1));
+    m_staticTextPath->SetMaxSize(wxSize(FromDIP(240), -1));
     m_staticTextPath->SetForegroundColour(DESIGN_GRAY900_COLOR);
     m_staticTextPath->SetFont(::Label::Body_13);
     m_staticTextPath->Wrap(-1);
+    m_staticTextPath->SetToolTip(tooltip);
 
     auto m_button_download = new Button(parent, title2);
 
@@ -764,7 +766,7 @@ wxBoxSizer *PreferencesDialog::create_item_button(wxString title, wxString title
     m_button_download->SetMinSize(wxSize(FromDIP(58), FromDIP(22)));
     m_button_download->SetSize(wxSize(FromDIP(58), FromDIP(22)));
     m_button_download->SetCornerRadius(FromDIP(12));
-    m_button_download->SetToolTip(tooltip);
+    m_button_download->SetToolTip(tooltip2);
 
     m_button_download->Bind(wxEVT_BUTTON, [this, onclick](auto &e) { onclick(); });
 
@@ -1038,7 +1040,7 @@ wxWindow* PreferencesDialog::create_general_page()
     auto title_presets = create_item_title(_L("Presets"), page, _L("Presets"));
     auto title_network = create_item_title(_L("Network"), page, _L("Network"));
     auto item_system_sync        = create_item_checkbox(_L("Update built-in Presets automatically."), page, _L("System Sync"), 50, "sync_system_preset");
-    auto item_save_presets = create_item_button(_L("Clear my choice on the unsaved presets."), _L("Clear"), page, _L("Clear my choice on the unsaved presets."), []() {
+    auto item_save_presets = create_item_button(_L("Clear my choice on the unsaved presets."), _L("Clear"), page, L"", _L("Clear my choice on the unsaved presets."), []() {
         wxGetApp().app_config->set("save_preset_choise", "");
     });
 
@@ -1053,6 +1055,16 @@ wxWindow* PreferencesDialog::create_general_page()
     auto item_associate_step = create_item_checkbox(_L("Associate .step/.stp files to PantheonSlicer"), page,
                                                          _L("If enabled, sets PantheonSlicer as default application to open .step files"), 50, "associate_step");
 #endif // _WIN32
+#if !defined(__APPLE__)
+
+                                                         
+    std::wstring reg_bin;
+    wxGetApp().check_url_association(L"prusaslicer", reg_bin);
+    auto associate_url_prusaslicer = create_item_button(_L("Current association: ") + reg_bin, _L("Associate prusaslicer://"), page,
+                                                       reg_bin.empty() ? _L("Not associated to any application") : reg_bin,
+                                                       _L("Associate OrcaSlicer with prusaslicer:// links so that Orca can open PrusaSlicer links from Printable.com"),
+                                                       []() { wxGetApp().associate_url(L"prusaslicer"); });
+#endif
 
     // auto title_modelmall = create_item_title(_L("Online Models"), page, _L("Online Models"));
     // auto item_backup = create_item_switch(_L("Backup switch"), page, _L("Backup switch"), "units");
@@ -1064,7 +1076,7 @@ wxWindow* PreferencesDialog::create_general_page()
         if (value.ToLong(&max))
             wxGetApp().mainframe->set_max_recent_count(max);
     });
-    auto item_save_choise = create_item_button(_L("Clear my choice on the unsaved projects."), _L("Clear"), page, _L("Clear my choice on the unsaved projects."), []() {
+    auto item_save_choise = create_item_button(_L("Clear my choice on the unsaved projects."), _L("Clear"), page, L"", _L("Clear my choice on the unsaved projects."), []() {
         wxGetApp().app_config->set("save_project_choise", "");
     });
     // auto item_backup = create_item_switch(_L("Backup switch"), page, _L("Backup switch"), "units");
@@ -1075,8 +1087,6 @@ wxWindow* PreferencesDialog::create_general_page()
     //downloads
     auto title_downloads = create_item_title(_L("Downloads"), page, _L("Downloads"));
     auto item_downloads = create_item_downloads(page,50,"download_path");
-    auto ps_download_url_registered = create_item_checkbox(_L("Allow downloads from Printables.com"), page,
-                                                           _L("Allow downloads from Printables.com"), 50, "ps_url_registered");
 
     //dark mode
 #ifdef _WIN32
@@ -1111,6 +1121,9 @@ wxWindow* PreferencesDialog::create_general_page()
     sizer_page->Add(item_associate_stl, 0, wxTOP, FromDIP(3));
     sizer_page->Add(item_associate_step, 0, wxTOP, FromDIP(3));
 #endif // _WIN32
+#if !defined(__APPLE__)
+    sizer_page->Add(associate_url_prusaslicer, 0, wxTOP | wxEXPAND, FromDIP(20));
+#endif
     // auto item_title_modelmall = sizer_page->Add(title_modelmall, 0, wxTOP | wxEXPAND, FromDIP(20));
     // auto item_item_modelmall = sizer_page->Add(item_modelmall, 0, wxTOP, FromDIP(3));
     // auto update_modelmall = [this, item_title_modelmall, item_item_modelmall] (wxEvent & e) {
@@ -1132,7 +1145,6 @@ wxWindow* PreferencesDialog::create_general_page()
 
     sizer_page->Add(title_downloads, 0, wxTOP| wxEXPAND, FromDIP(20));
     sizer_page->Add(item_downloads, 0, wxEXPAND, FromDIP(3));
-    sizer_page->Add(ps_download_url_registered, 0, wxTOP | wxEXPAND, FromDIP(20));
 
 #ifdef _WIN32
     sizer_page->Add(title_darkmode, 0, wxTOP | wxEXPAND, FromDIP(20));
