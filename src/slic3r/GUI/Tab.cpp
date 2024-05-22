@@ -1084,26 +1084,18 @@ void Tab::on_roll_back_value(const bool to_sys /*= true*/)
                 load_key_value("printable_area", true/*some value*/, true);
             }
         }
-        //if (group->title == "Profile dependencies") {
-        //    // "compatible_printers" option doesn't exists in Printer Settimgs Tab
-        //    if (m_type != Preset::TYPE_PRINTER && (m_options_list["compatible_printers"] & os) == 0) {
-        //        to_sys ? group->back_to_sys_value("compatible_printers") : group->back_to_initial_value("compatible_printers");
-        //        load_key_value("compatible_printers", true/*some value*/, true);
-
-        //        bool is_empty = m_config->option<ConfigOptionStrings>("compatible_printers")->values.empty();
-        //        m_compatible_printers.checkbox->SetValue(is_empty);
-        //        is_empty ? m_compatible_printers.btn->Disable() : m_compatible_printers.btn->Enable();
-        //    }
-        //    // "compatible_prints" option exists only in Filament Settimgs and Materials Tabs
-        //    if ((m_type == Preset::TYPE_FILAMENT || m_type == Preset::TYPE_SLA_MATERIAL) && (m_options_list["compatible_prints"] & os) == 0) {
-        //        to_sys ? group->back_to_sys_value("compatible_prints") : group->back_to_initial_value("compatible_prints");
-        //        load_key_value("compatible_prints", true/*some value*/, true);
-
-        //        bool is_empty = m_config->option<ConfigOptionStrings>("compatible_prints")->values.empty();
-        //        m_compatible_prints.checkbox->SetValue(is_empty);
-        //        is_empty ? m_compatible_prints.btn->Disable() : m_compatible_prints.btn->Enable();
-        //    }
-        //}
+        if (group->title == "Profile dependencies") {
+            // "compatible_printers" option doesn't exists in Printer Settimgs Tab
+            if (m_type != Preset::TYPE_PRINTER && (m_options_list["compatible_printers"] & os) == 0) {
+                to_sys ? group->back_to_sys_value("compatible_printers") : group->back_to_initial_value("compatible_printers");
+                load_key_value("compatible_printers", true/*some value*/, true);
+            }
+            // "compatible_prints" option exists only in Filament Settimgs and Materials Tabs
+            if ((m_type == Preset::TYPE_FILAMENT || m_type == Preset::TYPE_SLA_MATERIAL) && (m_options_list["compatible_prints"] & os) == 0) {
+                to_sys ? group->back_to_sys_value("compatible_prints") : group->back_to_initial_value("compatible_prints");
+                load_key_value("compatible_prints", true/*some value*/, true);
+            }
+        }
         for (const auto &kvp : group->opt_map()) {
             const std::string& opt_key = kvp.first;
             if ((m_options_list[opt_key] & os) == 0)
@@ -1399,6 +1391,11 @@ void Tab::on_value_change(const std::string& opt_key, const boost::any& value)
     if (wxGetApp().plater() == nullptr) {
         return;
     }
+
+    if (opt_key == "compatible_prints")
+        this->compatible_widget_reload(m_compatible_prints);
+    if (opt_key == "compatible_printers")
+        this->compatible_widget_reload(m_compatible_printers);
 
     const bool is_fff = supports_printer_technology(ptFFF);
     ConfigOptionsGroup* og_freq_chng_params = wxGetApp().sidebar().og_freq_chng_params(is_fff);
@@ -3440,26 +3437,26 @@ void TabFilament::build()
         option.opt.full_width = true;
         option.opt.height = notes_field_height;// 250;
         optgroup->append_single_option_line(option);
-#if 0
-    //page = add_options_page(L("Dependencies"), "advanced");
-    //    optgroup = page->new_optgroup(L("Profile dependencies"));
-    //    create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
-    //        return compatible_widget_create(parent, m_compatible_printers);
-    //    });
+#if 1
+    page = add_options_page(L("Dependencies"), "advanced");
+        optgroup = page->new_optgroup(L("Profile dependencies"));
+        create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
+            return compatible_widget_create(parent, m_compatible_printers);
+        });
 
-    //    option = optgroup->get_option("compatible_printers_condition");
-    //    option.opt.full_width = true;
-    //    optgroup->append_single_option_line(option);
+        option = optgroup->get_option("compatible_printers_condition");
+        option.opt.full_width = true;
+        optgroup->append_single_option_line(option);
 
-    //    create_line_with_widget(optgroup.get(), "compatible_prints", "", [this](wxWindow* parent) {
-    //        return compatible_widget_create(parent, m_compatible_prints);
-    //    });
+        create_line_with_widget(optgroup.get(), "compatible_prints", "", [this](wxWindow* parent) {
+            return compatible_widget_create(parent, m_compatible_prints);
+        });
 
-    //    option = optgroup->get_option("compatible_prints_condition");
-    //    option.opt.full_width = true;
-    //    optgroup->append_single_option_line(option);
+        option = optgroup->get_option("compatible_prints_condition");
+        option.opt.full_width = true;
+        optgroup->append_single_option_line(option);
 
-    //    build_preset_description_line(optgroup.get());
+        build_preset_description_line(optgroup.get());
 #endif
 }
 
@@ -6037,8 +6034,8 @@ const ConfigOptionsGroupShp Page::get_optgroup(const wxString& title) const
 
 void TabSLAMaterial::build()
 {
-    //m_presets = &m_preset_bundle->sla_materials;
-    //load_initial_data();
+    m_presets = &m_preset_bundle->sla_materials;
+    load_initial_data();
 
     //auto page = add_options_page(L("Material"), "");
 
@@ -6098,31 +6095,31 @@ void TabSLAMaterial::build()
 
     //optgroup->append_line(line);
 
-    //page = add_options_page(L("Dependencies"), "wrench.png");
-    //optgroup = page->new_optgroup(L("Profile dependencies"));
+    auto page = add_options_page(L("Dependencies"), "wrench.png");
+    auto optgroup = page->new_optgroup(L("Profile dependencies"));
 
-    //create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
-    //    return compatible_widget_create(parent, m_compatible_printers);
-    //});
-    //
-    //Option option = optgroup->get_option("compatible_printers_condition");
-    //option.opt.full_width = true;
-    //optgroup->append_single_option_line(option);
+    create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
+        return compatible_widget_create(parent, m_compatible_printers);
+    });
+    
+    Option option = optgroup->get_option("compatible_printers_condition");
+    option.opt.full_width = true;
+    optgroup->append_single_option_line(option);
 
-    //create_line_with_widget(optgroup.get(), "compatible_prints", "", [this](wxWindow* parent) {
-    //    return compatible_widget_create(parent, m_compatible_prints);
-    //});
+    create_line_with_widget(optgroup.get(), "compatible_prints", "", [this](wxWindow* parent) {
+        return compatible_widget_create(parent, m_compatible_prints);
+    });
 
-    //option = optgroup->get_option("compatible_prints_condition");
-    //option.opt.full_width = true;
-    //optgroup->append_single_option_line(option);
+    option = optgroup->get_option("compatible_prints_condition");
+    option.opt.full_width = true;
+    optgroup->append_single_option_line(option);
 
-    //build_preset_description_line(optgroup.get());
+    build_preset_description_line(optgroup.get());
 
-    //page = add_options_page(L("Material printing profile"), "printer.png");
-    //optgroup = page->new_optgroup(L("Material printing profile"));
-    //option = optgroup->get_option("material_print_speed");
-    //optgroup->append_single_option_line(option);
+    page = add_options_page(L("Material printing profile"), "printer.png");
+    optgroup = page->new_optgroup(L("Material printing profile"));
+    option = optgroup->get_option("material_print_speed");
+    optgroup->append_single_option_line(option);
 }
 
 // Reload current config (aka presets->edited_preset->config) into the UI fields.
