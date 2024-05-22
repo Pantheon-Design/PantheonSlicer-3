@@ -2333,19 +2333,19 @@ void TabPrint::build()
         option.opt.height = 25;//250;
         optgroup->append_single_option_line(option);
 
-#if 0
-    //page = add_options_page(L("Dependencies"), "advanced.png");
-    //    optgroup = page->new_optgroup(L("Profile dependencies"));
+#if 1
+    page = add_options_page(L("Dependencies"), "advanced.png");
+        optgroup = page->new_optgroup(L("Profile dependencies"));
 
-    //    create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
-    //        return compatible_widget_create(parent, m_compatible_printers);
-    //    });
-    //
-    //    option = optgroup->get_option("compatible_printers_condition");
-    //    option.opt.full_width = true;
-    //    optgroup->append_single_option_line(option);
+        create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
+            return compatible_widget_create(parent, m_compatible_printers);
+        });
+    
+        option = optgroup->get_option("compatible_printers_condition");
+        option.opt.full_width = true;
+        optgroup->append_single_option_line(option);
 
-    //    build_preset_description_line(optgroup.get());
+        build_preset_description_line(optgroup.get());
 #endif
 }
 
