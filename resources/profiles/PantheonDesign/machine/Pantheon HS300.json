@@ -1,0 +1,11 @@
+{
+  "type": "machine_model",
+  "name": "Pantheon HS300",
+  "model_id": "Pantheon HS300",
+  "nozzle_diameter": "0.5",
+  "machine_tech": "FFF",
+  "family": "Pantheon HS",
+  "bed_model": "M5-bed.stl",
+  "bed_texture": "pantheon_bed_texture.svg",
+  "default_materials": "My Generic PETG @Pantheon HS300;"
+}

@@ -1,11 +1,11 @@
 {
-    "type": "machine_model",
-    "name": "Pantheon HS3",
-    "nozzle_diameter": "0.2;0.4",
-    "bed_model": "M5-bed.stl",
-    "bed_texture": "M5-texture.svg",
-    "family": "PantheonDesign",
-    "machine_tech": "FFF",
-    "model_id": "PDHS3",
-    "default_materials": "Anker Generic PLA;Anker Generic PLA+;Anker Generic PLA Silk;Anker Generic TPU;Anker Generic PETG"
+  "type": "machine_model",
+  "name": "Pantheon HS3",
+  "model_id": "Pantheon HS3",
+  "nozzle_diameter": "0.4",
+  "machine_tech": "FFF",
+  "family": "Pantheon HS",
+  "bed_model": "M5-bed.stl",
+  "bed_texture": "pantheon_bed_texture.svg",
+  "default_materials": "My Generic PC @Pantheon HS3;My Generic PETG @Pantheon HS3"
 }

@@ -5,6 +5,8 @@
     "adaptive_bed_mesh_margin": "0",
     "auxiliary_fan": "0",
     "bbl_use_printhost": "0",
+    "bed_custom_model": "",
+    "bed_custom_texture": "",
     "bed_exclude_area": [
         "0x0"
     ],
@@ -112,9 +114,9 @@
     "min_layer_height": [
         "0.08"
     ],
-    "name": "Pantheon HS3 0.4 Nozzle",
+    "name": "Pantheon HS300 0.5 Nozzle",
     "nozzle_diameter": [
-        "0.4"
+        "0.5"
     ],
     "nozzle_height": "4",
     "nozzle_hrc": "0",
@@ -131,12 +133,12 @@
         "0x200"
     ],
     "printable_height": "200",
-    "printer_model": "Pantheon HS3",
+    "printer_model": "Pantheon HS300",
     "printer_notes": "",
-    "printer_settings_id": "Pantheon HS3",
+    "printer_settings_id": "Pantheon HS300",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
-    "printer_variant": "0.4",
+    "printer_variant": "0.5",
     "printhost_apikey": "",
     "printhost_authorization_type": "key",
     "printhost_cafile": "",
