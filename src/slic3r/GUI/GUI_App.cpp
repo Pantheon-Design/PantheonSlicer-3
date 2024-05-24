@@ -5801,7 +5801,7 @@ void GUI_App::MacOpenURL(const wxString& url)
                 m_download_file_url = download_file_url;
             }
         }
-    } else if (boost::starts_with(url, "prusasliceropen://"))
+    } else if (boost::starts_with(url, "orcaslicer://"))
         start_download(boost::nowide::narrow(url));
 }
 
