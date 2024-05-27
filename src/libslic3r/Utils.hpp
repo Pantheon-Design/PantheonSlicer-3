@@ -7,6 +7,7 @@
 #include <functional>
 #include <type_traits>
 #include <system_error>
+#include <regex>
 
 #include <boost/system/error_code.hpp>
 #include <boost/algorithm/string.hpp>
