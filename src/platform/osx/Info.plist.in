@@ -13,7 +13,7 @@
   <key>CFBundleShortVersionString</key>
   <string>@SLIC3R_APP_NAME@ @SLIC3R_BUILD_ID@</string>
   <key>CFBundleIdentifier</key>
-  <string>com.softfever3d.orca-slic3r/</string>
+  <string>com.Pantheon.PantheonSlicer-3/</string>
   <key>CFBundleInfoDictionaryVersion</key>
   <string>6.0</string>
   <key>CFBundlePackageType</key>
@@ -26,10 +26,10 @@
   <array>
     <dict>
       <key>CFBundleURLName</key>
-      <string>orcasliceropen url</string>
+      <string>pantheonsliceropen url</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>orcasliceropen</string>
+        <string>pantheonsliceropen</string>
       </array>
     </dict>
   </array>
