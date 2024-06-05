@@ -3,8 +3,6 @@
 set -e
 set -o pipefail
 
-def init
-
 while getopts ":dpa:snt:xbc:h" opt; do
   case "${opt}" in
     d )
