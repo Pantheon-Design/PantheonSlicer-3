@@ -7,60 +7,72 @@
         {
             "name": "Pantheon HS3",
             "sub_path": "machine/Pantheon HS3.json"
-        },
-        {
-            "name": "Pantheon HS300",
-            "sub_path": "machine/Pantheon HS300.json"
         }
     ],
     "process_list": [
-        {
-            "name": "0.08mm Extra Fine @Pantheon HS3",
-            "sub_path": "process/0.08mm Extra Fine @Pantheon HS3.json"
-        },
         {
             "name": "0.20mm Standard @Pantheon HS3",
             "sub_path": "process/0.20mm Standard @Pantheon HS3.json"
         },
         {
-            "name": "0.20mm Standard @Pantheon HS300",
-            "sub_path": "process/0.20mm Standard @Pantheon HS300.json"
+            "name": "PETG-CF Rev3.7",
+            "sub_path": "process/PETG-CF Rev3.7.json"
+        },
+        {
+            "name": "Quality PA-CF Rev3.7",
+            "sub_path": "process/Quality PA-CF Rev3.7.json"
+        },
+        {
+            "name": "Quality PA-GF Rev3.7",
+            "sub_path": "process/Quality PA-GF Rev3.7.json"
+        },
+        {
+            "name": "Strength PA-CF Rev3.7",
+            "sub_path": "process/Strength PA-CF Rev3.7.json"
+        },
+        {
+            "name": "Strength PA-GF Rev3.7",
+            "sub_path": "process/Strength PA-GF Rev3.7.json"
+        },
+        {
+            "name": "Ultrafuse 64D",
+            "sub_path": "process/Ultrafuse 64D.json"
         }
     ],
     "filament_list": [
-        {
-            "name": "fdm_filament_common",
-            "sub_path": "filament/fdm_filament_common.json"
-        },        
-        {
-            "name": "fdm_filament_pet",
-            "sub_path": "filament/fdm_filament_pet.json"
-        },        
-        {
-            "name": "fdm_filament_pc",
-            "sub_path": "filament/fdm_filament_pc.json"
+		{
+            "name": "PA-CF Rev3.7",
+            "sub_path": "filament/PA-CF Rev3.7.json"
         },
-        {
-            "name": "My Generic PC @Pantheon HS3",
-            "sub_path": "filament/My Generic PC @Pantheon HS3.json"
+		{
+            "name": "PETG-CF Rev3.7",
+            "sub_path": "filament/PETG-CF Rev3.7.json"
         },
-        {
-            "name": "My Generic PETG @Pantheon HS3",
-            "sub_path": "filament/My Generic PETG @Pantheon HS3.json"
+		{
+            "name": "Quality PA-CF Rev3.7",
+            "sub_path": "filament/Quality PA-CF Rev3.7.json"
         },
-		        {
-            "name": "My Generic PETG @Pantheon HS300",
-            "sub_path": "filament/My Generic PETG @Pantheon HS300.json"
+		{
+            "name": "Quality PA-GF Rev3.7",
+            "sub_path": "filament/Quality PA-GF Rev3.7.json"
+        },
+		{
+            "name": "Strength PA-CF Rev3.7",
+            "sub_path": "filament/Strength PA-CF Rev3.7.json"
+        },
+		{
+            "name": "Strength PA-GF Rev3.7",
+            "sub_path": "filament/Strength PA-GF Rev3.7.json"
+        },
+		{
+            "name": "Ultrafuse 64D",
+            "sub_path": "filament/Ultrafuse 64D.json"
         }
     ],
     "machine_list": [
         {
             "name": "Pantheon HS3 0.4 Nozzle",
             "sub_path": "machine/Pantheon HS3 0.4 Nozzle.json"
-        },
-        {
-            "name": "Pantheon HS300 0.5 Nozzle",
-            "sub_path": "machine/Pantheon HS300 0.5 Nozzle.json"
         }
     ]
 }

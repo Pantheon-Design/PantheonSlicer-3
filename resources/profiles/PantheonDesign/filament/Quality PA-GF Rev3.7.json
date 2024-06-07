@@ -1,0 +1,29 @@
+{
+    "type": "filament",
+    "instantiation": "true",
+    "compatible_prints": [
+        "Quality PA-GF Rev3.7"
+    ],
+    "default_filament_colour": [
+        "#FFFFDD"
+    ],
+    "fan_max_speed": [
+        "25"
+    ],
+    "filament_flow_ratio": [
+        "1.011"
+    ],
+    "filament_retraction_speed": [
+        "45"
+    ],
+    "filament_settings_id": [
+        "Quality PA-GF Rev3.7"
+    ],
+    "filament_type": [
+        "PA-GF"
+    ],
+    "from": "system",
+    "inherits": "PA-CF Rev3.7",
+    "name": "Quality PA-GF Rev3.7",
+    "version": "0.0.0.0"
+}

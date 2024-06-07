@@ -1,0 +1,38 @@
+{
+    "type": "filament",
+    "instantiation": "true",
+    "compatible_prints": [
+        "Strength PA-GF Rev3.7"
+    ],
+    "default_filament_colour": [
+        "#FFFFDD"
+    ],
+    "fan_max_speed": [
+        "15"
+    ],
+    "fan_min_speed": [
+        "8"
+    ],
+    "filament_flow_ratio": [
+        "1.008"
+    ],
+    "filament_retraction_speed": [
+        "45"
+    ],
+    "filament_settings_id": [
+        "Strength PA-GF Rev3.7"
+    ],
+    "filament_start_gcode": [
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=6\n\nSET_PRESSURE_ADVANCE ADVANCE=0.01\nSET_GCODE_OFFSET Z=0.05"
+    ],
+    "filament_type": [
+        "PA-GF"
+    ],
+    "from": "system",
+    "inherits": "PA-CF Rev3.7",
+    "name": "Strength PA-GF Rev3.7",
+    "nozzle_temperature": [
+        "320"
+    ],
+    "version": "0.0.0.0"
+}

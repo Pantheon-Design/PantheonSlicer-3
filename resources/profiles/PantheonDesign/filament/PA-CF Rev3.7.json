@@ -1,7 +1,11 @@
 {
+    "from": "system",
+    "instantiation": "false",
     "type": "filament",
-    "inherits": "fdm_filament_pc",
-    "name": "My Generic PC @Pantheon HS3",
+    "filament_id": "Pba6d7",
+    "bed_type": [
+        "Cool Plate"
+    ],
     "activate_air_filtration": [
         "0"
     ],
@@ -12,30 +16,29 @@
         "0"
     ],
     "chamber_temperature": [
-        "0"
+        "240"
     ],
     "close_fan_the_first_x_layers": [
-        "3"
+        "1"
     ],
     "compatible_printers": [
         "Pantheon HS3 0.4 Nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "0.20mm Standard @Pantheon HS3"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
         "80"
     ],
     "cool_plate_temp": [
-        "0"
+        "35"
     ],
     "cool_plate_temp_initial_layer": [
-        "0"
+        "35"
     ],
     "default_filament_colour": [
-        ""
+        "#404040"
     ],
     "during_print_exhaust_fan_speed": [
         "60"
@@ -47,16 +50,16 @@
         "0"
     ],
     "eng_plate_temp": [
-        "110"
+        "45"
     ],
     "eng_plate_temp_initial_layer": [
-        "110"
+        "45"
     ],
     "fan_cooling_layer_time": [
         "30"
     ],
     "fan_max_speed": [
-        "60"
+        "20"
     ],
     "fan_min_speed": [
         "10"
@@ -71,24 +74,23 @@
         "4"
     ],
     "filament_cost": [
-        "20"
+        "115"
     ],
     "filament_density": [
-        "1.04"
+        "1.16"
     ],
     "filament_deretraction_speed": [
-        "nil"
+        "20"
     ],
     "filament_diameter": [
         "1.75"
     ],
     "filament_end_gcode": [
-        "; filament end gcode \n"
+        " "
     ],
     "filament_flow_ratio": [
-        "0.94"
+        "1.028"
     ],
-    "filament_id": "Pbbda6d7",
     "filament_is_support": [
         "0"
     ],
@@ -105,7 +107,7 @@
         "nil"
     ],
     "filament_max_volumetric_speed": [
-        "12"
+        "15"
     ],
     "filament_minimal_purge_on_wipe_tower": [
         "15"
@@ -126,37 +128,37 @@
         "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
     ],
     "filament_retract_before_wipe": [
-        "nil"
+        "100%"
     ],
     "filament_retract_lift_above": [
-        "nil"
+        "0"
     ],
     "filament_retract_lift_below": [
-        "nil"
+        "0"
     ],
     "filament_retract_lift_enforce": [
-        "nil"
+        "All Surfaces"
     ],
     "filament_retract_restart_extra": [
-        "nil"
+        "0"
     ],
     "filament_retract_when_changing_layer": [
-        "nil"
+        "1"
     ],
     "filament_retraction_distances_when_cut": [
         "nil"
     ],
     "filament_retraction_length": [
-        "nil"
+        "0.2"
     ],
     "filament_retraction_minimum_travel": [
-        "nil"
+        "2"
     ],
     "filament_retraction_speed": [
-        "nil"
+        "40"
     ],
     "filament_settings_id": [
-        "My Generic PC @Pantheon HS3"
+        "PA-CF Rev3.7"
     ],
     "filament_shrink": [
         "100%"
@@ -165,13 +167,13 @@
         "0"
     ],
     "filament_start_gcode": [
-        "; Filament gcode\n"
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=6\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
     ],
     "filament_toolchange_delay": [
         "0"
     ],
     "filament_type": [
-        "PC"
+        "PA-CF"
     ],
     "filament_unload_time": [
         "0"
@@ -183,48 +185,47 @@
         "100"
     ],
     "filament_vendor": [
-        "Generic"
+        "Pantheon"
     ],
     "filament_wipe": [
-        "nil"
+        "1"
     ],
     "filament_wipe_distance": [
-        "nil"
+        "2"
     ],
     "filament_z_hop": [
-        "nil"
+        "0.3"
     ],
     "filament_z_hop_types": [
-        "nil"
+        "Normal Lift"
     ],
-    "from": "system",
-    "instantiation": "true",
     "full_fan_speed_layer": [
         "0"
     ],
     "hot_plate_temp": [
-        "110"
+        "90"
     ],
     "hot_plate_temp_initial_layer": [
-        "110"
+        "90"
     ],
+    "name": "PA-CF Rev3.7",
     "nozzle_temperature": [
-        "280"
+        "310"
     ],
     "nozzle_temperature_initial_layer": [
-        "270"
+        "300"
     ],
     "nozzle_temperature_range_high": [
-        "280"
+        "320"
     ],
     "nozzle_temperature_range_low": [
-        "260"
+        "300"
     ],
     "overhang_fan_speed": [
-        "60"
+        "90"
     ],
     "overhang_fan_threshold": [
-        "25%"
+        "95%"
     ],
     "pressure_advance": [
         "0.02"
@@ -239,7 +240,7 @@
         "1"
     ],
     "slow_down_layer_time": [
-        "2"
+        "10"
     ],
     "slow_down_min_speed": [
         "10"
@@ -248,13 +249,13 @@
         "-1"
     ],
     "temperature_vitrification": [
-        "140"
+        "240"
     ],
     "textured_plate_temp": [
-        "110"
+        "45"
     ],
     "textured_plate_temp_initial_layer": [
-        "110"
+        "45"
     ],
     "version": "1.0.0.0"
 }

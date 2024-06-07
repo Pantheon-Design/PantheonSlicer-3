@@ -1,6 +1,6 @@
 {
     "type": "process",
-    "instantiation": "true",
+    "instantiation": "false",
     "accel_to_decel_enable": "1",
     "accel_to_decel_factor": "50%",
     "alternate_extra_wall": "0",
