@@ -8716,7 +8716,7 @@ int Plater::new_project(bool skip_confirm, bool silent, const wxString& project_
 
     // BBS set default view and zoom
     p->select_view_3D("3D");
-    p->select_view("topfront");
+    p->select_view("topright");
     p->camera.requires_zoom_to_bed = true;
     enable_sidebar(!m_only_gcode);
 
