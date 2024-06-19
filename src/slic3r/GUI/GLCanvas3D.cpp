@@ -6310,6 +6310,19 @@ bool GLCanvas3D::_init_main_toolbar()
     if (!m_main_toolbar.add_item(item))
         return false;
 
+    item.name                 = "delete";
+    item.icon_filename        = m_is_dark ? "toolbar_close_dark.svg" : "toolbar_close.svg";
+    item.tooltip              = _u8L("Delete") + " [Del]";
+    item.sprite_id            = 1;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_DELETE));
+    };
+    item.enabling_callback = []() -> bool { return wxGetApp().plater()->can_delete(); };
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+
     item.name = "addplate";
     item.icon_filename = m_is_dark ? "toolbar_add_plate_dark.svg" : "toolbar_add_plate.svg";
     item.tooltip = _utf8(L("Add plate"));
