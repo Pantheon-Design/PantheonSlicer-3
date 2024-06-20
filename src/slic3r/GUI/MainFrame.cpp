@@ -2110,6 +2110,14 @@ void MainFrame::on_sys_color_changed()
     this->Refresh();
 }
 
+void MainFrame::set_print_slice_btn_colour()
+{
+    m_print_btn->SetForegroundColour(wxColour(250, 250, 250));
+    m_slice_btn->SetForegroundColour(wxColour(250, 250, 250));
+    this->Refresh();
+}
+
+
 #ifdef _MSC_VER
     // \xA0 is a non-breaking space. It is entered here to spoil the automatic accelerators,
     // as the simple numeric accelerators spoil all numeric data entry.
