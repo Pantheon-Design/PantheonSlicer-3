@@ -10749,7 +10749,7 @@ void Plater::remove_selected()
 void Plater::increase_instances(size_t num)
 {
     // BBS
-#if 0
+#if 1
     if (! can_increase_instances()) { return; }
 
     Plater::TakeSnapshot snapshot(this, "Increase Instances");
@@ -10788,7 +10788,7 @@ void Plater::increase_instances(size_t num)
 void Plater::decrease_instances(size_t num)
 {
     // BBS
-#if 0
+#if 1
     if (! can_decrease_instances()) { return; }
 
     Plater::TakeSnapshot snapshot(this, "Decrease Instances");

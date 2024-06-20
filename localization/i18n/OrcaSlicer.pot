@@ -4279,7 +4279,7 @@ msgid "Use Perspective View"
 msgstr ""
 
 msgid "Use Orthogonal View"
-msgstr "Use Orthographic View"
+msgstr ""
 
 msgid "Show &G-code Window"
 msgstr ""

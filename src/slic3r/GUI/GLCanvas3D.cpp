@@ -6315,13 +6315,44 @@ bool GLCanvas3D::_init_main_toolbar()
     item.name                 = "delete";
     item.icon_filename        = m_is_dark ? "toolbar_close_dark.svg" : "toolbar_close.svg";
     item.tooltip              = _u8L("Delete") + " [Del]";
-    item.sprite_id            = 1;
+    item.sprite_id++;
     item.left.action_callback = [this]() {
         if (m_canvas != nullptr)
             wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_DELETE));
     };
     item.enabling_callback = []() -> bool { return wxGetApp().plater()->can_delete(); };
     if (!m_main_toolbar.add_item(item))
+        return false;
+
+
+    item.name                 = "more";
+    item.icon_filename        = "instance_add.svg";
+    item.tooltip              = _u8L("Add instance") + " [+]";
+    item.sprite_id++;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_MORE));
+    };
+    item.visibility_callback = GLToolbarItem::Default_Visibility_Callback;
+    item.enabling_callback   = []() -> bool { return wxGetApp().plater()->can_increase_instances(); };
+
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+    item.name                 = "fewer";
+    item.icon_filename        = "instance_remove.svg";
+    item.tooltip              = _u8L("Remove instance") + " [-]";
+    item.sprite_id++;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_FEWER));
+    };
+    item.visibility_callback = GLToolbarItem::Default_Visibility_Callback;
+    item.enabling_callback   = []() -> bool { return wxGetApp().plater()->can_decrease_instances(); };
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+    if (!m_main_toolbar.add_separator())
         return false;
 
 
