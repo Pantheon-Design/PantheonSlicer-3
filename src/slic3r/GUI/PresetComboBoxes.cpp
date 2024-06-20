@@ -715,6 +715,8 @@ PlaterPresetComboBox::PlaterPresetComboBox(wxWindow *parent, Preset::Type preset
                 wxQueueEvent(wxGetApp().plater(), evt);
             }
         });
+        // Disable the button 
+        clr_picker->Disable();
     }
     else {
         edit_btn = new ScalableButton(parent, wxID_ANY, "cog");
@@ -1105,8 +1107,9 @@ void PlaterPresetComboBox::update()
             set_label_marker(Append(separator(L("Create printer")), *bmp), LABEL_ITEM_WIZARD_ADD_PRINTERS);
         }
     }
-
     update_selection();
+    update_ams_color();
+
     Thaw();
 
     if (!tooltip.IsEmpty()) {
@@ -1126,6 +1129,8 @@ void PlaterPresetComboBox::update()
     if (GetMinWidth() != 10 * m_em_unit)
         SetMinSize(wxSize(10 * m_em_unit, GetSize().GetHeight()));
 #endif //__WXMSW__
+
+
 }
 
 void PlaterPresetComboBox::msw_rescale()
@@ -1353,7 +1358,6 @@ void TabPresetComboBox::update()
     //    set_label_marker(Append(separator(L("Add/Remove filaments")), *bmp), LABEL_ITEM_WIZARD_FILAMENTS);
     //else if (m_type == Preset::TYPE_SLA_MATERIAL)
     //    set_label_marker(Append(separator(L("Add/Remove materials")), *bmp), LABEL_ITEM_WIZARD_MATERIALS);
-
     update_selection();
     Thaw();
 }
