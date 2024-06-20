@@ -11,13 +11,10 @@
         "8"
     ],
     "filament_flow_ratio": [
-        "1.01"
+        "1.015"
     ],
     "filament_settings_id": [
         "Strength PA-CF Rev3.7"
-    ],
-    "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=6\n\nSET_PRESSURE_ADVANCE ADVANCE=0.005\nSET_GCODE_OFFSET Z=0.05"
     ],
     "from": "system",
     "inherits": "PA-CF Rev3.7",
@@ -25,5 +22,11 @@
     "nozzle_temperature": [
         "320"
     ],
-    "version": "0.0.0.0"
+    "version": "1.0.0.2",
+    "filament_shrink": [
+        "99.85%"
+    ],
+    "support_material_interface_fan_speed": [
+        "90"
+    ]
 }

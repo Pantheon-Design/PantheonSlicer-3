@@ -5,10 +5,10 @@
         "Quality PA-CF Rev3.7"
     ],
     "fan_max_speed": [
-        "25"
+        "45"
     ],
     "filament_flow_ratio": [
-        "1.02"
+        "1.015"
     ],
     "filament_settings_id": [
         "Quality PA-CF Rev3.7"
@@ -16,5 +16,11 @@
     "from": "system",
     "inherits": "PA-CF Rev3.7",
     "name": "Quality PA-CF Rev3.7",
-    "version": "0.0.0.0"
+    "version": "1.0.0.2",
+    "filament_shrink": [
+        "99.82%"
+    ],
+    "support_material_interface_fan_speed": [
+        "90"
+    ]
 }

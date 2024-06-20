@@ -14,7 +14,7 @@
         "8"
     ],
     "filament_flow_ratio": [
-        "1.008"
+        "1.007"
     ],
     "filament_retraction_speed": [
         "45"
@@ -34,5 +34,11 @@
     "nozzle_temperature": [
         "320"
     ],
-    "version": "0.0.0.0"
+    "version": "1.0.0.2",
+    "filament_shrink": [
+        "99.7705%"
+    ],
+    "support_material_interface_fan_speed": [
+        "90"
+    ]
 }

@@ -188,7 +188,7 @@
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
     "support_multi_bed_types": "0",
-    "template_custom_gcode": "",
+    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: original\n;     printhead: original\n;     mainboard: manta-m8p-v2-0\n;     printhead-board: ebb42-v1-2\n; ...",
     "thumbnails": [
         "300x300"
     ],
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "1.0.0.0",
+    "version": "1.0.0.2",
     "wipe": [
         "0"
     ],

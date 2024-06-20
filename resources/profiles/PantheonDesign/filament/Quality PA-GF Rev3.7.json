@@ -25,5 +25,11 @@
     "from": "system",
     "inherits": "PA-CF Rev3.7",
     "name": "Quality PA-GF Rev3.7",
-    "version": "0.0.0.0"
+    "version": "1.0.0.2",
+    "filament_shrink": [
+        "99.729%"
+    ],
+    "support_material_interface_fan_speed": [
+        "90"
+    ]
 }

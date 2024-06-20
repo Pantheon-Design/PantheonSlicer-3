@@ -23,7 +23,7 @@
         "0"
     ],
     "filament_flow_ratio": [
-        "0.998"
+        "1"
     ],
     "filament_max_volumetric_speed": [
         "25"
@@ -38,7 +38,7 @@
         "PETG-CF Rev3.7"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0.02\nSET_GCODE_OFFSET Z=0.02"
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0.008\nSET_GCODE_OFFSET Z=0.02"
     ],
     "filament_type": [
         "PETG-CF"
@@ -47,7 +47,7 @@
         "0"
     ],
     "filament_z_hop": [
-        "0.5"
+        "0.2"
     ],
     "from": "system",
     "hot_plate_temp": [
@@ -76,5 +76,11 @@
     "temperature_vitrification": [
         "220"
     ],
-    "version": "0.0.0.0"
+    "version": "1.0.0.2",
+    "filament_shrink": [
+        "99.8103%"
+    ],
+    "support_material_interface_fan_speed": [
+        "95"
+    ]
 }
