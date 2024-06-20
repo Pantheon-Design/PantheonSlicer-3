@@ -246,7 +246,7 @@ void AppConfig::set_defaults()
 
     // Orca
     if (get("stealth_mode").empty()) {
-        set_bool("stealth_mode", false);
+        set_bool("stealth_mode", true);
     }
 
     if(get("check_stable_update_only").empty()) {

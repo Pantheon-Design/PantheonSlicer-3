@@ -3467,6 +3467,8 @@ void MainFrame::on_config_changed(DynamicPrintConfig* config) const
 
 void MainFrame::set_print_button_to_default(PrintSelectType select_type)
 {
+    m_print_btn->SetForegroundColour(wxColour(250, 250, 250));
+    m_slice_btn->SetForegroundColour(wxColour(250, 250, 250));
     if (select_type == PrintSelectType::ePrintPlate) {
         m_print_btn->SetLabel(_L("Print plate"));
         m_print_select = ePrintPlate;
@@ -3484,8 +3486,6 @@ void MainFrame::set_print_button_to_default(PrintSelectType select_type)
     } else if (select_type == PrintSelectType::eExportGcode) {
         m_print_btn->SetLabel(_L("Export G-code file"));
         m_print_select = eExportGcode;
-        m_print_btn->SetForegroundColour(wxColour(0, 0, 0));
-        m_slice_btn->SetForegroundColour(wxColour(0, 0, 0));
         if (m_print_enable)
             m_print_enable = get_enable_print_status() && can_send_gcode();
         m_print_btn->Enable(m_print_enable);
