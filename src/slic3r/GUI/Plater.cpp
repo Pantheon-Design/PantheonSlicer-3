@@ -918,10 +918,6 @@ Sidebar::Sidebar(Plater *parent)
     });
     p->m_bpButton_add_filament = add_btn;
 
-
-    //bSizer39->Add(add_btn, 0, wxALIGN_CENTER | wxALL, FromDIP(5));
-    //bSizer39->Add(FromDIP(10), 0, 0, 0, 0);
-
     ScalableButton* del_btn = new ScalableButton(p->m_panel_filament_title, wxID_ANY, "delete_filament");
     del_btn->SetToolTip(_L("Remove last filament"));
     del_btn->Bind(wxEVT_BUTTON, [this, scrolled_sizer](wxCommandEvent& e) {
@@ -943,9 +939,6 @@ Sidebar::Sidebar(Plater *parent)
         wxGetApp().preset_bundle->export_selections(*wxGetApp().app_config);
     });
     p->m_bpButton_del_filament = del_btn;
-
-    //bSizer39->Add(del_btn, 0, wxALIGN_CENTER_VERTICAL, FromDIP(5));
-    //bSizer39->Add(FromDIP(20), 0, 0, 0, 0);
 
     ams_btn = new ScalableButton(p->m_panel_filament_title, wxID_ANY, "ams_fila_sync", wxEmptyString, wxDefaultSize, wxDefaultPosition,
                                                  wxBU_EXACTFIT | wxNO_BORDER, false, 18);
