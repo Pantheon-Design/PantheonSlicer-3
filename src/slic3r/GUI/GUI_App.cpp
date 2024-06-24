@@ -960,6 +960,9 @@ void GUI_App::post_init()
     }
 #endif
 
+    if (app_config->get("stealth_mode") == "false")
+        hms_query = new HMSQuery();
+
     m_show_gcode_window = app_config->get_bool("show_gcode_window");
     if (m_networking_need_update) {
         //updating networking
@@ -989,6 +992,7 @@ void GUI_App::post_init()
 
             this->check_new_version_sf();
             if (is_user_login() && app_config->get("stealth_mode") == "false") {
+              // this->check_privacy_version(0);
               request_user_handle(0);
             }
         });
@@ -1021,6 +1025,11 @@ void GUI_App::post_init()
             mainframe->refresh_plugin_tips();
         });
 
+    // update hms info
+    CallAfter([this] {
+            if (hms_query)
+                hms_query->check_hms_info();
+        });
 
 
     DeviceManager::load_filaments_blacklist_config();
@@ -1462,6 +1471,8 @@ int GUI_App::install_plugin(std::string name, std::string package_name, InstallP
 
     if (pro_fn)
         pro_fn(InstallStatusInstallCompleted, 100, cancel);
+    if (name == "plugins")
+        app_config->set_bool("installed_networking", true);
     BOOST_LOG_TRIVIAL(info) << "[install_plugin] success";
     return 0;
 }
@@ -2718,9 +2729,48 @@ void GUI_App::copy_network_if_available()
 
 bool GUI_App::on_init_network(bool try_backup)
 {
+    auto should_load_networking_plugin = app_config->get_bool("installed_networking");
+    if(!should_load_networking_plugin) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "Don't load plugin as installed_networking is false";
+        return false;
+    }
     int load_agent_dll = Slic3r::NetworkAgent::initialize_network_module();
     bool create_network_agent = false;
 __retry:
+    if (!load_agent_dll) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, load dll ok";
+        if (check_networking_version()) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, compatibility version";
+            auto bambu_source = Slic3r::NetworkAgent::get_bambu_source_entry();
+            if (!bambu_source) {
+                BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": can not get bambu source module!";
+                m_networking_compatible = false;
+                if (should_load_networking_plugin) {
+                    m_networking_need_update = true;
+                }
+            }
+            else
+                create_network_agent = true;
+        } else {
+            if (try_backup) {
+                int result = Slic3r::NetworkAgent::unload_network_module();
+                BOOST_LOG_TRIVIAL(info) << "on_init_network, version mismatch, unload_network_module, result = " << result;
+                load_agent_dll = Slic3r::NetworkAgent::initialize_network_module(true);
+                try_backup = false;
+                goto __retry;
+            }
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, version dismatch, need upload network module";
+            if (should_load_networking_plugin) {
+                m_networking_need_update = true;
+            }
+        }
+    } else {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, load dll failed";
+        if (should_load_networking_plugin) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, need upload network module";
+            m_networking_need_update = true;
+        }
+    }
 
     if (create_network_agent) {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", create network agent...");
@@ -3272,7 +3322,9 @@ void GUI_App::recreate_GUI(const wxString& msg_name)
     obj_list()->set_min_height();
     update_mode();
 
-
+    //check hms info for different language
+    if (hms_query)
+        hms_query->check_hms_info();
 
     //BBS: trigger restore project logic here, and skip confirm
     plater_->trigger_restore_project(1);
@@ -4054,6 +4106,8 @@ void GUI_App::on_user_login(wxCommandEvent &evt)
 {
     if (!m_agent) { return; }
     int online_login = evt.GetInt();
+    // check privacy before handle
+    check_privacy_version(online_login);
     check_track_enable();
 }
 
@@ -4359,6 +4413,55 @@ void GUI_App::on_check_privacy_update(wxCommandEvent& evt)
         request_user_handle(online_login);
 }
 
+void GUI_App::check_privacy_version(int online_login)
+{
+    update_http_extra_header();
+    std::string query_params = "?policy/privacy=00.00.00.00";
+    std::string url = get_http_url(app_config->get_country_code()) + query_params;
+    Slic3r::Http http = Slic3r::Http::get(url);
+
+    http.header("accept", "application/json")
+        .timeout_connect(TIMEOUT_CONNECT)
+        .timeout_max(TIMEOUT_RESPONSE)
+        .on_complete([this, online_login](std::string body, unsigned) {
+            try {
+                json j = json::parse(body);
+                if (j.contains("message")) {
+                    if (j["message"].get<std::string>() == "success") {
+                        if (j.contains("resources")) {
+                            for (auto it = j["resources"].begin(); it != j["resources"].end(); it++) {
+                                if (it->contains("type")) {
+                                    if ((*it)["type"] == std::string("policy/privacy")
+                                        && it->contains("version")
+                                        && it->contains("description")
+                                        && it->contains("url")
+                                        && it->contains("force_update")) {
+                                        privacy_version_info.version_str = (*it)["version"].get<std::string>();
+                                        privacy_version_info.description = (*it)["description"].get<std::string>();
+                                        privacy_version_info.url = (*it)["url"].get<std::string>();
+                                        privacy_version_info.force_upgrade = (*it)["force_update"].get<bool>();
+                                        break;
+                                    }
+                                }
+                            }
+                            CallAfter([this, online_login]() {
+                                auto evt = new wxCommandEvent(EVT_CHECK_PRIVACY_VER);
+                                evt->SetInt(online_login);
+                                wxQueueEvent(this, evt);
+                            });
+                        }
+                    }
+                }
+            }
+            catch (...) {
+                request_user_handle(online_login);
+            }
+        })
+        .on_error([this, online_login](std::string body, std::string error, unsigned int status) {
+            request_user_handle(online_login);
+            BOOST_LOG_TRIVIAL(error) << "check privacy version error" << body;
+    }).perform();
+}
 
 void GUI_App::no_new_version()
 {

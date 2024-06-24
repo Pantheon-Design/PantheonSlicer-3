@@ -704,6 +704,12 @@ wxBoxSizer *PreferencesDialog::create_item_checkbox(wxString title, wxWindow *pa
             }
         }
 
+        if (param == "installed_networking") {
+            bool pbool = app_config->get_bool("installed_networking");
+            if (pbool) {
+                GUI::wxGetApp().CallAfter([] { GUI::wxGetApp().ShowDownNetPluginDlg(); });
+            }
+        }
 
 #endif // __WXMSW__
 
