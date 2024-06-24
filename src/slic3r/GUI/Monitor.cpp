@@ -122,7 +122,8 @@ AddMachinePanel::~AddMachinePanel() {
         m_side_tools->start_interval();
     });
 
-    Bind(EVT_ALREADY_READ_HMS, [this](wxCommandEvent& e) {
+
+    /* Bind(EVT_ALREADY_READ_HMS, [this](wxCommandEvent& e) {
         auto key = e.GetString().ToStdString();
         auto iter = m_hms_panel->temp_hms_list.find(key);
         if (iter != m_hms_panel->temp_hms_list.end()) {
@@ -132,6 +133,7 @@ AddMachinePanel::~AddMachinePanel() {
         update_hms_tag();
         e.Skip();
     });
+    */
 
     Bind(EVT_JUMP_TO_HMS, &MonitorPanel::jump_to_HMS, this);
 }
@@ -197,8 +199,8 @@ MonitorPanel::~MonitorPanel()
     m_upgrade_panel = new UpgradePanel(m_tabpanel);
     m_tabpanel->AddPage(m_upgrade_panel, _L("Update"), "", false);
 
-    m_hms_panel = new HMSPanel(m_tabpanel);
-    m_tabpanel->AddPage(m_hms_panel, "HMS","", false);
+    //m_hms_panel = new HMSPanel(m_tabpanel);
+    //m_tabpanel->AddPage(m_hms_panel, "HMS","", false);
 
     m_initialized = true;
     show_status((int)MonitorStatus::MONITOR_NO_PRINTER);
@@ -286,9 +288,9 @@ void MonitorPanel::on_update_all(wxMouseEvent &event)
     Slic3r::DeviceManager* dev = Slic3r::GUI::wxGetApp().getDeviceManager();
     if (!dev) return;
 
-    if ( dev->get_selected_machine() && (dev->get_selected_machine()->dev_id != event.GetString().ToStdString()) && m_hms_panel) {
-        m_hms_panel->clear_hms_tag();
-    }
+    //if ( dev->get_selected_machine() && (dev->get_selected_machine()->dev_id != event.GetString().ToStdString()) && m_hms_panel) {
+    //    m_hms_panel->clear_hms_tag();
+    //}
 
     if (!dev->set_selected_machine(event.GetString().ToStdString()))
         return;
@@ -373,12 +375,12 @@ void MonitorPanel::update_all()
     m_media_file_panel->SetMachineObject(obj);
     m_side_tools->update_status(obj);
     
-    if (!obj) {
-        show_status((int)MONITOR_NO_PRINTER);
-        m_hms_panel->clear_hms_tag();
-        m_tabpanel->GetBtnsListCtrl()->showNewTag(3, false);
-        return;
-    }
+    //if (!obj) {
+    //    show_status((int)MONITOR_NO_PRINTER);
+    //    m_hms_panel->clear_hms_tag();
+    //    m_tabpanel->GetBtnsListCtrl()->showNewTag(3, false);
+    //    return;
+    //}
 
     if (obj->is_connecting()) {
         show_status(MONITOR_CONNECTING);
@@ -402,9 +404,9 @@ void MonitorPanel::update_all()
         m_status_info_panel->update(obj);
     }
 
-    if (m_hms_panel->IsShown() ||  (obj->hms_list.size() != m_hms_panel->temp_hms_list.size())) {
-        m_hms_panel->update(obj);
-    }
+    //if (m_hms_panel->IsShown() ||  (obj->hms_list.size() != m_hms_panel->temp_hms_list.size())) {
+    //    m_hms_panel->update(obj);
+    //}
 
 #if !BBL_RELEASE_TO_PUBLIC
     if (m_upgrade_panel->IsShown()) {
@@ -508,7 +510,7 @@ Freeze();
     // update panels
     if (m_side_tools) { m_side_tools->show_status(status); };
     m_status_info_panel->show_status(status);
-    m_hms_panel->show_status(status);
+    //m_hms_panel->show_status(status);
     m_upgrade_panel->show_status(status);
 
     if ((status & (int)MonitorStatus::MONITOR_NO_PRINTER) != 0) {
