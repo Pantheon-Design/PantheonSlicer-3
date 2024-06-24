@@ -262,10 +262,14 @@ set(SLIC3R_GUI_SOURCES
     GUI/UpgradePanel.hpp
     GUI/HintNotification.hpp
     GUI/HintNotification.cpp
+    GUI/HMSPanel.hpp
+    GUI/HMSPanel.cpp
     GUI/MonitorPage.cpp
     GUI/MonitorPage.hpp
     GUI/StatusPanel.cpp
     GUI/StatusPanel.hpp
+    GUI/HMS.hpp
+    GUI/HMS.cpp
     GUI/SliceInfoPanel.cpp
     GUI/SliceInfoPanel.hpp
     GUI/CameraPopup.cpp

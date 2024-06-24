@@ -31,6 +31,7 @@
 #include "Widgets/ImageSwitchButton.hpp"
 #include "Widgets/AMSControl.hpp"
 #include "Widgets/FanControl.hpp"
+#include "HMS.hpp"
 
 class StepIndicator;
 
