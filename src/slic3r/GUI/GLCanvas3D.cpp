@@ -205,10 +205,10 @@ void GLCanvas3D::LayersEditing::show_tooltip_information(const GLCanvas3D& canva
     }
     caption_max += GImGui->Style.WindowPadding.x + imgui.scaled(1);
 
-    float font_size = ImGui::GetFontSize();
-    ImVec2 button_size = ImVec2(font_size * 1.8, font_size * 1.3);
+	float  scale       = canvas.get_scale();
+    ImVec2 button_size = ImVec2(25 * scale, 25 * scale); // ORCA: Use exact resolution will prevent blur on icon
     ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 0.0f);
-    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {0.0f, GImGui->Style.FramePadding.y});
+    ImGui::PushStyleVar(ImGuiStyleVar_FramePadding, {0, 0}); // ORCA: Dont add padding
     ImGui::ImageButton3(normal_id, hover_id, button_size);
 
     if (ImGui::IsItemHovered()) {
@@ -5575,12 +5575,6 @@ bool GLCanvas3D::_render_arrange_menu(float left, float right, float bottom, flo
         settings_changed = true;
     }
 
-    if (imgui->bbl_checkbox(_L("Allow multiple materials on same plate"), settings.allow_multi_materials_on_same_plate)) {
-        settings_out.allow_multi_materials_on_same_plate = settings.allow_multi_materials_on_same_plate;
-        appcfg->set("arrange", multi_material_key.c_str(), settings_out.allow_multi_materials_on_same_plate );
-        settings_changed = true;
-    }
-
     // only show this option if the printer has micro Lidar and can do first layer scan
     DynamicPrintConfig &current_config = wxGetApp().preset_bundle->printers.get_edited_preset().config;
     const bool has_lidar = wxGetApp().preset_bundle->is_bbl_vendor();
@@ -6309,6 +6303,50 @@ bool GLCanvas3D::_init_main_toolbar()
     item.enabling_callback = []()->bool {return wxGetApp().plater()->can_add_model(); };
     if (!m_main_toolbar.add_item(item))
         return false;
+
+    item.name                 = "delete";
+    item.icon_filename        = m_is_dark ? "toolbar_close_dark.svg" : "toolbar_close.svg";
+    item.tooltip              = _u8L("Delete") + " [Del]";
+    item.sprite_id++;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_DELETE));
+    };
+    item.enabling_callback = []() -> bool { return wxGetApp().plater()->can_delete(); };
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+
+    item.name                 = "more";
+    item.icon_filename        = "instance_add.svg";
+    item.tooltip              = _u8L("Add instance") + " [+]";
+    item.sprite_id++;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_MORE));
+    };
+    item.visibility_callback = GLToolbarItem::Default_Visibility_Callback;
+    item.enabling_callback   = []() -> bool { return wxGetApp().plater()->can_increase_instances(); };
+
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+    item.name                 = "fewer";
+    item.icon_filename        = "instance_remove.svg";
+    item.tooltip              = _u8L("Remove instance") + " [-]";
+    item.sprite_id++;
+    item.left.action_callback = [this]() {
+        if (m_canvas != nullptr)
+            wxPostEvent(m_canvas, SimpleEvent(EVT_GLTOOLBAR_FEWER));
+    };
+    item.visibility_callback = GLToolbarItem::Default_Visibility_Callback;
+    item.enabling_callback   = []() -> bool { return wxGetApp().plater()->can_decrease_instances(); };
+    if (!m_main_toolbar.add_item(item))
+        return false;
+
+    if (!m_main_toolbar.add_separator())
+        return false;
+
 
     item.name = "addplate";
     item.icon_filename = m_is_dark ? "toolbar_add_plate_dark.svg" : "toolbar_add_plate.svg";

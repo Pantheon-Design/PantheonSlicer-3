@@ -715,6 +715,9 @@ PlaterPresetComboBox::PlaterPresetComboBox(wxWindow *parent, Preset::Type preset
                 wxQueueEvent(wxGetApp().plater(), evt);
             }
         });
+        // Disable the button 
+        clr_picker->Disable();
+        clr_picker->SetBackgroundColour(wxColour(140, 140, 140));
     }
     else {
         edit_btn = new ScalableButton(parent, wxID_ANY, "cog");
@@ -935,7 +938,6 @@ void PlaterPresetComboBox::update()
         //unsigned char rgb[3];
         filament_color = m_preset_bundle->project_config.opt_string("filament_colour", (unsigned int) m_filament_idx);
         wxColor clr(filament_color);
-        clr_picker->SetBackgroundColour(clr);
         clr_picker->SetBitmap(*get_extruder_color_icons(true)[m_filament_idx]);
 #ifdef __WXOSX__
         clr_picker->SetLabel(clr_picker->GetLabel()); // Let setBezelStyle: be called
@@ -1105,8 +1107,9 @@ void PlaterPresetComboBox::update()
             set_label_marker(Append(separator(L("Create printer")), *bmp), LABEL_ITEM_WIZARD_ADD_PRINTERS);
         }
     }
-
     update_selection();
+    update_ams_color();
+
     Thaw();
 
     if (!tooltip.IsEmpty()) {
@@ -1126,6 +1129,8 @@ void PlaterPresetComboBox::update()
     if (GetMinWidth() != 10 * m_em_unit)
         SetMinSize(wxSize(10 * m_em_unit, GetSize().GetHeight()));
 #endif //__WXMSW__
+
+
 }
 
 void PlaterPresetComboBox::msw_rescale()
@@ -1353,7 +1358,6 @@ void TabPresetComboBox::update()
     //    set_label_marker(Append(separator(L("Add/Remove filaments")), *bmp), LABEL_ITEM_WIZARD_FILAMENTS);
     //else if (m_type == Preset::TYPE_SLA_MATERIAL)
     //    set_label_marker(Append(separator(L("Add/Remove materials")), *bmp), LABEL_ITEM_WIZARD_MATERIALS);
-
     update_selection();
     Thaw();
 }
@@ -1413,7 +1417,6 @@ void TabPresetComboBox::update_dirty()
 GUI::CalibrateFilamentComboBox::CalibrateFilamentComboBox(wxWindow *parent)
 : PlaterPresetComboBox(parent, Preset::TYPE_FILAMENT)
 {
-    clr_picker->SetBackgroundColour(*wxWHITE);
     clr_picker->SetBitmap(*get_extruder_color_icon("#FFFFFFFF", "", FromDIP(20), FromDIP(20)));
     clr_picker->SetToolTip("");
     clr_picker->Bind(wxEVT_BUTTON, [this](wxCommandEvent& e) {});
