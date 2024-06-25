@@ -3517,6 +3517,8 @@ void GUI_App::update_ui_from_settings()
             update_scrolls(&mainframe->m_settings_dialog);
 #endif //_MSW_DARK_MODE
             update_dark_children_ui(mainframe);
+
+            mainframe->set_print_slice_btn_colour();
         }
     }
 

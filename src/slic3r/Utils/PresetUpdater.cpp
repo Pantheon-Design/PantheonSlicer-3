@@ -712,7 +712,7 @@ void PresetUpdater::priv::sync_config()
                                 std::string name = asset.at("name").get<std::string>();
                                 int versionNumber = -1;
                                 //std::regex regexPattern("Anker_([0-9]+(?:\.[0-9]+)*)\.zip$");
-                                std::regex  regexPattern("orcaslicer-profiles_ota_.*\\.([0-9]+)\\.zip$");
+                                std::regex  regexPattern("pantheonslicer3-profiles_ota_.*\\.([0-9]+)\\.zip$");
 
                                 std::smatch matches;
                                 if (std::regex_search(name, matches, regexPattern) && matches.size() > 1) {

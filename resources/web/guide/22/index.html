@@ -14,8 +14,21 @@
 <script type="text/javascript" src="../js/globalapi.js"></script>	
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="./22.js"></script>	
+<style>
+    #CloseBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body onLoad="OnInit()">
+<button id="CloseBtn" onclick="closePage()">×</button>
+
 <div id="Title">
 	<div class="trans" tid="t14">Filament Selection</div>
 </div>
@@ -146,7 +159,6 @@
 <div id="AcceptArea">
 	<div class="GrayBtn trans" tid="t8" id="PreBtn"  onclick="ReturnPreviewPage()">Back</div>
 	<div class="NormalBtn trans" tid="t25" id="AcceptBtn"  onclick="FinishGuide()">finish</div>
-	<div class="NormalBtn trans" tid="t9" id="GotoNetPluginBtn"  onclick="GotoNetPluginPage()">Next</div>	
 </div>
 <div id="NoticeMask">
 </div>
@@ -161,6 +173,16 @@
 	</div>
 	</div>
 	</div>
-
+	<script>
+        function closePage() {
+            var tSend={};
+            tSend['sequence_id']=Math.round(new Date() / 1000);
+            tSend['command']="user_guide_finish";
+            tSend['data']={};
+            tSend['data']['action']="finish";
+            
+            SendWXMessage( JSON.stringify(tSend) );	
+        }
+    </script>
 </body>
 </html>
