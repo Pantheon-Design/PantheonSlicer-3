@@ -2258,9 +2258,11 @@ void StatusPanel::update_error_message()
                 print_error_str.insert(4, " ");
             }
 
-            wxString error_msg = wxGetApp().get_hms_query()->query_print_error_msg(obj->print_error);
+            wxString error_msg = "";
+            //wxGetApp().get_hms_query()->query_print_error_msg(obj->print_error);
             std::vector<int> used_button;
-            wxString error_image_url = wxGetApp().get_hms_query()->query_print_error_url_action(obj->print_error,obj->dev_id, used_button);
+            wxString         error_image_url = "";
+            //wxGetApp().get_hms_query()->query_print_error_url_action(obj->print_error,obj->dev_id, used_button);
             // special case
             if (print_error_str == "0300 8003" || print_error_str == "0300 8002" || print_error_str == "0300 800A")
                 used_button.emplace_back(PrintErrorDialog::PrintErrorButton::JUMP_TO_LIVEVIEW);
