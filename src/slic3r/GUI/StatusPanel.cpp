@@ -3846,7 +3846,7 @@ void StatusPanel::on_ams_selected(wxCommandEvent &event)
 
 void StatusPanel::on_ams_guide(wxCommandEvent& event)
 {
-    wxString ams_wiki_url = "https://wiki.bambulab.com/en/software/bambu-studio/use-ams-on-bambu-studio";
+    wxString ams_wiki_url = "";
     wxLaunchDefaultBrowser(ams_wiki_url);
 }
 

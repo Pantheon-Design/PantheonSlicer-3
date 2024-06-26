@@ -292,7 +292,7 @@ void AMSMaterialsSetting::create_panel_kn(wxWindow* parent)
     m_ratio_text->Bind(wxEVT_LEAVE_WINDOW, [this](auto& e) {SetCursor(wxCURSOR_ARROW); });
 
     m_ratio_text->Bind(wxEVT_LEFT_DOWN, [this](auto& e) {
-        wxLaunchDefaultBrowser(wxT("https://wiki.bambulab.com/en/software/bambu-studio/calibration_pa"));
+        wxLaunchDefaultBrowser(wxT(""));
     });
 
 
