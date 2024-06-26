@@ -172,12 +172,6 @@ void start_ping_test()
         output_temp = output_i.ToStdString(wxConvUTF8);
         BOOST_LOG_TRIVIAL(info) << "ping www.apple.com:" << output_temp;
     }
-    wxExecute("ping www.bambulab.com", output, wxEXEC_NODISABLE);
-    for (int i = 0; i < output.size(); i++) {
-        output_i = output[i].To8BitData();
-        output_temp = output_i.ToStdString(wxConvUTF8);
-        BOOST_LOG_TRIVIAL(info) << "ping bambulab:" << output_temp;
-    }
     //Get GateWay IP
     wxExecute("ping 192.168.0.1", output, wxEXEC_NODISABLE);
     for (int i = 0; i < output.size(); i++) {
