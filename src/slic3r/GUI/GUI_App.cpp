@@ -1117,22 +1117,22 @@ std::string GUI_App::get_http_url(std::string country_code, std::string path)
 {
     std::string url;
     if (country_code == "US") {
-        url = "https://api.bambulab.com/";
+        url = "";
     }
     else if (country_code == "CN") {
-        url = "https://api.bambulab.cn/";
+        url = "";
     }
     else if (country_code == "ENV_CN_DEV") {
-        url = "https://api-dev.bambu-lab.com/";
+        url = "";
     }
     else if (country_code == "ENV_CN_QA") {
-        url = "https://api-qa.bambu-lab.com/";
+        url = "";
     }
     else if (country_code == "ENV_CN_PRE") {
-        url = "https://api-pre.bambu-lab.com/";
+        url = "";
     }
     else {
-        url = "https://api.bambulab.com/";
+        url = "";
     }
 
     url += path.empty() ? "v1/iot-service/api/slicer/resource" : path;
@@ -1143,22 +1143,22 @@ std::string GUI_App::get_model_http_url(std::string country_code)
 {
     std::string url;
     if (country_code == "US") {
-        url = "https://makerworld.com/";
+        url = "";
     }
     else if (country_code == "CN") {
-        url = "https://makerworld.com/";
+        url = "";
     }
     else if (country_code == "ENV_CN_DEV") {
-        url = "https://makerhub-dev.bambu-lab.com/";
+        url = "";
     }
     else if (country_code == "ENV_CN_QA") {
-        url = "https://makerhub-qa.bambu-lab.com/";
+        url = "";
     }
     else if (country_code == "ENV_CN_PRE") {
-        url = "https://makerhub-pre.bambu-lab.com/";
+        url = "";
     }
     else {
-        url = "https://makerworld.com/";
+        url = "";
     }
 
     return url;
