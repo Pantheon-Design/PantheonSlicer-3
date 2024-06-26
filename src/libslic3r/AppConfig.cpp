@@ -73,18 +73,8 @@ std::string AppConfig::get_hms_host()
 {
     std::string sel = get("iot_environment");
     std::string host = "";
-// #if !BBL_RELEASE_TO_PUBLIC
-//     if (sel == ENV_DEV_HOST)
-//         host = "e-dev.bambu-lab.com";
-//     else if (sel == ENV_QAT_HOST)
-//         host = "e-qa.bambu-lab.com";
-//     else if (sel == ENV_PRE_HOST)
-//         host = "e-pre.bambu-lab.com";
-//     else if (sel == ENV_PRODUCT_HOST)
-//         host = "e.bambulab.com";
-//     return host;
-// #else
-    return "e.bambulab.com";
+
+    return "";
 // #endif
 }
 
