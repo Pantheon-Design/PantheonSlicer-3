@@ -3154,13 +3154,13 @@ void GUI_App::link_to_network_check()
 
 
     if (country_code == "US") {
-        url = "https://status.bambulab.com";
+        url = "";
     }
     else if (country_code == "CN") {
-        url = "https://status.bambulab.cn";
+        url = "";
     }
     else {
-        url = "https://status.bambulab.com";
+        url = "";
     }
     wxLaunchDefaultBrowser(url);
 }
