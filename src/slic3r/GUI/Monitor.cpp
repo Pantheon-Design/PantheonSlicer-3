@@ -271,7 +271,6 @@ void MonitorPanel::on_update_all(wxMouseEvent &event)
     Slic3r::DeviceManager* dev = Slic3r::GUI::wxGetApp().getDeviceManager();
     if (!dev) return;
 
-    //}
 
     if (!dev->set_selected_machine(event.GetString().ToStdString()))
         return;
