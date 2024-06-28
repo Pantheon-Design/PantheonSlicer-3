@@ -1893,6 +1893,10 @@ static BambuBedType to_bambu_bed_type(BedType type)
 
 void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGeneratorCallback thumbnail_cb)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
+
+
     PROFILE_FUNC();
 
     // modifies m_silent_time_estimator_enabled
@@ -2440,8 +2444,22 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
     if (activate_chamber_temp_control && max_chamber_temp > 0)
         file.write(m_writer.set_chamber_temperature(max_chamber_temp, true)); // set chamber_temperature
 
+    auto end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed3 = end - start;
+    std::cout << "Elapsed time: " << elapsed3.count() << " seconds" << std::endl;
+
+    auto start4 = std::chrono::high_resolution_clock::now();
+
+
+
     // Write the custom start G-code
     file.writeln(machine_start_gcode);
+
+    end                                    = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed31 = end - start4;
+    std::cout << "Elapsed time: " << elapsed31.count() << " seconds" << std::endl;
+    auto start41 = std::chrono::high_resolution_clock::now();
+
 
     //BBS: gcode writer doesn't know where the real position of extruder is after inserting custom gcode
     m_writer.set_current_position_clear(false);
@@ -2450,6 +2468,12 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
     //flush FanMover buffer to avoid modifying the start gcode if it's manual.
     if (!machine_start_gcode.empty() && this->m_fan_mover.get() != nullptr)
         file.write(this->m_fan_mover.get()->process_gcode("", true));
+
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed32 = end - start41;
+    std::cout << "Elapsed time: " << elapsed32.count() << " seconds" << std::endl;
+    auto start42 = std::chrono::high_resolution_clock::now();
+
 
     // Process filament-specific gcode.
    /* if (has_wipe_tower) {
@@ -2480,13 +2504,30 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
     // Set other general things.
     file.write(this->preamble());
 
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed33 = end - start42;
+    std::cout << "Elapsed time: " << elapsed33.count() << " seconds" << std::endl;
+    auto start43 = std::chrono::high_resolution_clock::now();
+
     // Calculate wiping points if needed
     DoExport::init_ooze_prevention(print, m_ooze_prevention);
     print.throw_if_canceled();
 
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed34 = end - start43;
+    std::cout << "Elapsed time: " << elapsed34.count() << " seconds" << std::endl;
+    auto start44 = std::chrono::high_resolution_clock::now();
+
+
     // Collect custom seam data from all objects.
     std::function<void(void)> throw_if_canceled_func = [&print]() { print.throw_if_canceled(); };
     m_seam_placer.init(print, throw_if_canceled_func);
+
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed35 = end - start44;
+    std::cout << "Elapsed time: " << elapsed35.count() << " seconds" << std::endl;
+    auto start45 = std::chrono::high_resolution_clock::now();
+
 
     // BBS: get path for change filament
     if (m_writer.multiple_extruders) {
@@ -2505,6 +2546,13 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
         // Ugly hack: Do not set the initial extruder if the extruder is primed using the MMU priming towers at the edge of the print bed.
         file.write(this->set_extruder(initial_extruder_id, 0.));
     }
+
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed36 = end - start45;
+    std::cout << "Elapsed time: " << elapsed36.count() << " seconds" << std::endl;
+    auto start46 = std::chrono::high_resolution_clock::now();
+
+
     // BBS: set that indicates objs with brim
     for (auto iter = print.m_brimMap.begin(); iter != print.m_brimMap.end(); ++iter) {
         if (!iter->second.empty())
@@ -2516,7 +2564,23 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
     }
     if (this->m_objsWithBrim.empty() && this->m_objSupportsWithBrim.empty()) m_brim_done = true;
 
+    end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed37 = end - start46;
+    std::cout << "Elapsed time: " << elapsed37.count() << " seconds" << std::endl;
+    auto start47 = std::chrono::high_resolution_clock::now();
+
+
+
     // SoftFever: calib
+
+
+    end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed4 = end - start4;
+    std::cout << "Elapsed time: " << elapsed4.count() << " seconds" << std::endl;
+
+    auto start5 = std::chrono::high_resolution_clock::now();
+
+
     if (print.calib_params().mode == CalibMode::Calib_PA_Line) {
         std::string gcode;
         if ((print.default_object_config().outer_wall_acceleration.value > 0 && print.default_object_config().outer_wall_acceleration.value > 0)) {
@@ -2800,6 +2864,17 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
     file.write("\n");
 
     print.throw_if_canceled();
+
+
+
+
+    end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed5 = end - start;
+    std::cout << "Elapsed time: " << elapsed5.count() << " seconds" << std::endl;
+
+    std::chrono::duration<double> elapsed6 = end - start5;
+    std::cout << "Elapsed time: " << elapsed6.count() << " seconds" << std::endl;
+
 }
 
 //BBS
@@ -2829,6 +2904,8 @@ void GCode::process_layers(
     size_t layer_to_print_idx = 0;
     const auto generator = tbb::make_filter<void, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
         [this, &print, &tool_ordering, &print_object_instances_ordering, &layers_to_print, &layer_to_print_idx](tbb::flow_control& fc) -> LayerResult {
+            auto start = std::chrono::high_resolution_clock::now();
+
             if (layer_to_print_idx >= layers_to_print.size()) {
                 if (layer_to_print_idx == layers_to_print.size() + (m_pressure_equalizer ? 1 : 0)) {
                     fc.stop();
@@ -2837,6 +2914,12 @@ void GCode::process_layers(
                     // Pressure equalizer need insert empty input. Because it returns one layer back.
                     // Insert NOP (no operation) layer;
                     ++layer_to_print_idx;
+
+                    auto                          end     = std::chrono::high_resolution_clock::now();
+                    std::chrono::duration<double> elapsed = end - start;
+                    auto                          test    = elapsed.count();
+                    std::string                   numStr  = std::to_string(test);
+
                     return LayerResult::make_nop_layer_result();
                 }
             } else {
@@ -2848,7 +2931,18 @@ void GCode::process_layers(
                 //BBS
                 check_placeholder_parser_failed();
                 print.throw_if_canceled();
-                return this->process_layer(print, layer.second, layer_tools, &layer == &layers_to_print.back(), &print_object_instances_ordering, size_t(-1));
+
+
+
+                auto a = this->process_layer(print, layer.second, layer_tools, &layer == &layers_to_print.back(),
+                                                      &print_object_instances_ordering, size_t(-1));
+
+                auto                          end = std::chrono::high_resolution_clock::now();
+                std::chrono::duration<double> elapsed = end - start;
+                auto                          test    = elapsed.count();
+                std::string                   numStr  = std::to_string(test);
+
+                return a;
             }
         });
     if (m_spiral_vase) {
@@ -2858,22 +2952,54 @@ void GCode::process_layers(
     }
     const auto spiral_mode = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
         [&spiral_mode = *this->m_spiral_vase.get(), &layers_to_print](LayerResult in) -> LayerResult {
+            auto start = std::chrono::high_resolution_clock::now();
+
+
         	if (in.nop_layer_result)
                 return in;
                 
             spiral_mode.enable(in.spiral_vase_enable);
             bool last_layer = in.layer_id == layers_to_print.size() - 1;
+
+            auto                          end     = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            auto                          test    = elapsed.count();
+            std::string                   numStr  = std::to_string(test);
+
             return { spiral_mode.process_layer(std::move(in.gcode), last_layer), in.layer_id, in.spiral_vase_enable, in.cooling_buffer_flush};
         });
     const auto pressure_equalizer = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
         [pressure_equalizer = this->m_pressure_equalizer.get()](LayerResult in) -> LayerResult {
-            return pressure_equalizer->process_layer(std::move(in));
+
+            auto start = std::chrono::high_resolution_clock::now();
+
+            auto a = pressure_equalizer->process_layer(std::move(in));
+
+            auto                          end     = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            auto                          test    = elapsed.count();
+            std::string                   numStr  = std::to_string(test);
+
+            return a;
+        
         });
     const auto cooling = tbb::make_filter<LayerResult, std::string>(slic3r_tbb_filtermode::serial_in_order,
         [&cooling_buffer = *this->m_cooling_buffer.get()](LayerResult in) -> std::string {
+
+            auto start = std::chrono::high_resolution_clock::now();
+
         	if (in.nop_layer_result)
                 return in.gcode;
-            return cooling_buffer.process_layer(std::move(in.gcode), in.layer_id, in.cooling_buffer_flush);
+
+            auto a = cooling_buffer.process_layer(std::move(in.gcode), in.layer_id, in.cooling_buffer_flush);
+
+            auto                          end     = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            auto                          test    = elapsed.count();
+            std::string                   numStr  = std::to_string(test);
+
+            return a;
+        
         });
     const auto output = tbb::make_filter<std::string, void>(slic3r_tbb_filtermode::serial_in_order,
         [&output_stream](std::string s) { output_stream.write(s); }
@@ -2900,14 +3026,19 @@ void GCode::process_layers(
     });
 
     // The pipeline elements are joined using const references, thus no copying is performed.
+    int num_cores           = std::thread::hardware_concurrency();
+    int num_items_in_flight = num_cores / 2; 
+
     if (m_spiral_vase && m_pressure_equalizer)
-        tbb::parallel_pipeline(12, generator & spiral_mode & pressure_equalizer & cooling & fan_mover & output);
+        tbb::parallel_pipeline(num_items_in_flight, generator & spiral_mode & pressure_equalizer & cooling & fan_mover & output);
     else if (m_spiral_vase)
-    	tbb::parallel_pipeline(12, generator & spiral_mode & cooling & fan_mover & output);
-    else if	(m_pressure_equalizer)
-        tbb::parallel_pipeline(12, generator & pressure_equalizer & cooling & fan_mover & output);
+        tbb::parallel_pipeline(num_items_in_flight, generator & spiral_mode & cooling & fan_mover & output);
+    else if (m_pressure_equalizer) 
+
+        tbb::parallel_pipeline(num_items_in_flight, generator & pressure_equalizer & cooling & fan_mover & output);
+
     else
-    	tbb::parallel_pipeline(12, generator & cooling & fan_mover & output);
+        tbb::parallel_pipeline(num_items_in_flight, generator & cooling & fan_mover & output);
 }
 
 // Process all layers of a single object instance (sequential mode) with a parallel pipeline:

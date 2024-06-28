@@ -24,6 +24,9 @@
 
 #include "libslic3r/Utils.hpp"
 
+#include <chrono>
+
+
 //#define DEBUG_FILES
 
 #ifdef DEBUG_FILES
@@ -687,7 +690,7 @@ void compute_global_occlusion(GlobalModelInfo &result, const PrintObject *po,
       << "SeamPlacer: build AABB tree: start";
   auto raycasting_tree = AABBTreeIndirect::build_aabb_tree_over_indexed_triangle_set(triangle_set.vertices,
                                                                                      triangle_set.indices);
-
+ 
   throw_if_canceled();
   BOOST_LOG_TRIVIAL(debug)
       << "SeamPlacer: build AABB tree: end";
@@ -1414,6 +1417,10 @@ void SeamPlacer::align_seam_points(const PrintObject *po, const SeamPlacerImpl::
 }
 
 void SeamPlacer::init(const Print &print, std::function<void(void)> throw_if_canceled_func) {
+
+  auto start = std::chrono::high_resolution_clock::now();
+
+
   using namespace SeamPlacerImpl;
   m_seam_per_object.clear();
 
@@ -1426,9 +1433,22 @@ void SeamPlacer::init(const Print &print, std::function<void(void)> throw_if_can
       GlobalModelInfo global_model_info { };
       gather_enforcers_blockers(global_model_info, po);
       throw_if_canceled_func();
+
+      auto                          end     = std::chrono::high_resolution_clock::now();
+      std::chrono::duration<double> elapsed = end - start;
+      std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
+      auto start1 = std::chrono::high_resolution_clock::now();
+
       if (configured_seam_preference == spAligned || configured_seam_preference == spNearest) {
         compute_global_occlusion(global_model_info, po, throw_if_canceled_func);
       }
+
+      end                                   = std::chrono::high_resolution_clock::now();
+      std::chrono::duration<double> elapsed1 = end - start1;
+      std::cout << "Elapsed time: " << elapsed1.count() << " seconds" << std::endl;
+      auto start2 = std::chrono::high_resolution_clock::now();
+
+
       throw_if_canceled_func();
       BOOST_LOG_TRIVIAL(debug)
           << "SeamPlacer: gather_seam_candidates: start";
@@ -1451,6 +1471,12 @@ void SeamPlacer::init(const Print &print, std::function<void(void)> throw_if_can
     BOOST_LOG_TRIVIAL(debug)
         << "SeamPlacer: calculate_overhangs and layer embdedding: end";
     throw_if_canceled_func();
+
+    auto end                                     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " seconds" << std::endl;
+    auto start1 = std::chrono::high_resolution_clock::now();
+
     if (configured_seam_preference != spNearest) { // For spNearest, the seam is picked in the place_seam method with actual nozzle position information
       BOOST_LOG_TRIVIAL(debug)
           << "SeamPlacer: pick_seam_point : start";
@@ -1472,6 +1498,7 @@ void SeamPlacer::init(const Print &print, std::function<void(void)> throw_if_can
           << "SeamPlacer: pick_seam_point : end";
     }
     throw_if_canceled_func();
+
     if (configured_seam_preference == spAligned || configured_seam_preference == spRear) {
       BOOST_LOG_TRIVIAL(debug)
           << "SeamPlacer: align_seam_points : start";
