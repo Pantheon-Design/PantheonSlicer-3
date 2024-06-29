@@ -3557,6 +3557,10 @@ void TabFilament::toggle_options()
         toggle_line("eng_plate_temp_initial_layer", support_multi_bed_types);
         toggle_line("textured_plate_temp_initial_layer", support_multi_bed_types);
 
+        bool is_pellet_printer = cfg.opt_bool("pellet_modded_printer");
+
+        toggle_line("pellet_flow_coefficient", is_pellet_printer);
+        toggle_line("filament_diameter", !is_pellet_printer);
     }
     if (m_active_page->title() == L("Setting Overrides"))
         update_filament_overrides_page();
@@ -3668,6 +3672,7 @@ void TabPrinter::build_fff()
         optgroup->append_single_option_line(option);
         // optgroup->append_single_option_line("printable_area");
         optgroup->append_single_option_line("printable_height");
+        optgroup->append_single_option_line("pellet_modded_printer");
         optgroup->append_single_option_line("support_multi_bed_types","bed-types");
         optgroup->append_single_option_line("nozzle_volume");
         optgroup->append_single_option_line("best_object_pos");
