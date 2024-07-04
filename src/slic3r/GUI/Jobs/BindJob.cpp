@@ -105,7 +105,6 @@ void BindJob::process(Ctl &ctl)
             try
             {
                 error_code = stoi(result_info);
-                result_info = wxGetApp().get_hms_query()->query_print_error_msg(error_code).ToStdString();
             }
             catch (...) {
                 ;

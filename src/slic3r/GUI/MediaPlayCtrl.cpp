@@ -85,10 +85,7 @@ MediaPlayCtrl::MediaPlayCtrl(wxWindow *parent, wxMediaCtrl2 *media_ctrl, const w
 
     m_button_play->Bind(wxEVT_COMMAND_BUTTON_CLICKED, [this](auto &e) { TogglePlay(); });
     m_button_play->Bind(wxEVT_RIGHT_UP, [this](auto & e) { m_media_ctrl->Play(); });
-    // m_label_status->Bind(wxEVT_LEFT_UP, [this](auto &e) {
-    //     auto url = wxString::Format(L"https://wiki.bambulab.com/%s/software/bambu-studio/faq/live-view", L"en");
-    //     wxLaunchDefaultBrowser(url);
-    // });
+
 
     Bind(wxEVT_RIGHT_UP, [this](auto & e) {
         wxClipboard & c = *wxTheClipboard;
@@ -266,11 +263,11 @@ void MediaPlayCtrl::Play()
         m_disable_lan = m_remote_support && !m_lan_mode; // try remote next time
         std::string url;
         if (m_lan_proto == MachineObject::LVL_Local)
-            url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
+            url = "";
         else if (m_lan_proto == MachineObject::LVL_Rtsps)
-            url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
+            url = "";
         else if (m_lan_proto == MachineObject::LVL_Rtsp)
-            url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
+            url = "";
         url += "&device=" + m_machine;
         url += "&net_ver=" + agent_version;
         url += "&dev_ver=" + m_dev_ver;
@@ -303,7 +300,7 @@ void MediaPlayCtrl::Play()
     
     if (!m_remote_support) { // not support tutk
         m_failed_code = -1;
-        m_url = "bambu:///local/";
+        m_url = "";
         Stop(_L("Please enter the IP of printer to connect."));
         return;
     }
@@ -314,7 +311,7 @@ void MediaPlayCtrl::Play()
     if (agent) {
         agent->get_camera_url(m_machine, 
             [this, m = m_machine, v = agent_version, dv = m_dev_ver](std::string url) {
-            if (boost::algorithm::starts_with(url, "bambu:///")) {
+            if (boost::algorithm::starts_with(url, "")) {
                 url += "&device=" + into_u8(m);
                 url += "&net_ver=" + v;
                 url += "&dev_ver=" + dv;
@@ -329,7 +326,7 @@ void MediaPlayCtrl::Play()
                     return;
                 }
                 if (m_last_state == MEDIASTATE_INITIALIZING) {
-                    if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
+                    if (url.empty() || !boost::algorithm::starts_with(url, "")) {
                         m_failed_code = 3;
                         Stop(_L("Connection Failed. Please check the network and try again"));
                     } else {
@@ -496,11 +493,11 @@ void MediaPlayCtrl::ToggleStream()
     if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support) && !m_disable_lan && !m_lan_ip.empty()) {
         std::string url;
         if (m_lan_proto == MachineObject::LVL_Local)
-            url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
+            url = "";
         else if (m_lan_proto == MachineObject::LVL_Rtsps)
-            url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
+            url = "";
         else if (m_lan_proto == MachineObject::LVL_Rtsp)
-            url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
+            url = "";
         url += "&device=" + into_u8(m_machine);
         url += "&dev_ver=" + m_dev_ver;
         BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(hide_id_middle_string(url, url.find(m_lan_ip), m_lan_ip.length()), {m_lan_passwd});
@@ -515,7 +512,7 @@ void MediaPlayCtrl::ToggleStream()
     NetworkAgent *agent = wxGetApp().getAgent();
     if (!agent) return;
     agent->get_camera_url(m_machine, [this, m = m_machine, v = agent->get_version(), dv = m_dev_ver](std::string url) {
-        if (boost::algorithm::starts_with(url, "bambu:///")) {
+        if (boost::algorithm::starts_with(url, "")) {
             url += "&device=" + m;
             url += "&net_ver=" + v;
             url += "&dev_ver=" + dv;
@@ -526,7 +523,7 @@ void MediaPlayCtrl::ToggleStream()
                 {"?uid=", "authkey=", "passwd=", "license=", "token="});
         CallAfter([this, m, url] {
             if (m != m_machine) return;
-            if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
+            if (url.empty() || !boost::algorithm::starts_with(url, "")) {
                 MessageDialog(this->GetParent(), wxString::Format(_L("Virtual camera initialize failed (%s)!"), url.empty() ? _L("Network unreachable") : from_u8(url)), _L("Information"),
                               wxICON_INFORMATION)
                     .ShowModal();
@@ -717,7 +714,7 @@ bool MediaPlayCtrl::start_stream_service(bool *need_install)
         boost::nowide::ofstream file(file_url);
         file.close();
     }
-    wxString file_url2 = L"bambu:///camera/" + from_u8(file_url);
+    wxString file_url2 = L"" + from_u8(file_url);
     file_url2.Replace("\\", "/");
     file_url2 = wxURI(file_url2).BuildURI();
     try {

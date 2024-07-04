@@ -704,12 +704,6 @@ wxBoxSizer *PreferencesDialog::create_item_checkbox(wxString title, wxWindow *pa
             }
         }
 
-        if (param == "installed_networking") {
-            bool pbool = app_config->get_bool("installed_networking");
-            if (pbool) {
-                GUI::wxGetApp().CallAfter([] { GUI::wxGetApp().ShowDownNetPluginDlg(); });
-            }
-        }
 
 #endif // __WXMSW__
 
@@ -1243,9 +1237,9 @@ wxWindow* PreferencesDialog::create_debug_page()
     auto loglevel_combox = create_item_loglevel_combobox(_L("Log Level"), page, _L("Log Level"), log_level_list);
 
     auto title_host = create_item_title(_L("Host Setting"), page, _L("Host Setting"));
-    auto radio1     = create_item_radiobox(_L("DEV host: api-dev.bambu-lab.com/v1"), page, wxEmptyString, 50, 1, "dev_host");
-    auto radio2     = create_item_radiobox(_L("QA  host: api-qa.bambu-lab.com/v1"), page, wxEmptyString, 50, 1, "qa_host");
-    auto radio3     = create_item_radiobox(_L("PRE host: api-pre.bambu-lab.com/v1"), page, wxEmptyString, 50, 1, "pre_host");
+    auto radio1     = create_item_radiobox(_L("DEV host: "), page, wxEmptyString, 50, 1, "dev_host");
+    auto radio2     = create_item_radiobox(_L("QA  host: "), page, wxEmptyString, 50, 1, "qa_host");
+    auto radio3     = create_item_radiobox(_L("PRE host: "), page, wxEmptyString, 50, 1, "pre_host");
     auto radio4     = create_item_radiobox(_L("Product host"), page, wxEmptyString, 50, 1, "product_host");
 
     if (m_iot_environment_def == ENV_DEV_HOST) {

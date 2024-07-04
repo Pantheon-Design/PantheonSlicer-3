@@ -128,7 +128,7 @@ CameraPopup::CameraPopup(wxWindow *parent)
     top_sizer->Add(m_custom_camera_input_confirm, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, FromDIP(5));
     main_sizer->Add(top_sizer, 0, wxALL, FromDIP(10));
 
-    auto url = wxString::Format(L"https://wiki.bambulab.com/%s/software/bambu-studio/virtual-camera", L"en");
+    auto url = wxString::Format(L"", L"en");
     auto text = _L("Show \"Live Video\" guide page.");
 
     wxBoxSizer* link_sizer = new wxBoxSizer(wxVERTICAL);
@@ -475,7 +475,7 @@ void CameraPopup::OnLeftUp(wxMouseEvent &event)
         //hyper link
         auto h_rect = vcamera_guide_link->ClientToScreen(wxPoint(0, 0));
         if (mouse_pos.x > h_rect.x && mouse_pos.y > h_rect.y && mouse_pos.x < (h_rect.x + vcamera_guide_link->GetSize().x) && mouse_pos.y < (h_rect.y + vcamera_guide_link->GetSize().y)) {
-            auto url = wxString::Format(L"https://wiki.bambulab.com/%s/software/bambu-studio/virtual-camera", L"en");
+            auto url = wxString::Format(L"", L"en");
             wxLaunchDefaultBrowser(url);
         }
     }
