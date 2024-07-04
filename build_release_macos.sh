@@ -106,7 +106,7 @@ PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_BUILD_DIR="$PROJECT_DIR/build_$ARCH"
 DEPS_DIR="$PROJECT_DIR/deps"
 DEPS_BUILD_DIR="$DEPS_DIR/build_$ARCH"
-DEPS="$DEPS_BUILD_DIR/PantheonSlicer_dep_$ARCH"
+DEPS="$DEPS_BUILD_DIR/PantheonSlicer-3_dep_$ARCH"
 
 # Fix for Multi-config generators
 if [ "$SLICER_CMAKE_GENERATOR" == "Xcode" ]; then
@@ -140,7 +140,7 @@ function pack_deps() {
         set -x
         mkdir -p "$DEPS"
         cd "$DEPS_BUILD_DIR"
-        tar -zcvf "PantheonSlicer_dep_mac_${ARCH}_$(date +"%Y%m%d").tar.gz" "PantheonSlicer_dep_$ARCH"
+        tar -zcvf "PantheonSlicer-3_dep_mac_${ARCH}_$(date +"%Y%m%d").tar.gz" "PantheonSlicer-3_dep_$ARCH"
     )
 }
 
@@ -155,7 +155,7 @@ function build_slicer() {
                 -G "${SLICER_CMAKE_GENERATOR}" \
                 -DBBL_RELEASE_TO_PUBLIC=1 \
                 -DCMAKE_PREFIX_PATH="$DEPS/usr/local" \
-                -DCMAKE_INSTALL_PREFIX="$PWD/PantheonSlicer" \
+                -DCMAKE_INSTALL_PREFIX="$PWD/PantheonSlicer-3" \
                 -DCMAKE_BUILD_TYPE="$BUILD_CONFIG" \
                 -DCMAKE_MACOSX_RPATH=ON \
                 -DCMAKE_INSTALL_RPATH="${DEPS}/usr/local" \
@@ -175,18 +175,18 @@ function build_slicer() {
     echo "Fix macOS app package..."
     (
         cd "$PROJECT_BUILD_DIR"
-        mkdir -p PantheonSlicer
-        cd PantheonSlicer
+        mkdir -p PantheonSlicer-3
+        cd PantheonSlicer-3
         # remove previously built app
-        rm -rf ./PantheonSlicer.app
+        rm -rf ./PantheonSlicer-3.app
         # fully copy newly built app
-        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer.app" ./PantheonSlicer.app
+        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer-3.app" ./PantheonSlicer-3.app
         # fix resources
-        resources_path=$(readlink ./PantheonSlicer.app/Contents/Resources)
-        rm ./PantheonSlicer.app/Contents/Resources
-        cp -R "$resources_path" ./PantheonSlicer.app/Contents/Resources
+        resources_path=$(readlink ./PantheonSlicer-3.app/Contents/Resources)
+        rm ./PantheonSlicer-3.app/Contents/Resources
+        cp -R "$resources_path" ./PantheonSlicer-3.app/Contents/Resources
         # delete .DS_Store file
-        find ./PantheonSlicer.app/ -name '.DS_Store' -delete
+        find ./PantheonSlicer-3.app/ -name '.DS_Store' -delete
     )
 
     # extract version
@@ -198,7 +198,7 @@ function build_slicer() {
     #     ver=${ver}_dev
     # fi
 
-    # zip -FSr PantheonSlicer${ver}_Mac_${ARCH}.zip PantheonSlicer.app
+    # zip -FSr PantheonSlicer-3${ver}_Mac_${ARCH}.zip PantheonSlicer-3.app
 }
 
 case "${BUILD_TARGET}" in

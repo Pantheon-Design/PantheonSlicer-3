@@ -32,11 +32,11 @@ else()
         endif()
 endif()
 
-option(SLIC3R_STATIC 			"Compile PantheonSlicer with static libraries (Boost, TBB, glew)" ${SLIC3R_STATIC_INITIAL})
-option(SLIC3R_GUI    			"Compile PantheonSlicer with GUI components (OpenGL, wxWidgets)" 1)
-option(SLIC3R_FHS               "Assume PantheonSlicer is to be installed in a FHS directory structure" 0)
+option(SLIC3R_STATIC 			"Compile PantheonSlicer-3 with static libraries (Boost, TBB, glew)" ${SLIC3R_STATIC_INITIAL})
+option(SLIC3R_GUI    			"Compile PantheonSlicer-3 with GUI components (OpenGL, wxWidgets)" 1)
+option(SLIC3R_FHS               "Assume PantheonSlicer-3 is to be installed in a FHS directory structure" 0)
 option(SLIC3R_WX_STABLE         "Build against wxWidgets stable (3.0) as oppsed to dev (3.1) on Linux" 0)
-option(SLIC3R_PROFILE 			"Compile PantheonSlicer with an invasive Shiny profiler" 0)
+option(SLIC3R_PROFILE 			"Compile PantheonSlicer-3 with an invasive Shiny profiler" 0)
 option(SLIC3R_PCH               "Use precompiled headers" 1)
 option(SLIC3R_MSVC_COMPILE_PARALLEL "Compile on Visual Studio in parallel" 1)
 option(SLIC3R_MSVC_PDB          "Generate PDB files on MSVC in Release mode" 1)
@@ -61,7 +61,7 @@ if (APPLE)
     if (CMAKE_MACOSX_BUNDLE)
         set(CMAKE_INSTALL_RPATH @executable_path/../Frameworks)
     endif()
-    SET(CMAKE_XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.softfever3d.PantheonSlicer")
+    SET(CMAKE_XCODE_ATTRIBUTE_PRODUCT_BUNDLE_IDENTIFIER "com.pantheon.slicer-3")
 
     message(STATUS "Orca: IS_CROSS_COMPILE: ${IS_CROSS_COMPILE}")
 endif ()
@@ -132,7 +132,7 @@ if (MINGW)
 endif ()
 
 if (NOT MSVC)
-    # ARMs (Raspberry PI) use an unsigned char by default. Let's make it consistent for PantheonSlicer on all platforms.
+    # ARMs (Raspberry PI) use an unsigned char by default. Let's make it consistent for PantheonSlicer-3 on all platforms.
     add_compile_options(-fsigned-char)
 endif ()
 
@@ -321,7 +321,7 @@ if(WIN32)
     if(MSVC)
         # BOOST_ALL_NO_LIB: Avoid the automatic linking of Boost libraries on Windows. Rather rely on explicit linking.
         add_definitions(-DBOOST_ALL_NO_LIB -DBOOST_USE_WINAPI_VERSION=0x602 -DBOOST_SYSTEM_USE_UTF8 )
-        # Force the source code encoding to UTF-8. See PantheonSlicer GH pull request #5583
+        # Force the source code encoding to UTF-8. See PantheonSlicer-3 GH pull request #5583
         add_compile_options("$<$<C_COMPILER_ID:MSVC>:/utf-8>")
         add_compile_options("$<$<CXX_COMPILER_ID:MSVC>:/utf-8>")
     endif(MSVC)
@@ -333,7 +333,7 @@ add_definitions(-DwxUSE_UNICODE -D_UNICODE -DUNICODE -DWXINTL_NO_GETTEXT_MACRO)
 add_definitions(-DwxNO_UNSAFE_WXSTRING_CONV)
 
 if (SLIC3R_PROFILE)
-    message("PantheonSlicer will be built with a Shiny invasive profiler")
+    message("PantheonSlicer-3 will be built with a Shiny invasive profiler")
     add_definitions(-DSLIC3R_PROFILE)
 endif ()
 
@@ -712,7 +712,7 @@ function(orcaslicer_copy_dlls target config postfix output_dlls)
 endfunction()
 
 
-# libslic3r, OrcaSlicer GUI and the OrcaSlicer executable.
+# libslic3r, PantheonSlicer-3 GUI and the PantheonSlicer-3 executable.
 add_subdirectory(src)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT OrcaSlicer_app_gui)
 
@@ -758,12 +758,12 @@ elseif (SLIC3R_FHS)
     )
     install(FILES src/platform/unix/PantheonSlicer-3.desktop DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
     foreach(SIZE 32 128 192)
-        install(FILES ${SLIC3R_RESOURCES_DIR}/images/PantheonSlicer_${SIZE}px.png
+        install(FILES ${SLIC3R_RESOURCES_DIR}/images/PantheonSlicer-3_${SIZE}px.png
             DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/${SIZE}x${SIZE}/apps RENAME PantheonSlicer.png
         )
     endforeach()
 elseif (CMAKE_MACOSX_BUNDLE)
-    # install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/OrcaSlicer.app/Contents/resources")
+    # install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/PantheonSlicer-3.app/Contents/resources")
 else ()
     install(FILES src/platform/unix/PantheonSlicer-3.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/resources/applications)
     install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/resources")
@@ -773,27 +773,27 @@ install(FILES ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION ".")
 configure_file(${LIBDIR}/platform/unix/fhs.hpp.in ${LIBDIR_BIN}/platform/unix/fhs.hpp)
 
 set (CPACK_PACKAGE_NAME "PantheonSlicer-3")
-set (CPACK_PACKAGE_VENDOR "SoftFever")
+set (CPACK_PACKAGE_VENDOR "Pantheon Design")
 set (CPACK_PACKAGE_VERSION_MAJOR "${ORCA_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MINOR "${ORCA_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${ORCA_VERSION_PATCH}")
-set (CPACK_PACKAGE_FILE_NAME "OrcaSlicer_Windows_Installer_V${SoftFever_VERSION}")
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Orca Slicer is an open source slicer for FDM printers")
-set (CPACK_PACKAGE_HOMEPAGE_URL "https://gitlab.com/pantheondesign-public/pantheonslicer")
+set (CPACK_PACKAGE_FILE_NAME "PantheonSlicer_Windows_Installer_V${SoftFever_VERSION}")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Pantheon Slicer is an open source slicer for FDM printers")
+set (CPACK_PACKAGE_HOMEPAGE_URL "https://gitlab.com/pantheondesign-public/PantheonSlicer-3")
 set (CPACK_PACKAGE_INSTALL_DIRECTORY ${CPACK_PACKAGE_NAME})
 set (CPACK_PACKAGE_ICON "${CMAKE_SOURCE_DIR}/resources/images\\\\PantheonSlicer-3.ico")
 set (CPACK_NSIS_MUI_ICON "${CPACK_PACKAGE_ICON}")
 set (CPACK_NSIS_MUI_UNIICON "${CPACK_PACKAGE_ICON}")
 set (CPACK_NSIS_INSTALLED_ICON_NAME  "$INSTDIR\\\\PantheonSlicer-3.exe")
 set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-    CreateShortCut \\\"$DESKTOP\\\\OrcaSlicer.lnk\\\" \\\"$INSTDIR\\\\PantheonSlicer-3.exe\\\"
+    CreateShortCut \\\"$DESKTOP\\\\PantheonSlicer.lnk\\\" \\\"$INSTDIR\\\\PantheonSlicer-3.exe\\\"
 ")
 set (CPACK_PACKAGE_CHECKSUM SHA256)
 set (CPACK_PACKAGE_INSTALL_REGISTRY_KEY "PantheonSlicer-3")
 set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set (CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 # set (CPACK_NSIS_MODIFY_PATH "ON")
-set(CPACK_PACKAGE_EXECUTABLES "PantheonSlicer-3;OrcaSlicer")
+set(CPACK_PACKAGE_EXECUTABLES "PantheonSlicer-3")
 set(CPACK_CREATE_DESKTOP_LINKS "PantheonSlicer-3")
 set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE.txt) # must also include in install command
 
