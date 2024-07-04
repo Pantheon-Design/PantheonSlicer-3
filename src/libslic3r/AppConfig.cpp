@@ -43,7 +43,6 @@ using namespace nlohmann;
 namespace Slic3r {
         static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases/latest";
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases";
-//static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/Aziooo/testprofile/releases";
 static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3-Profiles/releases";
 
 static const std::string MODELS_STR = "models";
@@ -73,18 +72,8 @@ std::string AppConfig::get_hms_host()
 {
     std::string sel = get("iot_environment");
     std::string host = "";
-// #if !BBL_RELEASE_TO_PUBLIC
-//     if (sel == ENV_DEV_HOST)
-//         host = "e-dev.bambu-lab.com";
-//     else if (sel == ENV_QAT_HOST)
-//         host = "e-qa.bambu-lab.com";
-//     else if (sel == ENV_PRE_HOST)
-//         host = "e-pre.bambu-lab.com";
-//     else if (sel == ENV_PRODUCT_HOST)
-//         host = "e.bambulab.com";
-//     return host;
-// #else
-    return "e.bambulab.com";
+
+    return "";
 // #endif
 }
 

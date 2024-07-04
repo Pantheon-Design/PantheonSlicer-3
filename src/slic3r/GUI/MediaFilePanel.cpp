@@ -453,7 +453,7 @@ void MediaFilePanel::fetchUrl(boost::weak_ptr<PrinterFileSystem> wfs)
     NetworkAgent *agent = wxGetApp().getAgent();
     std::string  agent_version = agent ? agent->get_version() : "";
     if ((m_lan_mode || !m_remote_support) && m_local_support && !m_lan_ip.empty()) {
-        std::string url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
+        std::string url = "" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
         url += "&device=" + m_machine;
         url += "&net_ver=" + agent_version;
         url += "&dev_ver=" + m_dev_ver;
@@ -480,7 +480,7 @@ void MediaFilePanel::fetchUrl(boost::weak_ptr<PrinterFileSystem> wfs)
     if (agent) {
         agent->get_camera_url(m_machine,
             [this, wfs, m = m_machine, v = agent->get_version(), dv = m_dev_ver](std::string url) {
-            if (boost::algorithm::starts_with(url, "bambu:///")) {
+            if (boost::algorithm::starts_with(url, "")) {
                 url += "&device=" + m;
                 url += "&net_ver=" + v;
                 url += "&dev_ver=" + dv;
@@ -491,7 +491,7 @@ void MediaFilePanel::fetchUrl(boost::weak_ptr<PrinterFileSystem> wfs)
             CallAfter([=] {
                 boost::shared_ptr fs(wfs.lock());
                 if (!fs || fs != m_image_grid->GetFileSystem()) return;
-                if (boost::algorithm::starts_with(url, "bambu:///")) {
+                if (boost::algorithm::starts_with(url, "")) {
                     fs->SetUrl(url + "&device=" + m + "&dev_ver=" + v);
                 } else {
                     m_image_grid->SetStatus(m_bmp_failed, wxString::Format(_L("Initialize failed (%s)!"), url.empty() ? _L("Network unreachable") : from_u8(url)));

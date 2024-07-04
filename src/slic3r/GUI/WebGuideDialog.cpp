@@ -1220,9 +1220,6 @@ int GuideFrame::LoadProfile()
         m_Region = wxGetApp().app_config->get("region");
         m_ProfileJson["region"] = m_Region;
 
-        m_ProfileJson["network_plugin_install"] = wxGetApp().app_config->get("app","installed_networking");
-        m_ProfileJson["network_plugin_compability"] = wxGetApp().is_compatibility_version() ? "1" : "0";
-        network_plugin_ready = wxGetApp().is_compatibility_version();
     }
     catch (std::exception &e) {
         //wxLogMessage("GUIDE: load_profile_error  %s ", e.what());

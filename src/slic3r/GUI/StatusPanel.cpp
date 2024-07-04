@@ -2250,32 +2250,6 @@ void StatusPanel::update_error_message()
     } else if (before_error_code != obj->print_error && obj->print_error != skip_print_error) {
         before_error_code = obj->print_error;
 
-        if (wxGetApp().get_hms_query()) {
-            char buf[32];
-            ::sprintf(buf, "%08X", obj->print_error);
-            std::string print_error_str = std::string(buf);
-            if (print_error_str.size() > 4) {
-                print_error_str.insert(4, " ");
-            }
-
-            wxString error_msg = wxGetApp().get_hms_query()->query_print_error_msg(obj->print_error);
-            std::vector<int> used_button;
-            wxString error_image_url = wxGetApp().get_hms_query()->query_print_error_url_action(obj->print_error,obj->dev_id, used_button);
-            // special case
-            if (print_error_str == "0300 8003" || print_error_str == "0300 8002" || print_error_str == "0300 800A")
-                used_button.emplace_back(PrintErrorDialog::PrintErrorButton::JUMP_TO_LIVEVIEW);
-            if (!error_msg.IsEmpty()) {
-                wxDateTime now = wxDateTime::Now();
-                wxString show_time = now.Format("%Y-%m-%d %H:%M:%S");
-
-                error_msg = wxString::Format("%s\n[%s %s]",
-                    error_msg,
-                    print_error_str, show_time);
-                show_error_message(obj, error_msg, print_error_str,error_image_url,used_button);
-            } else {
-                BOOST_LOG_TRIVIAL(info) << "show print error! error_msg is empty, print error = " << obj->print_error;
-            }
-        }
     }
 }
 
@@ -3872,7 +3846,7 @@ void StatusPanel::on_ams_selected(wxCommandEvent &event)
 
 void StatusPanel::on_ams_guide(wxCommandEvent& event)
 {
-    wxString ams_wiki_url = "https://wiki.bambulab.com/en/software/bambu-studio/use-ams-on-bambu-studio";
+    wxString ams_wiki_url = "";
     wxLaunchDefaultBrowser(ams_wiki_url);
 }
 

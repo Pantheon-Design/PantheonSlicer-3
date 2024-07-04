@@ -523,7 +523,6 @@ void WebViewPanel::get_design_staffpick(int offset, int limit, std::function<voi
 
 int WebViewPanel::get_model_mall_detail_url(std::string *url, std::string id)
 {
-    // https://makerhub-qa.bambu-lab.com/en/models/2077
     std::string h = wxGetApp().get_model_http_url(wxGetApp().app_config->get_country_code());
     auto l = wxGetApp().current_language_code_safe();
     if (auto n = l.find('_'); n != std::string::npos)
