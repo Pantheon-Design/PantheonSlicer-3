@@ -2902,8 +2902,11 @@ void GCode::process_layers(
 {
     // The pipeline is variable: The vase mode filter is optional.
     size_t layer_to_print_idx = 0;
+    auto   generator_time     = std::chrono::duration<double>(0.0);
+
     const auto generator = tbb::make_filter<void, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [this, &print, &tool_ordering, &print_object_instances_ordering, &layers_to_print, &layer_to_print_idx](tbb::flow_control& fc) -> LayerResult {
+        [this, &print, &tool_ordering, &print_object_instances_ordering, &layers_to_print, &layer_to_print_idx,
+         &generator_time](tbb::flow_control& fc) -> LayerResult {
             auto start = std::chrono::high_resolution_clock::now();
 
             if (layer_to_print_idx >= layers_to_print.size()) {
@@ -2932,6 +2935,7 @@ void GCode::process_layers(
                 check_placeholder_parser_failed();
                 print.throw_if_canceled();
 
+                auto start11 = std::chrono::high_resolution_clock::now();
 
 
                 auto a = this->process_layer(print, layer.second, layer_tools, &layer == &layers_to_print.back(),
@@ -2941,6 +2945,12 @@ void GCode::process_layers(
                 std::chrono::duration<double> elapsed = end - start;
                 auto                          test    = elapsed.count();
                 std::string                   numStr  = std::to_string(test);
+
+                generator_time += elapsed;
+
+                std::chrono::duration<double> elapsed11 = end - start11;
+                auto                          test11    = elapsed11.count();
+                std::string                   numStr11  = std::to_string(test11);
 
                 return a;
             }
@@ -2961,12 +2971,16 @@ void GCode::process_layers(
             spiral_mode.enable(in.spiral_vase_enable);
             bool last_layer = in.layer_id == layers_to_print.size() - 1;
 
+            LayerResult a = {spiral_mode.process_layer(std::move(in.gcode), last_layer), in.layer_id, in.spiral_vase_enable,
+                      in.cooling_buffer_flush};
+        
+
             auto                          end     = std::chrono::high_resolution_clock::now();
             std::chrono::duration<double> elapsed = end - start;
             auto                          test    = elapsed.count();
             std::string                   numStr  = std::to_string(test);
 
-            return { spiral_mode.process_layer(std::move(in.gcode), last_layer), in.layer_id, in.spiral_vase_enable, in.cooling_buffer_flush};
+            return a;
         });
     const auto pressure_equalizer = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
         [pressure_equalizer = this->m_pressure_equalizer.get()](LayerResult in) -> LayerResult {
@@ -3002,7 +3016,17 @@ void GCode::process_layers(
         
         });
     const auto output = tbb::make_filter<std::string, void>(slic3r_tbb_filtermode::serial_in_order,
-        [&output_stream](std::string s) { output_stream.write(s); }
+        [&output_stream](std::string s) { 
+            auto start = std::chrono::high_resolution_clock::now();
+
+            output_stream.write(s); 
+            auto                          end     = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = end - start;
+            auto                          test    = elapsed.count();
+            std::string                   numStr  = std::to_string(test);
+            auto                          aaa   = std::chrono::high_resolution_clock::now();
+
+        }
     );
 
     const auto fan_mover = tbb::make_filter<std::string, std::string>(slic3r_tbb_filtermode::serial_in_order,
@@ -3029,6 +3053,9 @@ void GCode::process_layers(
     int num_cores           = std::thread::hardware_concurrency();
     int num_items_in_flight = num_cores / 2; 
 
+    auto start = std::chrono::high_resolution_clock::now();
+
+
     if (m_spiral_vase && m_pressure_equalizer)
         tbb::parallel_pipeline(num_items_in_flight, generator & spiral_mode & pressure_equalizer & cooling & fan_mover & output);
     else if (m_spiral_vase)
@@ -3039,6 +3066,14 @@ void GCode::process_layers(
 
     else
         tbb::parallel_pipeline(num_items_in_flight, generator & cooling & fan_mover & output);
+
+    auto                          end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    auto                          test    = elapsed.count();
+    std::string                   numStr  = std::to_string(test);
+    throw Slic3r::RuntimeError(std::string("G-code export time ") + numStr + " seconds\n" + "generator time: " + std::to_string(generator_time.count()));
+
+
 }
 
 // Process all layers of a single object instance (sequential mode) with a parallel pipeline:
@@ -3682,6 +3717,10 @@ LayerResult GCode::process_layer(
     // BBS
     const bool                               prime_extruder)
 {
+    auto startt = std::chrono::high_resolution_clock::now();
+
+
+
     assert(! layers.empty());
     // Either printing all copies of all objects, or just a single copy of a single object.
     assert(single_object_instance_idx == size_t(-1) || layers.size() == 1);
@@ -4391,6 +4430,10 @@ LayerResult GCode::process_layer(
                         return false;
                     };
 
+
+
+                    auto start = std::chrono::high_resolution_clock::now();
+
                     //BBS: for first layer, we always print wall firstly to get better bed adhesive force
                     //This behaviour is same with cura
                     if (is_infill_first && !first_layer) {
@@ -4432,9 +4475,22 @@ LayerResult GCode::process_layer(
                         }
                         gcode += this->extrude_infill(print,by_region_specific, false);
                     }
+
+                    auto                          end     = std::chrono::high_resolution_clock::now();
+                    std::chrono::duration<double> elapsed = end - start;
+                    auto                          test    = elapsed.count();
+                    std::string                   numStr  = std::to_string(test);
+                    // throw Slic3r::RuntimeError(std::string("G-code export time ") + numStr + " seconds\n");
+
+
+
                     // ironing
                     gcode += this->extrude_infill(print,by_region_specific, true);
                 }
+
+
+
+
 
                 if (this->config().gcode_label_objects) {
                     gcode += std::string("; stop printing object ") +
@@ -4513,6 +4569,13 @@ LayerResult GCode::process_layer(
 
     result.gcode = std::move(gcode);
     result.cooling_buffer_flush = object_layer || raft_layer || last_layer;
+
+    auto                          endt     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsedt = endt - startt;
+    auto                          testt    = elapsedt.count();
+    std::string                   numStrt  = std::to_string(testt);
+    //throw Slic3r::RuntimeError(std::string("process layer time ") + numStrt + " seconds\n");
+
     return result;
 }
 
@@ -4972,20 +5035,31 @@ std::string GCode::extrude_path(ExtrusionPath path, std::string description, dou
 // Extrude perimeters: Decide where to put seams (hide or align seams).
 std::string GCode::extrude_perimeters(const Print &print, const std::vector<ObjectByExtruder::Island::Region> &by_region)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::string gcode;
     for (const ObjectByExtruder::Island::Region &region : by_region)
         if (! region.perimeters.empty()) {
             m_config.apply(print.get_print_region(&region - &by_region.front()).config());
 
+            auto aaa=region.perimeters.size();
+
             for (const ExtrusionEntity* ee : region.perimeters)
                 gcode += this->extrude_entity(*ee, "perimeter", -1., region.perimeters);
         }
+    auto                          end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    auto                          test    = elapsed.count();
+    std::string                   numStr  = std::to_string(test);
+
     return gcode;
 }
 
 // Chain the paths hierarchically by a greedy algorithm to minimize a travel distance.
 std::string GCode::extrude_infill(const Print &print, const std::vector<ObjectByExtruder::Island::Region> &by_region, bool ironing)
 {
+    auto start = std::chrono::high_resolution_clock::now();
+
     std::string 		 gcode;
     ExtrusionEntitiesPtr extrusions;
     const char*          extrusion_name = ironing ? "ironing" : "infill";
@@ -5009,6 +5083,12 @@ std::string GCode::extrude_infill(const Print &print, const std::vector<ObjectBy
                 }
             }
         }
+
+    auto                          end     = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = end - start;
+    auto                          test    = elapsed.count();
+    std::string                   numStr  = std::to_string(test);
+
     return gcode;
 }
 
