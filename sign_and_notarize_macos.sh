@@ -40,7 +40,7 @@ fi
 codesign --deep --force --verbose --options runtime --timestamp --entitlements ../scripts/disable_validation.entitlements -s "$SIGN_IDENTITY" "$BundleName/$BundleName.app"
 
 ln -s /Applications $BundleName/Applications
-hdiutil create -volname "$BundleName -srcfolder "$BundleName" -ov -format UDZO $BundleName.dmg
+hdiutil create -volname "$BundleName" -srcfolder "$BundleName" -ov -format UDZO $BundleName.dmg
 codesign --deep --force --verbose --options runtime --timestamp --entitlements ../scripts/disable_validation.entitlements -s "$SIGN_IDENTITY" $BundleName.dmg 
 xcrun notarytool submit "$BundleName.dmg" --wait --keychain-profile "notarytool-password"
 xcrun stapler staple "$BundleName.dmg"
