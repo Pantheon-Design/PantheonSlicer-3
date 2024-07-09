@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
@@ -11,7 +11,7 @@
 	<key>CFBundleIconFile</key>
 	<string>${MACOSX_BUNDLE_ICON_FILE}</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.pantheon.slicer-3</string>
+	<string>com.softfever3d.PantheonSlicer</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleLongVersionString</key>
@@ -22,16 +22,18 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>${MACOSX_BUNDLE_SHORT_VERSION_STRING}</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>${MACOSX_BUNDLE_BUNDLE_VERSION}</string>
   <key>CFBundleURLTypes</key>
   <array>
     <dict>
       <key>CFBundleURLName</key>
-      <string>pantheonliceropen url</string>
+      <string>orcasliceropen url</string>
       <key>CFBundleURLSchemes</key>
       <array>
-        <string>pantheonliceropen</string>
+        <string>orcasliceropen</string>
       </array>
     </dict>
   </array>
@@ -40,8 +42,8 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>stl</string>
-				<string>STL</string>
+			<string>stl</string>
+			<string>STL</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>images/stl.icns</string>
@@ -57,8 +59,8 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>obj</string>
-				<string>OBJ</string>
+			<string>obj</string>
+			<string>OBJ</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>images/PantheonSlicer.icns</string>
@@ -74,8 +76,8 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>amf</string>
-				<string>AMF</string>
+			<string>amf</string>
+			<string>AMF</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>images/PantheonSlicer.icns</string>
@@ -91,8 +93,8 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>3mf</string>
-				<string>3MF</string>
+			<string>3mf</string>
+			<string>3MF</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>images/PantheonSlicer.icns</string>
@@ -108,8 +110,8 @@
 		<dict>
 			<key>CFBundleTypeExtensions</key>
 			<array>
-				<string>gcode</string>
-				<string>GCODE</string>
+			<string>gcode</string>
+			<string>GCODE</string>
 			</array>
 			<key>CFBundleTypeIconFile</key>
 			<string>images/gcode.icns</string>

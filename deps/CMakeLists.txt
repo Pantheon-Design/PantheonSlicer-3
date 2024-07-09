@@ -1,12 +1,12 @@
 #
-# This CMake project downloads, configures and builds PantheonSlicer-3 dependencies on Unix and Windows.
+# This CMake project downloads, configures and builds OrcaSlicer dependencies on Unix and Windows.
 #
 # When using this script, it's recommended to perform an out-of-source build using CMake.
 #
 # All the dependencies are installed in a `destdir` directory in the root of the build directory,
 # in a traditional Unix-style prefix structure. The destdir can be used directly by CMake
-# when building PantheonSlicer-3 - to do this, set the CMAKE_PREFIX_PATH to ${destdir}/usr/local.
-# Warning: On UNIX/Linux, you also need to set -DSLIC3R_STATIC=1 when building PantheonSlicer.
+# when building OrcaSlicer - to do this, set the CMAKE_PREFIX_PATH to ${destdir}/usr/local.
+# Warning: On UNIX/Linux, you also need to set -DSLIC3R_STATIC=1 when building OrcaSlicer.
 #
 # For better clarity of console output, it's recommended to _not_ use a parallelized build
 # for the top-level command, ie. use `make -j 1` or `ninja -j 1` to force single-threaded top-level
@@ -30,7 +30,7 @@ if (APPLE)
 
 endif ()
 
-project(PantheonSlicer-3-deps)
+project(OrcaSlicer-deps)
 
 include(ExternalProject)
 include(ProcessorCount)
@@ -83,9 +83,9 @@ endif ()
 # Slic3r compiles with a different version which will cause runtime errors.
 # option(DEP_BUILD_IGL_STATIC "Build IGL as a static library. Might cause link errors and increase binary size." OFF)
 
-message(STATUS "PantheonSlicer-3 deps DESTDIR: ${DESTDIR}")
-message(STATUS "PantheonSlicer-3 dowload dir for source packages: ${DEP_DOWNLOAD_DIR}")
-message(STATUS "PantheonSlicer-3 deps debug build: ${DEP_DEBUG}")
+message(STATUS "OrcaSlicer deps DESTDIR: ${DESTDIR}")
+message(STATUS "OrcaSlicer dowload dir for source packages: ${DEP_DOWNLOAD_DIR}")
+message(STATUS "OrcaSlicer deps debug build: ${DEP_DEBUG}")
 
 find_package(Git REQUIRED)
 
