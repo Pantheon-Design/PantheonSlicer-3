@@ -8811,7 +8811,7 @@ void Plater::load_project(wxString const& filename2,
     // BBS set default 3D view and direction after loading project
     //p->select_view_3D("3D");
     if (!m_exported_file) {
-        p->select_view("topfront");
+        p->select_view("topright");
         p->camera.requires_zoom_to_plate = REQUIRES_ZOOM_TO_ALL_PLATE;
         wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
     }
