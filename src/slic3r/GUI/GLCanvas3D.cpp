@@ -3204,7 +3204,7 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
         auto obj_list = wxGetApp().obj_list();
         switch (keyCode)
         {
-        //case WXK_BACK:
+        case WXK_BACK:
         case WXK_DELETE: { post_event(SimpleEvent(EVT_GLTOOLBAR_DELETE)); break; }
         // BBS
 #ifdef __APPLE__
@@ -3246,20 +3246,20 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
             break;
         }
 
-        //case '+': {
-        //    if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
-        //        post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
-        //    else
-        //        post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, +1));
-        //    break;
-        //}
-        //case '-': {
-        //    if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
-        //        post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
-        //    else
-        //        post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, -1));
-        //    break;
-        //}
+        case '+': {
+            if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
+                post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
+            else
+                post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, +1));
+            break;
+        }
+        case '-': {
+            if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
+                post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
+            else
+                post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, -1));
+            break;
+        }
         case '?': { post_event(SimpleEvent(EVT_GLCANVAS_QUESTION_MARK)); break; }
         case 'A':
         case 'a':
