@@ -1,6 +1,6 @@
 {
     "type": "filament",
-    "instantiation": "true",
+    "instantiation": "false",
     "compatible_prints": [
         "Quality PA-GF Rev3.7"
     ],
@@ -25,7 +25,7 @@
     "from": "system",
     "inherits": "PA-CF Rev3.7",
     "name": "Quality PA-GF Rev3.7",
-    "version": "1.0.0.2",
+    "version": "3.0.0.0",
     "filament_shrink": [
         "99.729%"
     ],

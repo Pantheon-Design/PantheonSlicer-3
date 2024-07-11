@@ -1,6 +1,4 @@
 {
-    "type": "filament",
-    "instantiation": "true",
     "compatible_prints": [
         "PETG-CF Rev3.7"
     ],
@@ -37,6 +35,9 @@
     "filament_settings_id": [
         "PETG-CF Rev3.7"
     ],
+    "filament_shrink": [
+        "99.8103%"
+    ],
     "filament_start_gcode": [
         "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0.008\nSET_GCODE_OFFSET Z=0.02"
     ],
@@ -49,7 +50,7 @@
     "filament_z_hop": [
         "0.2"
     ],
-    "from": "system",
+    "from": "User",
     "hot_plate_temp": [
         "80"
     ],
@@ -73,14 +74,11 @@
     "overhang_fan_speed": [
         "95"
     ],
+    "support_material_interface_fan_speed": [
+        "95"
+    ],
     "temperature_vitrification": [
         "220"
     ],
-    "version": "1.0.0.2",
-    "filament_shrink": [
-        "99.8103%"
-    ],
-    "support_material_interface_fan_speed": [
-        "95"
-    ]
+    "version": "3.0.0.0"
 }

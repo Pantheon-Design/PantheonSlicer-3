@@ -1,0 +1,23 @@
+{
+    "instantiation": "true",
+    "compatible_printers": [
+        "Pantheon HS3 0.4 Nozzle"
+    ],
+    "compatible_prints": [
+        "PETG-CF"
+    ],
+    "default_filament_colour": [
+        "#505050"
+    ],
+    "filament_settings_id": [
+        "PETG-CF"
+    ],
+    "from": "system",
+    "inherits": "PETG-CF Rev3.7",
+    "is_custom_defined": "0",
+    "name": "PETG-CF",
+    "support_material_interface_fan_speed": [
+        "0"
+    ],
+    "version": "3.0.0.0"
+}

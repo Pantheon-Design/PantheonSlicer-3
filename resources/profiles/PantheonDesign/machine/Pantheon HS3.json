@@ -7,5 +7,5 @@
   "family": "Pantheon HS",
   "bed_model": "M5-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
-  "default_materials": "PETG-CF Rev3.7;Quality PA-CF Rev3.7;Quality PA-GF Rev3.7;Strength PA-CF Rev3.7;Strength PA-GF Rev3.7;Ultrafuse 64D"
+  "default_materials": "PA-CF;TPU-95A;PA-GF;PETG-CF"
 }
