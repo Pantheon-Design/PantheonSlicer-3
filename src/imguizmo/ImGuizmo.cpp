@@ -2954,33 +2954,49 @@ namespace IMGUIZMO_NAMESPACE
                 vec_t tdx = directionUnary[perpXIndex];
                 vec_t tdy  = directionUnary[perpYIndex];
                 ImVec2 invert2 = {1, 1};
+                bool   rotate_clounterclock_90 = false;
+
                 switch (iFace) {
                 case 0: // Back
                     tdx = directionUnary[2];
                     tdy = directionUnary[1];
                     invert2 = {-1, - 1};
+                    rotate_clounterclock_90 = false;
                     break;
                 case 3: // Front
                     tdx = directionUnary[2];
                     tdy = directionUnary[1];
                     invert2.x = -1;
+                    rotate_clounterclock_90 = false;
                     break;
                 case 1: // Top
                     invert2.y = -1;
+                    rotate_clounterclock_90 = true;
                     break;
                 case 4: // Bottom
                     invert2 = {-1, -1};
+                    rotate_clounterclock_90 = true;
                     break;
                 case 2: // Right
                     invert2.y = -1;
+                    rotate_clounterclock_90 = false;
                     break;
                 case 5: // Left
+                    rotate_clounterclock_90 = false;
                     break;
                 }
 
                 for (auto v = (drawList->VtxBuffer.Data + vtx_write_start); v < vtx_write_end; v++) {
                     auto  pp = ((v->pos - labelOrigin) * scaleFactor * invert2 + ImVec2{0.5, 0.5}) * 2.f;
+                    if (rotate_clounterclock_90) {
+                        auto temp = pp.x;
+                        pp.x      = -pp.y;
+                        pp.y      = temp;
+                    }
                     vec_t pt = tdx * pp.x + tdy * pp.y;
+                    if (rotate_clounterclock_90) {
+                        pt.z = pt.z + 2;
+                    }
                     v->pos   = worldToPos((pt + origin) * 0.5 * invert, res, position, size);
                 }
             }
