@@ -97,9 +97,9 @@ void Camera::select_view(const std::string& direction)
         //look_at(m_target + m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
         look_at(m_target + m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
     else if (direction == "top")
-        look_at(m_target + m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY());
+        look_at(m_target + m_distance * Vec3d::UnitZ(), m_target, -Vec3d::UnitX());
     else if (direction == "bottom")
-        look_at(m_target - m_distance * Vec3d::UnitZ(), m_target, -Vec3d::UnitY());
+        look_at(m_target - m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitX());
     else if (direction == "front")
         //look_at(m_target - m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
         look_at(m_target + m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
