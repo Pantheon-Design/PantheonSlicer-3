@@ -37,14 +37,32 @@
 namespace Slic3r { 
 namespace GUI {
 
-static const std::vector<std::string> filament_vendors = {"Polymaker", "OVERTURE", "Kexcelled", "HATCHBOX",  "eSUN",       "SUNLU",    "Prusament", "Creality", "Protopasta",
-                                                          "Anycubic",  "Basf",     "ELEGOO",    "INLAND",    "FLASHFORGE", "AMOLEN",   "MIKA3D",    "3DXTECH",  "Duramic",
-                                                          "Priline",   "Eryone",   "3Dgunius",  "Novamaker", "Justmaker",  "Giantarm", "iProspect"};
-
-static const std::vector<std::string> filament_types = {"PLA",    "PLA+",  "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",        "HIPS",   "PA",     "PACF",
-                                                        "NYLON",  "PVA",   "PC",        "PCABS", "PCTG",   "PCCF",   "PP",          "PEI",    "PET",    "PETG",
-                                                        "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",         "TPU92A", "TPU98A", "Misc",
-                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber"};
+static const std::vector<std::string> filament_vendors = 
+    {"3Dgenius",               "3DJake",                 "3DXTECH",                "3D BEST-Q",              "3D Hero",
+     "3D-Fuel",                "Aceaddity",              "AddNorth",               "Amazon Basics",          "AMOLEN",
+     "Ankermake",              "Anycubic",               "Atomic",                 "AzureFilm",              "BASF",
+     "Bblife",                 "BCN3D",                  "Beyond Plastic",         "California Filament",    "Capricorn",
+     "CC3D",                   "colorFabb",              "Comgrow",                "Cookiecad",              "Creality",
+     "CERPRiSE",               "Das Filament",           "DO3D",                   "DOW",                    "DSM",
+     "Duramic",                "ELEGOO",                 "Eryone",                 "Essentium",              "eSUN",
+     "Extrudr",                "Fiberforce",             "Fiberlogy",              "FilaCube",               "Filamentive",
+     "Fillamentum",            "FLASHFORGE",             "Formfutura",             "Francofil",              "FilamentOne",
+     "GEEETECH",               "Giantarm",               "Gizmo Dorks",            "GreenGate3D",            "HATCHBOX",
+     "Hello3D",                "IC3D",                   "IEMAI",                  "IIID Max",               "INLAND",
+     "iProspect",              "iSANMATE",               "Justmaker",              "Keene Village Plastics", "Kexcelled",
+     "MakerBot",               "MatterHackers",          "MIKA3D",                 "NinjaTek",               "Nobufil",
+     "Novamaker",              "OVERTURE",               "OVVNYXE",                "Polymaker",              "Priline",
+     "Printed Solid",          "Protopasta",             "Prusament",              "Push Plastic",           "R3D",
+     "Re-pet3D",               "Recreus",                "Regen",                  "Sain SMART",             "SliceWorx",
+     "Snapmaker",              "SnoLabs",                "Spectrum",               "SUNLU",                  "TTYT3D",
+     "Tianse",                 "UltiMaker",              "Valment",                "Verbatim",               "VO3D",
+     "Voxelab",                "VOXELPLA",               "YOOPAI",                 "Yousu",                  "Ziro",
+     "Zyltech"};
+     
+static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+",      "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",   "HIPS",   "PA",     "PACF",
+                                                        "NYLON",  "PVA",   "PVB",       "PC",        "PCABS", "PCTG",   "PCCF",   "PHA",    "PP",     "PEI",    "PET",    "PETG",
+                                                        "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",       "TPU92A", "TPU98A", "Misc",
+                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber", "SBS"};
 
 static const std::vector<std::string> printer_vendors = {"Anycubic",  "Artillery", "BIBO",           "BIQU",     "Creality ENDER", "Creality CR", "Creality SERMOON",
                                                          "FLSun",     "gCreate",   "Geeetech",       "INAT",     "Infinity3D",     "Jubilee",     "LNL3D",
