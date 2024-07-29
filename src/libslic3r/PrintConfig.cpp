@@ -1937,6 +1937,21 @@ void PrintConfigDef::init_fff_params()
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInts { 4 });
 
+    def = this->add("filament_stamping_loading_speed", coFloats);
+    def->label = L("Stamping loading speed");
+    def->tooltip = L("Speed used for stamping.");
+    def->min = 0;
+    def->mode = comAdvanced;
+    def->set_default_value(new ConfigOptionFloats { 0. });
+
+    def = this->add("filament_stamping_distance", coFloats);
+    def->label = L("Stamping distance measured from the center of the cooling tube");
+    def->tooltip = L("If set to nonzero value, filament is moved toward the nozzle between the individual cooling moves (\"stamping\"). "
+                     "This option configures how long this movement should be before the filament is retracted again.");
+    def->min = 0;
+    def->mode = comAdvanced;
+    def->set_default_value(new ConfigOptionFloats { 0. });
+
     def = this->add("filament_cooling_initial_speed", coFloats);
     def->label = L("Speed of the first cooling move");
     def->tooltip = L("Cooling moves are gradually accelerating beginning at this speed.");
@@ -2769,6 +2784,7 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionBool(false));
 
     def = this->add("sparse_infill_filament", coInt);
+    def->gui_type = ConfigOptionDef::GUIType::i_enum_open;
     def->label = L("Infill");
     def->category = L("Extruders");
     def->tooltip = L("Filament to print internal sparse infill.");
@@ -3393,10 +3409,8 @@ void PrintConfigDef::init_fff_params()
 
     def = this->add("ooze_prevention", coBool);
     def->label = L("Enable");
-    //def->tooltip = L("This option will drop the temperature of the inactive extruders to prevent oozing. "
-    //               "It will enable a tall skirt automatically and move extruders outside such "
-    //               "skirt when changing temperatures.");
-    def->mode = comDevelop;
+    def->tooltip = L("This option will drop the temperature of the inactive extruders to prevent oozing.");
+    def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionBool(false));
 
     def = this->add("filename_format", coString);
@@ -3444,9 +3458,7 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionBool(true));
 
     def = this->add("wall_filament", coInt);
-    //def->label = L("Walls");
-    //def->category = L("Extruders");
-    //def->tooltip = L("Filament to print walls");
+    def->gui_type = ConfigOptionDef::GUIType::i_enum_open;
     def->label = "Walls";
     def->category = "Extruders";
     def->tooltip = "Filament to print walls";
@@ -4037,14 +4049,12 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionFloat(15));
 
     def = this->add("solid_infill_filament", coInt);
-    //def->label = L("Solid infill");
-    //def->category = L("Extruders");
-    //def->tooltip = L("Filament to print solid infill");
+    def->gui_type = ConfigOptionDef::GUIType::i_enum_open;
     def->label = "Solid infill";
     def->category = "Extruders";
     def->tooltip = "Filament to print solid infill";
     def->min = 1;
-    def->mode = comDevelop;
+    def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInt(1));
 
     def = this->add("internal_solid_infill_line_width", coFloatOrPercent);
@@ -4117,12 +4127,32 @@ void PrintConfigDef::init_fff_params()
     // TRN PrintSettings : "Ooze prevention" > "Temperature variation"
     def->tooltip = L("Temperature difference to be applied when an extruder is not active. "
                      "The value is not used when 'idle_temperature' in filament settings "
-                     "is defined.");
+                     "is set to non zero value.");
     def->sidetext = "∆°C";
     def->min = -max_temp;
     def->max = max_temp;
-    def->mode = comDevelop;
+    def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInt(-5));
+
+    def = this->add("preheat_time", coFloat);
+    def->label = L("Preheat time");
+    def->tooltip = L("To reduce the waiting time after tool change, Orca can preheat the next tool while the current tool is still in use. "
+                     "This setting specifies the time in seconds to preheat the next tool. Orca will insert a M104 command to preheat the tool in advance.");
+    def->sidetext = "s";
+    def->min = 0;
+    def->max = 120;
+    def->mode = comAdvanced;
+    def->set_default_value(new ConfigOptionFloat(30.0));
+
+    def = this->add("preheat_steps", coInt);
+    def->label = L("Preheat steps");
+    def->tooltip = L("Insert multiple preheat commands(e.g. M104.1). Only useful for Prusa XL. For other printers, please set it to 1.");
+    // def->sidetext = "";
+    def->min = 1;
+    def->max = 10;
+    def->mode = comDevelop;
+    def->set_default_value(new ConfigOptionInt(1));
+
 
     def = this->add("machine_start_gcode", coString);
     def->label = L("Start G-code");
@@ -4181,7 +4211,7 @@ void PrintConfigDef::init_fff_params()
     def->label = L("Prime all printing extruders");
     def->tooltip = L("If enabled, all printing extruders will be primed at the front edge of the print bed at the start of the print.");
     def->mode = comAdvanced;
-    def->set_default_value(new ConfigOptionBool(true));
+    def->set_default_value(new ConfigOptionBool(false));
 
     def = this->add("slice_closing_radius", coFloat);
     def->label = L("Slice gap closing radius");
@@ -4943,15 +4973,6 @@ void PrintConfigDef::init_fff_params()
     def->min = 0.;
     def->max = 90.;
     def->set_default_value(new ConfigOptionFloat(0.));
-
-    def = this->add("wipe_tower_extra_spacing", coPercent);
-    def->label = L("Wipe tower purge lines spacing");
-    def->tooltip = L("Spacing of purge lines on the wipe tower.");
-    def->sidetext = L("%");
-    def->mode = comAdvanced;
-    def->min = 100.;
-    def->max = 300.;
-    def->set_default_value(new ConfigOptionPercent(100.));
     
     def = this->add("wipe_tower_max_purge_speed", coFloat);
     def->label = L("Maximum wipe tower print speed");
@@ -4967,6 +4988,7 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionFloat(90.));
 
     def = this->add("wipe_tower_filament", coInt);
+    def->gui_type = ConfigOptionDef::GUIType::i_enum_open;
     def->label = L("Wipe tower");
     def->category = L("Extruders");
     def->tooltip = L("The extruder to use when printing perimeter of the wipe tower. "
@@ -5013,6 +5035,25 @@ void PrintConfigDef::init_fff_params()
     def->sidetext = L("mm");
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionFloat(10.));
+
+    def = this->add("wipe_tower_extra_spacing", coPercent);
+    def->label = L("Wipe tower purge lines spacing");
+    def->tooltip = L("Spacing of purge lines on the wipe tower.");
+    def->sidetext = L("%");
+    def->mode = comAdvanced;
+    def->min = 100.;
+    def->max = 300.;
+    def->set_default_value(new ConfigOptionPercent(100.));
+
+    def = this->add("wipe_tower_extra_flow", coPercent);
+    def->label = L("Extra flow for purging");
+    def->tooltip = L("Extra flow used for the purging lines on the wipe tower. This makes the purging lines thicker or narrower "
+                     "than they normally would be. The spacing is adjusted automatically.");
+    def->sidetext = L("%");
+    def->mode = comAdvanced;
+    def->min = 100.;
+    def->max = 300.;
+    def->set_default_value(new ConfigOptionPercent(100.));
 
     def = this->add("idle_temperature", coInts);
     def->label = L("Idle temperature");
@@ -7343,9 +7384,9 @@ OtherSlicingStatesConfigDef::OtherSlicingStatesConfigDef()
     //    def->label = L("Initial filament type");
     //    def->tooltip = L("String containing filament type of the first used extruder.");
 
-    //    def = this->add("has_single_extruder_multi_material_priming", coBool);
-    //    def->label = L("Has single extruder MM priming");
-    //    def->tooltip = L("Are the extra multi-material priming regions used in this print?");
+    def          = this->add("has_single_extruder_multi_material_priming", coBool);
+    def->label   = L("Has single extruder MM priming");
+    def->tooltip = L("Are the extra multi-material priming regions used in this print?");
 
     new_def("initial_no_support_extruder", coInt, "Initial no support extruder", "Zero-based index of the first extruder used for printing without support. Same as initial_no_support_tool.");
     new_def("in_head_wrap_detect_zone", coBool, "In head wrap detect zone", "Indicates if the first layer overlaps with the head wrap zone.");
@@ -7710,6 +7751,22 @@ bool has_skirt(const DynamicPrintConfig& cfg)
 }
 float get_real_skirt_dist(const DynamicPrintConfig& cfg) {
     return has_skirt(cfg) ? cfg.opt_float("skirt_distance") : 0;
+}
+static bool is_XL_printer(const std::string& printer_notes)
+{
+    return boost::algorithm::contains(printer_notes, "PRINTER_VENDOR_PRUSA3D")
+        && boost::algorithm::contains(printer_notes, "PRINTER_MODEL_XL");
+}
+
+bool is_XL_printer(const DynamicPrintConfig &cfg)
+{
+    auto *printer_notes = cfg.opt<ConfigOptionString>("printer_notes");
+    return printer_notes && is_XL_printer(printer_notes->value);
+}
+
+bool is_XL_printer(const PrintConfig &cfg)
+{
+    return is_XL_printer(cfg.printer_notes.value);
 }
 } // namespace Slic3r
 
