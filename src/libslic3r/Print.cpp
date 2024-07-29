@@ -2039,7 +2039,6 @@ void Print::process(long long *time_cost_with_cache, bool use_cache)
         //BBS: get the objects' indices when GCodes are generated
         ToolOrdering tool_ordering;
         unsigned int initial_extruder_id = (unsigned int)-1;
-        unsigned int final_extruder_id = (unsigned int)-1;
         bool         has_wipe_tower = false;
         std::vector<const PrintInstance*> 					print_object_instances_ordering;
         std::vector<const PrintInstance*>::const_iterator 	print_object_instance_sequential_active;
