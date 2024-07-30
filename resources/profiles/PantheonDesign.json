@@ -1,6 +1,6 @@
 {
     "name": "PantheonDesign",
-    "version": "01.00.00.02",
+    "version": "03.00.00.00",
     "force_update": "0",
     "description": "PantheonDesign configurations",
     "machine_model_list": [
@@ -15,10 +15,6 @@
             "sub_path": "process/0.20mm Standard @Pantheon HS3.json"
         },
         {
-            "name": "PETG-CF Rev3.7",
-            "sub_path": "process/PETG-CF Rev3.7.json"
-        },
-        {
             "name": "Quality PA-CF Rev3.7",
             "sub_path": "process/Quality PA-CF Rev3.7.json"
         },
@@ -27,26 +23,30 @@
             "sub_path": "process/Quality PA-GF Rev3.7.json"
         },
         {
-            "name": "Strength PA-CF Rev3.7",
-            "sub_path": "process/Strength PA-CF Rev3.7.json"
+            "name": "PA-CF",
+            "sub_path": "process/PA-CF.json"
         },
         {
-            "name": "Strength PA-GF Rev3.7",
-            "sub_path": "process/Strength PA-GF Rev3.7.json"
+            "name": "TPU-95A",
+            "sub_path": "process/TPU-95A.json"
         },
         {
-            "name": "Ultrafuse 64D",
-            "sub_path": "process/Ultrafuse 64D.json"
+            "name": "PA-GF",
+            "sub_path": "process/PA-GF.json"
+        },
+        {
+            "name": "PETG-CF Rev3.7",
+            "sub_path": "process/PETG-CF Rev3.7.json"
+        },
+        {
+            "name": "PETG-CF",
+            "sub_path": "process/PETG-CF.json"
         }
     ],
     "filament_list": [
 		{
             "name": "PA-CF Rev3.7",
             "sub_path": "filament/PA-CF Rev3.7.json"
-        },
-		{
-            "name": "PETG-CF Rev3.7",
-            "sub_path": "filament/PETG-CF Rev3.7.json"
         },
 		{
             "name": "Quality PA-CF Rev3.7",
@@ -56,17 +56,25 @@
             "name": "Quality PA-GF Rev3.7",
             "sub_path": "filament/Quality PA-GF Rev3.7.json"
         },
-		{
-            "name": "Strength PA-CF Rev3.7",
-            "sub_path": "filament/Strength PA-CF Rev3.7.json"
+        {
+            "name": "PA-CF",
+            "sub_path": "filament/PA-CF.json"
         },
 		{
-            "name": "Strength PA-GF Rev3.7",
-            "sub_path": "filament/Strength PA-GF Rev3.7.json"
+            "name": "TPU-95A",
+            "sub_path": "filament/TPU-95A.json"
         },
 		{
-            "name": "Ultrafuse 64D",
-            "sub_path": "filament/Ultrafuse 64D.json"
+            "name": "PA-GF",
+            "sub_path": "filament/PA-GF.json"
+        },
+		{
+            "name": "PETG-CF Rev3.7",
+            "sub_path": "filament/PETG-CF Rev3.7.json"
+        },
+		{
+            "name": "PETG-CF",
+            "sub_path": "filament/PETG-CF.json"
         }
     ],
     "machine_list": [

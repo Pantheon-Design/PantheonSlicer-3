@@ -85,26 +85,35 @@ void Camera::set_zoom(double zoom)
 
 void Camera::select_view(const std::string& direction)
 {
-    if (direction == "iso")
+    if (direction == "iso") {
         set_default_orientation();
+        look_at(m_target + 0.707 * m_distance * Vec3d::UnitX() + 0.707 * m_distance * Vec3d::UnitZ(), m_target,
+                Vec3d::UnitZ() - Vec3d::UnitX());
+    }
     else if (direction == "left")
-        look_at(m_target - m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
-    else if (direction == "right")
-        look_at(m_target + m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
-    else if (direction == "top")
-        look_at(m_target + m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY());
-    else if (direction == "bottom")
-        look_at(m_target - m_distance * Vec3d::UnitZ(), m_target, -Vec3d::UnitY());
-    else if (direction == "front")
+        //look_at(m_target - m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
         look_at(m_target - m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
-    else if (direction == "rear")
+    else if (direction == "right")
+        //look_at(m_target + m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
         look_at(m_target + m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
+    else if (direction == "top")
+        look_at(m_target + m_distance * Vec3d::UnitZ(), m_target, -Vec3d::UnitX());
+    else if (direction == "bottom")
+        look_at(m_target - m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitX());
+    else if (direction == "front")
+        //look_at(m_target - m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ());
+        look_at(m_target + m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
+
+    else if (direction == "rear")
+        //look_at(m_target + m_distance * Vec3d::UnitY(), m_target, Vec3d::UnitZ()); 
+        look_at(m_target - m_distance * Vec3d::UnitX(), m_target, Vec3d::UnitZ());
+
     else if (direction == "topfront")
         look_at(m_target - 0.707 * m_distance * Vec3d::UnitY() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY() + Vec3d::UnitZ());
     else if (direction == "topright")
         look_at(m_target + 0.707 * m_distance * Vec3d::UnitX() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitZ() - Vec3d::UnitX());    
     else if (direction == "plate") 
-        look_at(m_target - 0.707 * m_distance * Vec3d::UnitY() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitY() + Vec3d::UnitZ());
+        look_at(m_target + 0.707 * m_distance * Vec3d::UnitX() + 0.707 * m_distance * Vec3d::UnitZ(), m_target, Vec3d::UnitZ() - Vec3d::UnitX());
 }
 
 double Camera::get_near_left() const

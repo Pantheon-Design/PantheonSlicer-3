@@ -1262,7 +1262,7 @@ void Sidebar::update_all_preset_comboboxes()
 
     // Orca:: show device tab based on vendor type
     p_mainframe->show_device(use_bbl_network);
-    p_mainframe->select_tab(MainFrame::tp3DEditor);
+    p_mainframe->m_tabpanel->SetSelection(p_mainframe->m_tabpanel->GetSelection());
 }
 
 void Sidebar::update_presets(Preset::Type preset_type)
@@ -7587,7 +7587,7 @@ void Plater::priv::set_project_name(const wxString& project_name)
     m_project_name = project_name;
     //update topbar title
 #ifdef __WINDOWS__
-    wxGetApp().mainframe->SetTitle(m_project_name + " - OrcaSlicer");
+    wxGetApp().mainframe->SetTitle(m_project_name + " - PantheonSlicer-3");
     wxGetApp().mainframe->topbar()->SetTitle(m_project_name);
 #else
     wxGetApp().mainframe->SetTitle(m_project_name);
@@ -8811,7 +8811,7 @@ void Plater::load_project(wxString const& filename2,
     // BBS set default 3D view and direction after loading project
     //p->select_view_3D("3D");
     if (!m_exported_file) {
-        p->select_view("topfront");
+        p->select_view("topright");
         p->camera.requires_zoom_to_plate = REQUIRES_ZOOM_TO_ALL_PLATE;
         wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
     }

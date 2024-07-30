@@ -1,0 +1,26 @@
+{
+    "compatible_printers": [
+        "Pantheon HS3 0.4 Nozzle"
+    ],
+    "instantiation": "true",
+    "elefant_foot_compensation": "0.1",
+    "from": "system",
+    "inherits": "Quality PA-CF Rev3.7",
+    "initial_layer_line_width": "0.4",
+    "initial_layer_speed": "100",
+    "is_custom_defined": "0",
+    "max_volumetric_extrusion_rate_slope": "0",
+    "name": "TPU-95A",
+    "outer_wall_acceleration": "7000",
+    "outer_wall_speed": "120",
+    "print_settings_id": "TPU-95A",
+    "small_perimeter_speed": "120",
+    "support_interface_spacing": "0.1",
+    "support_line_width": "0.4",
+    "support_speed": "120",
+    "top_solid_infill_flow_ratio": "0.95",
+    "version": "3.0.0.0",
+    "wall_loops": "6",
+    "xy_contour_compensation": "0",
+    "xy_hole_compensation": "0"
+}

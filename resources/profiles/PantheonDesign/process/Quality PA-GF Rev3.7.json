@@ -1,6 +1,6 @@
 {
     "type": "process",
-    "instantiation": "true",
+    "instantiation": "false",
     "bottom_shell_layers": "8",
     "bridge_acceleration": "0",
     "bridge_flow": "0.9",
@@ -66,7 +66,7 @@
     "top_surface_speed": "120",
     "travel_acceleration": "0",
     "travel_speed": "500",
-    "version": "1.0.0.2",
+    "version": "3.0.0.0",
     "wall_loops": "5",
     "wall_sequence": "inner-outer-inner wall",
     "wipe_before_external_loop": "1",

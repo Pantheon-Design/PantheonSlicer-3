@@ -17,8 +17,8 @@
     "change_filament_gcode": "",
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
-    "default_filament_profile": ["PETG-CF Rev3.7"],
-    "default_print_profile": "PETG-CF Rev3.7",
+    "default_filament_profile": ["PETG-CF"],
+    "default_print_profile": "PETG-CF",
     "deretraction_speed": [
         "35"
     ],
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "1.0.0.2",
+    "version": "3.0.0.0",
     "wipe": [
         "0"
     ],

@@ -3178,8 +3178,7 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
         case '4': { select_view("rear"); break; }
         case '5': { select_view("left"); break; }
         case '6': { select_view("right"); break; }
-        case '7': { select_view("topright"); break; }
-        case '8': { select_plate(); break; }
+        case '7': { select_plate(); break; }
 
         //case WXK_BACK:
         //case WXK_DELETE:
@@ -3205,7 +3204,7 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
         auto obj_list = wxGetApp().obj_list();
         switch (keyCode)
         {
-        //case WXK_BACK:
+        case WXK_BACK:
         case WXK_DELETE: { post_event(SimpleEvent(EVT_GLTOOLBAR_DELETE)); break; }
         // BBS
 #ifdef __APPLE__
@@ -3247,20 +3246,20 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
             break;
         }
 
-        //case '+': {
-        //    if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
-        //        post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
-        //    else
-        //        post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, +1));
-        //    break;
-        //}
-        //case '-': {
-        //    if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
-        //        post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
-        //    else
-        //        post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, -1));
-        //    break;
-        //}
+        case '+': {
+            if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
+                post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
+            else
+                post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, +1));
+            break;
+        }
+        case '-': {
+            if (dynamic_cast<Preview*>(m_canvas->GetParent()) != nullptr)
+                post_event(wxKeyEvent(EVT_GLCANVAS_EDIT_COLOR_CHANGE, evt));
+            else
+                post_event(Event<int>(EVT_GLCANVAS_INCREASE_INSTANCES, -1));
+            break;
+        }
         case '?': { post_event(SimpleEvent(EVT_GLCANVAS_QUESTION_MARK)); break; }
         case 'A':
         case 'a':
@@ -3556,10 +3555,7 @@ void GLCanvas3D::on_key(wxKeyEvent& evt)
                         case WXK_NUMPAD6: //6 on numpad
                             { select_view("right"); break; }
                         case '7':
-                        case WXK_NUMPAD7: //7 on numpad
-                            { select_view("topright"); break; }
-                        case '8':
-                        case WXK_NUMPAD8: //8 on numpad
+                        case WXK_NUMPAD8: //7 on numpad
                             { select_plate(); break; }
                         default: break;
                     }
@@ -5656,9 +5652,17 @@ void GLCanvas3D::_render_3d_navigator()
     style.Colors[ImGuizmo::COLOR::DIRECTION_X] = ImGuiWrapper::to_ImVec4(ColorRGBA::Y());
     style.Colors[ImGuizmo::COLOR::DIRECTION_Y] = ImGuiWrapper::to_ImVec4(ColorRGBA::Z());
     style.Colors[ImGuizmo::COLOR::DIRECTION_Z] = ImGuiWrapper::to_ImVec4(ColorRGBA::X());
+    style.Colors[ImGuizmo::COLOR::TEXT] = m_is_dark ? ImVec4(224 / 255.f, 224 / 255.f, 224 / 255.f, 1.f) : ImVec4(.2f, .2f, .2f, 1.0f);
+    style.Colors[ImGuizmo::COLOR::FACE] = m_is_dark ? ImVec4(45 / 255.f, 45 / 255.f, 49 / 255.f, 1.f) : ImVec4(1, 1, 1, 1);
     strcpy(style.AxisLabels[ImGuizmo::Axis::Axis_X], "y");
     strcpy(style.AxisLabels[ImGuizmo::Axis::Axis_Y], "z");
     strcpy(style.AxisLabels[ImGuizmo::Axis::Axis_Z], "x");
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_FRONT], _utf8("Left").c_str());
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_BACK], _utf8("Right").c_str());
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_TOP], _utf8("Top").c_str());
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_BOTTOM], _utf8("Bottom").c_str());
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_LEFT], _utf8("Back").c_str());
+    strcpy(style.FaceLabels[ImGuizmo::FACES::FACE_RIGHT], _utf8("Front").c_str());
     
     float sc = get_scale();
 #ifdef WIN32
@@ -5688,7 +5692,7 @@ void GLCanvas3D::_render_3d_navigator()
     const float size  = 128 * sc;
     const bool dirty = ImGuizmo::ViewManipulate(cameraView, cameraProjection, ImGuizmo::OPERATION::ROTATE, ImGuizmo::MODE::WORLD,
                                                 identityMatrix, camDistance, ImVec2(viewManipulateLeft, viewManipulateTop - size),
-                                                ImVec2(size, size), 0x10101010);
+                                                ImVec2(size, size), 0x00101010);
 
     if (dirty) {
         for (unsigned int c = 0; c < 4; ++c) {
