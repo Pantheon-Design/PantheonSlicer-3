@@ -17,8 +17,8 @@
     "change_filament_gcode": "",
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
-    "default_filament_profile": [],
-    "default_print_profile": "",
+    "default_filament_profile": ["PETG-CF"],
+    "default_print_profile": "PETG-CF",
     "deretraction_speed": [
         "35"
     ],
@@ -36,10 +36,10 @@
     "extruder_offset": [
         "0x0"
     ],
-    "fan_kickstart": "0",
-    "fan_speedup_overhangs": "1",
-    "fan_speedup_time": "0",
-    "gcode_flavor": "marlin",
+    "fan_kickstart": "1.5",
+    "fan_speedup_overhangs": "0",
+    "fan_speedup_time": "1.5",
+    "gcode_flavor": "klipper",
     "head_wrap_detect_zone": [],
     "high_current_on_filament_swap": "0",
     "host_type": "octoprint",
@@ -48,44 +48,44 @@
     "long_retractions_when_cut": [
         "0"
     ],
-    "machine_end_gcode": "G1 E-1.0 F2100 ; retract\nG92 E0.0\nG1{if max_layer_z < max_print_height} Z{z_offset+min(max_layer_z+30, max_print_height)}{endif} E-34.0 F720 ; move print head up & retract filament\nG4 ; wait\nM104 S0 ; turn off temperature\nM140 S0 ; turn off heatbed\nM107 ; turn off fan\nG1 X0 Y105 F3000 ; park print head\nM84 ; disable motors",
+    "machine_end_gcode": "M104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM107 ; turn off fan\nG90; set absolute\nG1 X1 Y1\nM106 P1 S0;\nM106 P0 S0;\nG1 Z305 F10000\nG1 Y10 X10 F10000\nSET_GCODE_OFFSET Z=0\nBED_MESH_CLEAR ; clear kinematics",
     "machine_load_filament_time": "0",
     "machine_max_acceleration_e": [
-        "5000"
+        "14000"
     ],
     "machine_max_acceleration_extruding": [
-        "10000"
+        "14000"
     ],
     "machine_max_acceleration_retracting": [
-        "1000"
+        "14000"
     ],
     "machine_max_acceleration_travel": [
         "0",
         "0"
     ],
     "machine_max_acceleration_x": [
-        "10000"
+        "14000"
     ],
     "machine_max_acceleration_y": [
-        "10000"
+        "14000"
     ],
     "machine_max_acceleration_z": [
-        "500"
+        "1400"
     ],
     "machine_max_jerk_e": [
         "5"
     ],
     "machine_max_jerk_x": [
-        "8"
+        "50"
     ],
     "machine_max_jerk_y": [
-        "8"
+        "50"
     ],
     "machine_max_jerk_z": [
-        "0.4"
+        "5"
     ],
     "machine_max_speed_e": [
-        "60"
+        "20"
     ],
     "machine_max_speed_x": [
         "500"
@@ -94,7 +94,7 @@
         "500"
     ],
     "machine_max_speed_z": [
-        "10"
+        "40"
     ],
     "machine_min_extruding_rate": [
         "0"
@@ -103,7 +103,7 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "G90 ; use absolute coordinates\nM83 ; extruder relative mode\nM204 S[machine_max_acceleration_extruding] T[machine_max_acceleration_retracting]\nM104 S[first_layer_temperature] ; set extruder temp\nM140 S[first_layer_bed_temperature] ; set bed temp\nG28 ; home all\nG1 Y1.0 Z0.3 F1000 ; move print head up\nM190 S[first_layer_bed_temperature] ; wait for bed temp\nM109 S[first_layer_temperature] ; wait for extruder temp\nG92 E0.0\n; initial load\nG1 X205.0 E19 F1000\nG1 Y1.6\nG1 X5.0 E19 F1000\nG92 E0.0\n; intro line\nG1 Y2.0 Z0.2 F1000\nG1 X65.0 E9.0 F1000\nG1 X105.0 E12.5 F1000\nG92 E0.0",
+    "machine_start_gcode": "M117 Homing\nM83  ; extruder relative mode\n\nM104 S100 ; set extruder standby temp\nM140 S[first_layer_bed_temperature] ; set bed temp\n{if filament_type[0] == \"PETG-CF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=30\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=40\n{endif}\nG28 ; home all\nG0 Y150 X0 Z25 F10000; move to optimal preheat height\nM106 S255 ; set part fan to max\nM117 Preheating Chamber\n\n{if filament_type[0] == \"PETG-CF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=25 ; wait for chamber to reach temp\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=32 ; wait for chamber to reach temp\n{endif}\n\nM106 S0 ; turn off part fan\n\nM104 S[chamber_temperature]; set extruder to probe temp\nG0 Y5 X5 Z5 F10000;\nG28 ; home all\nM117 Heating Nozzle To Probe Temperature\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[chamber_temperature] ; wait for the extruder to get to temp\nM117 Heating Bed\nTEMPERATURE_WAIT SENSOR=\"heater_bed\" MINIMUM=[first_layer_bed_temperature] ; wait for the bed to get to temp\nG0 Z10; move to safe Z\nM117 Stabilizing Temperature\nG4 P60000 ; wait 1 minute for nozzle and bed temperatures to stabilize (PID overshoot, tip temperature)\nM117 Probing Bed\nBED_MESH_CLEAR ; clear kinematics \nBED_MESH_CALIBRATE ; probe bed\nG92 E0.0 ; reset extruder position\nG1 Y1 X0 Z5 F10000\n\nM117 Heating Nozzle To First Layer Temperature\nM104 S[first_layer_temperature] ; set extruder first layer temp\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[first_layer_temperature] ; wait for the extruder to get to temp\nM117 Extruding Priming Line\nG1 Y1 X0 Z0.3 F10000\nG1 Y1 F1000.0 ; go outside print area\nG92 E0.0 ; reset extruder position\nG1 X90.0 E12.0  F1000.0 ; intro line\nG1 X200.0 E30  F1000.0 ; intro line\nG92 E0.0 ;reset extruder position\nM221 S100 ; set 100% flow\nM117",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
@@ -118,7 +118,7 @@
     ],
     "nozzle_height": "4",
     "nozzle_hrc": "0",
-    "nozzle_type": "undefine",
+    "nozzle_type": "hardened_steel",
     "nozzle_volume": "0",
     "parking_pos_retraction": "92",
     "preferred_orientation": "0",
@@ -126,11 +126,11 @@
     "print_host_webui": "",
     "printable_area": [
         "0x0",
-        "200x0",
-        "200x200",
-        "0x200"
+        "300x0",
+        "300x300",
+        "0x300"
     ],
-    "printable_height": "200",
+    "printable_height": "310",
     "printer_model": "Pantheon HS3",
     "printer_notes": "",
     "printer_settings_id": "Pantheon HS3",
@@ -185,10 +185,10 @@
     "scan_first_layer": "0",
     "silent_mode": "0",
     "single_extruder_multi_material": "1",
-    "support_air_filtration": "1",
-    "support_chamber_temp_control": "1",
+    "support_air_filtration": "0",
+    "support_chamber_temp_control": "0",
     "support_multi_bed_types": "0",
-    "template_custom_gcode": "",
+    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: original\n;     printhead: original\n;     mainboard: manta-m8p-v2-0\n;     printhead-board: ebb42-v1-2\n; ...",
     "thumbnails": [
         "300x300"
     ],
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "1.0.0.0",
+    "version": "3.0.0.0",
     "wipe": [
         "0"
     ],

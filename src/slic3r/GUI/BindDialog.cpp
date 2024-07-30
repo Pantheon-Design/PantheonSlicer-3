@@ -109,7 +109,7 @@ PingCodeBindDialog::PingCodeBindDialog(Plater* plater /*= nullptr*/)
     m_link_show_ping_code_wiki->Bind(wxEVT_LEAVE_WINDOW, [this](auto& e) {SetCursor(wxCURSOR_ARROW); });
 
     m_link_show_ping_code_wiki->Bind(wxEVT_LEFT_DOWN, [this](auto& e) {
-        m_ping_code_wiki = "https://wiki.bambulab.com/en/bambu-studio/manual/pin-code";
+        m_ping_code_wiki = "";
         wxLaunchDefaultBrowser(m_ping_code_wiki);
     });
 
@@ -507,10 +507,10 @@ PingCodeBindDialog::~PingCodeBindDialog() {
          std::string country_code = Slic3r::GUI::wxGetApp().app_config->get_country_code();
 
          if (country_code == "CN") {
-             url = "https://www.bambulab.cn/policies/privacy";
+             url = "";
          }
          else{
-             url = "https://www.bambulab.com/policies/privacy";
+             url = "";
          }
          wxLaunchDefaultBrowser(url);
      });
@@ -760,7 +760,6 @@ PingCodeBindDialog::~PingCodeBindDialog() {
          json j = json::parse(str.utf8_string());
          if (j.contains("err_code")) {
              int error_code = j["err_code"].get<int>();
-             extra = wxGetApp().get_hms_query()->query_print_error_msg(error_code);
          }
      }
      catch (...) {

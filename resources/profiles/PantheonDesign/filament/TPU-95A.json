@@ -1,0 +1,68 @@
+{
+    "instantiation": "true",
+    "chamber_temperature": [
+        "200"
+    ],
+    "compatible_printers": [
+        "Pantheon HS3 0.4 Nozzle"
+    ],
+    "compatible_prints": [
+        "TPU-95A"
+    ],
+    "default_filament_colour": [
+        "#707070"
+    ],
+    "fan_min_speed": [
+        "0"
+    ],
+    "filament_flow_ratio": [
+        "1.01"
+    ],
+    "filament_max_volumetric_speed": [
+        "10"
+    ],
+    "filament_retraction_length": [
+        "3"
+    ],
+    "filament_retraction_speed": [
+        "35"
+    ],
+    "filament_settings_id": [
+        "TPU-95A"
+    ],
+    "filament_shrink": [
+        "100%"
+    ],
+    "filament_start_gcode": [
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
+    ],
+    "filament_type": [
+        "TPU"
+    ],
+    "from": "system",
+    "hot_plate_temp": [
+        "50"
+    ],
+    "hot_plate_temp_initial_layer": [
+        "50"
+    ],
+    "inherits": "Quality PA-CF Rev3.7",
+    "is_custom_defined": "0",
+    "name": "TPU-95A",
+    "nozzle_temperature": [
+        "230"
+    ],
+    "nozzle_temperature_initial_layer": [
+        "230"
+    ],
+    "nozzle_temperature_range_high": [
+        "230"
+    ],
+    "nozzle_temperature_range_low": [
+        "205"
+    ],
+    "support_material_interface_fan_speed": [
+        "0"
+    ],
+    "version": "3.0.0.0"
+}

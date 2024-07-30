@@ -2110,6 +2110,14 @@ void MainFrame::on_sys_color_changed()
     this->Refresh();
 }
 
+void MainFrame::set_print_slice_btn_colour()
+{
+    m_print_btn->SetForegroundColour(wxColour(250, 250, 250));
+    m_slice_btn->SetForegroundColour(wxColour(250, 250, 250));
+    this->Refresh();
+}
+
+
 #ifdef _MSC_VER
     // \xA0 is a non-breaking space. It is entered here to spoil the automatic accelerators,
     // as the simple numeric accelerators spoil all numeric data entry.
@@ -2221,9 +2229,7 @@ static void add_common_view_menu_items(wxMenu* view_menu, MainFrame* mainFrame, 
     append_menu_item(view_menu, wxID_ANY, _L("Left") + "\t" + ctrl + "5", _L("Left View"), [mainFrame](wxCommandEvent&) { mainFrame->select_view("left"); },
         "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);
     append_menu_item(view_menu, wxID_ANY, _L("Right") + "\t" + ctrl + "6", _L("Right View"), [mainFrame](wxCommandEvent&) { mainFrame->select_view("right"); },
-        "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);
-    append_menu_item(view_menu, wxID_ANY, _L("Top Right") + "\t" + ctrl + "7", _L("Top Right View"), [mainFrame](wxCommandEvent&) { mainFrame->select_view("topright"); },
-        "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame);    
+        "", nullptr, [can_change_view]() { return can_change_view(); }, mainFrame); 
 }
 
 void MainFrame::init_menubar_as_editor()
@@ -3467,6 +3473,8 @@ void MainFrame::on_config_changed(DynamicPrintConfig* config) const
 
 void MainFrame::set_print_button_to_default(PrintSelectType select_type)
 {
+    m_print_btn->SetForegroundColour(wxColour(250, 250, 250));
+    m_slice_btn->SetForegroundColour(wxColour(250, 250, 250));
     if (select_type == PrintSelectType::ePrintPlate) {
         m_print_btn->SetLabel(_L("Print plate"));
         m_print_select = ePrintPlate;

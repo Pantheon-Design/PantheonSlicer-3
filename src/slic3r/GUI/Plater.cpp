@@ -902,14 +902,14 @@ Sidebar::Sidebar(Plater *parent)
 
     ScalableButton* add_btn = new ScalableButton(p->m_panel_filament_title, wxID_ANY, "add_filament");
     add_btn->SetToolTip(_L("Add one filament"));
-    add_btn->Bind(wxEVT_BUTTON, [this, scrolled_sizer](wxCommandEvent& e){
+    add_btn->Bind(wxEVT_BUTTON, [this, scrolled_sizer](wxCommandEvent& e) {
         // Orca: limit filament choices to 64
         if (p->combos_filament.size() >= 64)
             return;
 
-        int filament_count = p->combos_filament.size() + 1;
-        wxColour new_col = Plater::get_next_color_for_filament();
-        std::string new_color = new_col.GetAsString(wxC2S_HTML_SYNTAX).ToStdString();
+        int         filament_count = p->combos_filament.size() + 1;
+        wxColour    new_col        = Plater::get_next_color_for_filament();
+        std::string new_color      = new_col.GetAsString(wxC2S_HTML_SYNTAX).ToStdString();
         wxGetApp().preset_bundle->set_num_filaments(filament_count, new_color);
         wxGetApp().plater()->on_filaments_change(filament_count);
         wxGetApp().get_tab(Preset::TYPE_PRINT)->update();
@@ -918,12 +918,9 @@ Sidebar::Sidebar(Plater *parent)
     });
     p->m_bpButton_add_filament = add_btn;
 
-    bSizer39->Add(add_btn, 0, wxALIGN_CENTER|wxALL, FromDIP(5));
-    bSizer39->Add(FromDIP(10), 0, 0, 0, 0 );
-
     ScalableButton* del_btn = new ScalableButton(p->m_panel_filament_title, wxID_ANY, "delete_filament");
     del_btn->SetToolTip(_L("Remove last filament"));
-    del_btn->Bind(wxEVT_BUTTON, [this, scrolled_sizer](wxCommandEvent &e) {
+    del_btn->Bind(wxEVT_BUTTON, [this, scrolled_sizer](wxCommandEvent& e) {
         if (p->combos_filament.size() <= 1)
             return;
 
@@ -942,9 +939,6 @@ Sidebar::Sidebar(Plater *parent)
         wxGetApp().preset_bundle->export_selections(*wxGetApp().app_config);
     });
     p->m_bpButton_del_filament = del_btn;
-
-    bSizer39->Add(del_btn, 0, wxALIGN_CENTER_VERTICAL, FromDIP(5));
-    bSizer39->Add(FromDIP(20), 0, 0, 0, 0);
 
     ams_btn = new ScalableButton(p->m_panel_filament_title, wxID_ANY, "ams_fila_sync", wxEmptyString, wxDefaultSize, wxDefaultPosition,
                                                  wxBU_EXACTFIT | wxNO_BORDER, false, 18);
@@ -1268,7 +1262,7 @@ void Sidebar::update_all_preset_comboboxes()
 
     // Orca:: show device tab based on vendor type
     p_mainframe->show_device(use_bbl_network);
-    p_mainframe->select_tab(MainFrame::tp3DEditor);
+    p_mainframe->m_tabpanel->SetSelection(p_mainframe->m_tabpanel->GetSelection());
 }
 
 void Sidebar::update_presets(Preset::Type preset_type)
@@ -7593,7 +7587,7 @@ void Plater::priv::set_project_name(const wxString& project_name)
     m_project_name = project_name;
     //update topbar title
 #ifdef __WINDOWS__
-    wxGetApp().mainframe->SetTitle(m_project_name + " - OrcaSlicer");
+    wxGetApp().mainframe->SetTitle(m_project_name + " - PantheonSlicer-3");
     wxGetApp().mainframe->topbar()->SetTitle(m_project_name);
 #else
     wxGetApp().mainframe->SetTitle(m_project_name);
@@ -8716,7 +8710,7 @@ int Plater::new_project(bool skip_confirm, bool silent, const wxString& project_
 
     // BBS set default view and zoom
     p->select_view_3D("3D");
-    p->select_view("topfront");
+    p->select_view("topright");
     p->camera.requires_zoom_to_bed = true;
     enable_sidebar(!m_only_gcode);
 
@@ -8817,7 +8811,7 @@ void Plater::load_project(wxString const& filename2,
     // BBS set default 3D view and direction after loading project
     //p->select_view_3D("3D");
     if (!m_exported_file) {
-        p->select_view("topfront");
+        p->select_view("topright");
         p->camera.requires_zoom_to_plate = REQUIRES_ZOOM_TO_ALL_PLATE;
         wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
     }
@@ -10748,7 +10742,7 @@ void Plater::remove_selected()
 void Plater::increase_instances(size_t num)
 {
     // BBS
-#if 0
+#if 1
     if (! can_increase_instances()) { return; }
 
     Plater::TakeSnapshot snapshot(this, "Increase Instances");
@@ -10787,7 +10781,7 @@ void Plater::increase_instances(size_t num)
 void Plater::decrease_instances(size_t num)
 {
     // BBS
-#if 0
+#if 1
     if (! can_decrease_instances()) { return; }
 
     Plater::TakeSnapshot snapshot(this, "Decrease Instances");

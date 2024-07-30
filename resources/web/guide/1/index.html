@@ -11,15 +11,38 @@
 <script type="text/javascript" src="../../data/text.js"></script>	
 <script type="text/javascript" src="../js/globalapi.js"></script>	
 <script type="text/javascript" src="../js/common.js"></script>
+<style>
+    #CloseBtn {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+    }
+</style>
 </head>
 <body onLoad="TranslatePage()">
+    <button id="CloseBtn" onclick="closePage()">×</button>
 	<div id="SlicerIcon" style="text-align: center;">
 		<img src="../../image/logo.png"/>
 	</div>
 	<div id="Title" class="trans" tid="t1">Welcome to Orca Slicer</div>
 	<div id="STip" class="trans" tid="t2">Orca Slicer will be setup in several steps. Let's start!</div>
 	<div id="BtnArea">
-	    <a id="StartBtn" class="NormalBtn swiper-button-next trans" tid="t24" href="../11/index.html">Get Started</a>
+	    <a id="StartBtn" class="NormalBtn swiper-button-next trans" tid="t24" href="../21/index.html">Get Started</a>
 	</div>
+    <script>
+        function closePage() {
+            var tSend={};
+            tSend['sequence_id']=Math.round(new Date() / 1000);
+            tSend['command']="user_guide_finish";
+            tSend['data']={};
+            tSend['data']['action']="finish";
+            
+            SendWXMessage( JSON.stringify(tSend) );	
+        }
+    </script>
 </body>
 </html>

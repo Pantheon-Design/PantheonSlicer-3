@@ -240,31 +240,6 @@ void SelectMObjectPopup::Popup(wxWindow* WXUNUSED(focus))
         m_refresh_timer->Start(MACHINE_LIST_REFRESH_INTERVAL);
     }
 
-    if (wxGetApp().is_user_login()) {
-        if (!get_print_info_thread) {
-            get_print_info_thread = new boost::thread(Slic3r::create_thread([this, token = std::weak_ptr<int>(m_token)] {
-                NetworkAgent* agent = wxGetApp().getAgent();
-                unsigned int http_code;
-                std::string body;
-                int result = agent->get_user_print_info(&http_code, &body);
-
-                wxGetApp().CallAfter([token, this, result, body]() {
-                    if (token.expired()) {return;}
-                    if (result == 0) {
-                        m_print_info = body;
-                    }
-                    else {
-                        m_print_info = "";
-                    }
-
-                    wxCommandEvent event(EVT_UPDATE_USER_MLIST);
-                    event.SetEventObject(this);
-                    wxPostEvent(this, event);
-                });
-            }));
-        }
-    }
-
     wxPostEvent(this, wxTimerEvent());
     PopupWindow::Popup();
 }

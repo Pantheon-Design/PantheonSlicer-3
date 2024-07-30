@@ -1,12 +1,23 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\gitlab\\pantheonslicer\\WindowsInstaller\\",
+  "WorkspaceRootPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\",
   "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:3:0:{34c7837f-3b3a-449c-bdf0-bdad86cbaf4a}"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

@@ -122,18 +122,6 @@ AddMachinePanel::~AddMachinePanel() {
         m_side_tools->start_interval();
     });
 
-    Bind(EVT_ALREADY_READ_HMS, [this](wxCommandEvent& e) {
-        auto key = e.GetString().ToStdString();
-        auto iter = m_hms_panel->temp_hms_list.find(key);
-        if (iter != m_hms_panel->temp_hms_list.end()) {
-            m_hms_panel->temp_hms_list[key].already_read = true;
-        }
-
-        update_hms_tag();
-        e.Skip();
-    });
-
-    Bind(EVT_JUMP_TO_HMS, &MonitorPanel::jump_to_HMS, this);
 }
 
 MonitorPanel::~MonitorPanel()
@@ -197,8 +185,6 @@ MonitorPanel::~MonitorPanel()
     m_upgrade_panel = new UpgradePanel(m_tabpanel);
     m_tabpanel->AddPage(m_upgrade_panel, _L("Update"), "", false);
 
-    m_hms_panel = new HMSPanel(m_tabpanel);
-    m_tabpanel->AddPage(m_hms_panel, "HMS","", false);
 
     m_initialized = true;
     show_status((int)MonitorStatus::MONITOR_NO_PRINTER);
@@ -250,7 +236,6 @@ void MonitorPanel::msw_rescale()
     m_status_info_panel->msw_rescale();
     m_media_file_panel->Rescale();
     m_upgrade_panel->msw_rescale();
-    m_hms_panel->msw_rescale();
 
     Layout();
     Refresh();
@@ -286,9 +271,6 @@ void MonitorPanel::on_update_all(wxMouseEvent &event)
     Slic3r::DeviceManager* dev = Slic3r::GUI::wxGetApp().getDeviceManager();
     if (!dev) return;
 
-    if ( dev->get_selected_machine() && (dev->get_selected_machine()->dev_id != event.GetString().ToStdString()) && m_hms_panel) {
-        m_hms_panel->clear_hms_tag();
-    }
 
     if (!dev->set_selected_machine(event.GetString().ToStdString()))
         return;
@@ -372,13 +354,7 @@ void MonitorPanel::update_all()
     m_status_info_panel->m_media_play_ctrl->SetMachineObject(obj);
     m_media_file_panel->SetMachineObject(obj);
     m_side_tools->update_status(obj);
-    
-    if (!obj) {
-        show_status((int)MONITOR_NO_PRINTER);
-        m_hms_panel->clear_hms_tag();
-        m_tabpanel->GetBtnsListCtrl()->showNewTag(3, false);
-        return;
-    }
+
 
     if (obj->is_connecting()) {
         show_status(MONITOR_CONNECTING);
@@ -402,9 +378,7 @@ void MonitorPanel::update_all()
         m_status_info_panel->update(obj);
     }
 
-    if (m_hms_panel->IsShown() ||  (obj->hms_list.size() != m_hms_panel->temp_hms_list.size())) {
-        m_hms_panel->update(obj);
-    }
+
 
 #if !BBL_RELEASE_TO_PUBLIC
     if (m_upgrade_panel->IsShown()) {
@@ -412,21 +386,9 @@ void MonitorPanel::update_all()
     }
 #endif
 
-    update_hms_tag();
 }
 
-void MonitorPanel::update_hms_tag()
-{
-    for (auto hmsitem : m_hms_panel->temp_hms_list) {
-        if (!hmsitem.second.already_read) {
-            //show HMS new tag
-            m_tabpanel->GetBtnsListCtrl()->showNewTag(3, true);
-            return;
-        }
-    }
 
-    m_tabpanel->GetBtnsListCtrl()->showNewTag(3, false);
-}
 
 bool MonitorPanel::Show(bool show)
 {
@@ -508,7 +470,6 @@ Freeze();
     // update panels
     if (m_side_tools) { m_side_tools->show_status(status); };
     m_status_info_panel->show_status(status);
-    m_hms_panel->show_status(status);
     m_upgrade_panel->show_status(status);
 
     if ((status & (int)MonitorStatus::MONITOR_NO_PRINTER) != 0) {
@@ -541,8 +502,6 @@ std::string MonitorPanel::get_string_from_tab(PrinterTab tab)
         return "sd_card";
     case PT_UPDATE:
         return "update";
-    case PT_HMS:
-        return "HMS";
     case PT_DEBUG:
         return "debug";
     default:
@@ -551,14 +510,6 @@ std::string MonitorPanel::get_string_from_tab(PrinterTab tab)
     return "";
 }
 
-void MonitorPanel::jump_to_HMS(wxCommandEvent& e)
-{
-    if (!this->IsShown())
-        return;
-    auto page = m_tabpanel->GetCurrentPage();
-    if (page && page != m_hms_panel)
-        m_tabpanel->SetSelection(PT_HMS);
-}
 
 
 } // GUI

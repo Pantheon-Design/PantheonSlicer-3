@@ -41,11 +41,9 @@
 using namespace nlohmann;
 
 namespace Slic3r {
-
-static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/Aziooo/orcaslicer_rebrand/releases/latest";
-static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/Aziooo/orcaslicer_rebrand/releases";
-//static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/Aziooo/testprofile/releases";
-static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/OrcaSlicer/orcaslicer-profiles/releases";
+        static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases/latest";
+static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases";
+static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3-Profiles/releases";
 
 static const std::string MODELS_STR = "models";
 
@@ -74,18 +72,8 @@ std::string AppConfig::get_hms_host()
 {
     std::string sel = get("iot_environment");
     std::string host = "";
-// #if !BBL_RELEASE_TO_PUBLIC
-//     if (sel == ENV_DEV_HOST)
-//         host = "e-dev.bambu-lab.com";
-//     else if (sel == ENV_QAT_HOST)
-//         host = "e-qa.bambu-lab.com";
-//     else if (sel == ENV_PRE_HOST)
-//         host = "e-pre.bambu-lab.com";
-//     else if (sel == ENV_PRODUCT_HOST)
-//         host = "e.bambulab.com";
-//     return host;
-// #else
-    return "e.bambulab.com";
+
+    return "";
 // #endif
 }
 
@@ -170,7 +158,7 @@ void AppConfig::set_defaults()
     }
 
     if (get("use_perspective_camera").empty())
-        set_bool("use_perspective_camera", true);
+        set_bool("use_perspective_camera", false);
 
     if (get("use_free_camera").empty())
         set_bool("use_free_camera", false);
@@ -186,7 +174,7 @@ void AppConfig::set_defaults()
 
 //#ifdef SUPPORT_SHOW_HINTS
     if (get("show_hints").empty())
-        set_bool("show_hints", true);
+        set_bool("show_hints", false);
 //#endif
     if (get("enable_multi_machine").empty())
         set_bool("enable_multi_machine", false);
@@ -247,7 +235,7 @@ void AppConfig::set_defaults()
 
     // Orca
     if (get("stealth_mode").empty()) {
-        set_bool("stealth_mode", false);
+        set_bool("stealth_mode", true);
     }
 
     if(get("check_stable_update_only").empty()) {

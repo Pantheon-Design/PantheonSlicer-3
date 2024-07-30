@@ -7,5 +7,5 @@
   "family": "Pantheon HS",
   "bed_model": "M5-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
-  "default_materials": "My Generic PC @Pantheon HS3;My Generic PETG @Pantheon HS3"
+  "default_materials": "PA-CF;TPU-95A;PA-GF;PETG-CF"
 }
