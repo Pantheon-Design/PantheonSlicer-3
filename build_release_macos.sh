@@ -184,7 +184,7 @@ function build_slicer() {
         # remove previously built app
         rm -rf ./PantheonSlicer.app
         # fully copy newly built app
-        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer.app" ./PantheonSlicer.app
+        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer-3.app" ./PantheonSlicer-3.app
         # fix resources
         resources_path=$(readlink ./PantheonSlicer.app/Contents/Resources)
         rm ./PantheonSlicer.app/Contents/Resources

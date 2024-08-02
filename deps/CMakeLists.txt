@@ -1,11 +1,11 @@
 #
-# This CMake project downloads, configures and builds OrcaSlicer dependencies on Unix and Windows.
+# This CMake project downloads, configures and builds PantheonSlicer-3 dependencies on Unix and Windows.
 #
 # When using this script, it's recommended to perform an out-of-source build using CMake.
 #
 # All the dependencies are installed in a `destdir` directory in the root of the build directory,
 # in a traditional Unix-style prefix structure. The destdir can be used directly by CMake
-# when building OrcaSlicer - to do this, set the CMAKE_PREFIX_PATH to ${destdir}/usr/local.
+# when building PantheonSlicer-3 - to do this, set the CMAKE_PREFIX_PATH to ${destdir}/usr/local.
 # Warning: On UNIX/Linux, you also need to set -DSLIC3R_STATIC=1 when building OrcaSlicer.
 #
 # For better clarity of console output, it's recommended to _not_ use a parallelized build
@@ -30,7 +30,7 @@ if (APPLE)
 
 endif ()
 
-project(OrcaSlicer-deps)
+project(PantheonSlicer-3-deps)
 
 include(ExternalProject)
 include(ProcessorCount)

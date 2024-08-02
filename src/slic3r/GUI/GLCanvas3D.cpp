@@ -3219,7 +3219,9 @@ void GLCanvas3D::on_char(wxKeyEvent& evt)
         auto obj_list = wxGetApp().obj_list();
         switch (keyCode)
         {
+#ifndef __APPLE__
         case WXK_BACK:
+#endif
         case WXK_DELETE: { post_event(SimpleEvent(EVT_GLTOOLBAR_DELETE)); break; }
         // BBS
 #ifdef __APPLE__
