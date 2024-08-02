@@ -179,8 +179,8 @@ function build_slicer() {
     echo "Fix macOS app package..."
     (
         cd "$PROJECT_BUILD_DIR"
-        mkdir -p PantheonSlicer
-        cd PantheonSlicer
+        mkdir -p PantheonSlicer-3
+        cd PantheonSlicer-3
         # remove previously built app
         rm -rf ./PantheonSlicer.app
         # fully copy newly built app
