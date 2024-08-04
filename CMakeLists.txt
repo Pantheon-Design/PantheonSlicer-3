@@ -699,7 +699,7 @@ function(orcaslicer_copy_dlls target config postfix output_dlls)
 endfunction()
 
 
-# libslic3r, PantheonSlicer-3 GUI and the PantheonSlicer-3 executable.
+# libslic3r, OrcaSlicer GUI and the OrcaSlicer executable.
 add_subdirectory(src)
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT OrcaSlicer_app_gui)
 
@@ -750,7 +750,7 @@ elseif (SLIC3R_FHS)
         )
     endforeach()
 elseif (CMAKE_MACOSX_BUNDLE)
-    # install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/PantheonSlicer.app/Contents/resources")
+    # install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/OrcaSlicer.app/Contents/resources")
 else ()
     install(FILES src/platform/unix/PantheonSlicer-3.desktop DESTINATION ${CMAKE_INSTALL_PREFIX}/resources/applications)
     install(DIRECTORY "${SLIC3R_RESOURCES_DIR}/" DESTINATION "${CMAKE_INSTALL_PREFIX}/resources")
@@ -760,7 +760,7 @@ install(FILES ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION ".")
 configure_file(${LIBDIR}/platform/unix/fhs.hpp.in ${LIBDIR_BIN}/platform/unix/fhs.hpp)
 
 set (CPACK_PACKAGE_NAME "PantheonSlicer-3")
-set (CPACK_PACKAGE_VENDOR "Pantheon Design")
+set (CPACK_PACKAGE_VENDOR "SoftFever")
 set (CPACK_PACKAGE_VERSION_MAJOR "${ORCA_VERSION_MAJOR}")
 set (CPACK_PACKAGE_VERSION_MINOR "${ORCA_VERSION_MINOR}")
 set (CPACK_PACKAGE_VERSION_PATCH "${ORCA_VERSION_PATCH}")
@@ -780,8 +780,7 @@ set (CPACK_PACKAGE_INSTALL_REGISTRY_KEY "PantheonSlicer-3")
 set (CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON)
 set (CPACK_NSIS_EXECUTABLES_DIRECTORY ".")
 # set (CPACK_NSIS_MODIFY_PATH "ON")
-#set(CPACK_PACKAGE_EXECUTABLES "PantheonSlicer-3;OrcaSlicer")
-set(CPACK_PACKAGE_EXECUTABLES "PantheonSlicer-3")
+set(CPACK_PACKAGE_EXECUTABLES "PantheonSlicer-3;OrcaSlicer")
 set(CPACK_CREATE_DESKTOP_LINKS "PantheonSlicer-3")
 set (CPACK_RESOURCE_FILE_LICENSE ${CMAKE_SOURCE_DIR}/LICENSE.txt) # must also include in install command
 
