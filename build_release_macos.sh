@@ -182,15 +182,17 @@ function build_slicer() {
         mkdir -p PantheonSlicer-3
         cd PantheonSlicer-3
         # remove previously built app
-        rm -rf ./PantheonSlicer.app
+        rm -rf ./PantheonSlicer-3.app
         # fully copy newly built app
-        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer-3.app" ./PantheonSlicer-3.app
+        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/OrcaSlicer.app" ./PantheonSlicer-3.app
+        # rename the executable
+        mv ./PantheonSlicer-3.app/Contents/MacOS/OrcaSlicer ./PantheonSlicer-3.app/Contents/MacOS/PantheonSlicer-3 
         # fix resources
-        resources_path=$(readlink ./PantheonSlicer.app/Contents/Resources)
-        rm ./PantheonSlicer.app/Contents/Resources
-        cp -R "$resources_path" ./PantheonSlicer.app/Contents/Resources
+        resources_path=$(readlink ./PantheonSlicer-3.app/Contents/Resources)
+        rm ./PantheonSlicer-3.app/Contents/Resources
+        cp -R "$resources_path" ./PantheonSlicer-3.app/Contents/Resources
         # delete .DS_Store file
-        find ./PantheonSlicer.app/ -name '.DS_Store' -delete
+        find ./PantheonSlicer-2.app/ -name '.DS_Store' -delete
     )
 
     # extract version
