@@ -1732,12 +1732,14 @@ void GCodeViewer::update_moves_slider(bool set_to_max)
         ++count;
     }
 
+    bool keep_min = m_moves_slider->GetActiveValue() == m_moves_slider->GetMinValue();
+
     m_moves_slider->SetSliderValues(values);
     m_moves_slider->SetSliderAlternateValues(alternate_values);
     m_moves_slider->SetMaxValue(view.endpoints.last - view.endpoints.first);
     m_moves_slider->SetSelectionSpan(view.current.first - view.endpoints.first, view.current.last - view.endpoints.first);
     if (set_to_max)
-        m_moves_slider->SetHigherValue(m_moves_slider->GetMaxValue());
+        m_moves_slider->SetHigherValue(keep_min ? m_moves_slider->GetMinValue() : m_moves_slider->GetMaxValue());
 }
 
 void GCodeViewer::update_layers_slider_mode()
@@ -4545,7 +4547,6 @@ void GCodeViewer::render_legend(float &legend_height, int canvas_width, int canv
                 const auto preferred_offset = ImGui::GetWindowWidth() - ImGui::CalcTextSize(_u8L("Display").c_str()).x - ImGui::GetFrameHeight() / 2 - 2 * window_padding - ImGui::GetStyle().ScrollbarSize;
                 if (preferred_offset > offsets.back()) {
                     offsets.back() = preferred_offset;
-                    imgui.set_requires_extra_frame();
                 }
             }
 

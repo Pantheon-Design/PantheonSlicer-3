@@ -34,6 +34,9 @@ while getopts ":dpa:snt:xbc:h" opt; do
     c )
         export BUILD_CONFIG="$OPTARG"
         ;;
+    1 )
+        export CMAKE_BUILD_PARALLEL_LEVEL=1
+        ;;
     h ) echo "Usage: ./build_release_macos.sh [-d]"
         echo "   -d: Build deps only"
         echo "   -a: Set ARCHITECTURE (arm64 or x86_64)"
@@ -43,6 +46,7 @@ while getopts ":dpa:snt:xbc:h" opt; do
         echo "   -x: Use Ninja CMake generator, default is Xcode"
         echo "   -b: Build without reconfiguring CMake"
         echo "   -c: Set CMake build configuration, default is Release"
+        echo "   -1: Use single job for building"
         exit 0
         ;;
     * )
@@ -175,18 +179,20 @@ function build_slicer() {
     echo "Fix macOS app package..."
     (
         cd "$PROJECT_BUILD_DIR"
-        mkdir -p PantheonSlicer
-        cd PantheonSlicer
+        mkdir -p PantheonSlicer-3
+        cd PantheonSlicer-3
         # remove previously built app
-        rm -rf ./PantheonSlicer.app
+        rm -rf ./PantheonSlicer-3.app
         # fully copy newly built app
-        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/PantheonSlicer.app" ./PantheonSlicer.app
+        cp -pR "../src$BUILD_DIR_CONFIG_SUBDIR/OrcaSlicer.app" ./PantheonSlicer-3.app
+        # rename the executable
+        mv ./PantheonSlicer-3.app/Contents/MacOS/OrcaSlicer ./PantheonSlicer-3.app/Contents/MacOS/PantheonSlicer-3 
         # fix resources
-        resources_path=$(readlink ./PantheonSlicer.app/Contents/Resources)
-        rm ./PantheonSlicer.app/Contents/Resources
-        cp -R "$resources_path" ./PantheonSlicer.app/Contents/Resources
+        resources_path=$(readlink ./PantheonSlicer-3.app/Contents/Resources)
+        rm ./PantheonSlicer-3.app/Contents/Resources
+        cp -R "$resources_path" ./PantheonSlicer-3.app/Contents/Resources
         # delete .DS_Store file
-        find ./PantheonSlicer.app/ -name '.DS_Store' -delete
+        find ./PantheonSlicer-2.app/ -name '.DS_Store' -delete
     )
 
     # extract version
