@@ -110,7 +110,7 @@ jobs:
           security list-keychain -d user -s $KEYCHAIN_PATH
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k $P12_PASSWORD $KEYCHAIN_PATH
           codesign --deep --force --verbose --options runtime --timestamp --entitlements ${{ github.workspace }}/scripts/disable_validation.entitlements --sign "$CERTIFICATE_ID" ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer/PantheonSlicer.app
-          ln -s /Applications ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer/Applications
+          ln -s /Applications ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer-3/Applications
           hdiutil create -volname "PantheonSlicer" -srcfolder ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer -ov -format UDZO PantheonSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
           codesign --deep --force --verbose --options runtime --timestamp --entitlements ${{ github.workspace }}/scripts/disable_validation.entitlements --sign "$CERTIFICATE_ID" PantheonSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "${{ secrets.APPLE_DEV_ACCOUNT }}" --team-id "${{ secrets.TEAM_ID }}" --password "${{ secrets.APP_PWD }}"
@@ -121,8 +121,8 @@ jobs:
         if: github.ref != 'refs/heads/main' && inputs.os == 'macos-14'
         working-directory: ${{ github.workspace }}
         run: |
-          ln -s /Applications ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer/Applications
-          hdiutil create -volname "PantheonSlicer" -srcfolder ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer -ov -format UDZO PantheonSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
+          ln -s /Applications ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer-3/Applications
+          hdiutil create -volname "PantheonSlicer" -srcfolder ${{ github.workspace }}/build_${{inputs.arch}}/PantheonSlicer-3 -ov -format UDZO PantheonSlicer_Mac_${{inputs.arch}}_${{ env.ver }}.dmg
 
       - name: Upload artifacts mac
         if: inputs.os == 'macos-14'
