@@ -2531,7 +2531,7 @@ void PartPlate::generate_print_polygon(ExPolygon &print_polygon)
 {
 	auto compute_points = [&print_polygon](Vec2d& center, double radius, double start_angle, double stop_angle, int count)
 	{
-		double angle, angle_steps;
+		double angle_steps;
 		angle_steps = (stop_angle - start_angle) / (count - 1);
 		for(int j = 0; j < count; j++ )
 		{
@@ -2563,7 +2563,7 @@ void PartPlate::generate_exclude_polygon(ExPolygon &exclude_polygon)
 {
 	auto compute_exclude_points = [&exclude_polygon](Vec2d& center, double radius, double start_angle, double stop_angle, int count)
 	{
-		double angle, angle_steps;
+		double angle_steps;
 		angle_steps = (stop_angle - start_angle) / (count - 1);
 		for(int j = 0; j < count; j++ )
 		{
@@ -2582,7 +2582,7 @@ void PartPlate::generate_exclude_polygon(ExPolygon &exclude_polygon)
 			{
 				const Vec2d& p = m_exclude_area[i];
 				Vec2d center;
-				double start_angle, stop_angle, angle_steps, radius_x, radius_y, radius;
+				double start_angle, stop_angle, radius;
 				switch (i) {
 					case 0:
 						radius = 5.f;
