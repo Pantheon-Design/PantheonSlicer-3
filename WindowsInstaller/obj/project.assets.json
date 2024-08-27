@@ -8,7 +8,7 @@
           "build/WixToolset.Heat.targets": {}
         }
       },
-      "WixToolset.Netfx.wixext/5.0.0": {
+      "WixToolset.Netfx.wixext/5.0.1": {
         "type": "package",
         "build": {
           "build/WixToolset.Netfx.wixext.targets": {}
@@ -20,7 +20,7 @@
           "build/WixToolset.UI.wixext.targets": {}
         }
       },
-      "WixToolset.Util.wixext/5.0.0": {
+      "WixToolset.Util.wixext/5.0.1": {
         "type": "package",
         "build": {
           "build/WixToolset.Util.wixext.targets": {}
@@ -99,17 +99,17 @@
         "wixtoolset.heat.nuspec"
       ]
     },
-    "WixToolset.Netfx.wixext/5.0.0": {
-      "sha512": "IfvMqTsEQ/wkb5tp8E0bmA8LJhciOvJJVRoK0x9CVzdHSEcCZo0DpeShHSi96LebhxspHoTabp74oZcfYcgsXg==",
+    "WixToolset.Netfx.wixext/5.0.1": {
+      "sha512": "iaW65rKDGf82EvWZus+41zSeD52aEuTBjFR1bmA5ou40sbBgO35TF20UbcX0yq2oLOsDT8CgdfPNP9RBJw9omA==",
       "type": "package",
-      "path": "wixtoolset.netfx.wixext/5.0.0",
+      "path": "wixtoolset.netfx.wixext/5.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "build/WixToolset.Netfx.wixext.targets",
         "wix.png",
         "wixext5/WixToolset.Netfx.wixext.dll",
-        "wixtoolset.netfx.wixext.5.0.0.nupkg.sha512",
+        "wixtoolset.netfx.wixext.5.0.1.nupkg.sha512",
         "wixtoolset.netfx.wixext.nuspec"
       ]
     },
@@ -127,17 +127,17 @@
         "wixtoolset.ui.wixext.nuspec"
       ]
     },
-    "WixToolset.Util.wixext/5.0.0": {
-      "sha512": "7lLwyrf+2cTuPju0swTWtRNYesnOMxXhGugMnGGNEPDB4g/+BCUsub2RDYAxnBnbnND7QmPwZnneLrTIQOdAbg==",
+    "WixToolset.Util.wixext/5.0.1": {
+      "sha512": "7DxjepwZ4vuLfy2scstHWaKRgYmDSpj7YAV31lrxnU5a4U6Au2p9t4YpnXrNeq8FFYuZivg5vEc/zuz5tfigug==",
       "type": "package",
-      "path": "wixtoolset.util.wixext/5.0.0",
+      "path": "wixtoolset.util.wixext/5.0.1",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "build/WixToolset.Util.wixext.targets",
         "wix.png",
         "wixext5/WixToolset.Util.wixext.dll",
-        "wixtoolset.util.wixext.5.0.0.nupkg.sha512",
+        "wixtoolset.util.wixext.5.0.1.nupkg.sha512",
         "wixtoolset.util.wixext.nuspec"
       ]
     }
@@ -158,7 +158,7 @@
     "version": "1.0.0",
     "restore": {
       "projectUniqueName": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
-      "projectName": "PantheonSlicer-2_1.0.0",
+      "projectName": "PantheonSlicer-3_3.0.2",
       "projectPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
       "packagesPath": "C:\\Users\\azio\\.nuget\\packages\\",
       "outputPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\obj\\",

@@ -8,7 +8,7 @@
       "version": "1.0.0",
       "restore": {
         "projectUniqueName": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
-        "projectName": "PantheonSlicer-2_1.0.0",
+        "projectName": "PantheonSlicer-3_3.0.2",
         "projectPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
         "packagesPath": "C:\\Users\\azio\\.nuget\\packages\\",
         "outputPath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\obj\\",
