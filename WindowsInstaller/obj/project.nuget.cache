@@ -1,13 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "YxCeIe7xD6DIauKt8m8jSzAxJQyaPdOJ6OB6kyXqwQDcFJYrVvC1gUFJG7A2YRakOKWtQxUlmowiCbqHq/NBAQ==",
+  "dgSpecHash": "cCC2tZMsuSe9/C7KzpnYVCztOi1la5NGsujgIK45c4/ogQoQDLPorZgKIy4EIKB3OAJwIX0D1gPHwCJzu3gmNg==",
   "success": true,
   "projectFilePath": "D:\\gitlab\\orcaslicerfork\\WindowsInstaller\\WindowsInstaller.wixproj",
   "expectedPackageFiles": [
     "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.heat\\5.0.0\\wixtoolset.heat.5.0.0.nupkg.sha512",
-    "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.netfx.wixext\\5.0.0\\wixtoolset.netfx.wixext.5.0.0.nupkg.sha512",
+    "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.netfx.wixext\\5.0.1\\wixtoolset.netfx.wixext.5.0.1.nupkg.sha512",
     "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.ui.wixext\\5.0.0\\wixtoolset.ui.wixext.5.0.0.nupkg.sha512",
-    "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.util.wixext\\5.0.0\\wixtoolset.util.wixext.5.0.0.nupkg.sha512"
+    "C:\\Users\\azio\\.nuget\\packages\\wixtoolset.util.wixext\\5.0.1\\wixtoolset.util.wixext.5.0.1.nupkg.sha512"
   ],
   "logs": []
 }

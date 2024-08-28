@@ -1,4 +1,6 @@
 {
+    "type": "filament",
+    "instantiation": "false",
     "compatible_prints": [
         "PETG-CF Rev3.7"
     ],
