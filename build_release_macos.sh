@@ -192,7 +192,7 @@ function build_slicer() {
         rm ./PantheonSlicer-3.app/Contents/Resources
         cp -R "$resources_path" ./PantheonSlicer-3.app/Contents/Resources
         # delete .DS_Store file
-        find ./PantheonSlicer-2.app/ -name '.DS_Store' -delete
+        find ./PantheonSlicer-3.app/ -name '.DS_Store' -delete
     )
 
     # extract version
