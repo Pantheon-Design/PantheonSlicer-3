@@ -80,6 +80,7 @@ struct GUI_InitParams;
 class ParamsDialog;
 class ModelMallDialog;
 class PingCodeBindDialog;
+class NetworkErrorDialog;
 
 
 enum FileType
@@ -390,9 +391,9 @@ private:
     bool            get_side_menu_popup_status();
     void            set_side_menu_popup_status(bool status);
     void            link_to_network_check();
-        
+    void            link_to_lan_only_wiki();
 
-    const wxColour& get_label_clr_modified(){ return m_color_label_modified; }
+    const wxColour& get_label_clr_modified() { return m_color_label_modified; }
     const wxColour& get_label_clr_sys()     { return m_color_label_sys; }
     const wxColour& get_label_clr_default() { return m_color_label_default; }
     const wxColour& get_window_default_clr(){ return m_color_window_default; }
@@ -569,6 +570,8 @@ private:
     std::string         m_mall_model_download_name;
     ModelMallDialog*    m_mall_publish_dialog{ nullptr };
     PingCodeBindDialog* m_ping_code_binding_dialog{ nullptr };
+
+    NetworkErrorDialog* m_server_error_dialog { nullptr };
 
     void            set_download_model_url(std::string url) {m_mall_model_download_url = url;}
     void            set_download_model_name(std::string name) {m_mall_model_download_name = name;}
