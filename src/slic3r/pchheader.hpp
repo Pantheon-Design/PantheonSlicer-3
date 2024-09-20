@@ -9,6 +9,10 @@
 	#include <CommCtrl.h>
 #endif
 
+#ifdef __APPLE__
+  #include <ApplicationServices/ApplicationServices.h>
+#endif
+
 #include <float.h>
 #include <stddef.h>
 #include <stdio.h>
