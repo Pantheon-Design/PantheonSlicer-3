@@ -27,10 +27,6 @@
             "sub_path": "process/PA-CF.json"
         },
         {
-            "name": "TPU-95A",
-            "sub_path": "process/TPU-95A.json"
-        },
-        {
             "name": "PA-GF",
             "sub_path": "process/PA-GF.json"
         },
@@ -59,10 +55,6 @@
         {
             "name": "PA-CF",
             "sub_path": "filament/PA-CF.json"
-        },
-		{
-            "name": "TPU-95A",
-            "sub_path": "filament/TPU-95A.json"
         },
 		{
             "name": "PA-GF",

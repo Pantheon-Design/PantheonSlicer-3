@@ -1,10 +1,3 @@
-///|/ Copyright (c) Prusa Research 2016 - 2023 Vojtěch Bubník @bubnikv, Pavel Mikuš @Godrak, Lukáš Hejl @hejllukas, Lukáš Matěna @lukasmatena
-///|/ Copyright (c) SuperSlicer 2023 Remi Durand @supermerill
-///|/ Copyright (c) 2021 Ilya @xorza
-///|/ Copyright (c) Slic3r 2015 - 2016 Alessandro Ranellucci @alranel
-///|/
-///|/ PrusaSlicer is released under the terms of the AGPLv3 or higher
-///|/
 #include "PerimeterGenerator.hpp"
 #include "AABBTreeLines.hpp"
 #include "BridgeDetector.hpp"
@@ -24,6 +17,7 @@
 #include <cmath>
 #include <cassert>
 #include <unordered_set>
+#include <thread>
 #include "libslic3r/AABBTreeLines.hpp"
 static const int overhang_sampling_number = 6;
 static const double narrow_loop_length_threshold = 10;
@@ -2138,10 +2132,17 @@ void PerimeterGenerator::process_classic()
                 ext_perimeter_spacing / 2 :
                 // two or more loops?
                 perimeter_spacing / 2;
+        
         // only apply infill overlap if we actually have one perimeter
         coord_t infill_peri_overlap = 0;
+        coord_t top_infill_peri_overlap = 0;
         if (inset > 0) {
-            infill_peri_overlap = coord_t(scale_(this->config->infill_wall_overlap.get_abs_value(unscale<double>(inset + solid_infill_spacing / 2))));
+            if(this->layer_id == 0 || this->upper_slices == nullptr){
+                infill_peri_overlap = coord_t(scale_(this->config->top_bottom_infill_wall_overlap.get_abs_value(unscale<double>(inset + solid_infill_spacing / 2))));
+            }else{
+                infill_peri_overlap = coord_t(scale_(this->config->infill_wall_overlap.get_abs_value(unscale<double>(inset + solid_infill_spacing / 2))));
+                top_infill_peri_overlap = coord_t(scale_(this->config->top_bottom_infill_wall_overlap.get_abs_value(unscale<double>(inset + solid_infill_spacing / 2))));
+            }
             inset -= infill_peri_overlap;
         }
         // simplify infill contours according to resolution
@@ -2160,7 +2161,7 @@ void PerimeterGenerator::process_classic()
         //if any top_fills, grow them by ext_perimeter_spacing/2 to have the real un-anchored fill
         ExPolygons top_infill_exp = intersection_ex(fill_clip, offset_ex(top_fills, double(ext_perimeter_spacing / 2)));
         if (!top_fills.empty()) {
-            infill_exp = union_ex(infill_exp, offset_ex(top_infill_exp, double(infill_peri_overlap)));
+            infill_exp = union_ex(infill_exp, offset_ex(top_infill_exp, double(top_infill_peri_overlap)));
         }
         this->fill_surfaces->append(infill_exp, stInternal);
 
@@ -2866,8 +2867,14 @@ ExPolygons    infill_contour = union_ex(wallToolPaths.getInnerContour());
             ext_perimeter_spacing :
             // two or more loops?
             perimeter_spacing;
-
-        inset = coord_t(scale_(this->config->infill_wall_overlap.get_abs_value(unscale<double>(inset))));
+        coord_t top_inset = inset;
+        
+        top_inset = coord_t(scale_(this->config->top_bottom_infill_wall_overlap.get_abs_value(unscale<double>(inset))));
+        if(is_topmost_layer || is_bottom_layer)
+            inset = coord_t(scale_(this->config->top_bottom_infill_wall_overlap.get_abs_value(unscale<double>(inset))));
+        else
+            inset = coord_t(scale_(this->config->infill_wall_overlap.get_abs_value(unscale<double>(inset))));
+        
         // simplify infill contours according to resolution
         Polygons pp;
         for (ExPolygon& ex : infill_contour)
@@ -2882,7 +2889,7 @@ ExPolygons    infill_contour = union_ex(wallToolPaths.getInnerContour());
             float(inset + min_perimeter_infill_spacing / 2.));
         // append infill areas to fill_surfaces
         if (!top_fills.empty()) {
-            infill_exp = union_ex(infill_exp, offset_ex(top_fills, double(inset)));
+            infill_exp = union_ex(infill_exp, offset_ex(top_fills, double(top_inset)));
         }
         this->fill_surfaces->append(infill_exp, stInternal);
 

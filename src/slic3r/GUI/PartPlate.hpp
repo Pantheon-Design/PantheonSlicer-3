@@ -141,6 +141,7 @@ private:
     PickingModel m_lock_icon;
     PickingModel m_plate_settings_icon;
     PickingModel m_plate_name_edit_icon;
+    PickingModel m_move_front_icon;
     GLModel m_plate_idx_icon;
     GLTexture m_texture;
 
@@ -199,7 +200,7 @@ private:
 public:
     static const unsigned int PLATE_BASE_ID = 255 * 255 * 253;
     static const unsigned int PLATE_NAME_HOVER_ID = 6;
-    static const unsigned int GRABBER_COUNT = 7;
+    static const unsigned int GRABBER_COUNT = 8;
 
     static ColorRGBA SELECT_COLOR;
     static ColorRGBA UNSELECT_COLOR;
@@ -246,6 +247,7 @@ public:
     //static const int plate_x_offset = 20; //mm
     //static const double plate_x_gap = 0.2;
     ThumbnailData thumbnail_data;
+    ThumbnailData no_light_thumbnail_data;
     static const int plate_thumbnail_width = 512;
     static const int plate_thumbnail_height = 512;
 
@@ -295,6 +297,7 @@ public:
     ModelObjectPtrs get_objects() { return m_model->objects; }
     ModelObjectPtrs get_objects_on_this_plate();
     ModelInstance* get_instance(int obj_id, int instance_id);
+    BoundingBoxf3 get_objects_bounding_box();
 
     Vec3d get_origin() { return m_origin; }
     Vec3d estimate_wipe_tower_size(const DynamicPrintConfig & config, const double w, const double d, int plate_extruder_size = 0, bool use_global_objects = false) const;
@@ -369,17 +372,12 @@ public:
     const BoundingBoxf3& get_bounding_box(bool extended = false) { return extended ? m_extended_bounding_box : m_bounding_box; }
     const BoundingBox get_bounding_box_crd();
     BoundingBoxf3 get_plate_box() {return get_build_volume();}
+    // Orca: support non-rectangular bed
     BoundingBoxf3 get_build_volume()
     {
         auto  eps=Slic3r::BuildVolume::SceneEpsilon;
-        Vec3d up_point = Vec3d(m_origin.x() + m_width + eps, m_origin.y() + m_depth + eps, m_origin.z() + m_height + eps);
-        Vec3d low_point  = Vec3d(m_origin.x() - eps, m_origin.y() - eps, m_origin.z() - eps);
-        if (m_raw_shape.size() > 0) {
-            up_point.x() += m_raw_shape[0].x();
-            up_point.y() += m_raw_shape[0].y();
-            low_point.x() += m_raw_shape[0].x();
-            low_point.y() += m_raw_shape[0].y();
-        }
+        Vec3d         up_point  = m_bounding_box.max + Vec3d(eps, eps, m_origin.z() + m_height + eps);
+        Vec3d         low_point = m_bounding_box.min + Vec3d(-eps, -eps, m_origin.z() - eps);
         BoundingBoxf3 plate_box(low_point, up_point);
         return plate_box;
     }
@@ -549,6 +547,8 @@ class PartPlateList : public ObjectBase
     GLTexture m_logo_texture;
     GLTexture m_del_texture;
     GLTexture m_del_hovered_texture;
+    GLTexture m_move_front_hovered_texture;
+    GLTexture m_move_front_texture;
     GLTexture m_arrange_texture;
     GLTexture m_arrange_hovered_texture;
     GLTexture m_orient_texture;
@@ -658,6 +658,9 @@ public:
         depth = m_plate_depth;
         height = m_plate_height;
     }
+
+    // Pantheon: update plates after moving plate to the front
+    void update_plates();
 
     /*basic plate operations*/
     //create an empty plate and return its index

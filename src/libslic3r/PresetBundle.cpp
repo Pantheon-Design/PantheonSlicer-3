@@ -351,6 +351,20 @@ bool PresetBundle::use_bbl_network()
     return use_bbl_network;
 }
 
+bool PresetBundle::use_bbl_device_tab() {
+    if (!is_bbl_vendor()) {
+        return false;
+    }
+
+    if (use_bbl_network()) {
+        return true;
+    }
+
+    const auto cfg = printers.get_edited_preset().config;
+    // Use bbl device tab if printhost webui url is not set 
+    return cfg.opt_string("print_host_webui").empty();
+}
+
 //BBS: load project embedded presets
 PresetsConfigSubstitutions PresetBundle::load_project_embedded_presets(std::vector<Preset*> project_presets, ForwardCompatibilitySubstitutionRule substitution_rule)
 {
@@ -1533,6 +1547,7 @@ void PresetBundle::load_installed_filaments(AppConfig &config)
                         Preset* filament = filaments.find_preset(filament_iter.first, false, true);
                         if (filament && is_compatible_with_printer(PresetWithVendorProfile(*filament, filament->vendor), PresetWithVendorProfile(printer, printer.vendor)))
                         {
+
                             //already has compatible filament
                             add_default_materials = false;
                             break;
@@ -1684,6 +1699,7 @@ void PresetBundle::load_selections(AppConfig &config, const PresetPreferences& p
     // If executed due to a Config Wizard update, preferred_printer contains the first newly installed printer, otherwise nullptr.
     const Preset *preferred_printer = printers.find_system_preset_by_model_and_variant(preferred_selection.printer_model_id, preferred_selection.printer_variant);
     printers.select_preset_by_name(preferred_printer ? preferred_printer->name : initial_printer_profile_name, true);
+    CNumericLocalesSetter locales_setter;
 
     // Orca: load from orca_presets
     // const auto os_presets = config.get_machine_settings(initial_printer_profile_name);

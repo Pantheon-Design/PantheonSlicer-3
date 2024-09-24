@@ -9,6 +9,36 @@
     "default_filament_colour": [
         "#505050"
     ],
+    "fan_cooling_layer_time": [
+        "40"
+    ],
+    "fan_max_speed": [
+        "60"
+    ],
+    "fan_min_speed": [
+        "30"
+    ],
+    "filament_flow_ratio": [
+        "1.01"
+    ],
+    "filament_retract_before_wipe": [
+        "0%"
+    ],
+    "filament_retraction_minimum_travel": [
+        "0"
+    ],
+    "filament_retraction_speed": [
+        "10"
+    ],
+    "filament_wipe": [
+        "1"
+    ],
+    "filament_z_hop": [
+        "0.1"
+    ],
+    "filament_start_gcode": [
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=4\n\nSET_PRESSURE_ADVANCE ADVANCE=0.004\nSET_GCODE_OFFSET Z=0.02"
+    ],
     "filament_settings_id": [
         "PETG-CF"
     ],
@@ -18,6 +48,9 @@
     "name": "PETG-CF",
     "support_material_interface_fan_speed": [
         "0"
+    ],
+    "slow_down_layer_time": [
+        "5"
     ],
     "version": "3.0.0.0"
 }

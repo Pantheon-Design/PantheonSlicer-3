@@ -36,3 +36,5 @@ resources/profiles/user/default
 /WindowsInstaller/bin/*
 /WindowsInstaller/obj/*
 /WindowsInstaller/HeatGeneratedFileList.wxs
+**/.flatpak-builder/
+resources/profiles/user/default

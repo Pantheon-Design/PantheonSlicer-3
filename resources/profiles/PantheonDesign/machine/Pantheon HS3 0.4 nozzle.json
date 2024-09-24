@@ -103,7 +103,7 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "M117 Homing\nM83  ; extruder relative mode\n\nM104 S100 ; set extruder standby temp\nM140 S[first_layer_bed_temperature] ; set bed temp\n{if filament_type[0] == \"PETG-CF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=30\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=40\n{endif}\nG28 ; home all\nG0 Y150 X0 Z25 F10000; move to optimal preheat height\nM106 S255 ; set part fan to max\nM117 Preheating Chamber\n\n{if filament_type[0] == \"PETG-CF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=25 ; wait for chamber to reach temp\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=32 ; wait for chamber to reach temp\n{endif}\n\nM106 S0 ; turn off part fan\n\nM104 S[chamber_temperature]; set extruder to probe temp\nG0 Y5 X5 Z5 F10000;\nG28 ; home all\nM117 Heating Nozzle To Probe Temperature\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[chamber_temperature] ; wait for the extruder to get to temp\nM117 Heating Bed\nTEMPERATURE_WAIT SENSOR=\"heater_bed\" MINIMUM=[first_layer_bed_temperature] ; wait for the bed to get to temp\nG0 Z10; move to safe Z\nM117 Stabilizing Temperature\nG4 P60000 ; wait 1 minute for nozzle and bed temperatures to stabilize (PID overshoot, tip temperature)\nM117 Probing Bed\nBED_MESH_CLEAR ; clear kinematics \nBED_MESH_CALIBRATE ; probe bed\nG92 E0.0 ; reset extruder position\nG1 Y1 X0 Z5 F10000\n\nM117 Heating Nozzle To First Layer Temperature\nM104 S[first_layer_temperature] ; set extruder first layer temp\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[first_layer_temperature] ; wait for the extruder to get to temp\nM117 Extruding Priming Line\nG1 Y1 X0 Z0.3 F10000\nG1 Y1 F1000.0 ; go outside print area\nG92 E0.0 ; reset extruder position\nG1 X90.0 E12.0  F1000.0 ; intro line\nG1 X200.0 E30  F1000.0 ; intro line\nG92 E0.0 ;reset extruder position\nM221 S100 ; set 100% flow\nM117",
+    "machine_start_gcode": "M117 Homing\nM83  ; extruder relative mode\n\nM104 S100 ; set extruder standby temp\nM140 S[first_layer_bed_temperature] ; set bed temp\n{if filament_type[0] == \"PETG-CF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=35\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=45\n{endif}\nG28 ; home all\nG0 Y150 X0 Z25 F10000; move to optimal preheat height\nM106 S255 ; set part fan to max\nM117 Preheating Chamber\n\n{if filament_type[0] == \"PETG-CF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=25 ; wait for chamber to reach temp\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=32 ; wait for chamber to reach temp\n{endif}\n\nM106 S0 ; turn off part fan\n\nM104 S[chamber_temperature]; set extruder to probe temp\nG0 Y5 X5 Z5 F10000;\nG28 ; home all\nM117 Heating Nozzle To Probe Temperature\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[chamber_temperature] ; wait for the extruder to get to temp\nM117 Heating Bed\nTEMPERATURE_WAIT SENSOR=\"heater_bed\" MINIMUM=[first_layer_bed_temperature] ; wait for the bed to get to temp\nG0 Z10; move to safe Z\nM117 Stabilizing Temperature\nG4 P60000 ; wait 1 minute for nozzle and bed temperatures to stabilize (PID overshoot, tip temperature)\nM117 Probing Bed\nBED_MESH_CLEAR ; clear kinematics \nBED_MESH_CALIBRATE ; probe bed\nG92 E0.0 ; reset extruder position\nG1 Y1 X0 Z5 F10000\n\nM117 Heating Nozzle To First Layer Temperature\nM104 S[first_layer_temperature] ; set extruder first layer temp\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[first_layer_temperature] ; wait for the extruder to get to temp\nM117 Extruding Priming Line\nG1 Y1 X0 Z0.3 F10000\nG1 Y1 F1000.0 ; go outside print area\nG92 E0.0 ; reset extruder position\nG1 X90.0 E12.0  F1000.0 ; intro line\nG1 X200.0 E30  F1000.0 ; intro line\nG92 E0.0 ;reset extruder position\nM221 S100 ; set 100% flow\nM117",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
@@ -188,7 +188,7 @@
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
     "support_multi_bed_types": "0",
-    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: original\n;     printhead: original\n;     mainboard: manta-m8p-v2-0\n;     printhead-board: ebb42-v1-2\n; ...",
+    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: original\n;     printhead: original\n; ...",
     "thumbnails": [
         "300x300"
     ],
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.0.0",
+    "version": "3.0.0.3",
     "wipe": [
         "0"
     ],

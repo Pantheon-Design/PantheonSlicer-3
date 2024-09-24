@@ -1,4 +1,6 @@
 {
+    "type": "filament",
+    "instantiation": "false",
     "compatible_prints": [
         "PETG-CF Rev3.7"
     ],
@@ -80,5 +82,5 @@
     "temperature_vitrification": [
         "220"
     ],
-    "version": "3.0.0.0"
+    "version": "3.0.0.3"
 }
