@@ -1,11 +1,21 @@
 #!/bin/bash
 
-if [[ $(uname -m) == 'arm64' ]]; then
-    Build="build_arm64"
-elif [[ $(uname -m) == 'x86_64' ]]; then
-    Build="build_x86_64"
+while getopts "a:" opt; do
+  case "${opt}" in
+    a )
+        export ARCH="$OPTARG"
+        ;;
+    * )
+        ;;
+  esac
+done
+
+if [ -z "$ARCH" ]; then
+  ARCH="$(uname -m)"
+  export ARCH
 fi
 
+Build="build_$ARCH"
 BundleName="PantheonSlicer-3"
 Contents="$BundleName.app/Contents"
 Executable="${Contents}/MacOS/$BundleName"
