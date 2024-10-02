@@ -2481,21 +2481,9 @@ void PartPlate::generate_print_polygon(ExPolygon &print_polygon)
 		}
 	};
 
-	int points_count = 8;
-	if (m_shape.size() == 4)
-	{
-			//rectangle case
-			for (int i = 0; i < 4; i++)
-			{
-				const Vec2d& p = m_shape[i];
-                print_polygon.contour.append({scale_(p(0)), scale_(p(1))});
-			}
-	}
-	else {
-		for (const Vec2d& p : m_shape) {
-			print_polygon.contour.append({ scale_(p(0)), scale_(p(1)) });
-		}
-	}
+	for (const Vec2d& p : m_shape) {
+        print_polygon.contour.append({scale_(p(0)), scale_(p(1))});
+    }
 }
 
 void PartPlate::generate_exclude_polygon(ExPolygon &exclude_polygon)
