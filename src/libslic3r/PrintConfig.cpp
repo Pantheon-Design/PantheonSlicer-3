@@ -902,7 +902,7 @@ void PrintConfigDef::init_fff_params()
 
     def = this->add("overhang_fan_threshold", coEnums);
     def->label = L("Cooling overhang threshold");
-    def->tooltip = L("Force cooling fan speed to be interpolated between fan speed for overhang and fan speed for bridges when overhang value goes from threshold up to bridge. "
+    def->tooltip = L("Force cooling fan speed to be interpolated between fan speed for overhang and fan speed for bridges (and rounded to 10%) when overhang value goes from threshold up to bridge. "
                      "Expressed as percentage which indicates how much width of the line without support from lower layer. "
                      "0% means forcing cooling for all outer wall no matter how much overhang degree. ");
     def->sidetext = "";

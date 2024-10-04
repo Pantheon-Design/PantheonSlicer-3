@@ -930,9 +930,10 @@ std::string CoolingBuffer::apply_layer_cooldown(
         if (need_set_fan) {
             if (fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START]){
                 int fan_speed = overhang_fan_speed;
-                if (line->overhang_degree >= overhang_fan_threshold && bridge_fan_speed > overhang_fan_speed)
+                if (line->overhang_degree >= overhang_fan_threshold && bridge_fan_speed > overhang_fan_speed) {
                     fan_speed = overhang_fan_speed + (bridge_fan_speed - overhang_fan_speed)*(line->overhang_degree - overhang_fan_threshold)/(100-overhang_fan_threshold);
-                
+                    fan_speed = std::round(fan_speed / 10.f) * 10;
+                }
                 if (m_current_fan_speed != fan_speed)
                 {
                     new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, fan_speed);
