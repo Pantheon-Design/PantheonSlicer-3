@@ -5564,6 +5564,9 @@ void Tab::save_preset(std::string name /*= ""*/, bool detach, bool save_to_proje
         dlg.GetEventHandler()->ProcessEvent(evt);
         dlg.confirm_from_other();
         name = input_name;
+
+        detach = dlg.get_detach_value(m_type);
+
     }
 
     if (name.empty()) {
@@ -5575,6 +5578,9 @@ void Tab::save_preset(std::string name /*= ""*/, bool detach, bool save_to_proje
         name = dlg.get_name();
         //BBS: add project embedded preset relate logic
         save_to_project = dlg.get_save_to_project_selection(m_type);
+
+        detach = dlg.get_detach_value(m_type);
+
     }
 
     //BBS record current preset name
