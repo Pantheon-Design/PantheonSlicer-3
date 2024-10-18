@@ -1,0 +1,26 @@
+{
+    "compatible_printers": [
+        "Pantheon HS3 0.4 Nozzle"
+    ],
+    "instantiation": "true",
+    "elefant_foot_compensation": "0.05",
+    "from": "system",
+    "inherits": "Quality PA-GF Rev3.7",
+    "initial_layer_line_width": "0.4",
+    "initial_layer_speed": "100",
+    "is_custom_defined": "0",
+    "max_volumetric_extrusion_rate_slope": "0",
+    "name": "PA-GF",
+    "outer_wall_acceleration": "7000",
+    "outer_wall_speed": "120",
+    "print_settings_id": "PA-GF",
+    "small_area_infill_flow_compensation": "0",
+    "small_perimeter_speed": "120",
+    "support_interface_spacing": "0.1",
+    "support_line_width": "0.4",
+    "support_speed": "120",
+    "top_solid_infill_flow_ratio": "0.85",
+    "tree_support_branch_diameter_double_wall": "0",
+    "version": "3.0.0.0",
+    "wall_loops": "6"
+}
