@@ -39,3 +39,4 @@ resources/profiles/user/default
 **/.flatpak-builder/
 resources/profiles/user/default
 *.code-workspace
+resources/profiles/
