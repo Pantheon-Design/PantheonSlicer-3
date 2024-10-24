@@ -152,6 +152,7 @@ struct PerExtruderAdjustments
             }
             time_total += line.time;
         }
+        this->time_total = time_total;
         return time_total;
     }
     // Slow down each adjustable G-code line proportionally by a factor.
@@ -167,6 +168,7 @@ struct PerExtruderAdjustments
             }
             time_total += line.time;
         }
+        this->time_total = time_total;
         return time_total;
     }
 
@@ -205,6 +207,7 @@ struct PerExtruderAdjustments
     // Used by non-proportional slow down.
     void slow_down_to_feedrate(float min_feedrate) {
         assert(this->slow_down_min_speed < min_feedrate + EPSILON);
+        float time_total = 0.f;
         for (size_t i = 0; i < n_lines_adjustable; ++ i) {
             CoolingLine &line = lines[i];
             if (line.feedrate > min_feedrate) {
@@ -212,7 +215,9 @@ struct PerExtruderAdjustments
                 line.feedrate = min_feedrate;
                 line.slowdown = true;
             }
+            time_total += line.time;
         }
+        this->time_total = time_total;
     }
 
     // Extruder, for which the G-code will be adjusted.
