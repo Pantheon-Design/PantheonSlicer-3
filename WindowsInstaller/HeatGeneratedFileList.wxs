@@ -139,6 +139,15 @@
                         <Component Id="flowrate_test_pass2.3mf" Guid="*">
                             <File Id="flowrate_test_pass2.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\flowrate-test-pass2.3mf" />
                         </Component>
+                        <Component Id="Orca_LinearFlow.3mf" Guid="*">
+                            <File Id="Orca_LinearFlow.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\Orca-LinearFlow.3mf" />
+                        </Component>
+                        <Component Id="Orca_LinearFlow_fine.3mf" Guid="*">
+                            <File Id="Orca_LinearFlow_fine.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\Orca-LinearFlow_fine.3mf" />
+                        </Component>
+                        <Component Id="pass1.3mf" Guid="*">
+                            <File Id="pass1.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\pass1.3mf" />
+                        </Component>
                     </Directory>
                     <Directory Id="pressure_advance" Name="pressure_advance">
                         <Component Id="pa_pattern.3mf" Guid="*">
@@ -1779,6 +1788,9 @@
                     <Component Id="OrcaSlicer_gray.svg" Guid="*">
                         <File Id="OrcaSlicer_gray.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gray.svg" />
                     </Component>
+                    <Component Id="orca_bed_pct_left.svg" Guid="*">
+                        <File Id="orca_bed_pct_left.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\orca_bed_pct_left.svg" />
+                    </Component>
                     <Component Id="oss_picture_loading.png" Guid="*">
                         <File Id="oss_picture_loading.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_loading.png" />
                     </Component>
@@ -2805,6 +2817,101 @@
                     <Component Id="PantheonDesign.json" Guid="*">
                         <File Id="PantheonDesign.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign.json" />
                     </Component>
+                    <Directory Id="Custom" Name="Custom">
+                        <Component Id="Custom_350_bed.stl" Guid="*">
+                            <File Id="Custom_350_bed.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\Custom_350_bed.stl" />
+                        </Component>
+                        <Component Id="Generic_ToolChanger_Printer_cover.png" Guid="*">
+                            <File Id="Generic_ToolChanger_Printer_cover.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\Generic ToolChanger Printer_cover.png" />
+                        </Component>
+                        <Directory Id="filament" Name="filament">
+                            <Component Id="My_Generic_ABS__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_ABS__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic ABS @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_ASA__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_ASA__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic ASA @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PA__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PA__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PA @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PA_CF__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PA_CF__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PA-CF @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PC__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PC__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PC @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PETG__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PETG__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PETG @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PLA__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PLA__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PLA @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PLA_CF__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PLA_CF__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PLA-CF @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_PVA__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_PVA__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic PVA @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="My_Generic_TPU__MyToolChanger.json" Guid="*">
+                                <File Id="My_Generic_TPU__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\filament\My Generic TPU @MyToolChanger.json" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="machine" Name="machine">
+                            <Component Id="fdm_toolchanger_common.json" Guid="*">
+                                <File Id="fdm_toolchanger_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\fdm_toolchanger_common.json" />
+                            </Component>
+                            <Component Id="MyToolChanger_0.2_nozzle.json" Guid="*">
+                                <File Id="MyToolChanger_0.2_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\MyToolChanger 0.2 nozzle.json" />
+                            </Component>
+                            <Component Id="MyToolChanger_0.4_nozzle.json" Guid="*">
+                                <File Id="MyToolChanger_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\MyToolChanger 0.4 nozzle.json" />
+                            </Component>
+                            <Component Id="MyToolChanger_0.6_nozzle.json" Guid="*">
+                                <File Id="MyToolChanger_0.6_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\MyToolChanger 0.6 nozzle.json" />
+                            </Component>
+                            <Component Id="MyToolChanger_0.8_nozzle.json" Guid="*">
+                                <File Id="MyToolChanger_0.8_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\MyToolChanger 0.8 nozzle.json" />
+                            </Component>
+                            <Component Id="MyToolChanger.json" Guid="*">
+                                <File Id="MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\machine\MyToolChanger.json" />
+                            </Component>
+                        </Directory>
+                        <Directory Id="process" Name="process">
+                            <Component Id="_0.08mm_Extra_Fine__MyToolChanger.json" Guid="*">
+                                <File Id="_0.08mm_Extra_Fine__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.08mm Extra Fine @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.12mm_Fine__MyToolChanger.json" Guid="*">
+                                <File Id="_0.12mm_Fine__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.12mm Fine @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.15mm_Optimal__MyToolChanger.json" Guid="*">
+                                <File Id="_0.15mm_Optimal__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.15mm Optimal @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.16mm_Optimal__MyToolChanger.json" Guid="*">
+                                <File Id="_0.16mm_Optimal__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.16mm Optimal @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.20mm_Standard__MyToolChanger.json" Guid="*">
+                                <File Id="_0.20mm_Standard__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.20mm Standard @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.24mm_Draft__MyToolChanger.json" Guid="*">
+                                <File Id="_0.24mm_Draft__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.24mm Draft @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.28mm_Extra_Draft__MyToolChanger.json" Guid="*">
+                                <File Id="_0.28mm_Extra_Draft__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.28mm Extra Draft @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.32mm_Extra_Draft__MyToolChanger.json" Guid="*">
+                                <File Id="_0.32mm_Extra_Draft__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.32mm Extra Draft @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.40mm_Extra_Draft__MyToolChanger.json" Guid="*">
+                                <File Id="_0.40mm_Extra_Draft__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.40mm Extra Draft @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="_0.56mm_Extra_Draft__MyToolChanger.json" Guid="*">
+                                <File Id="_0.56mm_Extra_Draft__MyToolChanger.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\0.56mm Extra Draft @MyToolChanger.json" />
+                            </Component>
+                            <Component Id="fdm_process_mytoolchanger_common.json" Guid="*">
+                                <File Id="fdm_process_mytoolchanger_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\Custom\process\fdm_process_mytoolchanger_common.json" />
+                            </Component>
+                        </Directory>
+                    </Directory>
                     <Directory Id="PantheonDesign" Name="PantheonDesign">
                         <Component Id="M5_bed.stl" Guid="*">
                             <File Id="M5_bed.stl" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\M5-bed.stl" />
@@ -2818,7 +2925,7 @@
                         <Component Id="pantheon_bed_texture.svg" Guid="*">
                             <File Id="pantheon_bed_texture.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\pantheon_bed_texture.svg" />
                         </Component>
-                        <Directory Id="filament" Name="filament">
+                        <Directory Id="filament_1" Name="filament">
                             <Component Id="PA_CF_Rev3.7.json" Guid="*">
                                 <File Id="PA_CF_Rev3.7.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\PA-CF Rev3.7.json" />
                             </Component>
@@ -2840,11 +2947,8 @@
                             <Component Id="Quality_PA_GF_Rev3.7.json" Guid="*">
                                 <File Id="Quality_PA_GF_Rev3.7.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\Quality PA-GF Rev3.7.json" />
                             </Component>
-                            <Component Id="TPU_95A.json" Guid="*">
-                                <File Id="TPU_95A.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\TPU-95A.json" />
-                            </Component>
                         </Directory>
-                        <Directory Id="machine" Name="machine">
+                        <Directory Id="machine_1" Name="machine">
                             <Component Id="Pantheon_HS3_0.4_nozzle.json" Guid="*">
                                 <File Id="Pantheon_HS3_0.4_nozzle.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS3 0.4 nozzle.json" />
                             </Component>
@@ -2852,7 +2956,7 @@
                                 <File Id="Pantheon_HS3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\machine\Pantheon HS3.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process" Name="process">
+                        <Directory Id="process_1" Name="process">
                             <Component Id="_0.20mm_Standard__Pantheon_HS3.json" Guid="*">
                                 <File Id="_0.20mm_Standard__Pantheon_HS3.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\0.20mm Standard @Pantheon HS3.json" />
                             </Component>
@@ -2874,9 +2978,6 @@
                             <Component Id="Quality_PA_GF_Rev3.7.json_1" Guid="*">
                                 <File Id="Quality_PA_GF_Rev3.7.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\Quality PA-GF Rev3.7.json" />
                             </Component>
-                            <Component Id="TPU_95A.json_1" Guid="*">
-                                <File Id="TPU_95A.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\TPU-95A.json" />
-                            </Component>
                         </Directory>
                     </Directory>
                 </Directory>
@@ -2885,7 +2986,7 @@
                         <File Id="Template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template.json" />
                     </Component>
                     <Directory Id="Template" Name="Template">
-                        <Directory Id="filament_1" Name="filament">
+                        <Directory Id="filament_2" Name="filament">
                             <Component Id="filament_abs_template.json" Guid="*">
                                 <File Id="filament_abs_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\filament\filament_abs_template.json" />
                             </Component>
@@ -2920,7 +3021,7 @@
                                 <File Id="filament_tpu_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\filament\filament_tpu_template.json" />
                             </Component>
                         </Directory>
-                        <Directory Id="process_1" Name="process">
+                        <Directory Id="process_2" Name="process">
                             <Component Id="process_template.json" Guid="*">
                                 <File Id="process_template.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles_template\Template\process\process template.json" />
                             </Component>
@@ -5659,6 +5760,9 @@
             <ComponentRef Id="Icon.icns" />
             <ComponentRef Id="flowrate_test_pass1.3mf" />
             <ComponentRef Id="flowrate_test_pass2.3mf" />
+            <ComponentRef Id="Orca_LinearFlow.3mf" />
+            <ComponentRef Id="Orca_LinearFlow_fine.3mf" />
+            <ComponentRef Id="pass1.3mf" />
             <ComponentRef Id="pa_pattern.3mf" />
             <ComponentRef Id="pressure_advance_test.stl" />
             <ComponentRef Id="tower_with_seam.stl" />
@@ -6184,6 +6288,7 @@
             <ComponentRef Id="OrcaSlicer_gradient_circle.svg" />
             <ComponentRef Id="OrcaSlicer_gradient_narrow.svg" />
             <ComponentRef Id="OrcaSlicer_gray.svg" />
+            <ComponentRef Id="orca_bed_pct_left.svg" />
             <ComponentRef Id="oss_picture_loading.png" />
             <ComponentRef Id="oss_picture_load_failed.png" />
             <ComponentRef Id="PantheonSlicer_3.ico" />
@@ -6524,6 +6629,35 @@
             <ComponentRef Id="version.txt" />
             <ComponentRef Id="check_unused_setting_id.py" />
             <ComponentRef Id="PantheonDesign.json" />
+            <ComponentRef Id="Custom_350_bed.stl" />
+            <ComponentRef Id="Generic_ToolChanger_Printer_cover.png" />
+            <ComponentRef Id="My_Generic_ABS__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_ASA__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PA__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PA_CF__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PC__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PETG__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PLA__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PLA_CF__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_PVA__MyToolChanger.json" />
+            <ComponentRef Id="My_Generic_TPU__MyToolChanger.json" />
+            <ComponentRef Id="fdm_toolchanger_common.json" />
+            <ComponentRef Id="MyToolChanger_0.2_nozzle.json" />
+            <ComponentRef Id="MyToolChanger_0.4_nozzle.json" />
+            <ComponentRef Id="MyToolChanger_0.6_nozzle.json" />
+            <ComponentRef Id="MyToolChanger_0.8_nozzle.json" />
+            <ComponentRef Id="MyToolChanger.json" />
+            <ComponentRef Id="_0.08mm_Extra_Fine__MyToolChanger.json" />
+            <ComponentRef Id="_0.12mm_Fine__MyToolChanger.json" />
+            <ComponentRef Id="_0.15mm_Optimal__MyToolChanger.json" />
+            <ComponentRef Id="_0.16mm_Optimal__MyToolChanger.json" />
+            <ComponentRef Id="_0.20mm_Standard__MyToolChanger.json" />
+            <ComponentRef Id="_0.24mm_Draft__MyToolChanger.json" />
+            <ComponentRef Id="_0.28mm_Extra_Draft__MyToolChanger.json" />
+            <ComponentRef Id="_0.32mm_Extra_Draft__MyToolChanger.json" />
+            <ComponentRef Id="_0.40mm_Extra_Draft__MyToolChanger.json" />
+            <ComponentRef Id="_0.56mm_Extra_Draft__MyToolChanger.json" />
+            <ComponentRef Id="fdm_process_mytoolchanger_common.json" />
             <ComponentRef Id="M5_bed.stl" />
             <ComponentRef Id="Pantheon_HS3_cover.png" />
             <ComponentRef Id="pantheon_bed.stl" />
@@ -6535,7 +6669,6 @@
             <ComponentRef Id="PETG_CF.json" />
             <ComponentRef Id="Quality_PA_CF_Rev3.7.json" />
             <ComponentRef Id="Quality_PA_GF_Rev3.7.json" />
-            <ComponentRef Id="TPU_95A.json" />
             <ComponentRef Id="Pantheon_HS3_0.4_nozzle.json" />
             <ComponentRef Id="Pantheon_HS3.json" />
             <ComponentRef Id="_0.20mm_Standard__Pantheon_HS3.json" />
@@ -6545,7 +6678,6 @@
             <ComponentRef Id="PETG_CF.json_1" />
             <ComponentRef Id="Quality_PA_CF_Rev3.7.json_1" />
             <ComponentRef Id="Quality_PA_GF_Rev3.7.json_1" />
-            <ComponentRef Id="TPU_95A.json_1" />
             <ComponentRef Id="Template.json" />
             <ComponentRef Id="filament_abs_template.json" />
             <ComponentRef Id="filament_asa_template.json" />
