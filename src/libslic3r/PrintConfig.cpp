@@ -350,6 +350,7 @@ CONFIG_OPTION_ENUM_DEFINE_STATIC_MAPS(OverhangFanThreshold)
 // BBS
 static const t_config_enum_values s_keys_map_BedType = {
     { "Default Plate",      btDefault },
+    { "Supertack Plate",    btSuperTack },
     { "Cool Plate",         btPC },
     { "Engineering Plate",  btEP  },
     { "High Temp Plate",    btPEI  },
@@ -657,6 +658,16 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionFloatOrPercent(0., false));
 
     // BBS
+    def             = this->add("supertack_plate_temp", coInts);
+    def->label      = L("Other layers");
+    def->tooltip    = L("Bed temperature for layers except the initial one. "
+                     "Value 0 means the filament does not support to print on the Cool Plate");
+    def->sidetext   = "°C";
+    def->full_label = L("Bed temperature");
+    def->min        = 0;
+    def->max        = 120;
+    def->set_default_value(new ConfigOptionInts{35});
+
     def = this->add("cool_plate_temp", coInts);
     def->label = L("Other layers");
     def->tooltip = L("Bed temperature for layers except the initial one. "
@@ -711,7 +722,7 @@ void PrintConfigDef::init_fff_params()
     def->label = L("Initial layer");
     def->full_label = L("Initial layer bed temperature");
     def->tooltip = L("Bed temperature of the initial layer. "
-        "Value 0 means the filament does not support to print on the Cool Plate SuperTack");
+        "Value 0 means the filament does not support to print on the Bambu Cool Plate SuperTack");
     def->sidetext = "°C";
     def->min = 0;
     def->max = 120;
@@ -772,13 +783,14 @@ void PrintConfigDef::init_fff_params()
     def->mode = comSimple;
     def->enum_keys_map = &s_keys_map_BedType;
     // Orca: make sure the order of the values is the same as the BedType enum 
+    def->enum_values.emplace_back("Supertack Plate");
     def->enum_values.emplace_back("Cool Plate");
     def->enum_values.emplace_back("Engineering Plate");
     def->enum_values.emplace_back("High Temp Plate");
     def->enum_values.emplace_back("Textured PEI Plate");
     def->enum_values.emplace_back("Textured Cool Plate");
-    def->enum_labels.emplace_back(L("Cool Plate (SuperTack)"));
-    def->enum_labels.emplace_back(L("Smooth Cool Plate"));
+    def->enum_labels.emplace_back(L("Bambu Cool Plate SuperTack"));
+    def->enum_labels.emplace_back(L("Smooth Cool Plate / PLA Plate"));
     def->enum_labels.emplace_back(L("Engineering Plate"));
     def->enum_labels.emplace_back(L("Pantheon Smooth PEI Plate"));
     def->enum_labels.emplace_back(L("Pantheon Textured PEI Plate"));
