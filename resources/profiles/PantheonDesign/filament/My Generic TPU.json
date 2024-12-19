@@ -1,18 +1,16 @@
 {
     "type": "filament",
     "filament_id": "GFU99",
-    "setting_id": "GFU99_MTC_0",
-    "name": "My Generic TPU @MyToolChanger",
+    "setting_id": "GFSA04",
+    "name": "My Generic TPU",
     "from": "system",
     "instantiation": "true",
     "inherits": "fdm_filament_tpu",
+    "version": "3.0.5.0",
     "filament_max_volumetric_speed": [
         "3.2"
     ],
     "compatible_printers": [
-        "MyToolChanger 0.4 nozzle",
-        "MyToolChanger 0.2 nozzle",
-        "MyToolChanger 0.6 nozzle",
-        "MyToolChanger 0.8 nozzle"
+        "Pantheon HS3 0.4 Nozzle"
     ]
 }

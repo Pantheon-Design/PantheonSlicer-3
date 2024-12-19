@@ -1,11 +1,12 @@
 {
     "type": "filament",
     "filament_id": "GFS99",
-    "setting_id": "GFS99_MTC_0",
-    "name": "My Generic PVA @MyToolChanger",
+    "setting_id": "GFSA04",
+    "name": "My Generic PVA",
     "from": "system",
     "instantiation": "true",
     "inherits": "fdm_filament_pva",
+    "version": "3.0.5.0",
     "filament_flow_ratio": [
         "0.95"
     ],
@@ -19,9 +20,6 @@
         "10"
     ],
     "compatible_printers": [
-        "MyToolChanger 0.4 nozzle",
-        "MyToolChanger 0.2 nozzle",
-        "MyToolChanger 0.6 nozzle",
-        "MyToolChanger 0.8 nozzle"
+        "Pantheon HS3 0.4 Nozzle"
     ]
 }

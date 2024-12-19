@@ -1,5 +1,11 @@
 {
     "instantiation": "true",
+    "activate_chamber_temp_control": [
+        "1"
+    ],
+    "chamber_temperature": [
+        "50"
+    ],
     "compatible_printers": [
         "Pantheon HS3 0.4 Nozzle"
     ],
@@ -37,6 +43,9 @@
         "0"
     ],
     "from": "system",
+    "idle_temperature": [
+        "100"
+    ],
     "inherits": "Quality PA-GF Rev3.7",
     "is_custom_defined": "0",
     "name": "PA-GF",
@@ -46,5 +55,5 @@
     "support_material_interface_fan_speed": [
         "0"
     ],
-    "version": "3.0.0.0"
+    "version": "3.0.5.0"
 }
