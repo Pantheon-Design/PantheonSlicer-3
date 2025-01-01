@@ -707,6 +707,16 @@ void PrintConfigDef::init_fff_params()
     def->max        = 300;
     def->set_default_value(new ConfigOptionInts{45});
 
+    def = this->add("supertack_plate_temp_initial_layer", coInts);
+    def->label = L("Initial layer");
+    def->full_label = L("Initial layer bed temperature");
+    def->tooltip = L("Bed temperature of the initial layer. "
+        "Value 0 means the filament does not support to print on the Cool Plate SuperTack");
+    def->sidetext = "°C";
+    def->min = 0;
+    def->max = 120;
+    def->set_default_value(new ConfigOptionInts{ 35 });
+
     def = this->add("cool_plate_temp_initial_layer", coInts);
     def->label = L("Initial layer");
     def->full_label = L("Initial layer bed temperature");
@@ -767,6 +777,7 @@ void PrintConfigDef::init_fff_params()
     def->enum_values.emplace_back("High Temp Plate");
     def->enum_values.emplace_back("Textured PEI Plate");
     def->enum_values.emplace_back("Textured Cool Plate");
+    def->enum_labels.emplace_back(L("Cool Plate (SuperTack)"));
     def->enum_labels.emplace_back(L("Smooth Cool Plate"));
     def->enum_labels.emplace_back(L("Engineering Plate"));
     def->enum_labels.emplace_back(L("Pantheon Smooth PEI Plate"));
