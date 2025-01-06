@@ -277,7 +277,7 @@ protected:
     float    m_smart_fill_angle           = 40.f;
 
     bool     m_paint_on_overhangs_only          = true;
-    float    m_highlight_by_angle_threshold_deg = 40.f;
+    float    m_highlight_by_angle_threshold_deg = 0.f;
 
     GLModel m_circle;
     Vec2d m_old_center{ Vec2d::Zero() };
