@@ -292,6 +292,13 @@ void GuideFrame::OnNavigationRequest(wxWebViewEvent &evt)
 void GuideFrame::OnNavigationComplete(wxWebViewEvent &evt)
 {
     //wxLogMessage("%s", "Navigation complete; url='" + evt.GetURL() + "'");
+    if (!bFirstComplete) {
+        boost::thread LoadProfileThread(boost::bind(&GuideFrame::LoadProfileData, this));
+        LoadProfileThread.detach();
+
+        bFirstComplete = true;
+    }
+
     m_browser->Show();
     Layout();
     
@@ -1051,8 +1058,7 @@ int GuideFrame::GetFilamentInfo( std::string VendorDirectory, json & pFilaList, 
     return 0;
 }
 
-
-int GuideFrame::LoadProfile()
+int GuideFrame::LoadProfileData()
 {
     try {
         //wxString ExePath            = boost::dll::program_location().parent_path().string();
@@ -1085,7 +1091,7 @@ int GuideFrame::LoadProfile()
         m_ProfileJson["filament"] = json::object();
         m_ProfileJson["process"]  = json::array();
 
-        vendor_dir      = (boost::filesystem::path(Slic3r::data_dir()) / PRESET_SYSTEM_DIR ).make_preferred();
+        vendor_dir      = (boost::filesystem::path(Slic3r::data_dir()) / PRESET_SYSTEM_DIR).make_preferred();
         rsrc_vendor_dir = (boost::filesystem::path(resources_dir()) / "profiles").make_preferred();
 
         // BBS: add BBL as default
@@ -1156,9 +1162,31 @@ int GuideFrame::LoadProfile()
             }
         }
 
+        //sync to web
+        std::string strAll = m_ProfileJson.dump(-1, ' ', false, json::error_handler_t::ignore);
 
-        //LoadProfileFamily(PresetBundle::BBL_BUNDLE, bbl_bundle_path.string());
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ", finished, json contents: " << std::endl << strAll;
+        json m_Res           = json::object();
+        m_Res["command"]     = "userguide_profile_load_finish";
+        m_Res["sequence_id"] = "10001";
+        wxString strJS       = wxString::Format("HandleStudio(%s)", m_Res.dump(-1, ' ', true));
+        wxGetApp().CallAfter([this, strJS] { RunScript(strJS); });
 
+        //sync to appconfig
+        wxGetApp().CallAfter([this] { SaveProfileData(); });
+
+    } catch (std::exception &e) {
+        // wxLogMessage("GUIDE: load_profile_error  %s ", e.what());
+        //  wxMessageBox(e.what(), "", MB_OK);
+        BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ", error: " << e.what() << std::endl;
+    }
+
+    return 0;
+}
+
+int GuideFrame::SaveProfileData()
+{
+    try {
         const auto enabled_filaments = wxGetApp().app_config->has_section(AppConfig::SECTION_FILAMENTS) ? wxGetApp().app_config->get_section(AppConfig::SECTION_FILAMENTS) : std::map<std::string, std::string>();
         m_appconfig_new.set_vendors(*wxGetApp().app_config);
         m_appconfig_new.set_section(AppConfig::SECTION_FILAMENTS, enabled_filaments);
@@ -1227,10 +1255,6 @@ int GuideFrame::LoadProfile()
         BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << ", error: "<< e.what() <<std::endl;
     }
 
-    std::string strAll = m_ProfileJson.dump(-1, ' ', false, json::error_handler_t::ignore);
-    //wxLogMessage("GUIDE: profile_json_s2  %s ", m_ProfileJson.dump(-1, ' ', false, json::error_handler_t::ignore));
-
-    BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ", finished, json contents: "<< std::endl<<strAll;
     return 0;
 }
 
