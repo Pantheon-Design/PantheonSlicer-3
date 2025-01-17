@@ -108,6 +108,11 @@ private:
     boost::filesystem::path vendor_dir;
     boost::filesystem::path rsrc_vendor_dir;
 
+    //First Load
+    bool bFirstComplete{false};
+    bool m_destroy{false};
+    boost::thread* m_load_task{ nullptr };
+
     // User Config
     bool PrivacyUse;
     std::string m_Region;
