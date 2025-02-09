@@ -65,6 +65,9 @@ struct CoolingLine
         TYPE_FORCE_RESUME_FAN   = 1 << 14,
         TYPE_SUPPORT_INTERFACE_FAN_START     = 1 << 15,
         TYPE_SUPPORT_INTERFACE_FAN_END       = 1 << 16,
+        // ORCA: Add support for separate internal bridge fan speed control
+        TYPE_INTERNAL_BRIDGE_FAN_START       = 1 << 17,
+        TYPE_INTERNAL_BRIDGE_FAN_END       = 1 << 18,
     };
 
     CoolingLine(unsigned int type, size_t  line_start, size_t  line_end) :
@@ -513,6 +516,10 @@ std::vector<PerExtruderAdjustments> CoolingBuffer::parse_layer_gcode(const std::
             line.overhang_degree = std::stoi(sline.substr(sline.find('@') + 1));
         } else if (boost::starts_with(sline, ";_OVERHANG_FAN_END")) {
             line.type = CoolingLine::TYPE_OVERHANG_FAN_END;
+        } else if (boost::starts_with(sline, ";_INTERNAL_BRIDGE_FAN_START")) { // ORCA: Add support for separate internal bridge fan speed control
+            line.type = CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START;
+        } else if (boost::starts_with(sline, ";_INTERNAL_BRIDGE_FAN_END")) { // ORCA: Add support for separate internal bridge fan speed control
+            line.type = CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_END;
         } else if (boost::starts_with(sline, ";_SUPP_INTERFACE_FAN_START")) {
             line.type = CoolingLine::TYPE_SUPPORT_INTERFACE_FAN_START;
         } else if (boost::starts_with(sline, ";_SUPP_INTERFACE_FAN_END")) {
@@ -707,11 +714,11 @@ std::string CoolingBuffer::apply_layer_cooldown(
     new_gcode.reserve(gcode.size() * 2);
     bool overhang_fan_control= false;
     int  overhang_fan_speed   = 0;
-    int  overhang_fan_threshold = 0;
-    int  bridge_fan_speed       = 0;
+    bool internal_bridge_fan_control= false; // ORCA: Add support for separate internal bridge fan speed control
+    int  internal_bridge_fan_speed   = 0; // ORCA: Add support for separate internal bridge fan speed control
     bool supp_interface_fan_control= false;
     int  supp_interface_fan_speed = 0;
-    auto change_extruder_set_fan = [ this, layer_id, layer_time, &new_gcode, &overhang_fan_control, &overhang_fan_threshold, &overhang_fan_speed, &bridge_fan_speed, &supp_interface_fan_control, &supp_interface_fan_speed](bool immediately_apply) {
+    auto change_extruder_set_fan = [ this, layer_id, layer_time, &new_gcode, &overhang_fan_control, &overhang_fan_speed, &internal_bridge_fan_control, &internal_bridge_fan_speed, &supp_interface_fan_control, &supp_interface_fan_speed](bool immediately_apply) {
 #define EXTRUDER_CONFIG(OPT) m_config.OPT.get_at(m_current_extruder)
         float fan_min_speed = EXTRUDER_CONFIG(fan_min_speed);
         float fan_speed_new = EXTRUDER_CONFIG(reduce_fan_stop_start_freq) ? fan_min_speed : 0;
@@ -782,16 +789,28 @@ std::string CoolingBuffer::apply_layer_cooldown(
             supp_interface_fan_speed = EXTRUDER_CONFIG(support_material_interface_fan_speed);
             supp_interface_fan_control = supp_interface_fan_speed >= 0;
 
+            overhang_fan_control = overhang_fan_speed > fan_speed_new;
+            
+            // ORCA: Add support for separate internal bridge fan speed control
+            internal_bridge_fan_speed   = EXTRUDER_CONFIG(internal_bridge_fan_speed);
+            internal_bridge_fan_control = internal_bridge_fan_speed >=0;
+            
+            if( internal_bridge_fan_speed < 0 ) { // ORCA: Backwards compatibility setting for Orca internal bridge fan speed setting - if set at -1 (which is the default) use the overhang fan speed settings.
+                internal_bridge_fan_speed = overhang_fan_speed;
+                internal_bridge_fan_control = overhang_fan_control;
+            }
 #undef EXTRUDER_CONFIG
-            overhang_fan_control= true;
+            
         } else {
-            overhang_fan_control= false;
+            overhang_fan_control = false;
             overhang_fan_speed   = 0;
             bridge_fan_speed     = 0;
             fan_speed_new      = 0;
             additional_fan_speed_new = 0;
-            supp_interface_fan_control= false;
+            supp_interface_fan_control = false; 
             supp_interface_fan_speed   = 0;
+            internal_bridge_fan_control = false; // ORCA: Add support for separate internal bridge fan speed control
+            internal_bridge_fan_speed = 0; // ORCA: Add support for separate internal bridge fan speed control
         }
         if (fan_speed_new != m_fan_speed) {
             m_fan_speed = fan_speed_new;
@@ -814,6 +833,7 @@ std::string CoolingBuffer::apply_layer_cooldown(
     // Orca: Reduce set fan commands by deferring the GCodeWriter::set_fan calls. Inspired by SuperSlicer
     // define fan_speed_change_requests and initialize it with all possible types fan speed change requests
     std::unordered_map<int, bool> fan_speed_change_requests = {{CoolingLine::TYPE_OVERHANG_FAN_START, false},
+                                                               {CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START, false}, // ORCA: Add support for separate internal bridge fan speed control
                                                                {CoolingLine::TYPE_SUPPORT_INTERFACE_FAN_START, false},
                                                                {CoolingLine::TYPE_FORCE_RESUME_FAN, false}};
     bool need_set_fan = false;
@@ -841,6 +861,16 @@ std::string CoolingBuffer::apply_layer_cooldown(
         } else if (line->type & CoolingLine::TYPE_OVERHANG_FAN_END) {
             if (overhang_fan_control && fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START]) {
                 fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START] = false;
+            }
+            need_set_fan = true;
+        } else if (line->type & CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START) { // ORCA: Add support for separate internal bridge fan speed control
+            if (internal_bridge_fan_control && !fan_speed_change_requests[CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START]) {
+                need_set_fan = true;
+                fan_speed_change_requests[CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START] = true;
+           }
+        } else if (line->type & CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_END) { // ORCA: Add support for separate internal bridge fan speed control
+            if (internal_bridge_fan_control && fan_speed_change_requests[CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START]) {
+                fan_speed_change_requests[CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START] = false;
             }
             need_set_fan = true;
         } else if (line->type & CoolingLine::TYPE_SUPPORT_INTERFACE_FAN_START) {
@@ -949,16 +979,11 @@ std::string CoolingBuffer::apply_layer_cooldown(
 
         if (need_set_fan) {
             if (fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START]){
-                int fan_speed = overhang_fan_speed;
-                if (line->overhang_degree >= overhang_fan_threshold && bridge_fan_speed > overhang_fan_speed) {
-                    fan_speed = overhang_fan_speed + (bridge_fan_speed - overhang_fan_speed)*(line->overhang_degree - overhang_fan_threshold)/(100-overhang_fan_threshold);
-                    fan_speed = std::round(fan_speed / 10.f) * 10;
-                }
-                if (m_current_fan_speed != fan_speed)
-                {
-                    new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, fan_speed);
-                    m_current_fan_speed = fan_speed;
-                }
+                new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, overhang_fan_speed);
+                m_current_fan_speed = overhang_fan_speed;
+            } else if (fan_speed_change_requests[CoolingLine::TYPE_INTERNAL_BRIDGE_FAN_START]){ // ORCA: Add support for separate internal bridge fan speed control
+                new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, internal_bridge_fan_speed);
+                m_current_fan_speed = internal_bridge_fan_speed;
             }
             else if (fan_speed_change_requests[CoolingLine::TYPE_SUPPORT_INTERFACE_FAN_START]){
                 new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, supp_interface_fan_speed);
