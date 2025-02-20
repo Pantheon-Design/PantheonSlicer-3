@@ -803,18 +803,18 @@ void PrintConfigDef::init_fff_params()
     def->mode = comSimple;
     def->enum_keys_map = &s_keys_map_BedType;
     // Orca: make sure the order of the values is the same as the BedType enum 
-    def->enum_values.emplace_back("Supertack Plate");
     def->enum_values.emplace_back("Cool Plate");
     def->enum_values.emplace_back("Engineering Plate");
     def->enum_values.emplace_back("High Temp Plate");
     def->enum_values.emplace_back("Textured PEI Plate");
     def->enum_values.emplace_back("Textured Cool Plate");
-    def->enum_labels.emplace_back(L("Bambu Cool Plate SuperTack"));
-    def->enum_labels.emplace_back(L("Smooth Cool Plate / PLA Plate"));
+    def->enum_values.emplace_back("Supertack Plate");
+    def->enum_labels.emplace_back(L("Smooth Cool Plate"));
     def->enum_labels.emplace_back(L("Engineering Plate"));
     def->enum_labels.emplace_back(L("Pantheon Smooth PEI Plate"));
     def->enum_labels.emplace_back(L("Pantheon Textured PEI Plate"));
     def->enum_labels.emplace_back(L("Textured Cool Plate"));
+    def->enum_labels.emplace_back(L("Cool Plate (SuperTack)"));
     def->set_default_value(new ConfigOptionEnum<BedType>(btPC));
 
     // BBS
