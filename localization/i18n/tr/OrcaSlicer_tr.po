@@ -3714,10 +3714,17 @@ msgstr ""
 
 msgid ""
 "Alternate extra wall does't work well when ensure vertical shell thickness "
+<<<<<<< HEAD
 "is set to All. "
 msgstr ""
 "Alternatif ekstra duvar, dikey kabuk kalınlığının Tümü olarak "
 "ayarlandığından emin olunduğunda iyi çalışmaz. "
+=======
+"is set to All."
+msgstr ""
+"Alternatif ekstra duvar, dikey kabuk kalınlığının Tümü olarak ayarlandığından "
+"emin olunduğunda iyi çalışmaz."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Change these settings automatically? \n"
@@ -8382,7 +8389,7 @@ msgstr ""
 "kaydedilmemiş değişiklikleri içeriyor:"
 
 #, boost-format
-msgid "You have changed some settings of preset \"%1%\". "
+msgid "You have changed some settings of preset \"%1%\"."
 msgstr "“%1%” ön ayarının bazı ayarlarını değiştirdiniz."
 
 msgid ""
@@ -10334,10 +10341,17 @@ msgstr "Çıkıntılarda ekstra çevre (perimeter)"
 
 msgid ""
 "Create additional perimeter paths over steep overhangs and areas where "
+<<<<<<< HEAD
 "bridges cannot be anchored. "
 msgstr ""
 "Dik çıkıntılar ve köprülerin sabitlenemediği alanlar üzerinde ek çevre "
 "yolları (perimeter) oluşturun. "
+=======
+"bridges cannot be anchored."
+msgstr ""
+"Dik çıkıntılar ve köprülerin sabitlenemediği alanlar üzerinde ek çevre yolları "
+"(perimeter) oluşturun."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid "Reverse on even"
 msgstr "Çiftleri ters çevirin"
@@ -12175,7 +12189,11 @@ msgstr "Katmanlar ve Çevreler"
 msgid ""
 "Don't print gap fill with a length is smaller than the threshold specified "
 "(in mm). This setting applies to top, bottom and solid infill and, if using "
+<<<<<<< HEAD
 "the classic perimeter generator, to wall gap fill. "
+=======
+"the classic perimeter generator, to wall gap fill."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 msgstr ""
 "Belirtilen eşikten (mm cinsinden) daha küçük bir uzunluğa sahip boşluk "
 "dolgusunu yazdırmayın. Bu ayar üst, alt ve katı dolgu için ve klasik çevre "
@@ -13778,7 +13796,11 @@ msgid ""
 "Using a non zero value is useful if the printer is set up to print without a "
 "prime line.\n"
 "Final number of loops is not taling into account whli arranging or "
+<<<<<<< HEAD
 "validating objects distance. Increase loop number in such case. "
+=======
+"validating objects distance. Increase loop number in such case."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 msgstr ""
 "Etek yazdırılırken mm cinsinden minimum filaman ekstrüzyon uzunluğu. Sıfır, "
 "bu özelliğin devre dışı olduğu anlamına gelir.\n"

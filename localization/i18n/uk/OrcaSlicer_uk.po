@@ -3738,10 +3738,15 @@ msgstr ""
 
 msgid ""
 "Alternate extra wall does't work well when ensure vertical shell thickness "
-"is set to All. "
+"is set to All."
 msgstr ""
+<<<<<<< HEAD
 "Альтернативна додаткова стінка не працює, якщо для параметра \"Товщина "
 "вертикальної оболонки\" встановлено значення \"Всі\". "
+=======
+"Чергування додаткової стінки не працює добре, якщо для параметра "
+"\"Забезпечити товщину вертикальної оболонки\" встановлено значення \"Всі\"."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Change these settings automatically? \n"
@@ -8425,8 +8430,8 @@ msgstr ""
 "вонамістить такі незбережені зміни:"
 
 #, boost-format
-msgid "You have changed some settings of preset \"%1%\". "
-msgstr "Ви змінили деякі налаштування пресету “%1%”. "
+msgid "You have changed some settings of preset \"%1%\"."
+msgstr "Ви змінили деякі налаштування пресету “%1%”."
 
 msgid ""
 "\n"
@@ -10310,10 +10315,15 @@ msgstr "Додаткові периметри при нависаннях"
 
 msgid ""
 "Create additional perimeter paths over steep overhangs and areas where "
-"bridges cannot be anchored. "
+"bridges cannot be anchored."
 msgstr ""
+<<<<<<< HEAD
 "Створіть додаткові лінії друку по периметру над крутими виступами та "
 "ділянками, де неможливо закріпити мости. "
+=======
+"Створювати додаткові лінії по периметру друку над крутими нависаннями та в "
+"зонах, де неможливо закріпити мости."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid "Reverse on even"
 msgstr "Зміна напрямку на парних шарах"
@@ -12004,8 +12014,15 @@ msgstr "Шари та периметри"
 msgid ""
 "Don't print gap fill with a length is smaller than the threshold specified "
 "(in mm). This setting applies to top, bottom and solid infill and, if using "
-"the classic perimeter generator, to wall gap fill. "
+"the classic perimeter generator, to wall gap fill."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Не друкувати заповнення прогалин, якщо їхня довжина менша за вказаний поріг "
+"(у мм). Це налаштування застосовується до верхнього, нижнього та суцільного "
+"заповнення, а також, при використанні класичного генератора периметрів, до "
+"заповнення проміжків у стінках."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Speed of gap infill. Gap usually has irregular line width and should be "
@@ -13561,8 +13578,18 @@ msgid ""
 "Using a non zero value is useful if the printer is set up to print without a "
 "prime line.\n"
 "Final number of loops is not taling into account whli arranging or "
-"validating objects distance. Increase loop number in such case. "
+"validating objects distance. Increase loop number in such case."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Мінімальна довжина подачі філаменту у мм при друці спідниці. Нуль означає, "
+"що ця функція буде вимкнена.\n"
+"\n"
+"Значення більше нуля доречно використовувати, якщо принтер налаштований без "
+"підготовчої лінії. \n"
+"Остаточна кількість контурів не враховується при упорядкуванні або перевірці "
+"відстані об'єктів. Збільшіть кількість контурів у такому разі."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "The printing speed in exported gcode will be slowed down, when the estimated "

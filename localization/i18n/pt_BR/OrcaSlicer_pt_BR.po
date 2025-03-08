@@ -3747,10 +3747,15 @@ msgstr ""
 
 msgid ""
 "Alternate extra wall does't work well when ensure vertical shell thickness "
-"is set to All. "
+"is set to All."
 msgstr ""
+<<<<<<< HEAD
 "O perímetro extra alternado não funciona bem quando a espessura vertical da  "
 "está definida para Todos. "
+=======
+"A parede extra alternada não funciona bem quando a espessura vertical da "
+"casca está definida para Todos."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Change these settings automatically? \n"
@@ -8431,8 +8436,13 @@ msgstr ""
 "seguintes alterações não salvas:"
 
 #, boost-format
+<<<<<<< HEAD
 msgid "You have changed some settings of preset \"%1%\". "
 msgstr "Você alterou algumas configurações do preset \"%1%\". "
+=======
+msgid "You have changed some settings of preset \"%1%\"."
+msgstr "Você alterou algumas configurações da predefinição \"%1%\"."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "\n"
@@ -10311,10 +10321,15 @@ msgstr "Perímetros extras em overhangs"
 
 msgid ""
 "Create additional perimeter paths over steep overhangs and areas where "
-"bridges cannot be anchored. "
+"bridges cannot be anchored."
 msgstr ""
+<<<<<<< HEAD
 "Crie caminhos de perímetro adicionais em overhangs íngremes e áreas onde "
 "pontes não podem ser ancoradas. "
+=======
+"Crie caminhos de perímetro adicionais em saliências íngremes e áreas onde "
+"pontes não podem ser ancoradas."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid "Reverse on even"
 msgstr ""
@@ -12036,8 +12051,15 @@ msgstr "Camadas e Perímetros"
 msgid ""
 "Don't print gap fill with a length is smaller than the threshold specified "
 "(in mm). This setting applies to top, bottom and solid infill and, if using "
-"the classic perimeter generator, to wall gap fill. "
+"the classic perimeter generator, to wall gap fill."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Não imprimir preenchimento de lacuna com um comprimento menor que o limiar "
+"especificado (em mm). Esta configuração se aplica ao preenchimento superior, "
+"inferior e sólido e, se estiver usando o gerador de perímetro clássico, ao "
+"preenchimento de lacuna de parede."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Speed of gap infill. Gap usually has irregular line width and should be "
@@ -13601,7 +13623,7 @@ msgid ""
 "Using a non zero value is useful if the printer is set up to print without a "
 "prime line.\n"
 "Final number of loops is not taling into account whli arranging or "
-"validating objects distance. Increase loop number in such case. "
+"validating objects distance. Increase loop number in such case."
 msgstr ""
 
 msgid ""

@@ -3766,10 +3766,15 @@ msgstr ""
 
 msgid ""
 "Alternate extra wall does't work well when ensure vertical shell thickness "
-"is set to All. "
+"is set to All."
 msgstr ""
+<<<<<<< HEAD
 "Parete Aggiuntiva Alternativa on funziona bene quando Garantisci spessore "
 "verticale del guscio è impostato su Tutto. "
+=======
+"Parete aggiuntiva alternativa non funziona bene quando \"Garantisci spessore "
+"verticale del guscio\" è impostato su Tutto."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Change these settings automatically? \n"
@@ -8434,8 +8439,13 @@ msgstr ""
 "modifiche non salvate:"
 
 #, boost-format
+<<<<<<< HEAD
 msgid "You have changed some settings of preset \"%1%\". "
 msgstr "You have changed some settings of preset \"%1%\". "
+=======
+msgid "You have changed some settings of preset \"%1%\"."
+msgstr "Hai modificato alcune impostazioni del profilo \"%1%\"."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "\n"
@@ -10344,10 +10354,15 @@ msgstr "Perimetri aggiuntivi sulle sporgenze (sperimentale)"
 
 msgid ""
 "Create additional perimeter paths over steep overhangs and areas where "
-"bridges cannot be anchored. "
+"bridges cannot be anchored."
 msgstr ""
+<<<<<<< HEAD
 "Creare percorsi perimetrali aggiuntivi su strapiombi ripidi e aree in cui i "
 "ponti non possono essere ancorati. "
+=======
+"Crea pareti aggiuntive su sporgenze ripide e aree in cui i ponti non possono "
+"essere ancorati."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid "Reverse on even"
 msgstr ""
@@ -12070,8 +12085,15 @@ msgstr "Layer e Perimetri"
 msgid ""
 "Don't print gap fill with a length is smaller than the threshold specified "
 "(in mm). This setting applies to top, bottom and solid infill and, if using "
-"the classic perimeter generator, to wall gap fill. "
+"the classic perimeter generator, to wall gap fill."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Non stampa il riempimento sugli spazi vuoti con una lunghezza inferiore alla "
+"soglia specificata (in mm). Questa impostazione si applica al riempimento "
+"superiore, inferiore e solido e, se si utilizza il generatore di perimetri "
+"classico, al riempimento degli spazi vuoti delle pareti."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "Speed of gap infill. Gap usually has irregular line width and should be "
@@ -13631,8 +13653,19 @@ msgid ""
 "Using a non zero value is useful if the printer is set up to print without a "
 "prime line.\n"
 "Final number of loops is not taling into account whli arranging or "
-"validating objects distance. Increase loop number in such case. "
+"validating objects distance. Increase loop number in such case."
 msgstr ""
+<<<<<<< HEAD
+=======
+"Lunghezza minima di estrusione del filamento (in millimetri) durante la "
+"stampa della gonna. 0 indica che questa funzione è disabilitata.\n"
+"\n"
+"L'utilizzo di un valore diverso da zero è utile se la stampante è "
+"configurata per stampare senza una linea iniziale.\n"
+"Il numero finale di perimetri non viene preso in considerazione durante la "
+"disposizione o la convalida della distanza degli oggetti. In tal caso, "
+"aumentare il numero di perimetri."
+>>>>>>> 74d9a88480 (Remove unnecessary trailing spaces (#8752))
 
 msgid ""
 "The printing speed in exported gcode will be slowed down, when the estimated "
