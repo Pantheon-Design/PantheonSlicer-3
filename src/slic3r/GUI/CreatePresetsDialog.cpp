@@ -37,14 +37,32 @@
 namespace Slic3r { 
 namespace GUI {
 
-static const std::vector<std::string> filament_vendors = {"Polymaker", "OVERTURE", "Kexcelled", "HATCHBOX",  "eSUN",       "SUNLU",    "Prusament", "Creality", "Protopasta",
-                                                          "Anycubic",  "Basf",     "ELEGOO",    "INLAND",    "FLASHFORGE", "AMOLEN",   "MIKA3D",    "3DXTECH",  "Duramic",
-                                                          "Priline",   "Eryone",   "3Dgunius",  "Novamaker", "Justmaker",  "Giantarm", "iProspect"};
-
-static const std::vector<std::string> filament_types = {"PLA",    "PLA+",  "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",        "HIPS",   "PA",     "PACF",
-                                                        "NYLON",  "PVA",   "PC",        "PCABS", "PCTG",   "PCCF",   "PP",          "PEI",    "PET",    "PETG",
-                                                        "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",         "TPU92A", "TPU98A", "Misc",
-                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber"};
+static const std::vector<std::string> filament_vendors = 
+    {"3Dgenius",               "3DJake",                 "3DXTECH",                "3D BEST-Q",              "3D Hero",
+     "3D-Fuel",                "Aceaddity",              "AddNorth",               "Amazon Basics",          "AMOLEN",
+     "Ankermake",              "Anycubic",               "Atomic",                 "AzureFilm",              "BASF",
+     "Bblife",                 "BCN3D",                  "Beyond Plastic",         "California Filament",    "Capricorn",
+     "CC3D",                   "colorFabb",              "Comgrow",                "Cookiecad",              "Creality",
+     "CERPRiSE",               "Das Filament",           "DO3D",                   "DOW",                    "DSM",
+     "Duramic",                "ELEGOO",                 "Eryone",                 "Essentium",              "eSUN",
+     "Extrudr",                "Fiberforce",             "Fiberlogy",              "FilaCube",               "Filamentive",
+     "Fillamentum",            "FLASHFORGE",             "Formfutura",             "Francofil",              "FilamentOne",
+     "GEEETECH",               "Giantarm",               "Gizmo Dorks",            "GreenGate3D",            "HATCHBOX",
+     "Hello3D",                "IC3D",                   "IEMAI",                  "IIID Max",               "INLAND",
+     "iProspect",              "iSANMATE",               "Justmaker",              "Keene Village Plastics", "Kexcelled",
+     "MakerBot",               "MatterHackers",          "MIKA3D",                 "NinjaTek",               "Nobufil",
+     "Novamaker",              "OVERTURE",               "OVVNYXE",                "Polymaker",              "Priline",
+     "Printed Solid",          "Protopasta",             "Prusament",              "Push Plastic",           "R3D",
+     "Re-pet3D",               "Recreus",                "Regen",                  "Sain SMART",             "SliceWorx",
+     "Snapmaker",              "SnoLabs",                "Spectrum",               "SUNLU",                  "TTYT3D",
+     "Tianse",                 "UltiMaker",              "Valment",                "Verbatim",               "VO3D",
+     "Voxelab",                "VOXELPLA",               "YOOPAI",                 "Yousu",                  "Ziro",
+     "Zyltech"};
+     
+static const std::vector<std::string> filament_types = {"PLA",    "rPLA",  "PLA+",      "PLA Tough", "PETG",  "ABS",    "ASA",    "FLEX",   "HIPS",   "PA",     "PACF",
+                                                        "NYLON",  "PVA",   "PVB",       "PC",        "PCABS", "PCTG",   "PCCF",   "PHA",    "PP",     "PEI",    "PET",    "PETG",
+                                                        "PETGCF", "PTBA",  "PTBA90A",   "PEEK",  "TPU93A", "TPU75D", "TPU",       "TPU92A", "TPU98A", "Misc",
+                                                        "TPE",    "GLAZE", "Nylon",     "CPE",   "METAL",  "ABST",   "Carbon Fiber", "SBS"};
 
 static const std::vector<std::string> printer_vendors = {"Anycubic",  "Artillery", "BIBO",           "BIQU",     "Creality ENDER", "Creality CR", "Creality SERMOON",
                                                          "FLSun",     "gCreate",   "Geeetech",       "INAT",     "Infinity3D",     "Jubilee",     "LNL3D",
@@ -510,17 +528,30 @@ static char* read_json_file(const std::string &preset_path)
 }
 
 static std::string get_printer_nozzle_diameter(std::string printer_name) {
+    // Create a lowercase version of the printer_name for case-insensitive search
+    std::string printer_name_lower = printer_name;
+    std::transform(printer_name_lower.begin(), printer_name_lower.end(), printer_name_lower.begin(), ::tolower);
 
-    size_t index = printer_name.find(" nozzle");
+    size_t index = printer_name_lower.find(" nozzle)");
     if (std::string::npos == index) {
-        return "";
+        size_t index = printer_name_lower.find(" nozzle");
+        if (std::string::npos == index) {
+            return "";
+        }
+        std::string nozzle = printer_name_lower.substr(0, index);
+        size_t      last_space_index = nozzle.find_last_of(" ");
+        if (std::string::npos == index) {
+            return "";
+        }
+        return nozzle.substr(last_space_index + 1);
+    } else {
+        std::string nozzle = printer_name_lower.substr(0, index);
+        size_t      last_bracket_index = nozzle.find_last_of("(");
+        if (std::string::npos == index) {
+            return "";
+        }
+        return nozzle.substr(last_bracket_index + 1);
     }
-    std::string nozzle           = printer_name.substr(0, index);
-    size_t      last_space_index = nozzle.find_last_of(" ");
-    if (std::string::npos == index) {
-        return "";
-    }
-    return nozzle.substr(last_space_index + 1);
 }
 
 static void adjust_dialog_in_screen(DPIDialog* dialog) {
@@ -1137,10 +1168,11 @@ wxArrayString CreateFilamentPresetDialog::get_filament_preset_choices()
             std::string preset_name = filament_preset->name;
             BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << " filament_id: " << filament_preset->filament_id << " preset name: " << filament_preset->name;
             size_t      index_at    = preset_name.find(" @");
+            std::string cur_preset_name = preset_name;
             if (std::string::npos != index_at) {
-                std::string cur_preset_name = preset_name.substr(0, index_at);
-                preset_name_set.insert(from_u8(cur_preset_name));
+                cur_preset_name = preset_name.substr(0, index_at);
             }
+            preset_name_set.insert(from_u8(cur_preset_name));
         }
         assert(1 == preset_name_set.size());
         if (preset_name_set.size() > 1) {
@@ -1616,7 +1648,7 @@ wxBoxSizer *CreatePrinterPresetDialog::create_printer_item(wxWindow *parent)
                 m_select_model->SetLabelColor(*wxBLACK);
             }
         } else {
-            MessageDialog dlg(this, _L("The model is not fond, place reselect vendor."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES | wxYES_DEFAULT | wxCENTRE);
+            MessageDialog dlg(this, _L("The model is not found, place reselect vendor."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES | wxYES_DEFAULT | wxCENTRE);
             dlg.ShowModal();
         }
         e.Skip();
@@ -2096,7 +2128,7 @@ bool CreatePrinterPresetDialog::load_system_and_user_presets_with_curr_model(Pre
         varient = model_varient.substr(index_at + 3, index_nozzle - index_at - 4);
     } else {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "get nozzle failed";
-        MessageDialog dlg(this, _L("The nozzle diameter is not fond, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
+        MessageDialog dlg(this, _L("The nozzle diameter is not found, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
         dlg.ShowModal();
         return false;
     }
@@ -2107,7 +2139,7 @@ bool CreatePrinterPresetDialog::load_system_and_user_presets_with_curr_model(Pre
     if (temp_printer_preset) {
         m_printer_preset = new Preset(*temp_printer_preset);
     } else {
-        MessageDialog dlg(this, _L("The printer preset is not fond, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
+        MessageDialog dlg(this, _L("The printer preset is not found, place reselect."), wxString(SLIC3R_APP_FULL_NAME) + " - " + _L("Info"), wxYES_NO | wxYES_DEFAULT | wxCENTRE);
         dlg.ShowModal();
         return false;
     }
@@ -4097,13 +4129,13 @@ wxBoxSizer *ExportConfigsDialog::create_select_printer(wxWindow *parent)
     horizontal_sizer->Add(optionSizer, 0, wxEXPAND | wxALL | wxALIGN_CENTER_VERTICAL, FromDIP(10));
     m_scrolled_preset_window = new wxScrolledWindow(parent);
     m_scrolled_preset_window->SetScrollRate(5, 5);
-    m_scrolled_preset_window->SetBackgroundColour(PRINTER_LIST_COLOUR);
+    m_scrolled_preset_window->SetBackgroundColour(*wxWHITE);
     m_scrolled_preset_window->SetMaxSize(wxSize(FromDIP(660), FromDIP(400)));
     m_scrolled_preset_window->SetSize(wxSize(FromDIP(660), FromDIP(400)));
     wxBoxSizer *scrolled_window = new wxBoxSizer(wxHORIZONTAL);
 
     m_presets_window = new wxPanel(m_scrolled_preset_window, wxID_ANY);
-    m_presets_window->SetBackgroundColour(PRINTER_LIST_COLOUR);
+    m_presets_window->SetBackgroundColour(*wxWHITE);
     wxBoxSizer *select_printer_sizer  = new wxBoxSizer(wxVERTICAL);
 
     m_preset_sizer = new wxGridSizer(3, FromDIP(5), FromDIP(5));

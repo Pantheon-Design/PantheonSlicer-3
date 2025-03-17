@@ -1,0 +1,19 @@
+{
+    "type": "filament",
+    "filament_id": "GFC99",
+    "setting_id": "GFSA04",
+    "name": "My Generic PC",
+    "from": "system",
+    "instantiation": "true",
+    "inherits": "fdm_filament_pc",
+    "version": "3.0.5.0",
+    "filament_max_volumetric_speed": [
+        "12"
+    ],
+    "filament_flow_ratio": [
+        "0.94"
+    ],
+    "compatible_printers": [
+        "Pantheon HS3 0.4 Nozzle"
+    ]
+}

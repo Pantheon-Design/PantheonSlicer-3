@@ -1,5 +1,11 @@
 {
     "instantiation": "true",
+    "activate_chamber_temp_control": [
+        "1"
+    ],
+    "chamber_temperature": [
+        "35"
+    ],
     "compatible_printers": [
         "Pantheon HS3 0.4 Nozzle"
     ],
@@ -43,6 +49,9 @@
         "PETG-CF"
     ],
     "from": "system",
+    "idle_temperature": [
+        "100"
+    ],
     "inherits": "PETG-CF Rev3.7",
     "is_custom_defined": "0",
     "name": "PETG-CF",
@@ -52,5 +61,5 @@
     "slow_down_layer_time": [
         "5"
     ],
-    "version": "3.0.0.0"
+    "version": "3.0.5.0"
 }
