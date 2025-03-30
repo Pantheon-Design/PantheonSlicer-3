@@ -799,15 +799,6 @@ bool PlaterPresetComboBox::switch_to_tab()
     if (!tab)
         return false;
 
-    //BBS  Select NoteBook Tab params
-    if (tab->GetParent() == wxGetApp().params_panel())
-        wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
-    else {
-        wxGetApp().params_dialog()->Popup();
-        tab->OnActivate();
-    }
-    tab->restore_last_select_item();
-
     const Preset* selected_filament_preset = nullptr;
     if (m_type == Preset::TYPE_FILAMENT)
     {
@@ -818,7 +809,6 @@ bool PlaterPresetComboBox::switch_to_tab()
             if (wxGetApp().get_tab(m_type)->select_preset(preset_name))
                 wxGetApp().get_tab(m_type)->get_combo_box()->set_filament_idx(m_filament_idx);
             else {
-                wxGetApp().params_dialog()->Hide();
                 return false;
             }
         }
@@ -845,6 +835,15 @@ bool PlaterPresetComboBox::switch_to_tab()
         }
     }
     */
+
+    //BBS  Select NoteBook Tab params
+    if (tab->GetParent() == wxGetApp().params_panel())
+        wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
+    else {
+        wxGetApp().params_dialog()->Popup();
+        tab->OnActivate();
+    }
+    tab->restore_last_select_item();
 
     return true;
 }
