@@ -10201,6 +10201,7 @@ void Plater::calib_input_shaping_freq(const Calib_Params& params)
     filament_config->set_key_value("filament_max_volumetric_speed", new ConfigOptionFloats { 200 });
     //filament_config->set_key_value("enable_pressure_advance", new ConfigOptionBoolsNullable {false });
     filament_config->set_key_value("pressure_advance", new ConfigOptionFloats { 0.0 });
+    print_config->set_key_value("default_jerk", new ConfigOptionFloat { 500.0 });// Set jerk to maximum.
     print_config->set_key_value("enable_overhang_speed", new ConfigOptionBool { false });
     print_config->set_key_value("timelapse_type", new ConfigOptionEnum<TimelapseType>(tlTraditional));
     print_config->set_key_value("wall_loops", new ConfigOptionInt(1));
@@ -10238,6 +10239,7 @@ void Plater::calib_input_shaping_damp(const Calib_Params& params)
     filament_config->set_key_value("filament_max_volumetric_speed", new ConfigOptionFloats { 200 });
     //filament_config->set_key_value("enable_pressure_advance", new ConfigOptionBoolsNullable{false});
     filament_config->set_key_value("pressure_advance", new ConfigOptionFloats{0.0});
+    print_config->set_key_value("default_jerk", new ConfigOptionFloat { 500.0 });// Set jerk to maximum.
     print_config->set_key_value("enable_overhang_speed", new ConfigOptionBool{false});
     print_config->set_key_value("timelapse_type", new ConfigOptionEnum<TimelapseType>(tlTraditional));
     print_config->set_key_value("wall_loops", new ConfigOptionInt(1));
@@ -10275,6 +10277,7 @@ void Plater::calib_junction_deviation(const Calib_Params& params)
     filament_config->set_key_value("filament_max_volumetric_speed", new ConfigOptionFloats{200});
     // filament_config->set_key_value("enable_pressure_advance", new ConfigOptionBoolsNullable{false});
     filament_config->set_key_value("pressure_advance", new ConfigOptionFloats{0.0});
+    print_config->set_key_value("default_jerk", new ConfigOptionFloat { 500.0 });// Set jerk to maximum.
     print_config->set_key_value("enable_overhang_speed", new ConfigOptionBool{false});
     print_config->set_key_value("timelapse_type", new ConfigOptionEnum<TimelapseType>(tlTraditional));
     print_config->set_key_value("wall_loops", new ConfigOptionInt(1));
