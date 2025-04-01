@@ -139,6 +139,15 @@
                         <Component Id="flowrate_test_pass2.3mf" Guid="*">
                             <File Id="flowrate_test_pass2.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\flowrate-test-pass2.3mf" />
                         </Component>
+                        <Component Id="Orca_LinearFlow.3mf" Guid="*">
+                            <File Id="Orca_LinearFlow.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\Orca-LinearFlow.3mf" />
+                        </Component>
+                        <Component Id="Orca_LinearFlow_fine.3mf" Guid="*">
+                            <File Id="Orca_LinearFlow_fine.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\Orca-LinearFlow_fine.3mf" />
+                        </Component>
+                        <Component Id="pass1.3mf" Guid="*">
+                            <File Id="pass1.3mf" KeyPath="yes" Source="$(var.HarvestPath)\resources\calib\filament_flow\pass1.3mf" />
+                        </Component>
                     </Directory>
                     <Directory Id="pressure_advance" Name="pressure_advance">
                         <Component Id="pa_pattern.3mf" Guid="*">
@@ -1779,6 +1788,9 @@
                     <Component Id="OrcaSlicer_gray.svg" Guid="*">
                         <File Id="OrcaSlicer_gray.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\OrcaSlicer_gray.svg" />
                     </Component>
+                    <Component Id="orca_bed_pct_left.svg" Guid="*">
+                        <File Id="orca_bed_pct_left.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\orca_bed_pct_left.svg" />
+                    </Component>
                     <Component Id="oss_picture_loading.png" Guid="*">
                         <File Id="oss_picture_loading.png" KeyPath="yes" Source="$(var.HarvestPath)\resources\images\oss_picture_loading.png" />
                     </Component>
@@ -2819,6 +2831,63 @@
                             <File Id="pantheon_bed_texture.svg" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\pantheon_bed_texture.svg" />
                         </Component>
                         <Directory Id="filament" Name="filament">
+                            <Component Id="fdm_filament_abs.json" Guid="*">
+                                <File Id="fdm_filament_abs.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_abs.json" />
+                            </Component>
+                            <Component Id="fdm_filament_asa.json" Guid="*">
+                                <File Id="fdm_filament_asa.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_asa.json" />
+                            </Component>
+                            <Component Id="fdm_filament_common.json" Guid="*">
+                                <File Id="fdm_filament_common.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_common.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pa.json" Guid="*">
+                                <File Id="fdm_filament_pa.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pa.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pc.json" Guid="*">
+                                <File Id="fdm_filament_pc.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pc.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pet.json" Guid="*">
+                                <File Id="fdm_filament_pet.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pet.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pla.json" Guid="*">
+                                <File Id="fdm_filament_pla.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pla.json" />
+                            </Component>
+                            <Component Id="fdm_filament_pva.json" Guid="*">
+                                <File Id="fdm_filament_pva.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_pva.json" />
+                            </Component>
+                            <Component Id="fdm_filament_tpu.json" Guid="*">
+                                <File Id="fdm_filament_tpu.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\fdm_filament_tpu.json" />
+                            </Component>
+                            <Component Id="My_Generic_ABS.json" Guid="*">
+                                <File Id="My_Generic_ABS.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic ABS.json" />
+                            </Component>
+                            <Component Id="My_Generic_ASA.json" Guid="*">
+                                <File Id="My_Generic_ASA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic ASA.json" />
+                            </Component>
+                            <Component Id="My_Generic_PA_CF.json" Guid="*">
+                                <File Id="My_Generic_PA_CF.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PA-CF.json" />
+                            </Component>
+                            <Component Id="My_Generic_PA.json" Guid="*">
+                                <File Id="My_Generic_PA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PA.json" />
+                            </Component>
+                            <Component Id="My_Generic_PC.json" Guid="*">
+                                <File Id="My_Generic_PC.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PC.json" />
+                            </Component>
+                            <Component Id="My_Generic_PETG.json" Guid="*">
+                                <File Id="My_Generic_PETG.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PETG.json" />
+                            </Component>
+                            <Component Id="My_Generic_PLA_CF.json" Guid="*">
+                                <File Id="My_Generic_PLA_CF.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PLA-CF.json" />
+                            </Component>
+                            <Component Id="My_Generic_PLA.json" Guid="*">
+                                <File Id="My_Generic_PLA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PLA.json" />
+                            </Component>
+                            <Component Id="My_Generic_PVA.json" Guid="*">
+                                <File Id="My_Generic_PVA.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic PVA.json" />
+                            </Component>
+                            <Component Id="My_Generic_TPU.json" Guid="*">
+                                <File Id="My_Generic_TPU.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\My Generic TPU.json" />
+                            </Component>
                             <Component Id="PA_CF_Rev3.7.json" Guid="*">
                                 <File Id="PA_CF_Rev3.7.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\PA-CF Rev3.7.json" />
                             </Component>
@@ -2839,9 +2908,6 @@
                             </Component>
                             <Component Id="Quality_PA_GF_Rev3.7.json" Guid="*">
                                 <File Id="Quality_PA_GF_Rev3.7.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\Quality PA-GF Rev3.7.json" />
-                            </Component>
-                            <Component Id="TPU_95A.json" Guid="*">
-                                <File Id="TPU_95A.json" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\filament\TPU-95A.json" />
                             </Component>
                         </Directory>
                         <Directory Id="machine" Name="machine">
@@ -2873,9 +2939,6 @@
                             </Component>
                             <Component Id="Quality_PA_GF_Rev3.7.json_1" Guid="*">
                                 <File Id="Quality_PA_GF_Rev3.7.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\Quality PA-GF Rev3.7.json" />
-                            </Component>
-                            <Component Id="TPU_95A.json_1" Guid="*">
-                                <File Id="TPU_95A.json_1" KeyPath="yes" Source="$(var.HarvestPath)\resources\profiles\PantheonDesign\process\TPU-95A.json" />
                             </Component>
                         </Directory>
                     </Directory>
@@ -5659,6 +5722,9 @@
             <ComponentRef Id="Icon.icns" />
             <ComponentRef Id="flowrate_test_pass1.3mf" />
             <ComponentRef Id="flowrate_test_pass2.3mf" />
+            <ComponentRef Id="Orca_LinearFlow.3mf" />
+            <ComponentRef Id="Orca_LinearFlow_fine.3mf" />
+            <ComponentRef Id="pass1.3mf" />
             <ComponentRef Id="pa_pattern.3mf" />
             <ComponentRef Id="pressure_advance_test.stl" />
             <ComponentRef Id="tower_with_seam.stl" />
@@ -6184,6 +6250,7 @@
             <ComponentRef Id="OrcaSlicer_gradient_circle.svg" />
             <ComponentRef Id="OrcaSlicer_gradient_narrow.svg" />
             <ComponentRef Id="OrcaSlicer_gray.svg" />
+            <ComponentRef Id="orca_bed_pct_left.svg" />
             <ComponentRef Id="oss_picture_loading.png" />
             <ComponentRef Id="oss_picture_load_failed.png" />
             <ComponentRef Id="PantheonSlicer_3.ico" />
@@ -6528,6 +6595,25 @@
             <ComponentRef Id="Pantheon_HS3_cover.png" />
             <ComponentRef Id="pantheon_bed.stl" />
             <ComponentRef Id="pantheon_bed_texture.svg" />
+            <ComponentRef Id="fdm_filament_abs.json" />
+            <ComponentRef Id="fdm_filament_asa.json" />
+            <ComponentRef Id="fdm_filament_common.json" />
+            <ComponentRef Id="fdm_filament_pa.json" />
+            <ComponentRef Id="fdm_filament_pc.json" />
+            <ComponentRef Id="fdm_filament_pet.json" />
+            <ComponentRef Id="fdm_filament_pla.json" />
+            <ComponentRef Id="fdm_filament_pva.json" />
+            <ComponentRef Id="fdm_filament_tpu.json" />
+            <ComponentRef Id="My_Generic_ABS.json" />
+            <ComponentRef Id="My_Generic_ASA.json" />
+            <ComponentRef Id="My_Generic_PA_CF.json" />
+            <ComponentRef Id="My_Generic_PA.json" />
+            <ComponentRef Id="My_Generic_PC.json" />
+            <ComponentRef Id="My_Generic_PETG.json" />
+            <ComponentRef Id="My_Generic_PLA_CF.json" />
+            <ComponentRef Id="My_Generic_PLA.json" />
+            <ComponentRef Id="My_Generic_PVA.json" />
+            <ComponentRef Id="My_Generic_TPU.json" />
             <ComponentRef Id="PA_CF_Rev3.7.json" />
             <ComponentRef Id="PA_CF.json" />
             <ComponentRef Id="PA_GF.json" />
@@ -6535,7 +6621,6 @@
             <ComponentRef Id="PETG_CF.json" />
             <ComponentRef Id="Quality_PA_CF_Rev3.7.json" />
             <ComponentRef Id="Quality_PA_GF_Rev3.7.json" />
-            <ComponentRef Id="TPU_95A.json" />
             <ComponentRef Id="Pantheon_HS3_0.4_nozzle.json" />
             <ComponentRef Id="Pantheon_HS3.json" />
             <ComponentRef Id="_0.20mm_Standard__Pantheon_HS3.json" />
@@ -6545,7 +6630,6 @@
             <ComponentRef Id="PETG_CF.json_1" />
             <ComponentRef Id="Quality_PA_CF_Rev3.7.json_1" />
             <ComponentRef Id="Quality_PA_GF_Rev3.7.json_1" />
-            <ComponentRef Id="TPU_95A.json_1" />
             <ComponentRef Id="Template.json" />
             <ComponentRef Id="filament_abs_template.json" />
             <ComponentRef Id="filament_asa_template.json" />

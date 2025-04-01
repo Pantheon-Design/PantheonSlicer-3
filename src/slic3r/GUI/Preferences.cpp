@@ -16,6 +16,7 @@
 #include "Widgets/RadioBox.hpp"
 #include "Widgets/TextInput.hpp"
 #include <wx/listimpl.cpp>
+#include <wx/display.h>
 #include <map>
 
 #ifdef __WINDOWS__
@@ -914,7 +915,7 @@ void PreferencesDialog::create()
     SetSizer(main_sizer);
     Layout();
     Fit();
-    int screen_height = wxGetDisplaySize().GetY();
+    int screen_height = wxDisplay(m_parent).GetClientArea().GetHeight();
     if (this->GetSize().GetY() > screen_height)
         this->SetSize(this->GetSize().GetX() + FromDIP(40), screen_height * 4 / 5);
 
@@ -1064,8 +1065,13 @@ wxWindow* PreferencesDialog::create_general_page()
     wxGetApp().check_url_association(L"prusaslicer", reg_bin);
     auto associate_url_prusaslicer = create_item_button(_L("Current association: ") + reg_bin, _L("Associate prusaslicer://"), page,
                                                        reg_bin.empty() ? _L("Not associated to any application") : reg_bin,
-                                                       _L("Associate OrcaSlicer with prusaslicer:// links so that Orca can open PrusaSlicer links from Printable.com"),
+                                                       _L("Associate OrcaSlicer with prusaslicer:// links so that Orca can open models from Printable.com"),
                                                        []() { wxGetApp().associate_url(L"prusaslicer"); });
+    wxGetApp().check_url_association(L"bambustudio", reg_bin);
+    auto associate_url_bambustudio = create_item_button(_L("Current association: ") + reg_bin, _L("Associate bambustudio://"), page,
+                                                       reg_bin.empty() ? _L("Not associated to any application") : reg_bin,
+                                                       _L("Associate OrcaSlicer with bambustudio:// links so that Orca can open models from makerworld.com"),
+                                                       []() { wxGetApp().associate_url(L"bambustudio"); });
 #endif
 
     // auto title_modelmall = create_item_title(_L("Online Models"), page, _L("Online Models"));
@@ -1127,6 +1133,7 @@ wxWindow* PreferencesDialog::create_general_page()
 #endif // _WIN32
 #if !defined(__APPLE__)
     sizer_page->Add(associate_url_prusaslicer, 0, wxTOP | wxEXPAND, FromDIP(20));
+    sizer_page->Add(associate_url_bambustudio, 0, wxTOP | wxEXPAND, FromDIP(20));
 #endif
     // auto item_title_modelmall = sizer_page->Add(title_modelmall, 0, wxTOP | wxEXPAND, FromDIP(20));
     // auto item_item_modelmall = sizer_page->Add(item_modelmall, 0, wxTOP, FromDIP(3));

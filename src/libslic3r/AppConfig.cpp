@@ -40,6 +40,8 @@ namespace Slic3r {
         static const std::string VERSION_CHECK_URL_STABLE = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases/latest";
 static const std::string VERSION_CHECK_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3/releases";
 static const std::string PROFILE_UPDATE_URL = "https://api.github.com/repos/Pantheon-Design/PantheonSlicer-3-Profiles/releases";
+// for testing
+// static const std::string         PROFILE_UPDATE_URL = "https://api.github.com/repos/Aziooo/testprofile/releases";
 
 static const std::string MODELS_STR = "models";
 
@@ -181,6 +183,8 @@ void AppConfig::set_defaults()
     if (get("show_3d_navigator").empty())
         set_bool("show_3d_navigator", true);
 
+    if (get("show_outline").empty())
+        set_bool("show_outline", false);
 
 #ifdef _WIN32
 

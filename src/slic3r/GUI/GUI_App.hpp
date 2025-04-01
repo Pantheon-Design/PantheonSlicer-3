@@ -236,8 +236,6 @@ private:
     bool            m_opengl_initialized{ false };
 #endif
 
-//import model from mall 
-    wxString       m_download_file_url;
    
 //#ifdef _WIN32
     wxColour        m_color_label_modified;
@@ -342,6 +340,9 @@ private:
 
     bool show_3d_navigator() const { return app_config->get_bool("show_3d_navigator"); }
     void toggle_show_3d_navigator() const { app_config->set_bool("show_3d_navigator", !show_3d_navigator()); }
+
+    bool show_outline() const { return app_config->get_bool("show_outline"); }
+    void toggle_show_outline() const { app_config->set_bool("show_outline", !show_outline()); }
 
     wxString get_inf_dialog_contect () {return m_info_dialog_content;};
 

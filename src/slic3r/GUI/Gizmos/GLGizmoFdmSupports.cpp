@@ -22,7 +22,7 @@
 namespace Slic3r::GUI {
 
 GLGizmoFdmSupports::GLGizmoFdmSupports(GLCanvas3D& parent, const std::string& icon_filename, unsigned int sprite_id)
-    : GLGizmoPainterBase(parent, icon_filename, sprite_id), m_current_tool(ImGui::CircleButtonIcon)
+    : GLGizmoPainterBase(parent, icon_filename, sprite_id), m_current_tool(ImGui::FillButtonIcon)
 {
     m_tool_type = ToolType::BRUSH;
     m_cursor_type = TriangleSelector::CursorType::CIRCLE;
@@ -101,7 +101,7 @@ bool GLGizmoFdmSupports::on_init()
     m_desc["smart_fill_angle"]      = _L("Smart fill angle");
     m_desc["on_overhangs_only"] = _L("On overhangs only");
 
-    memset(&m_print_instance, sizeof(m_print_instance), 0);
+    memset(&m_print_instance, 0, sizeof(m_print_instance));
     return true;
 }
 
@@ -224,7 +224,7 @@ void GLGizmoFdmSupports::on_render_input_window(float x, float y, float bottom_l
     int support_threshold_angle = get_selection_support_threshold_angle();
     // when support painting tool is on, reset highlight threshold angle
     if (m_support_threshold_angle == -1) {
-        m_highlight_by_angle_threshold_deg = support_threshold_angle;
+        m_highlight_by_angle_threshold_deg = 40.0f;
         m_parent.set_slope_normal_angle(90.f - m_highlight_by_angle_threshold_deg);
     }
     m_support_threshold_angle = support_threshold_angle;
@@ -327,8 +327,16 @@ void GLGizmoFdmSupports::on_render_input_window(float x, float y, float bottom_l
         m_imgui->tooltip(format_wxstr(_L("Allows painting only on facets selected by: \"%1%\""), m_desc["highlight_by_angle"]), max_tooltip_width);
     ImGui::Separator();
 
-    if (m_current_tool != old_tool)
-        this->tool_changed(old_tool, m_current_tool);
+    if (m_current_tool != old_tool) {
+            this->tool_changed(old_tool, m_current_tool);
+
+            // PantheonSlicer:this is the default values for fill type paint
+            if (m_current_tool == ImGui::FillButtonIcon) {
+                m_paint_on_overhangs_only = true;
+                m_highlight_by_angle_threshold_deg = 40.f;
+                m_smart_fill_angle                 = 40.0f;
+            }
+        }
 
     ImGui::Dummy(ImVec2(0.0f, ImGui::GetFontSize() * 0.1));
 
