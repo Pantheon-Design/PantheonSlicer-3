@@ -1,12 +1,16 @@
 {
     "name": "PantheonDesign",
-    "version": "03.00.05.00",
+    "version": "03.00.07.00",
     "force_update": "0",
     "description": "PantheonDesign configurations",
     "machine_model_list": [
         {
             "name": "Pantheon HS3",
             "sub_path": "machine/Pantheon HS3.json"
+        },
+        {
+            "name": "Pantheon HS-Pro",
+            "sub_path": "machine/Pantheon HS-Pro.json"
         }
     ],
     "process_list": [
@@ -37,6 +41,10 @@
         {
             "name": "PETG-CF",
             "sub_path": "process/PETG-CF.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Turbo",
+            "sub_path": "process/HS-Pro PETG-CF Turbo.json"
         }
     ],
     "filament_list": [
@@ -143,12 +151,20 @@
         {
             "name": "My Generic PA-CF",
             "sub_path": "filament/My Generic PA-CF.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Turbo",
+            "sub_path": "filament/HS-Pro PETG-CF Turbo.json"
         }
     ],
     "machine_list": [
         {
             "name": "Pantheon HS3 0.4 Nozzle",
             "sub_path": "machine/Pantheon HS3 0.4 Nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.6 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.6 nozzle.json"
         }
     ]
 }
