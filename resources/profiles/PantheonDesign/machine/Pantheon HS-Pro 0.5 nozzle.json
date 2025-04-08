@@ -20,9 +20,9 @@
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
     "default_filament_profile": [
-        "HS-Pro PETG-CF Turbo"
+        "HS-Pro PA-CF Strength"
     ],
-    "default_print_profile": "HS-Pro PETG-CF Turbo",
+    "default_print_profile": "HS-Pro PA-CF Strength",
     "deretraction_speed": [
         "35"
     ],
@@ -55,26 +55,26 @@
     "machine_end_gcode": "_END_PRINT",
     "machine_load_filament_time": "0",
     "machine_max_acceleration_e": [
-        "150000"
+        "50000"
     ],
     "machine_max_acceleration_extruding": [
-        "150000"
+        "50000"
     ],
     "machine_max_acceleration_retracting": [
-        "150000"
+        "10000"
     ],
     "machine_max_acceleration_travel": [
         "0",
         "0"
     ],
     "machine_max_acceleration_x": [
-        "150000"
+        "50000"
     ],
     "machine_max_acceleration_y": [
-        "150000"
+        "50000"
     ],
     "machine_max_acceleration_z": [
-        "1400"
+        "700"
     ],
     "machine_max_jerk_e": [
         "5"
@@ -89,16 +89,16 @@
         "5"
     ],
     "machine_max_speed_e": [
-        "500"
+        "700"
     ],
     "machine_max_speed_x": [
-        "500"
+        "700"
     ],
     "machine_max_speed_y": [
-        "500"
+        "700"
     ],
     "machine_max_speed_z": [
-        "40"
+        "30"
     ],
     "machine_min_extruding_rate": [
         "0"
@@ -107,18 +107,18 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "{if filament_type[0] == \"PETG-CF\"}\n_START_PRINT CHAMBER_TEMP=35 CHASSIS_TEMP=15 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature]\n{endif}\n\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\n_START_PRINT CHAMBER_TEMP=60 CHASSIS_TEMP=15 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature]\n{endif}",
+    "machine_start_gcode": "{if filament_type[0] == \"PETG-CF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}\n\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
-        "0.3"
+        "0.375"
     ],
     "min_layer_height": [
-        "0.125"
+        "0.15"
     ],
-    "name": "Pantheon HS-Pro 0.6 nozzle",
+    "name": "Pantheon HS-Pro 0.5 nozzle",
     "nozzle_diameter": [
-        "0.6"
+        "0.5"
     ],
     "nozzle_height": "4",
     "nozzle_hrc": "0",
@@ -138,10 +138,10 @@
     "printable_height": "310",
     "printer_model": "Pantheon HS-Pro",
     "printer_notes": "",
-    "printer_settings_id": "Pantheon HS-Pro 0.6 nozzle",
+    "printer_settings_id": "Pantheon HS-Pro 0.5 nozzle",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
-    "printer_variant": "0.6",
+    "printer_variant": "0.5",
     "printhost_apikey": "",
     "printhost_authorization_type": "key",
     "printhost_cafile": "",

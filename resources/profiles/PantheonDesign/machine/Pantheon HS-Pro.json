@@ -2,11 +2,11 @@
   "type": "machine_model",
   "name": "Pantheon HS-Pro",
   "model_id": "Pantheon HS-Pro",
-  "nozzle_diameter": "0.6",
+  "nozzle_diameter": "0.5;0.6",
   "machine_tech": "FFF",
   "family": "Pantheon HS",
   "bed_model": "HS-Pro-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
   "hotend_model": "HS-Pro-Hotend.stl",
-  "default_materials": "HS-Pro PETG-CF Turbo"
+  "default_materials": "HS-Pro PETG-CF Turbo;HS-Pro PA-CF Strength"
 }

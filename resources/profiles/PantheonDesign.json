@@ -45,6 +45,10 @@
         {
             "name": "HS-Pro PETG-CF Turbo",
             "sub_path": "process/HS-Pro PETG-CF Turbo.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Strength",
+            "sub_path": "process/HS-Pro PA-CF Strength.json"
         }
     ],
     "filament_list": [
@@ -155,6 +159,10 @@
         {
             "name": "HS-Pro PETG-CF Turbo",
             "sub_path": "filament/HS-Pro PETG-CF Turbo.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Strength",
+            "sub_path": "filament/HS-Pro PA-CF Strength.json"
         }
     ],
     "machine_list": [
@@ -165,6 +173,10 @@
         {
             "name": "Pantheon HS-Pro 0.6 nozzle",
             "sub_path": "machine/Pantheon HS-Pro 0.6 nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.5 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.5 nozzle.json"
         }
     ]
 }
