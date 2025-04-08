@@ -8,5 +8,5 @@
   "bed_model": "HS-Pro-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
   "hotend_model": "HS-Pro-Hotend.stl",
-  "default_materials": "HS-Pro PETG-CF Turbo;HS-Pro PA-CF Strength;HS-Pro PETG-CF Speed"
+  "default_materials": "HS-Pro PETG-CF Turbo;HS-Pro PA-CF Strength;HS-Pro PETG-CF Speed;HS-Pro PETG-CF Detail"
 }

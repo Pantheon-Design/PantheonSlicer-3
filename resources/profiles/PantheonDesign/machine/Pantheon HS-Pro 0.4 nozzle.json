@@ -20,7 +20,8 @@
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
     "default_filament_profile": [
-        "HS-Pro PETG-CF Speed"
+        "HS-Pro PETG-CF Speed",
+        "HS-Pro PETG-CF Detail"
     ],
     "default_print_profile": "HS-Pro PETG-CF Speed",
     "deretraction_speed": [

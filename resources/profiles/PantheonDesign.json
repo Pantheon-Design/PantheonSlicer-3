@@ -53,6 +53,10 @@
         {
             "name": "HS-Pro PETG-CF Speed",
             "sub_path": "process/HS-Pro PETG-CF Speed.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Detail",
+            "sub_path": "process/HS-Pro PETG-CF Detail.json"
         }
     ],
     "filament_list": [
@@ -171,6 +175,10 @@
         {
             "name": "HS-Pro PETG-CF Speed",
             "sub_path": "filament/HS-Pro PETG-CF Speed.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Detail",
+            "sub_path": "filament/HS-Pro PETG-CF Detail.json"
         }
     ],
     "machine_list": [
