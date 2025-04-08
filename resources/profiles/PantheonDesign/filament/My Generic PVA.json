@@ -18,8 +18,5 @@
     ],
     "slow_down_min_speed": [
         "10"
-    ],
-    "compatible_printers": [
-        "Pantheon HS3 0.4 Nozzle"
     ]
 }
