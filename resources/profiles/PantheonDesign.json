@@ -57,6 +57,10 @@
         {
             "name": "HS-Pro PETG-CF Detail",
             "sub_path": "process/HS-Pro PETG-CF Detail.json"
+        },
+        {
+            "name": "TPU",
+            "sub_path": "process/TPU.json"
         }
     ],
     "filament_list": [
@@ -179,12 +183,20 @@
         {
             "name": "HS-Pro PETG-CF Detail",
             "sub_path": "filament/HS-Pro PETG-CF Detail.json"
+        },
+        {
+            "name": "TPU",
+            "sub_path": "filament/TPU.json"
         }
     ],
     "machine_list": [
         {
             "name": "Pantheon HS3 0.4 Nozzle",
             "sub_path": "machine/Pantheon HS3 0.4 Nozzle.json"
+        },        
+        {
+            "name": "Pantheon HS3 0.6 Nozzle",
+            "sub_path": "machine/Pantheon HS3 0.6 Nozzle.json"
         },
         {
             "name": "Pantheon HS-Pro 0.6 nozzle",

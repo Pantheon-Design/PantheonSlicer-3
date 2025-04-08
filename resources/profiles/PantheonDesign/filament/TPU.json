@@ -16,11 +16,11 @@
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.6 nozzle"
+        "Pantheon HS3 0.6 Nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "TPU 95A"
+        "TPU"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
@@ -211,9 +211,8 @@
     "idle_temperature": [
         "100"
     ],
-    "inherits": "",
     "is_custom_defined": "0",
-    "name": "TPU 95A",
+    "name": "TPU",
     "nozzle_temperature": [
         "225"
     ],
