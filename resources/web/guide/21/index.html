@@ -13,22 +13,9 @@
 <script type="text/javascript" src="../../data/text.js"></script>	
 <script type="text/javascript" src="../js/globalapi.js"></script>	
 <script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript" src="21.js"></script>	
-<style>
-    #CloseBtn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: transparent;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-</style>	
+<script type="text/javascript" src="21.js"></script>		
 </head>
 <body onLoad="OnInit()">
-<button id="CloseBtn" onclick="closePage()">×</button>
-
 <div id="Title">
 	<div class="trans" tid="t10">Printer Selection</div>
 </div>
@@ -115,6 +102,7 @@
 <div id="AcceptArea">
 	<div class="GrayBtn trans" id="PreBtn" tid="t8"  onclick="window.open('../1/index.html','_self')">Back</div>
 	<div class="NormalBtn trans" id="AcceptBtn" tid="t9"  onclick="GotoFilamentPage()">Next</div>
+</div>	
 <div id="NoticeMask"></div>
 <div id="NoticeBody">
 	<div id="NoticeBar" class="trans" tid="t18">error</div>
@@ -142,14 +130,5 @@
 	function textInput(obj) {
 		FilterModelList(obj.value);
 	}
-	function closePage() {
-        var tSend={};
-        tSend['sequence_id']=Math.round(new Date() / 1000);
-        tSend['command']="user_guide_finish";
-        tSend['data']={};
-        tSend['data']['action']="finish";
-            
-        SendWXMessage( JSON.stringify(tSend) );	
-    }
 </script>
 </html>
