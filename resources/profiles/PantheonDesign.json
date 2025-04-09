@@ -59,8 +59,8 @@
             "sub_path": "process/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "TPU",
-            "sub_path": "process/TPU.json"
+            "name": "FLEX-95A",
+            "sub_path": "process/FLEX-95A.json"
         }
     ],
     "filament_list": [
@@ -185,8 +185,8 @@
             "sub_path": "filament/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "TPU",
-            "sub_path": "filament/TPU.json"
+            "name": "FLEX-95A",
+            "sub_path": "filament/FLEX-95A.json"
         }
     ],
     "machine_list": [
