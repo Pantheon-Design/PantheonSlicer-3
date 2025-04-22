@@ -10,7 +10,7 @@
         "Pantheon HS3 0.4 Nozzle"
     ],
     "compatible_prints": [
-        "PETG-CF"
+        "HS3 PETG-CF"
     ],
     "default_filament_colour": [
         "#505050"
@@ -46,7 +46,7 @@
         "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=4\n\nSET_PRESSURE_ADVANCE ADVANCE=0.004\nSET_GCODE_OFFSET Z=0.02"
     ],
     "filament_settings_id": [
-        "PETG-CF"
+        "HS3 PETG-CF"
     ],
     "from": "system",
     "idle_temperature": [
@@ -54,7 +54,7 @@
     ],
     "inherits": "PETG-CF Rev3.7",
     "is_custom_defined": "0",
-    "name": "PETG-CF",
+    "name": "HS3 PETG-CF",
     "support_material_interface_fan_speed": [
         "0"
     ],

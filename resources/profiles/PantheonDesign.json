@@ -27,20 +27,20 @@
             "sub_path": "process/Quality PA-GF Rev3.7.json"
         },
         {
-            "name": "PA-CF",
-            "sub_path": "process/PA-CF.json"
+            "name": "HS3 PA-CF",
+            "sub_path": "process/HS3 PA-CF.json"
         },
         {
-            "name": "PA-GF",
-            "sub_path": "process/PA-GF.json"
+            "name": "HS3 PA-GF",
+            "sub_path": "process/HS3 PA-GF.json"
         },
         {
             "name": "PETG-CF Rev3.7",
             "sub_path": "process/PETG-CF Rev3.7.json"
         },
         {
-            "name": "PETG-CF",
-            "sub_path": "process/PETG-CF.json"
+            "name": "HS3 PETG-CF",
+            "sub_path": "process/HS3 PETG-CF.json"
         },
         {
             "name": "HS-Pro PETG-CF Turbo",
@@ -59,8 +59,8 @@
             "sub_path": "process/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "FLEX-95A",
-            "sub_path": "process/FLEX-95A.json"
+            "name": "HS3 FLEX-95A",
+            "sub_path": "process/HS3 FLEX-95A.json"
         }
     ],
     "filament_list": [
@@ -77,20 +77,20 @@
             "sub_path": "filament/Quality PA-GF Rev3.7.json"
         },
         {
-            "name": "PA-CF",
-            "sub_path": "filament/PA-CF.json"
+            "name": "HS3 PA-CF",
+            "sub_path": "filament/HS3 PA-CF.json"
         },
 		{
-            "name": "PA-GF",
-            "sub_path": "filament/PA-GF.json"
+            "name": "HS3 PA-GF",
+            "sub_path": "filament/HS3 PA-GF.json"
         },
 		{
             "name": "PETG-CF Rev3.7",
             "sub_path": "filament/PETG-CF Rev3.7.json"
         },
 		{
-            "name": "PETG-CF",
-            "sub_path": "filament/PETG-CF.json"
+            "name": "HS3 PETG-CF",
+            "sub_path": "filament/HS3 PETG-CF.json"
         },
         {
             "name": "fdm_filament_common",
@@ -185,8 +185,8 @@
             "sub_path": "filament/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "FLEX-95A",
-            "sub_path": "filament/FLEX-95A.json"
+            "name": "HS3 FLEX-95A",
+            "sub_path": "filament/HS3 FLEX-95A.json"
         }
     ],
     "machine_list": [

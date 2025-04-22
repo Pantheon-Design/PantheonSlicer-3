@@ -20,7 +20,7 @@
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "FLEX-95A"
+        "HS3 FLEX-95A"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
@@ -157,7 +157,7 @@
         "20"
     ],
     "filament_settings_id": [
-        "FLEX-95A"
+        "HS3 FLEX-95A"
     ],
     "filament_shrink": [
         "100%"
@@ -212,7 +212,7 @@
         "100"
     ],
     "is_custom_defined": "0",
-    "name": "FLEX-95A",
+    "name": "HS3 FLEX-95A",
     "nozzle_temperature": [
         "225"
     ],

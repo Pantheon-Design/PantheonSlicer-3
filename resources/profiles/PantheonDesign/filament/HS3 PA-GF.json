@@ -10,13 +10,10 @@
         "Pantheon HS3 0.4 Nozzle"
     ],
     "compatible_prints": [
-        "PA-CF"
-    ],
-    "default_filament_colour": [
-        "#707070"
+        "HS3 PA-GF"
     ],
     "fan_cooling_layer_time": [
-        "80"
+        "60"
     ],
     "fan_max_speed": [
         "30"
@@ -25,7 +22,7 @@
         "0"
     ],
     "filament_flow_ratio": [
-        "1.008"
+        "1.003"
     ],
     "filament_max_volumetric_speed": [
         "10"
@@ -33,24 +30,27 @@
     "filament_retraction_length": [
         "0.3"
     ],
+    "filament_retraction_speed": [
+        "40"
+    ],
     "filament_settings_id": [
-        "PA-CF"
+        "HS3 PA-GF"
     ],
     "filament_start_gcode": [
         "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
+    ],
+    "filament_wipe": [
+        "0"
     ],
     "from": "system",
     "idle_temperature": [
         "100"
     ],
-    "inherits": "Quality PA-CF Rev3.7",
+    "inherits": "Quality PA-GF Rev3.7",
     "is_custom_defined": "0",
-    "name": "PA-CF",
-    "nozzle_temperature": [
-        "305"
-    ],
+    "name": "HS3 PA-GF",
     "nozzle_temperature_range_high": [
-        "305"
+        "310"
     ],
     "support_material_interface_fan_speed": [
         "0"
