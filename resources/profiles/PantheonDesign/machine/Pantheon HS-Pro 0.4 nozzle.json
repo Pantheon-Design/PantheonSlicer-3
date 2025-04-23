@@ -56,10 +56,10 @@
     "machine_end_gcode": "_END_PRINT",
     "machine_load_filament_time": "0",
     "machine_max_acceleration_e": [
-        "50000"
+        "150000"
     ],
     "machine_max_acceleration_extruding": [
-        "50000"
+        "150000"
     ],
     "machine_max_acceleration_retracting": [
         "10000"
@@ -69,10 +69,10 @@
         "0"
     ],
     "machine_max_acceleration_x": [
-        "50000"
+        "150000"
     ],
     "machine_max_acceleration_y": [
-        "50000"
+        "150000"
     ],
     "machine_max_acceleration_z": [
         "500"

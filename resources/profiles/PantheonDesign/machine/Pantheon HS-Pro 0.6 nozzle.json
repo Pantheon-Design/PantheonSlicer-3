@@ -61,7 +61,7 @@
         "150000"
     ],
     "machine_max_acceleration_retracting": [
-        "150000"
+        "10000"
     ],
     "machine_max_acceleration_travel": [
         "0",
