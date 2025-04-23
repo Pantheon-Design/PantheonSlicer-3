@@ -3576,7 +3576,7 @@ void TabFilament::build()
         optgroup->append_single_option_line(option);
 #if 1
     page = add_options_page(L("Dependencies"), "advanced");
-        optgroup = page->new_optgroup(L("Profile dependencies"));
+        optgroup = page->new_optgroup(L("Profile dependencies"), "param_profile_dependencies");
         create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
             return compatible_widget_create(parent, m_compatible_printers);
         });
