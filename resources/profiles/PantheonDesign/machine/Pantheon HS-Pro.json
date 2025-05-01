@@ -2,7 +2,7 @@
   "type": "machine_model",
   "name": "Pantheon HS-Pro",
   "model_id": "Pantheon HS-Pro",
-  "nozzle_diameter": "0.4;0.5;0.6",
+  "nozzle_diameter": "0.4;0.5",
   "machine_tech": "FFF",
   "family": "Pantheon HS",
   "bed_model": "HS-Pro-bed.stl",
