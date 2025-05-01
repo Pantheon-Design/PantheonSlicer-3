@@ -160,7 +160,7 @@
         "HS-Pro PETG-CF Speed"
     ],
     "filament_shrink": [
-        "100%"
+        "99.86%"
     ],
     "filament_soluble": [
         "0"
@@ -264,5 +264,5 @@
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.0.7.0"
+    "version": "3.0.7.1"
 }
