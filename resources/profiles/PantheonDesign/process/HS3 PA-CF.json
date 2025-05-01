@@ -22,6 +22,6 @@
     "support_speed": "120",
     "top_solid_infill_flow_ratio": "0.85",
     "tree_support_branch_diameter_double_wall": "0",
-    "version": "3.0.0.0",
+    "version": "3.0.7.0",
     "wall_loops": "6"
 }
