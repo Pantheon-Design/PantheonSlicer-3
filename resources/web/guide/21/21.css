@@ -61,14 +61,14 @@
 .PName
 {
 	font-weight: 700;
-	text-align:left;
+	text-align:center;
 }
 
 .pNozzel
 {
 	display: flex;
 	align-items: center;
-	justify-content:flex-start;
+	justify-content:center;
 	color: #5A5A5A;	
 	padding-left: 0px; /* ORCA Align checkboxes with with model text */
 }
