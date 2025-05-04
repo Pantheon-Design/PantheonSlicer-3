@@ -82,7 +82,7 @@ modules:
       - "*.a"
     sources:
       - type: archive
-        url: https://archive.mesa3d.org/mesa-20.2.6.tar.xz
+        url: https://archive.mesa3d.org/older-versions/20.x/mesa-20.2.6.tar.xz
         sha256: f12ca3c6c622f11cd79ad66b4220f04514fa96f795062fe92a37339ab19885db
 
   - name: glu
@@ -223,9 +223,9 @@ modules:
 
       # MPFR
       - type: file
-        url: https://www.mpfr.org/mpfr-current/mpfr-4.2.1.tar.bz2
+        url: https://www.mpfr.org/mpfr-4.2.2/mpfr-4.2.2.tar.bz2
         dest: external-packages/MPFR
-        sha256: b9df93635b20e4089c29623b19420c4ac848a1b29df1cfd59f26cab0d2666aa0
+        sha256: 9ad62c7dc910303cd384ff8f1f4767a655124980bb6d8650fe62c815a231bb7b
 
       # NLopt
       - type: file
@@ -296,9 +296,9 @@ modules:
     buildsystem: simple
     build-commands:
       - |
-        mkdir -p build && cd build
-        CXXFLAGS=-std=gnu++20 cmake ../ \
-          -DSLIC3R_PCH=OFF \
+        mkdir -p build
+        CXXFLAGS=-std=gnu++20 cmake . -B build \
+          -DSLIC3R_PCH=ON \
           -DSLIC3R_FHS=ON \
           -DSLIC3R_GTK=3 \
           -DSLIC3R_STATIC=ON \
@@ -309,7 +309,9 @@ modules:
           -DBBL_RELEASE_TO_PUBLIC=1 \
           -DCMAKE_PREFIX_PATH=/app \
           -DCMAKE_INSTALL_PREFIX=/app
-        CXXFLAGS=-std=gnu++20 cmake --build . --target install -j$FLATPAK_BUILDER_N_JOBS
+        CXXFLAGS=-std=gnu++20 cmake --build build --target OrcaSlicer -j$FLATPAK_BUILDER_N_JOBS
+        ./run_gettext.sh
+        CXXFLAGS=-std=gnu++20 cmake --build build --target install -j$FLATPAK_BUILDER_N_JOBS
 
     cleanup:
       - /include
