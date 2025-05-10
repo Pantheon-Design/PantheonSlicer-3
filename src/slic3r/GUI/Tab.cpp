@@ -3591,7 +3591,7 @@ void TabFilament::build()
         option.opt.height = notes_field_height;// 250;
         optgroup->append_single_option_line(option);
     page = add_options_page(L("Dependencies"), "advanced");
-        optgroup = page->new_optgroup(L("Profile dependencies"), "param_profile_dependencies");
+        optgroup = page->new_optgroup(L("Compatible printers"), "param_dependencies_printers");
         create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
             return compatible_widget_create(parent, m_compatible_printers);
         });
@@ -5913,7 +5913,14 @@ void Tab::create_line_with_widget(ConfigOptionsGroup* optgroup, const std::strin
 // Return a callback to create a Tab widget to mark the preferences as compatible / incompatible to the current printer.
 wxSizer* Tab::compatible_widget_create(wxWindow* parent, PresetDependencies &deps)
 {
+    auto cb_text = _L("All");
     deps.checkbox = new ::CheckBox(parent, wxID_ANY);
+    deps.checkbox->SetLabel(cb_text);
+    deps.checkbox->SetFont(Label::Body_14);
+    auto cb_size = wxSize(deps.checkbox->GetTextExtent(cb_text).x + deps.checkbox->GetBitmap().GetWidth() + FromDIP(6), -1);
+    deps.checkbox->SetSize(   cb_size);
+    deps.checkbox->SetMinSize(cb_size);
+    deps.checkbox->SetForegroundColour(wxColour("#363636"));
     wxGetApp().UpdateDarkUI(deps.checkbox, false, true);
 
     deps.checkbox_title = new wxStaticText(parent, wxID_ANY, _L("All"));
@@ -5944,33 +5951,18 @@ wxSizer* Tab::compatible_widget_create(wxWindow* parent, PresetDependencies &dep
 
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     sizer->Add((deps.checkbox), 0, wxALIGN_CENTER_VERTICAL);
-    sizer->Add((deps.checkbox_title), 0, wxALIGN_CENTER_VERTICAL);
     sizer->Add(new wxStaticText(parent, wxID_ANY, "  ")); // weirdly didnt apply AddSpacer or wxRIGHT border
     sizer->Add((deps.btn), 0, wxALIGN_CENTER_VERTICAL);
 
-    auto on_toggle = [this, &deps](const bool &state){
-        deps.checkbox->SetValue(state);
-        deps.btn->Enable(!state);
+    deps.checkbox->Bind(wxEVT_TOGGLEBUTTON, ([this, &deps](wxCommandEvent e)
+    {
+        deps.checkbox->SetValue(e.IsChecked());
+        deps.btn->Enable(!e.IsChecked());
         // All printers have been made compatible with this preset.
-        if (state) 
+        if (e.IsChecked()) 
             this->load_key_value(deps.key_list, std::vector<std::string> {});
-        this->get_field(deps.key_condition)->toggle(state);
+        this->get_field(deps.key_condition)->toggle(e.IsChecked());
         this->update_changed_ui();
-    };
-
-    deps.checkbox_title->Bind(wxEVT_LEFT_DOWN,([this, &deps, on_toggle](wxMouseEvent e) {
-        if (e.GetEventType() == wxEVT_LEFT_DCLICK) return;
-        on_toggle(!deps.checkbox->GetValue());
-        e.Skip();
-    }));
-
-    deps.checkbox_title->Bind(wxEVT_LEFT_DCLICK,([this, &deps, on_toggle](wxMouseEvent e) {
-        on_toggle(!deps.checkbox->GetValue());
-        e.Skip();
-    }));
-
-    deps.checkbox->Bind(wxEVT_TOGGLEBUTTON, ([this, on_toggle](wxCommandEvent e) {
-        on_toggle(e.IsChecked());
         e.Skip();
     }), deps.checkbox->GetId());
 
@@ -5993,18 +5985,6 @@ wxSizer* Tab::compatible_widget_create(wxWindow* parent, PresetDependencies &dep
         is_empty ? m_compatible_prints.btn->Disable() : m_compatible_prints.btn->Enable();
     }
     */
-
-    if (m_compatible_printers.checkbox) {
-        bool is_empty = m_config->option<ConfigOptionStrings>("compatible_printers")->values.empty();
-        m_compatible_printers.checkbox->SetValue(is_empty);
-        is_empty ? m_compatible_printers.btn->Disable() : m_compatible_printers.btn->Enable();
-    }
-
-    if (m_compatible_prints.checkbox) {
-        bool is_empty = m_config->option<ConfigOptionStrings>("compatible_prints")->values.empty();
-        m_compatible_prints.checkbox->SetValue(is_empty);
-        is_empty ? m_compatible_prints.btn->Disable() : m_compatible_prints.btn->Enable();
-    }
 
     deps.btn->Bind(wxEVT_BUTTON, ([this, parent, &deps](wxCommandEvent e)
     {
