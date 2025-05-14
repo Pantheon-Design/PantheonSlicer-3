@@ -2756,9 +2756,48 @@ void GUI_App::copy_network_if_available()
 
 bool GUI_App::on_init_network(bool try_backup)
 {
-    int load_agent_dll = Slic3r::NetworkAgent::initialize_network_module();
     bool create_network_agent = false;
+    auto should_load_networking_plugin = app_config->get_bool("installed_networking");
+    if(!should_load_networking_plugin) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << "Don't load plugin as installed_networking is false";
+    } else {
+    int load_agent_dll = Slic3r::NetworkAgent::initialize_network_module();
 __retry:
+    if (!load_agent_dll) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, load dll ok";
+        if (check_networking_version()) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, compatibility version";
+            auto bambu_source = Slic3r::NetworkAgent::get_bambu_source_entry();
+            if (!bambu_source) {
+                BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": can not get bambu source module!";
+                m_networking_compatible = false;
+                if (should_load_networking_plugin) {
+                    m_networking_need_update = true;
+                }
+            }
+            else
+                create_network_agent = true;
+        } else {
+            if (try_backup) {
+                int result = Slic3r::NetworkAgent::unload_network_module();
+                BOOST_LOG_TRIVIAL(info) << "on_init_network, version mismatch, unload_network_module, result = " << result;
+                load_agent_dll = Slic3r::NetworkAgent::initialize_network_module(true);
+                try_backup = false;
+                goto __retry;
+            }
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, version dismatch, need upload network module";
+            if (should_load_networking_plugin) {
+                m_networking_need_update = true;
+            }
+        }
+    } else {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, load dll failed";
+        if (should_load_networking_plugin) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << ": on_init_network, need upload network module";
+            m_networking_need_update = true;
+        }
+    }
+    }
 
     if (create_network_agent) {
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", create network agent...");
