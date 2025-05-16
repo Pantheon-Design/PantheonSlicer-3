@@ -151,7 +151,7 @@ wxBoxSizer* NetworkTestDialog::create_content_sizer(wxWindow* parent)
 	text_link_val->Wrap(-1);
 	grid_sizer->Add(text_link_val, 0, wxALL, 5);
 
-	btn_bing = new Button(this, _L("Test Bing.com"));
+	btn_bing = new Button(this, _L("Test bing.com"));
     btn_bing->SetBackgroundColor(btn_bg);
 	grid_sizer->Add(btn_bing, 0, wxEXPAND | wxALL, 5);
 
