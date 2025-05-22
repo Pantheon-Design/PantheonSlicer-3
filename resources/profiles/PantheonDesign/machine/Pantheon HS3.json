@@ -7,6 +7,6 @@
   "family": "Pantheon HS",
   "bed_model": "M5-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
-  "hotend_model": "HS3-Hotend.stl",
+  "hotend_model": "HS-Pro-Hotend.stl",
   "default_materials": "HS3 PA-CF;HS3 PA-GF;HS3 PETG-CF;HS3 FLEX-95A"
 }

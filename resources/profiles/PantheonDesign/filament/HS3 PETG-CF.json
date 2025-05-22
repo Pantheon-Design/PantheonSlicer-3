@@ -25,16 +25,19 @@
         "30"
     ],
     "filament_flow_ratio": [
-        "1.01"
+        "1"
     ],
     "filament_retract_before_wipe": [
         "0%"
     ],
+    "filament_retraction_length": [
+        "0.7"
+    ],
     "filament_retraction_minimum_travel": [
-        "0"
+        "2"
     ],
     "filament_retraction_speed": [
-        "10"
+        "15"
     ],
     "filament_wipe": [
         "1"
@@ -43,7 +46,7 @@
         "0.1"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=4\n\nSET_PRESSURE_ADVANCE ADVANCE=0.004\nSET_GCODE_OFFSET Z=0.02"
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=4\n\nSET_PRESSURE_ADVANCE ADVANCE=0.013\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.001\nSET_GCODE_OFFSET Z=0.02"
     ],
     "filament_settings_id": [
         "HS3 PETG-CF"
@@ -61,5 +64,5 @@
     "slow_down_layer_time": [
         "5"
     ],
-    "version": "3.0.7.0"
+    "version": "3.0.8.0"
 }
