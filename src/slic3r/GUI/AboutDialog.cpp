@@ -259,7 +259,7 @@ AboutDialog::AboutDialog()
         #else
             version_font.SetPointSize(11);
         #endif
-        version_font.SetPointSize(FromDIP(16));
+        version_font.SetPointSize(20);
         version->SetFont(version_font);
         version->SetForegroundColour(wxColour("#FFFFFD"));
         credits_string->SetForegroundColour(wxColour("#FFFFFD"));
