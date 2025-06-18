@@ -6,6 +6,12 @@
     "activate_chamber_temp_control": [
         "0"
     ],
+    "adaptive_pressure_advance": [
+        "1"
+    ],
+    "adaptive_pressure_advance_model": [
+        "0.008, 11, 5000\n0.006, 13.75, 5000\n0.006, 16.5, 5000\n0.004, 11, 15000\n0.004, 13.75, 15000\n0.004, 16.5, 15000\n0.004, 11, 30000\n0.004, 13.75, 30000\n0.004, 16.5, 30000\n"
+    ],
     "additional_cooling_fan_speed": [
         "0"
     ],
@@ -24,7 +30,7 @@
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
-        "80"
+        "0"
     ],
     "cool_plate_temp": [
         "35"
@@ -39,7 +45,7 @@
         "1"
     ],
     "during_print_exhaust_fan_speed": [
-        "60"
+        "0"
     ],
     "enable_overhang_bridge_fan": [
         "1"
@@ -78,7 +84,7 @@
         "1.16"
     ],
     "filament_deretraction_speed": [
-        "25"
+        "20"
     ],
     "filament_diameter": [
         "1.75"
@@ -87,7 +93,7 @@
         " "
     ],
     "filament_flow_ratio": [
-        "0.96"
+        "0.97"
     ],
     "filament_id": "PD05",
     "filament_is_support": [
@@ -148,7 +154,7 @@
         "nil"
     ],
     "filament_retraction_length": [
-        "0.4"
+        "0.6"
     ],
     "filament_retraction_minimum_travel": [
         "2"
@@ -166,7 +172,7 @@
         "0"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_GCODE_OFFSET Z=0.11"
+        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=750\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.02\n\nSET_GCODE_OFFSET Z=0.11"
     ],
     "filament_toolchange_delay": [
         "0"
@@ -214,10 +220,10 @@
     "is_custom_defined": "0",
     "name": "HS-Pro PA-CF Strength",
     "nozzle_temperature": [
-        "320"
+        "315"
     ],
     "nozzle_temperature_initial_layer": [
-        "320"
+        "315"
     ],
     "nozzle_temperature_range_high": [
         "330"
@@ -235,13 +241,13 @@
         "0.4157"
     ],
     "pressure_advance": [
-        "0.001"
+        "0.004"
     ],
     "reduce_fan_stop_start_freq": [
         "1"
     ],
     "required_nozzle_HRC": [
-        "0"
+        "60"
     ],
     "slow_down_for_layer_cooling": [
         "1"
@@ -256,7 +262,7 @@
         "-1"
     ],
     "temperature_vitrification": [
-        "240"
+        "260"
     ],
     "textured_plate_temp": [
         "45"
@@ -264,5 +270,5 @@
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.0.7.1"
+    "version": "3.0.9.0"
 }

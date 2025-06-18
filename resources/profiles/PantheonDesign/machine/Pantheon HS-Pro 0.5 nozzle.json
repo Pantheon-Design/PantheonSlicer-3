@@ -61,7 +61,7 @@
         "150000"
     ],
     "machine_max_acceleration_retracting": [
-        "10000"
+        "150000"
     ],
     "machine_max_acceleration_travel": [
         "0",
@@ -204,7 +204,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.7.0",
+    "version": "3.0.9.0",
     "wipe": [
         "0"
     ],
