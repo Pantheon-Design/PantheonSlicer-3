@@ -295,11 +295,8 @@ std::vector<WaveSeed> wave_seeds(
             int boundary_id = sample_in_expolygons(aabb_tree, boundary, Point(front.x(), front.y()));
             // Boundary that contains the sample point was found.
             assert(boundary_id >= 0);
-            if (boundary_id >= 0) {
-                if (front.z() >= idx_boundary_end && front.z() < idx_src_end && boundary_id >= 0) {
-                    out.push_back({uint32_t(front.z() - idx_boundary_end), uint32_t(boundary_id), ClipperZUtils::from_zpath(path)});
-                }
-            }
+            if (boundary_id >= 0)
+                out.push_back({ uint32_t(front.z() - idx_boundary_end), uint32_t(boundary_id), ClipperZUtils::from_zpath(path) });
         }
         ++ iseed;
     }
