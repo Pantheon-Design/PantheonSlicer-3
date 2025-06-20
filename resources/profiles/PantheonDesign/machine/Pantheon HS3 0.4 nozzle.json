@@ -188,7 +188,7 @@
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
     "support_multi_bed_types": "0",
-    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: original\n;     printhead: original\n; ...",
+    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: hs3\n;     printhead: original\n; ...",
     "thumbnails": [
         "300x300"
     ],
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.7.0",
+    "version": "3.0.9.2",
     "wipe": [
         "0"
     ],
