@@ -641,7 +641,8 @@ void SelectMachinePopup::update_other_devices()
     m_placeholder_panel = new wxWindow(m_scrolledWindow, wxID_ANY, wxDefaultPosition, wxSize(-1,FromDIP(26)));
     wxBoxSizer* placeholder_sizer = new wxBoxSizer(wxVERTICAL);
 
-    m_hyperlink = new wxHyperlinkCtrl(m_placeholder_panel, wxID_ANY, _L("Can't find my devices?"), wxT(""), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+    m_hyperlink = new wxHyperlinkCtrl(m_placeholder_panel, wxID_ANY, _L("Can't find my devices?"), wxT("https://wiki.bambulab.com/en/software/bambu-studio/failed-to-connect-printer"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+    m_hyperlink->SetNormalColour(StateColor::darkModeColorFor("#009789"));
     placeholder_sizer->Add(m_hyperlink, 0, wxALIGN_CENTER | wxALL, 5);
 
 
@@ -899,7 +900,7 @@ void SelectMachinePopup::OnLeftUp(wxMouseEvent &event)
         //hyper link
         auto h_rect = m_hyperlink->ClientToScreen(wxPoint(0, 0));
         if (mouse_pos.x > h_rect.x && mouse_pos.y > h_rect.y && mouse_pos.x < (h_rect.x + m_hyperlink->GetSize().x) && mouse_pos.y < (h_rect.y + m_hyperlink->GetSize().y)) {
-          wxLaunchDefaultBrowser(wxT(""));
+          wxLaunchDefaultBrowser(wxT("https://wiki.bambulab.com/en/software/bambu-studio/failed-to-connect-printer"));
         }
     }
 }
@@ -974,10 +975,6 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
 
     // font
     SetFont(wxGetApp().normal_font());
-
-    // icon
-    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
-    SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
     Freeze();
     SetBackgroundColour(m_colour_def_color);
@@ -1151,7 +1148,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
     m_sizer_backup = new wxBoxSizer(wxHORIZONTAL);
     m_ams_backup_tip = new Label(this, _L("Auto Refill"));
     m_ams_backup_tip->SetFont(::Label::Head_12);
-    m_ams_backup_tip->SetForegroundColour(wxColour(0x94D1B0));
+    m_ams_backup_tip->SetForegroundColour(wxColour(0x009688));
     m_ams_backup_tip->SetBackgroundColour(*wxWHITE);
     img_ams_backup = new wxStaticBitmap(this, wxID_ANY, create_scaled_bitmap("automatic_material_renewal", this, 16), wxDefaultPosition, wxSize(FromDIP(16), FromDIP(16)), 0);
     img_ams_backup->SetBackgroundColour(*wxWHITE);
@@ -1195,8 +1192,8 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
     m_comboBox_printer->Bind(wxEVT_COMBOBOX, &SelectMachineDialog::on_selection_changed, this);
 
     m_sizer_printer->Add(m_comboBox_printer, 1, wxEXPAND | wxRIGHT, FromDIP(5));
-    m_btn_bg_enable = StateColor(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                               std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    m_btn_bg_enable = StateColor(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                               std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
 
     m_button_refresh = new Button(this, _L("Refresh"));
     m_button_refresh->SetBackgroundColor(m_btn_bg_enable);
@@ -1246,7 +1243,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
     m_sizer_prepare->Add(0, 0, 1, wxTOP, FromDIP(12));
 
     auto hyperlink_sizer = new wxBoxSizer( wxHORIZONTAL );
-    m_hyperlink = new wxHyperlinkCtrl(m_panel_prepare, wxID_ANY, _L("Click here if you can't connect to the printer"), wxT(""), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+    m_hyperlink = new wxHyperlinkCtrl(m_panel_prepare, wxID_ANY, _L("Click here if you can't connect to the printer"), wxT("https://wiki.bambulab.com/en/software/bambu-studio/failed-to-connect-printer"), wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
 
     hyperlink_sizer->Add(m_hyperlink, 0, wxALIGN_CENTER | wxALL, 5);
     m_sizer_prepare->Add(hyperlink_sizer, 0, wxALIGN_CENTER | wxALL, 5);
@@ -1290,7 +1287,7 @@ SelectMachineDialog::SelectMachineDialog(Plater *plater)
 
     m_statictext_finish = new wxStaticText(m_panel_finish, wxID_ANY, L("send completed"), wxDefaultPosition, wxDefaultSize, 0);
     m_statictext_finish->Wrap(-1);
-    m_statictext_finish->SetForegroundColour(wxColour(148, 209, 176));
+    m_statictext_finish->SetForegroundColour(wxColour(0, 150, 136));
     m_sizer_finish_h->Add(m_statictext_finish, 0, wxALIGN_CENTER | wxALL, FromDIP(5));
 
     m_sizer_finish_v->Add(m_sizer_finish_h, 1, wxALIGN_CENTER, 0);
@@ -2601,12 +2598,12 @@ void SelectMachineDialog::on_ok_btn(wxCommandEvent &event)
 
         confirm_dlg.Bind(EVT_SECONDARY_CHECK_CONFIRM, [this, &confirm_dlg](wxCommandEvent& e) {
             confirm_dlg.on_hide();
-            if (m_print_type == PrintFromType::FROM_SDCARD_VIEW) {
+           /* if (m_print_type == PrintFromType::FROM_SDCARD_VIEW) {
                 this->connect_printer_mqtt();
             }
-            else {
+            else {*/
                 this->on_send_print();
-            }
+            //}
         });
 
         //confirm_dlg.Bind(EVT_UPDATE_NOZZLE, [this, obj_, tag_nozzle_type, nozzle_diameter, &confirm_dlg](wxCommandEvent& e) {
@@ -2640,12 +2637,12 @@ void SelectMachineDialog::on_ok_btn(wxCommandEvent &event)
         confirm_dlg.on_show();
 
     } else {
-        if (m_print_type == PrintFromType::FROM_SDCARD_VIEW) {
-            this->connect_printer_mqtt();
-        }
-        else {
+        /* if (m_print_type == PrintFromType::FROM_SDCARD_VIEW) {
+             this->connect_printer_mqtt();
+         }
+         else {*/
             this->on_send_print();
-        }
+        //}
     }
 }
 
@@ -2664,7 +2661,7 @@ wxString SelectMachineDialog::format_steel_name(std::string name)
 void SelectMachineDialog::Enable_Auto_Refill(bool enable)
 {
     if (enable) {
-        m_ams_backup_tip->SetForegroundColour(wxColour(0x94D1B0));
+        m_ams_backup_tip->SetForegroundColour(wxColour(0x009688));
     }
     else {
         m_ams_backup_tip->SetForegroundColour(wxColour(0x90, 0x90, 0x90));
@@ -2816,7 +2813,7 @@ void SelectMachineDialog::on_send_print()
     else if(m_print_type == PrintFromType::FROM_SDCARD_VIEW){
         BOOST_LOG_TRIVIAL(info) << "print_job: m_print_type = from_sdcard_view";
         m_print_job->m_print_type = "from_sdcard_view";
-        m_print_job->connection_type = "lan";
+        //m_print_job->connection_type = "lan";
 
         try {
             m_print_job->m_print_from_sdc_plate_idx = m_required_data_plate_data_list[m_print_plate_idx]->plate_index + 1;
@@ -4582,7 +4579,7 @@ bool SelectMachineDialog::Show(bool show)
         DeviceManager* dev = Slic3r::GUI::wxGetApp().getDeviceManager();
         if (dev) {
             MachineObject* obj_ = dev->get_selected_machine();
-            if (obj_ && obj_->connection_type() == "cloud" && m_print_type == FROM_SDCARD_VIEW) {
+            if (obj_ && obj_->connection_type() == "cloud" /*&& m_print_type == FROM_SDCARD_VIEW*/) {
                 if (obj_->is_connected()) {
                     obj_->disconnect();
                 }
@@ -4665,9 +4662,6 @@ void SelectMachineDialog::update_lan_machine_list()
 EditDevNameDialog::EditDevNameDialog(Plater *plater /*= nullptr*/)
     : DPIDialog(static_cast<wxWindow *>(wxGetApp().mainframe), wxID_ANY, _L("Modifying the device name"), wxDefaultPosition, wxDefaultSize, wxCAPTION | wxCLOSE_BOX)
 {
-    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
-    SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
-
     SetBackgroundColour(*wxWHITE);
     wxBoxSizer *m_sizer_main = new wxBoxSizer(wxVERTICAL);
     auto        m_line_top   = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 1), wxTAB_TRAVERSAL);
@@ -4687,9 +4681,9 @@ EditDevNameDialog::EditDevNameDialog(Plater *plater /*= nullptr*/)
 
 
     m_button_confirm = new Button(this, _L("Confirm"));
-    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
     m_button_confirm->SetBackgroundColor(btn_bg_green);
-    m_button_confirm->SetBorderColor(wxColour(148, 209, 176));
+    m_button_confirm->SetBorderColor(wxColour(0, 150, 136));
     m_button_confirm->SetTextColor(wxColour(255, 255, 255));
     m_button_confirm->SetSize(wxSize(FromDIP(72), FromDIP(24)));
     m_button_confirm->SetMinSize(wxSize(FromDIP(72), FromDIP(24)));

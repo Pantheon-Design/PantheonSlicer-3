@@ -28,8 +28,6 @@ TipsDialog::TipsDialog(wxWindow *parent, const wxString &title, const wxString &
     m_app_key(app_key)
 {
     SetBackgroundColour(*wxWHITE);
-    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
-    SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
     wxBoxSizer *m_sizer_main = new wxBoxSizer(wxVERTICAL);
 
@@ -61,11 +59,11 @@ TipsDialog::TipsDialog(wxWindow *parent, const wxString &title, const wxString &
     wxBoxSizer *m_sizer_right = new wxBoxSizer(wxHORIZONTAL);
 
     m_confirm = new Button(this, _L("OK"));
-    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                            std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    StateColor btn_bg_green(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                            std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
 
     m_confirm->SetBackgroundColor(btn_bg_green);
-    m_confirm->SetBorderColor(wxColour(148, 209, 176));
+    m_confirm->SetBorderColor(wxColour(0, 150, 136));
     m_confirm->SetTextColor(wxColour(255, 255, 255));
     m_confirm->SetSize(TIPS_DIALOG_BUTTON_SIZE);
     m_confirm->SetMinSize(TIPS_DIALOG_BUTTON_SIZE);
@@ -250,8 +248,8 @@ ParamsPanel::ParamsPanel( wxWindow* parent, wxWindowID id, const wxPoint& pos, c
 
 
 
-    //m_export_to_file = new Button( this, wxT("Export To File"), "");
-    //m_import_from_file = new Button( this, wxT("Import From File") );
+    //m_export_to_file = new Button( this, _L("Export To File"), "");
+    //m_import_from_file = new Button( this, _L("Import From File") );
 
     // Initialize the page.
 #if __WXOSX__

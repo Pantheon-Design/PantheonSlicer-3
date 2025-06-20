@@ -207,7 +207,7 @@ void SendDeviceItem::doRender(wxDC& dc)
 
     //device state
     if (state_printable <= 2) {
-        dc.SetTextForeground(wxColour(148, 209, 176));
+        dc.SetTextForeground(wxColour(0, 150, 136));
     }
     else {
         dc.SetTextForeground(wxColour(208, 27, 27));
@@ -232,7 +232,7 @@ void SendDeviceItem::doRender(wxDC& dc)
     }
 
     if (m_hover) {
-        dc.SetPen(wxPen(wxColour(148, 209, 176)));
+        dc.SetPen(wxPen(wxColour(0, 150, 136)));
         dc.SetBrush(*wxTRANSPARENT_BRUSH);
         dc.DrawRoundedRectangle(0, 0, size.x, size.y, 3);
     }
@@ -263,9 +263,6 @@ SendMultiMachinePage::SendMultiMachinePage(Plater* plater)
     app_config = get_app_config();
 
     SetBackgroundColour(*wxWHITE);
-    // icon
-    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
-    SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
     wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -1261,9 +1258,9 @@ wxPanel* SendMultiMachinePage::create_page()
     m_tip_text->Wrap(-1);
 
     auto m_btn_bg_enable = StateColor(
-        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-        std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal)
+        std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed),
+        std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+        std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal)
     );
 
     m_button_add = new Button(main_page, _L("Add"));
@@ -1301,9 +1298,9 @@ wxPanel* SendMultiMachinePage::create_page()
 
     // add printing options
     wxBoxSizer* title_print_option = create_item_title(_L("Printing Options"), main_page, "");
-    wxBoxSizer* item_bed_level = create_item_checkbox(_("Bed Leveling"), main_page, "", 50, "bed_leveling");
-    wxBoxSizer* item_timelapse = create_item_checkbox(_("Timelapse"), main_page, "", 50, "timelapse");
-    wxBoxSizer* item_flow_dy_ca = create_item_checkbox(_("Flow Dynamic Calibration"), main_page, "", 50, "flow_cali");
+    wxBoxSizer* item_bed_level = create_item_checkbox(_L("Bed Leveling"), main_page, "", 50, "bed_leveling");
+    wxBoxSizer* item_timelapse = create_item_checkbox(_L("Timelapse"), main_page, "", 50, "timelapse");
+    wxBoxSizer* item_flow_dy_ca = create_item_checkbox(_L("Flow Dynamic Calibration"), main_page, "", 50, "flow_cali");
     sizer->Add(title_print_option, 0, wxEXPAND, 0);
     wxBoxSizer* options_sizer_v = new wxBoxSizer(wxHORIZONTAL);
     options_sizer_v->Add(item_bed_level, 0, wxLEFT, 0);
@@ -1323,8 +1320,8 @@ wxPanel* SendMultiMachinePage::create_page()
     sizer->AddSpacer(FromDIP(10));
 
     // add send button
-    btn_bg_enable = StateColor(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-        std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    btn_bg_enable = StateColor(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+        std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
 
     m_button_send = new Button(main_page, _L("Send"));
     m_button_send->SetBackgroundColor(btn_bg_enable);
