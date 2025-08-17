@@ -2223,17 +2223,17 @@ void TabPrint::build()
         optgroup->append_single_option_line("symmetric_infill_y_axis");
         optgroup->append_single_option_line("infill_shift_step");
 
-        optgroup->append_single_option_line("lattice_angle_1");
-        optgroup->append_single_option_line("lattice_angle_2");
-        optgroup->append_single_option_line("infill_overhang_angle");
-        optgroup->append_single_option_line("infill_anchor_max");
-        optgroup->append_single_option_line("infill_anchor");
-        optgroup->append_single_option_line("internal_solid_infill_pattern");
-        optgroup->append_single_option_line("solid_infill_direction");
-        optgroup->append_single_option_line("solid_infill_rotate_template");
-        optgroup->append_single_option_line("gap_fill_target");
-        optgroup->append_single_option_line("filter_out_gap_fill");
-        optgroup->append_single_option_line("infill_wall_overlap");
+        optgroup->append_single_option_line("lateral_lattice_angle_1", "strength_settings_infill#2d-lattice");
+        optgroup->append_single_option_line("lateral_lattice_angle_2", "strength_settings_infill#2d-lattice");
+        optgroup->append_single_option_line("infill_overhang_angle", "strength_settings_infill#2d-honeycomb");
+        optgroup->append_single_option_line("infill_anchor_max", "strength_settings_infill#anchor");
+        optgroup->append_single_option_line("infill_anchor", "strength_settings_infill#anchor");
+        optgroup->append_single_option_line("internal_solid_infill_pattern", "strength_settings_infill#internal-solid-infill");
+        optgroup->append_single_option_line("solid_infill_direction", "strength_settings_infill");
+        optgroup->append_single_option_line("solid_infill_rotate_template", "strength_settings_infill");
+        optgroup->append_single_option_line("gap_fill_target", "strength_settings_infill#apply-gap-fill");
+        optgroup->append_single_option_line("filter_out_gap_fill", "strength_settings_infill#filter-out-tiny-gaps");
+        optgroup->append_single_option_line("infill_wall_overlap", "strength_settings_infill#infill-wall-overlap");
 
         optgroup = page->new_optgroup(L("Advanced"), L"param_advanced");
         optgroup->append_single_option_line("align_infill_direction_to_model");
