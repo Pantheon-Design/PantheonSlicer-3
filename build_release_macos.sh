@@ -191,14 +191,11 @@ function build_slicer() {
         find ./PantheonSlicer-3.app/ -name '.DS_Store' -delete
     )
 
-    # extract version
-    # export ver=$(grep '^#define SoftFever_VERSION' ../src/libslic3r/libslic3r_version.h | cut -d ' ' -f3)
-    # ver="_V${ver//\"}"
-    # echo $PWD
-    # if [ "1." != "$NIGHTLY_BUILD". ];
-    # then
-    #     ver=${ver}_dev
-    # fi
+        echo "Verify localization with gettext..."
+        (
+            cd "$PROJECT_DIR"
+            ./scripts/run_gettext.sh
+        )
 
     # zip -FSr PantheonSlicer${ver}_Mac_${ARCH}.zip PantheonSlicer.app
 }
