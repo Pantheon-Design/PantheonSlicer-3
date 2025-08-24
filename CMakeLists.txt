@@ -134,13 +134,13 @@ endif ()
 
 # Proposal for C++ unit tests and sandboxes
 option(SLIC3R_BUILD_SANDBOXES   "Build development sandboxes" OFF)
-option(SLIC3R_BUILD_TESTS       "Build unit tests" OFF)
+option(BUILD_TESTS       "Build unit tests" OFF)
 option(ORCA_TOOLS       "Build Orca tools" OFF)
 
 if (IS_CROSS_COMPILE)
     message("Detected cross compilation setup. Tests and encoding checks will be forcedly disabled!")
     set(SLIC3R_PERL_XS OFF CACHE BOOL "" FORCE)
-    set(SLIC3R_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+    set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 endif ()
 
 # Print out the SLIC3R_* cache options
@@ -531,6 +531,7 @@ find_package(TBB REQUIRED)
 
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
+find_package(Freetype REQUIRED)
 
 
 add_library(libcurl INTERFACE)
@@ -810,18 +811,13 @@ if(SLIC3R_BUILD_SANDBOXES)
     add_subdirectory(sandboxes)
 endif()
 
-if(SLIC3R_BUILD_TESTS)
+if(BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
 if (NOT WIN32 AND NOT APPLE)
     set(SLIC3R_APP_CMD "PantheonSlicer-3")
     configure_file(${LIBDIR}/dev-utils/platform/unix/build_appimage.sh.in ${CMAKE_CURRENT_BINARY_DIR}/build_appimage.sh USE_SOURCE_PERMISSIONS @ONLY)
-endif()
-
-option(BUILD_BBS_TEST_TOOLS          "Build bbs test tools" OFF)
-if(BUILD_BBS_TEST_TOOLS)
-    add_subdirectory(bbs_test_tools)
 endif()
 
 
