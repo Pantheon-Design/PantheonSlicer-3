@@ -3522,7 +3522,7 @@ static std::pair<float, float> extrude_branch(
     Vec3d nprev;
     Vec3d ncurrent;
     assert(path.size() >= 2);
-    static constexpr const float eps = 0.015f;
+    static constexpr const float eps = 0.8f;
     std::pair<int, int> prev_strip;
 
 //    char fname[2048];
