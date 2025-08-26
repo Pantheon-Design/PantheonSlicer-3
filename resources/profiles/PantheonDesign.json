@@ -1,12 +1,16 @@
 {
     "name": "PantheonDesign",
-    "version": "03.00.05.00",
-    "force_update": "0",
+    "version": "03.00.09.02",
+    "force_update": "1",
     "description": "PantheonDesign configurations",
     "machine_model_list": [
         {
             "name": "Pantheon HS3",
             "sub_path": "machine/Pantheon HS3.json"
+        },
+        {
+            "name": "Pantheon HS-Pro",
+            "sub_path": "machine/Pantheon HS-Pro.json"
         }
     ],
     "process_list": [
@@ -23,20 +27,40 @@
             "sub_path": "process/Quality PA-GF Rev3.7.json"
         },
         {
-            "name": "PA-CF",
-            "sub_path": "process/PA-CF.json"
+            "name": "HS3 PA-CF",
+            "sub_path": "process/HS3 PA-CF.json"
         },
         {
-            "name": "PA-GF",
-            "sub_path": "process/PA-GF.json"
+            "name": "HS3 PA-GF",
+            "sub_path": "process/HS3 PA-GF.json"
         },
         {
             "name": "PETG-CF Rev3.7",
             "sub_path": "process/PETG-CF Rev3.7.json"
         },
         {
-            "name": "PETG-CF",
-            "sub_path": "process/PETG-CF.json"
+            "name": "HS3 PETG-CF",
+            "sub_path": "process/HS3 PETG-CF.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Turbo",
+            "sub_path": "process/HS-Pro PETG-CF Turbo.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Strength",
+            "sub_path": "process/HS-Pro PA-CF Strength.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Speed",
+            "sub_path": "process/HS-Pro PETG-CF Speed.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Detail",
+            "sub_path": "process/HS-Pro PETG-CF Detail.json"
+        },
+        {
+            "name": "HS3 FLEX-95A",
+            "sub_path": "process/HS3 FLEX-95A.json"
         }
     ],
     "filament_list": [
@@ -53,20 +77,20 @@
             "sub_path": "filament/Quality PA-GF Rev3.7.json"
         },
         {
-            "name": "PA-CF",
-            "sub_path": "filament/PA-CF.json"
+            "name": "HS3 PA-CF",
+            "sub_path": "filament/HS3 PA-CF.json"
         },
 		{
-            "name": "PA-GF",
-            "sub_path": "filament/PA-GF.json"
+            "name": "HS3 PA-GF",
+            "sub_path": "filament/HS3 PA-GF.json"
         },
 		{
             "name": "PETG-CF Rev3.7",
             "sub_path": "filament/PETG-CF Rev3.7.json"
         },
 		{
-            "name": "PETG-CF",
-            "sub_path": "filament/PETG-CF.json"
+            "name": "HS3 PETG-CF",
+            "sub_path": "filament/HS3 PETG-CF.json"
         },
         {
             "name": "fdm_filament_common",
@@ -143,12 +167,44 @@
         {
             "name": "My Generic PA-CF",
             "sub_path": "filament/My Generic PA-CF.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Turbo",
+            "sub_path": "filament/HS-Pro PETG-CF Turbo.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Strength",
+            "sub_path": "filament/HS-Pro PA-CF Strength.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Speed",
+            "sub_path": "filament/HS-Pro PETG-CF Speed.json"
+        },
+        {
+            "name": "HS-Pro PETG-CF Detail",
+            "sub_path": "filament/HS-Pro PETG-CF Detail.json"
+        },
+        {
+            "name": "HS3 FLEX-95A",
+            "sub_path": "filament/HS3 FLEX-95A.json"
         }
     ],
     "machine_list": [
         {
             "name": "Pantheon HS3 0.4 Nozzle",
             "sub_path": "machine/Pantheon HS3 0.4 Nozzle.json"
+        },        
+        {
+            "name": "Pantheon HS3 0.6 Nozzle",
+            "sub_path": "machine/Pantheon HS3 0.6 Nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.5 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.5 nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.4 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.4 nozzle.json"
         }
     ]
 }

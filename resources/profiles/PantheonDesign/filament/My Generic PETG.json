@@ -42,8 +42,5 @@
     ],
     "filament_start_gcode": [
         "; filament start gcode\n"
-    ],
-    "compatible_printers": [
-        "Pantheon HS3 0.4 Nozzle"
     ]
 }
