@@ -13,28 +13,19 @@
 <script type="text/javascript" src="../../data/text.js"></script>	
 <script type="text/javascript" src="../js/globalapi.js"></script>	
 <script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript" src="21.js"></script>	
-<style>
-    #CloseBtn {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        background-color: transparent;
-        border: none;
-        font-size: 20px;
-        cursor: pointer;
-    }
-</style>	
+<script type="text/javascript" src="21.js"></script>		
 </head>
 <body onLoad="OnInit()">
-<button id="CloseBtn" onclick="closePage()">×</button>
-
 <div id="Title">
 	<div class="trans" tid="t10">Printer Selection</div>
 </div>
 <div class="wrap">
 	<div class="search">
 		<input type="text" class="searchTerm" placeholder="Device keyword" oninput="textInput(this)">
+		<svg id="search-icon" width="16px" height="16px"> <!-- ORCA -->
+			<path d="M6.5,2A4.505,4.505,0,0,0,2,6.5a.5.5,0,0,0,1,0A3.5,3.5,0,0,1,6.5,3a.5.5,0,0,0,0-1Z"/>
+			<path d="M14.854,14.146l-3.423-3.422a6.518,6.518,0,1,0-.707.707l3.422,3.423a.5.5,0,0,0,.708-.708ZM1,6.5A5.5,5.5,0,1,1,6.5,12,5.507,5.507,0,0,1,1,6.5Z"/>
+		</svg>
 	</div>
 </div>
 <div id="Content"  class="ZScrol">
@@ -114,9 +105,8 @@
 </div>
 <div id="AcceptArea">
 	<div class="GrayBtn trans" id="PreBtn" tid="t8"  onclick="window.open('../1/index.html','_self')">Back</div>
-	<div class="NormalBtn trans" id="AcceptBtn" tid="t25"  onclick="closePage()">Finish</div>
-</div>
-	
+	<div class="NormalBtn trans" id="AcceptBtn" tid="t9"  onclick="GotoFilamentPage()">Next</div>
+</div>	
 <div id="NoticeMask"></div>
 <div id="NoticeBody">
 	<div id="NoticeBar" class="trans" tid="t18">error</div>
@@ -144,14 +134,5 @@
 	function textInput(obj) {
 		FilterModelList(obj.value);
 	}
-	function closePage() {
-        var tSend={};
-        tSend['sequence_id']=Math.round(new Date() / 1000);
-        tSend['command']="user_guide_finish";
-        tSend['data']={};
-        tSend['data']['action']="finish";
-            
-        SendWXMessage( JSON.stringify(tSend) );	
-    }
 </script>
 </html>

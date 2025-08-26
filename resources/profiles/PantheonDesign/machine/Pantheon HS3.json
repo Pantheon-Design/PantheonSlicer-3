@@ -2,10 +2,11 @@
   "type": "machine_model",
   "name": "Pantheon HS3",
   "model_id": "Pantheon HS3",
-  "nozzle_diameter": "0.4",
+  "nozzle_diameter": "0.4;0.6",
   "machine_tech": "FFF",
   "family": "Pantheon HS",
   "bed_model": "M5-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
-  "default_materials": "PA-CF;PA-GF;PETG-CF"
+  "hotend_model": "HS-Pro-Hotend.stl",
+  "default_materials": "HS3 PA-CF;HS3 PA-GF;HS3 PETG-CF;HS3 FLEX-95A"
 }

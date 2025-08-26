@@ -15,8 +15,5 @@
     ],
     "filament_max_volumetric_speed": [
         "12"
-    ],
-    "compatible_printers": [
-        "Pantheon HS3 0.4 Nozzle"
     ]
 }

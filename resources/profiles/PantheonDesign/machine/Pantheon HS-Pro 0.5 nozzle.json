@@ -5,6 +5,8 @@
     "adaptive_bed_mesh_margin": "0",
     "auxiliary_fan": "0",
     "bbl_use_printhost": "0",
+    "bed_custom_model": "",
+    "bed_custom_texture": "",
     "bed_exclude_area": [
         "0x0"
     ],
@@ -17,8 +19,10 @@
     "change_filament_gcode": "",
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
-    "default_filament_profile": ["HS3 PETG-CF"],
-    "default_print_profile": "HS3 PETG-CF",
+    "default_filament_profile": [
+        "HS-Pro PA-CF Strength"
+    ],
+    "default_print_profile": "HS-Pro PA-CF Strength",
     "deretraction_speed": [
         "35"
     ],
@@ -36,9 +40,9 @@
     "extruder_offset": [
         "0x0"
     ],
-    "fan_kickstart": "1.5",
+    "fan_kickstart": "0",
     "fan_speedup_overhangs": "0",
-    "fan_speedup_time": "1.5",
+    "fan_speedup_time": "0",
     "gcode_flavor": "klipper",
     "head_wrap_detect_zone": [],
     "high_current_on_filament_swap": "0",
@@ -48,29 +52,29 @@
     "long_retractions_when_cut": [
         "0"
     ],
-    "machine_end_gcode": "M104 S0 ; turn off extruder\nM140 S0 ; turn off bed\nM107 ; turn off fan\nG90; set absolute\nG1 X1 Y1\nM106 P1 S0;\nM106 P0 S0;\nG1 Z305 F10000\nG1 Y10 X10 F10000\nSET_GCODE_OFFSET Z=0\nBED_MESH_CLEAR ; clear kinematics",
+    "machine_end_gcode": "_END_PRINT",
     "machine_load_filament_time": "0",
     "machine_max_acceleration_e": [
-        "14000"
+        "150000"
     ],
     "machine_max_acceleration_extruding": [
-        "14000"
+        "150000"
     ],
     "machine_max_acceleration_retracting": [
-        "14000"
+        "150000"
     ],
     "machine_max_acceleration_travel": [
         "0",
         "0"
     ],
     "machine_max_acceleration_x": [
-        "14000"
+        "150000"
     ],
     "machine_max_acceleration_y": [
-        "14000"
+        "150000"
     ],
     "machine_max_acceleration_z": [
-        "1400"
+        "700"
     ],
     "machine_max_jerk_e": [
         "5"
@@ -85,16 +89,16 @@
         "5"
     ],
     "machine_max_speed_e": [
-        "20"
+        "700"
     ],
     "machine_max_speed_x": [
-        "500"
+        "700"
     ],
     "machine_max_speed_y": [
-        "500"
+        "700"
     ],
     "machine_max_speed_z": [
-        "40"
+        "30"
     ],
     "machine_min_extruding_rate": [
         "0"
@@ -103,40 +107,41 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "M117 Homing\nM83  ; extruder relative mode\n\nM104 S100 ; set extruder standby temp\nM140 S[first_layer_bed_temperature] ; set bed temp\n{if filament_type[0] == \"PETG-CF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=35\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nSET_TEMPERATURE_FAN_TARGET TEMPERATURE_FAN=chamber TARGET=45\n{endif}\nG28 ; home all\nG0 Y150 X0 Z25 F10000; move to optimal preheat height\nM106 S255 ; set part fan to max\nM117 Preheating Chamber\n\n{if filament_type[0] == \"PETG-CF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=25 ; wait for chamber to reach temp\n{endif}\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\nTEMPERATURE_WAIT SENSOR=\"temperature_sensor chassis\" MINIMUM=32 ; wait for chamber to reach temp\n{endif}\n\nM106 S0 ; turn off part fan\n\nM104 S[temperature_vitrification]; set extruder to probe temp\nG0 Y5 X5 Z5 F10000;\nG28 ; home all\nM117 Heating Nozzle To Probe Temperature\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[temperature_vitrification] ; wait for the extruder to get to temp\nM117 Heating Bed\nTEMPERATURE_WAIT SENSOR=\"heater_bed\" MINIMUM=[first_layer_bed_temperature] ; wait for the bed to get to temp\nG0 Z10; move to safe Z\nM117 Stabilizing Temperature\nG4 P60000 ; wait 1 minute for nozzle and bed temperatures to stabilize (PID overshoot, tip temperature)\nM117 Probing Bed\nBED_MESH_CLEAR ; clear kinematics \nBED_MESH_CALIBRATE ; probe bed\nG92 E0.0 ; reset extruder position\nG1 Y1 X0 Z5 F10000\n\nM117 Heating Nozzle To First Layer Temperature\nM104 S[first_layer_temperature] ; set extruder first layer temp\nTEMPERATURE_WAIT SENSOR=\"extruder\" MINIMUM=[first_layer_temperature] ; wait for the extruder to get to temp\nM117 Extruding Priming Line\nG1 Y1 X0 Z0.3 F10000\nG1 Y1 F1000.0 ; go outside print area\nG92 E0.0 ; reset extruder position\nG1 X90.0 E12.0  F1000.0 ; intro line\nG1 X200.0 E30  F1000.0 ; intro line\nG92 E0.0 ;reset extruder position\nM221 S100 ; set 100% flow\nM117",
+    "machine_start_gcode": "{if filament_type[0] == \"PETG-CF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}\n\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
-        "0.32"
+        "0.375"
     ],
     "min_layer_height": [
-        "0.08"
+        "0.15"
     ],
-    "name": "Pantheon HS3 0.4 Nozzle",
+    "name": "Pantheon HS-Pro 0.5 nozzle",
     "nozzle_diameter": [
-        "0.4"
+        "0.5"
     ],
     "nozzle_height": "4",
     "nozzle_hrc": "0",
     "nozzle_type": "hardened_steel",
     "nozzle_volume": "0",
     "parking_pos_retraction": "92",
+    "pellet_modded_printer": "0",
     "preferred_orientation": "0",
     "print_host": "",
     "print_host_webui": "",
     "printable_area": [
         "0x0",
-        "300x0",
-        "300x300",
-        "0x300"
+        "400x0",
+        "400x400",
+        "0x400"
     ],
     "printable_height": "310",
-    "printer_model": "Pantheon HS3",
+    "printer_model": "Pantheon HS-Pro",
     "printer_notes": "",
-    "printer_settings_id": "Pantheon HS3",
+    "printer_settings_id": "Pantheon HS-Pro 0.5 nozzle",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
-    "printer_variant": "0.4",
+    "printer_variant": "0.5",
     "printhost_apikey": "",
     "printhost_authorization_type": "key",
     "printhost_cafile": "",
@@ -174,7 +179,7 @@
         "18"
     ],
     "retraction_length": [
-        "0.9"
+        "0"
     ],
     "retraction_minimum_travel": [
         "1"
@@ -188,13 +193,14 @@
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
     "support_multi_bed_types": "0",
-    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 300\n;     y: 307.5\n;     z: 300\n;   hardware:\n;     chassis: hs3\n;     printhead: original\n; ...",
-    "thumbnails": [
-        "300x300"
-    ],
+    "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 404\n;     y: 402\n;     z: 314\n;   hardware:\n;     chassis: hspro\n;     printhead: original\n; ...",
+    "thumbnails": "300x300/PNG",
     "thumbnails_format": "PNG",
     "time_cost": "0",
     "time_lapse_gcode": "",
+    "travel_slope": [
+        "3"
+    ],
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
