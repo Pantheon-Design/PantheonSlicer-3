@@ -5586,6 +5586,16 @@ void Tab::save_preset(std::string name /*= ""*/, bool detach, bool save_to_proje
         exist_preset = true;
     }
 
+    // Clear compatible lists only when creating a new profile (not when overwriting existing)
+    if (!exist_preset && m_config) {
+        if (auto* compatible_printers = m_config->option<ConfigOptionStrings>("compatible_printers")) {
+            compatible_printers->values.clear();
+        }
+        if (auto* compatible_prints = m_config->option<ConfigOptionStrings>("compatible_prints")) {
+            compatible_prints->values.clear();
+        }
+    }
+
     // Save the preset into Slic3r::data_dir / presets / section_name / preset_name.ini
     m_presets->save_current_preset(name, detach, save_to_project);
 
