@@ -2365,9 +2365,7 @@ page = add_options_page(L("Others"), "custom-gcode_other"); // ORCA: icon only v
         option.opt.full_width = true;
         option.opt.height = 25;//250;
         optgroup->append_single_option_line(option);
-
-#if 1
-    page = add_options_page(L("Dependencies"), "advanced.png");
+page = add_options_page(L("Dependencies"), "advanced.png");
         optgroup = page->new_optgroup(L("Profile dependencies"));
 
         create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
@@ -2379,7 +2377,7 @@ page = add_options_page(L("Others"), "custom-gcode_other"); // ORCA: icon only v
         optgroup->append_single_option_line(option);
 
         build_preset_description_line(optgroup.get());
-#endif
+
 }
 
 // Reload current config (aka presets->edited_preset->config) into the UI fields.
