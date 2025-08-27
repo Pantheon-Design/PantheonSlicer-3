@@ -2435,9 +2435,6 @@ page = add_options_page(L("Dependencies"), "advanced.png");
         option = optgroup->get_option("compatible_printers_condition");
         option.opt.full_width = true;
         optgroup->append_single_option_line(option);
-
-        build_preset_description_line(optgroup.get());
-
 }
 
 // Reload current config (aka presets->edited_preset->config) into the UI fields.
@@ -3571,7 +3568,6 @@ void TabFilament::build()
         option.opt.full_width = true;
         option.opt.height = notes_field_height;// 250;
         optgroup->append_single_option_line(option);
-#if 1
     page = add_options_page(L("Dependencies"), "advanced");
         optgroup = page->new_optgroup(L("Compatible printers"), "param_dependencies_printers");
         create_line_with_widget(optgroup.get(), "compatible_printers", "", [this](wxWindow* parent) {
@@ -3591,8 +3587,6 @@ void TabFilament::build()
         option.opt.full_width = true;
         optgroup->append_single_option_line(option);
 
-        build_preset_description_line(optgroup.get());
-#endif
 }
 
 // Reload current config (aka presets->edited_preset->config) into the UI fields.
@@ -5883,11 +5877,11 @@ wxSizer* Tab::compatible_widget_create(wxWindow* parent, PresetDependencies &dep
     btn->SetSize(wxSize(FromDIP(120), FromDIP(26)));
     btn->SetCornerRadius(FromDIP(4));
     StateColor clr_bg = StateColor(
-        std::pair(wxColour("#DFDFDF"), (int)StateColor::Disabled),
-        std::pair(wxColour("#DFDFDF"), (int)StateColor::Pressed),
-        std::pair(wxColour("#D4D4D4"), (int)StateColor::Hovered),
-        std::pair(wxColour("#DFDFDF"), (int)StateColor::Normal),
-        std::pair(wxColour("#DFDFDF"), (int)StateColor::Enabled)
+        std::pair(wxColour("#dfdfdf8a"), (int)StateColor::Disabled),
+        std::pair(wxColour("#dfdfdf8a"), (int)StateColor::Pressed),
+        std::pair(wxColour("#dfdfdfb2"), (int)StateColor::Hovered),
+        std::pair(wxColour("#dfdfdf8a"), (int)StateColor::Normal),
+        std::pair(wxColour("#dfdfdf8a"), (int)StateColor::Enabled)
     );
     btn->SetBackgroundColor(clr_bg);
     btn->SetBorderColor(clr_bg);
