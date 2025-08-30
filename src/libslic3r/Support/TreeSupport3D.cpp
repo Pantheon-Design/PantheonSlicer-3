@@ -3522,7 +3522,7 @@ static std::pair<float, float> extrude_branch(
     Vec3d nprev;
     Vec3d ncurrent;
     assert(path.size() >= 2);
-    const float eps = config.low_poly_tree ? 0.8f : 0.015f;
+    const float eps = config.tree_support_low_poly_tree ? 0.8f : 0.015f;
     std::pair<int, int> prev_strip;
 
 //    char fname[2048];
