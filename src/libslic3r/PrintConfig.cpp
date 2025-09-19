@@ -4417,13 +4417,6 @@ void PrintConfigDef::init_fff_params()
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionBool(true));
 
-    def           = this->add("low_poly_tree", coBool);
-    def->label    = L("Low poly organic tree support");
-    def->category = L("Support");
-    def->tooltip  = L("Low poly organic tree support reduces support gcode lines by approx. 50%.");
-    def->mode     = comAdvanced;
-    def->set_default_value(new ConfigOptionBool(false));
-
     // BBS: change type to common float.
     // It may be rounded to mulitple layer height when independent_support_layer_height is false.
     def = this->add("support_top_z_distance", coFloat);
@@ -6264,7 +6257,7 @@ void PrintConfigDef::handle_legacy(t_config_option_key &opt_key, std::string &va
         "retraction_distance_when_cut",
         "extruder_type",
         "internal_bridge_support_thickness","extruder_clearance_max_radius", "top_area_threshold", "reduce_wall_solid_infill","filament_load_time","filament_unload_time",
-        "smooth_coefficient", "overhang_totally_speed", "low_poly_tree"
+        "smooth_coefficient", "overhang_totally_speed"
     };
 
     if (ignore.find(opt_key) != ignore.end()) {

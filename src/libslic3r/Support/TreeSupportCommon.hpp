@@ -77,7 +77,6 @@ struct TreeSupportMeshGroupSettings {
     //    this->support_infill_angles     = 
         this->support_roof_enable       = config.support_interface_top_layers.value > 0;
         this->support_roof_layers       = this->support_roof_enable ? config.support_interface_top_layers.value : 0;
-        this->low_poly_tree             = config.low_poly_tree.value;
         this->support_floor_enable      = config.support_interface_top_layers.value > 0 && config.support_interface_bottom_layers.value > 0;
         this->support_floor_layers      = this->support_floor_enable ? config.support_interface_bottom_layers.value : 0;
     //    this->minimum_roof_area         = 
@@ -181,8 +180,6 @@ struct TreeSupportMeshGroupSettings {
     // Enable Support Roof
     // Generate a dense slab of material between the top of support and the model. This will create a skin between the model and support.
     bool                            support_roof_enable                     { false };
-
-    bool                            low_poly_tree                           { false };
     // Support Roof Thickness
     // The thickness of the support roofs. This controls the amount of dense layers at the top of the support on which the model rests.
     coord_t                         support_roof_layers                     { 2 };
@@ -311,7 +308,6 @@ public:
           increase_radius_until_radius(mesh_group_settings.support_tree_branch_diameter / 2),
           increase_radius_until_layer(increase_radius_until_radius <= branch_radius ? tip_layers * (increase_radius_until_radius / branch_radius) : (increase_radius_until_radius - branch_radius) / branch_radius_increase_per_layer),
           support_rests_on_model(! mesh_group_settings.support_material_buildplate_only),
-          low_poly_tree(mesh_group_settings.low_poly_tree),
           xy_distance(mesh_group_settings.support_xy_distance),
           xy_min_distance(std::min(mesh_group_settings.support_xy_distance, mesh_group_settings.support_xy_distance_overhang)),
           bp_radius(mesh_group_settings.support_tree_bp_diameter / 2),
@@ -443,8 +439,6 @@ public:
      * \brief True if the branches may connect to the model.
      */
     bool support_rests_on_model;
-
-    bool low_poly_tree;
     /*!
      * \brief How far should support be from the model.
      */
