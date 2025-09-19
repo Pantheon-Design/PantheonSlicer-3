@@ -999,7 +999,7 @@ bool PrintObject::invalidate_state_by_config_options(
             || opt_key == "support_on_build_plate_only"
             || opt_key == "support_critical_regions_only"
             || opt_key == "support_remove_small_overhang"
-            || opt_key == "tree_support_low_poly_tree"
+            || opt_key == "low_poly_tree"
             || opt_key == "enforce_support_layers"
             || opt_key == "support_filament"
             || opt_key == "support_line_width"
