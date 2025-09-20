@@ -59,8 +59,16 @@
             "sub_path": "process/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "HS3 FLEX-95A",
-            "sub_path": "process/HS3 FLEX-95A.json"
+            "name": "HS3 FLEX-95A 0.6",
+            "sub_path": "process/HS3 FLEX-95A 0.6.json"
+        },
+        {
+            "name": "HS3 FLEX-95A 0.4",
+            "sub_path": "process/HS3 FLEX-95A 0.4.json"
+        },
+        {
+            "name": "HS3 PA-GF Dark Grey",
+            "sub_path": "process/HS3 PA-GF Dark Grey.json"
         }
     ],
     "filament_list": [
@@ -185,8 +193,16 @@
             "sub_path": "filament/HS-Pro PETG-CF Detail.json"
         },
         {
-            "name": "HS3 FLEX-95A",
-            "sub_path": "filament/HS3 FLEX-95A.json"
+            "name": "HS3 FLEX-95A 0.6",
+            "sub_path": "filament/HS3 FLEX-95A 0.6.json"
+        },
+        {
+            "name": "HS3 FLEX-95A 0.4",
+            "sub_path": "filament/HS3 FLEX-95A 0.4.json"
+        },
+        {
+            "name": "HS3 PA-GF Dark Grey",
+            "sub_path": "filament/HS3 PA-GF Dark Grey.json"
         }
     ],
     "machine_list": [

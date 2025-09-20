@@ -20,9 +20,9 @@
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
     "default_filament_profile": [
-        "HS3 FLEX-95A"
+        "HS3 FLEX-95A 0.6"
     ],
-    "default_print_profile": "HS3 FLEX-95A",
+    "default_print_profile": "HS3 FLEX-95A 0.6",
     "deretraction_speed": [
         "35"
     ],
