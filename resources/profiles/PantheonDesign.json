@@ -77,6 +77,10 @@
         {
             "name": "HS-Pro FLEX-95A 0.4",
             "sub_path": "process/HS-Pro FLEX-95A 0.4.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Strength",
+            "sub_path": "process/HS-Pro PA-GF Strength.json"
         }
     ],
     "filament_list": [
@@ -219,6 +223,10 @@
         {
             "name": "HS-Pro FLEX-95A 0.4",
             "sub_path": "filament/HS-Pro FLEX-95A 0.4.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Strength",
+            "sub_path": "filament/HS-Pro PA-GF Strength.json"
         }
     ],
     "machine_list": [

@@ -195,7 +195,7 @@
     "single_extruder_multi_material": "0",
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
-    "support_multi_bed_types": "0",
+    "support_multi_bed_types": "1",
     "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 404\n;     y: 402\n;     z: 314\n;   hardware:\n;     chassis: hspro\n;     printhead: original\n; ...",
     "thumbnails": "300x300/PNG",
     "thumbnails_format": "PNG",

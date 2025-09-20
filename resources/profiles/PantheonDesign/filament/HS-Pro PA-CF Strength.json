@@ -7,16 +7,13 @@
         "0"
     ],
     "adaptive_pressure_advance": [
-        "1"
-    ],
-    "adaptive_pressure_advance_model": [
-        "0.008, 11, 5000\n0.006, 13.75, 5000\n0.006, 16.5, 5000\n0.004, 11, 15000\n0.004, 13.75, 15000\n0.004, 16.5, 15000\n0.004, 11, 30000\n0.004, 13.75, 30000\n0.004, 16.5, 30000\n"
+        "0"
     ],
     "additional_cooling_fan_speed": [
         "0"
     ],
     "chamber_temperature": [
-        "45"
+        "50"
     ],
     "close_fan_the_first_x_layers": [
         "1"
@@ -33,10 +30,10 @@
         "0"
     ],
     "cool_plate_temp": [
-        "35"
+        "90"
     ],
     "cool_plate_temp_initial_layer": [
-        "35"
+        "90"
     ],
     "default_filament_colour": [
         "#505050"
@@ -54,16 +51,16 @@
         "1"
     ],
     "eng_plate_temp": [
-        "45"
+        "90"
     ],
     "eng_plate_temp_initial_layer": [
-        "45"
+        "90"
     ],
     "fan_cooling_layer_time": [
         "50"
     ],
     "fan_max_speed": [
-        "50"
+        "30"
     ],
     "fan_min_speed": [
         "0"
@@ -93,7 +90,7 @@
         " "
     ],
     "filament_flow_ratio": [
-        "0.97"
+        "0.9775"
     ],
     "filament_id": "PD05",
     "filament_is_support": [
@@ -112,7 +109,7 @@
         "nil"
     ],
     "filament_max_volumetric_speed": [
-        "25"
+        "20"
     ],
     "filament_minimal_purge_on_wipe_tower": [
         "15"
@@ -133,7 +130,7 @@
         "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
     ],
     "filament_retract_before_wipe": [
-        "0%"
+        "100%"
     ],
     "filament_retract_lift_above": [
         "0"
@@ -154,7 +151,7 @@
         "nil"
     ],
     "filament_retraction_length": [
-        "0.6"
+        "1"
     ],
     "filament_retraction_minimum_travel": [
         "2"
@@ -172,7 +169,7 @@
         "0"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=750\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.02\n\nSET_GCODE_OFFSET Z=0.11"
+        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\nSET_VELOCITY_LIMIT EXTRUDE_ONLY_ACCEL=4000\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.02\n\n{if curr_bed_type==\"Textured PEI Plate\"}\n  SET_GCODE_OFFSET Z=0.03\n{else}\n  SET_GCODE_OFFSET Z=0.11\n{endif}"
     ],
     "filament_toolchange_delay": [
         "0"
@@ -220,10 +217,10 @@
     "is_custom_defined": "0",
     "name": "HS-Pro PA-CF Strength",
     "nozzle_temperature": [
-        "315"
+        "330"
     ],
     "nozzle_temperature_initial_layer": [
-        "315"
+        "330"
     ],
     "nozzle_temperature_range_high": [
         "330"
@@ -241,7 +238,7 @@
         "0.4157"
     ],
     "pressure_advance": [
-        "0.004"
+        "0.001"
     ],
     "reduce_fan_stop_start_freq": [
         "1"
@@ -253,22 +250,28 @@
         "1"
     ],
     "slow_down_layer_time": [
-        "12"
+        "10"
     ],
     "slow_down_min_speed": [
-        "25"
+        "5"
+    ],
+    "textured_cool_plate_temp": [
+        "90"
+    ],
+    "textured_cool_plate_temp_initial_layer": [
+        "90"
+    ],
+    "textured_plate_temp": [
+        "90"
+    ],
+    "textured_plate_temp_initial_layer": [
+        "90"
     ],
     "support_material_interface_fan_speed": [
         "-1"
     ],
     "temperature_vitrification": [
         "260"
-    ],
-    "textured_plate_temp": [
-        "45"
-    ],
-    "textured_plate_temp_initial_layer": [
-        "45"
     ],
     "version": "3.0.9.1"
 }
