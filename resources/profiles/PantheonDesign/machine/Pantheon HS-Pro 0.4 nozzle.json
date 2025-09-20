@@ -21,7 +21,9 @@
     "cooling_tube_retraction": "91.5",
     "default_filament_profile": [
         "HS-Pro PETG-CF Speed",
-        "HS-Pro PETG-CF Detail"
+        "HS-Pro PETG-CF Detail",
+        "HS-Pro PA-CF Quality",
+        "HS-Pro FLEX-95A 0.4"
     ],
     "default_print_profile": "HS-Pro PETG-CF Speed",
     "deretraction_speed": [
@@ -32,9 +34,9 @@
     "enable_filament_ramming": "1",
     "enable_long_retraction_when_cut": "0",
     "extra_loading_move": "-2",
-    "extruder_clearance_height_to_lid": "140",
-    "extruder_clearance_height_to_rod": "36",
-    "extruder_clearance_radius": "65",
+    "extruder_clearance_height_to_lid": "235",
+    "extruder_clearance_height_to_rod": "110",
+    "extruder_clearance_radius": "105",
     "extruder_colour": [
         "#FCE94F"
     ],
@@ -108,7 +110,7 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "{if filament_type[0] == \"PETG-CF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}\n\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\n_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n{endif}",
+    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [

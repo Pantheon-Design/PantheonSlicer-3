@@ -69,6 +69,14 @@
         {
             "name": "HS3 PA-GF Dark Grey",
             "sub_path": "process/HS3 PA-GF Dark Grey.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Quality",
+            "sub_path": "process/HS-Pro PA-CF Quality.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A 0.4",
+            "sub_path": "process/HS-Pro FLEX-95A 0.4.json"
         }
     ],
     "filament_list": [
@@ -203,6 +211,14 @@
         {
             "name": "HS3 PA-GF Dark Grey",
             "sub_path": "filament/HS3 PA-GF Dark Grey.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Quality",
+            "sub_path": "filament/HS-Pro PA-CF Quality.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A 0.4",
+            "sub_path": "filament/HS-Pro FLEX-95A 0.4.json"
         }
     ],
     "machine_list": [

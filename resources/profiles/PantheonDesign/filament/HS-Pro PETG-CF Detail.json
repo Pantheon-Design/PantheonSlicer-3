@@ -1,4 +1,4 @@
-{    
+{
     "instantiation": "true",
     "activate_air_filtration": [
         "0"
@@ -6,8 +6,23 @@
     "activate_chamber_temp_control": [
         "0"
     ],
+    "adaptive_pressure_advance": [
+        "0"
+    ],
+    "adaptive_pressure_advance_bridges": [
+        "0"
+    ],
+    "adaptive_pressure_advance_model": [
+        "0,0,0\n0,0,0"
+    ],
+    "adaptive_pressure_advance_overhangs": [
+        "0"
+    ],
     "additional_cooling_fan_speed": [
         "0"
+    ],
+    "bridge_fan_speed": [
+        "100"
     ],
     "chamber_temperature": [
         "35"
@@ -57,10 +72,10 @@
         "12"
     ],
     "fan_max_speed": [
-        "40"
+        "60"
     ],
     "fan_min_speed": [
-        "40"
+        "20"
     ],
     "filament_cooling_final_speed": [
         "3.4"
@@ -91,9 +106,6 @@
     ],
     "filament_id": "PD06",
     "filament_is_support": [
-        "0"
-    ],
-    "filament_load_time": [
         "0"
     ],
     "filament_loading_speed": [
@@ -127,7 +139,7 @@
         "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
     ],
     "filament_retract_before_wipe": [
-        "0%"
+        "100%"
     ],
     "filament_retract_lift_above": [
         "0"
@@ -154,7 +166,7 @@
         "1"
     ],
     "filament_retraction_speed": [
-        "20"
+        "30"
     ],
     "filament_settings_id": [
         "HS-Pro PETG-CF Detail"
@@ -162,20 +174,26 @@
     "filament_shrink": [
         "99.96%"
     ],
+    "filament_shrinkage_compensation_z": [
+        "100%"
+    ],
     "filament_soluble": [
         "0"
     ],
+    "filament_stamping_distance": [
+        "0"
+    ],
+    "filament_stamping_loading_speed": [
+        "0"
+    ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_GCODE_OFFSET Z=0.1"
+        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\nSET_VELOCITY_LIMIT EXTRUDE_ONLY_ACCEL=4000\n\n{if curr_bed_type==\"Textured PEI Plate\"}\n  SET_GCODE_OFFSET Z=0.08\n{else}\n  SET_GCODE_OFFSET Z=0.1\n{endif}"
     ],
     "filament_toolchange_delay": [
         "0"
     ],
     "filament_type": [
         "PETG-CF"
-    ],
-    "filament_unload_time": [
-        "0"
     ],
     "filament_unloading_speed": [
         "90"
@@ -226,7 +244,7 @@
         "275"
     ],
     "overhang_fan_speed": [
-        "50"
+        "100"
     ],
     "overhang_fan_threshold": [
         "95%"
@@ -247,7 +265,7 @@
         "1"
     ],
     "slow_down_layer_time": [
-        "0"
+        "3"
     ],
     "slow_down_min_speed": [
         "10"
@@ -258,11 +276,17 @@
     "temperature_vitrification": [
         "220"
     ],
+    "textured_cool_plate_temp": [
+        "40"
+    ],
+    "textured_cool_plate_temp_initial_layer": [
+        "40"
+    ],
     "textured_plate_temp": [
         "45"
     ],
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.0.7.1"
+    "version": "3.0.9.2"
 }
