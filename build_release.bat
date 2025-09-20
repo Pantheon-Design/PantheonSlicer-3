@@ -59,16 +59,37 @@ IF "%PS_CURRENT_STEP%" NEQ "arguments" (
 )
 
 :DIFF_TIME
-@REM Calculates elapsed time between two timestamps (TIME environment variable format)
-@REM %1 - Output variable
-@REM %2 - Start time
-@REM %3 - End time
-setlocal EnableDelayedExpansion
-set START_ARG=%2
-set END_ARG=%3
-set END=!END_ARG:%TIME:~8,1%=%%100)*100+1!
-set START=!START_ARG:%TIME:~8,1%=%%100)*100+1!
-set /A DIFF=((((10!END:%TIME:~2,1%=%%100)*60+1!%%100)-((((10!START:%TIME:~2,1%=%%100)*60+1!%%100), DIFF-=(DIFF^>^>31)*24*60*60*100
-set /A CC=DIFF%%100+100,DIFF/=100,SS=DIFF%%60+100,DIFF/=60,MM=DIFF%%60+100,HH=DIFF/60+100
-@endlocal & set %1=%HH:~1%%TIME:~2,1%%MM:~1%%TIME:~2,1%%SS:~1%%TIME:~8,1%%CC:~1%
-@GOTO :EOF
+:: %1 = output variable name
+:: %2 = start time
+:: %3 = end time
+setlocal
+
+set "ts=%~2"
+set "te=%~3"
+
+:: Normalize to HH:MM:SS.CC
+for /f "tokens=1-4 delims=.:," %%a in ("%ts%") do (
+    set /a sh=1%%a%%100, sm=1%%b%%100, ss=1%%c%%100, sc=1%%d%%100
+)
+for /f "tokens=1-4 delims=.:," %%a in ("%te%") do (
+    set /a eh=1%%a%%100, em=1%%b%%100, es=1%%c%%100, ec=1%%d%%100
+)
+
+:: Convert to centiseconds
+set /a startTotal=((sh*60+sm)*60+ss)*100+sc
+set /a endTotal=((eh*60+em)*60+es)*100+ec
+
+:: If rollover (past midnight)
+if %endTotal% LSS %startTotal% set /a endTotal+=24*60*60*100
+
+set /a diff=endTotal-startTotal
+
+:: Extract HH:MM:SS.CC
+set /a cc=diff%%100, diff/=100
+set /a ss=diff%%60, diff/=60
+set /a mm=diff%%60, diff/=60
+set /a hh=diff
+
+:: Return value
+endlocal & set "%1=%hh%:%mm%:%ss%.%cc%"
+goto :EOF

@@ -208,10 +208,6 @@ set(SLIC3R_GUI_SOURCES
     GUI/GUI_Utils.hpp
     GUI/HintNotification.cpp
     GUI/HintNotification.hpp
-    GUI/HMS.cpp
-    GUI/HMS.hpp
-    GUI/HMSPanel.cpp
-    GUI/HMSPanel.hpp
     GUI/HttpServer.cpp
     GUI/HttpServer.hpp
     GUI/I18N.cpp
