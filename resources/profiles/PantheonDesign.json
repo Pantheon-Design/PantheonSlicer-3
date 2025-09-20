@@ -81,6 +81,10 @@
         {
             "name": "HS-Pro PA-GF Strength",
             "sub_path": "process/HS-Pro PA-GF Strength.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A 0.6",
+            "sub_path": "process/HS-Pro FLEX-95A 0.6.json"
         }
     ],
     "filament_list": [
@@ -227,6 +231,10 @@
         {
             "name": "HS-Pro PA-GF Strength",
             "sub_path": "filament/HS-Pro PA-GF Strength.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A 0.6",
+            "sub_path": "filament/HS-Pro FLEX-95A 0.6.json"
         }
     ],
     "machine_list": [
@@ -245,6 +253,10 @@
         {
             "name": "Pantheon HS-Pro 0.4 nozzle",
             "sub_path": "machine/Pantheon HS-Pro 0.4 nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.6 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.6 nozzle.json"
         }
     ]
 }
