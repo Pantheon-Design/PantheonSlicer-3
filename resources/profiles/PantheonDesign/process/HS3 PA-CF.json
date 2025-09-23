@@ -2,6 +2,7 @@
     "compatible_printers": [
         "Pantheon HS3 0.4 Nozzle"
     ],
+    "exclude_object": "1",
     "instantiation": "true",
     "elefant_foot_compensation": "0.05",
     "from": "system",
