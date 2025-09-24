@@ -20,9 +20,9 @@
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
     "default_filament_profile": [
-        "HS-Pro PETG-CF Turbo"
+        "HS-Pro PA-CF Strength"
     ],
-    "default_print_profile": "HS-Pro PETG-CF Turbo",
+    "default_print_profile": "HS-Pro PA-CF Strength",
     "deretraction_speed": [
         "35"
     ],
@@ -31,9 +31,9 @@
     "enable_filament_ramming": "1",
     "enable_long_retraction_when_cut": "0",
     "extra_loading_move": "-2",
-    "extruder_clearance_height_to_lid": "140",
-    "extruder_clearance_height_to_rod": "36",
-    "extruder_clearance_radius": "65",
+    "extruder_clearance_height_to_lid": "235",
+    "extruder_clearance_height_to_rod": "110",
+    "extruder_clearance_radius": "105",
     "extruder_colour": [
         "#FCE94F"
     ],
@@ -61,7 +61,7 @@
         "150000"
     ],
     "machine_max_acceleration_retracting": [
-        "10000"
+        "150000"
     ],
     "machine_max_acceleration_travel": [
         "0",
@@ -74,7 +74,7 @@
         "150000"
     ],
     "machine_max_acceleration_z": [
-        "1400"
+        "700"
     ],
     "machine_max_jerk_e": [
         "5"
@@ -89,16 +89,16 @@
         "5"
     ],
     "machine_max_speed_e": [
-        "500"
+        "700"
     ],
     "machine_max_speed_x": [
-        "500"
+        "700"
     ],
     "machine_max_speed_y": [
-        "500"
+        "700"
     ],
     "machine_max_speed_z": [
-        "40"
+        "30"
     ],
     "machine_min_extruding_rate": [
         "0"
@@ -107,14 +107,14 @@
         "0"
     ],
     "machine_pause_gcode": "M601",
-    "machine_start_gcode": "{if filament_type[0] == \"PETG-CF\"}\n_START_PRINT CHAMBER_TEMP=35 CHASSIS_TEMP=15 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature]\n{endif}\n\n{if filament_type[0] == \"PA-CF\" or filament_type[0] == \"PA-GF\"}\n_START_PRINT CHAMBER_TEMP=60 CHASSIS_TEMP=15 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature]\n{endif}",
+    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]\n",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
-        "0.3"
+        "0.375"
     ],
     "min_layer_height": [
-        "0.125"
+        "0.15"
     ],
     "name": "Pantheon HS-Pro 0.6 nozzle",
     "nozzle_diameter": [
@@ -141,7 +141,7 @@
     "printer_settings_id": "Pantheon HS-Pro 0.6 nozzle",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
-    "printer_variant": "0.6",
+    "printer_variant": "0.5",
     "printhost_apikey": "",
     "printhost_authorization_type": "key",
     "printhost_cafile": "",
@@ -192,7 +192,7 @@
     "single_extruder_multi_material": "0",
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
-    "support_multi_bed_types": "0",
+    "support_multi_bed_types": "1",
     "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 404\n;     y: 402\n;     z: 314\n;   hardware:\n;     chassis: hspro\n;     printhead: original\n; ...",
     "thumbnails": "300x300/PNG",
     "thumbnails_format": "PNG",
@@ -204,7 +204,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.9.2",
+    "version": "3.0.10.0",
     "wipe": [
         "0"
     ],

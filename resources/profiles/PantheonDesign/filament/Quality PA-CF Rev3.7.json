@@ -16,7 +16,7 @@
     "from": "system",
     "inherits": "PA-CF Rev3.7",
     "name": "Quality PA-CF Rev3.7",
-    "version": "3.0.5.0",
+    "version": "3.0.10.0",
     "filament_shrink": [
         "99.82%"
     ],
