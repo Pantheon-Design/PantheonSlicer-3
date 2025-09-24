@@ -4418,9 +4418,9 @@ void PrintConfigDef::init_fff_params()
     def->set_default_value(new ConfigOptionBool(true));
 
     def           = this->add("low_poly_tree", coBool);
-    def->label    = L("Low poly organic tree support");
+    def->label    = L("Low-poly organic tree support");
     def->category = L("Support");
-    def->tooltip  = L("Low poly organic tree support reduces support gcode lines by approx. 50%.");
+    def->tooltip  = L("Low-poly organic tree support helps reducing the gcode file size.");
     def->mode     = comAdvanced;
     def->set_default_value(new ConfigOptionBool(false));
 
