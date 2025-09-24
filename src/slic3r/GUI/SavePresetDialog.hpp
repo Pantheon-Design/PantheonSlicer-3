@@ -55,8 +55,6 @@ class SavePresetDialog : public DPIDialog
         std::string     preset_name()   const { return m_preset_name; }
         //BBS: add project embedded preset relate logic
         bool save_to_project() const { return m_save_to_project; }
-        // Method to get detach state
-        bool is_detached() const { return m_detach; } 
 
         Preset::Type    m_type;
         ValidationType  m_valid_type;
@@ -73,9 +71,8 @@ class SavePresetDialog : public DPIDialog
         //BBS: add project embedded preset relate logic
         RadioBox *          m_radio_user{nullptr};
         RadioBox *          m_radio_project{nullptr};
-        wxCheckBox*         m_detach_checkbox{nullptr};
         bool                m_save_to_project {false};
-        bool                m_detach{false};
+
         void update();
     };
 
@@ -109,9 +106,6 @@ public:
     void layout();
     //BBS: add project embedded preset relate logic
     bool get_save_to_project_selection(Preset::Type type);
-
-    // Method to get the detach state
-    bool get_detach_value(Preset::Type type);
 
 protected:
     void on_dpi_changed(const wxRect& suggested_rect) override;

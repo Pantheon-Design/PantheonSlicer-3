@@ -146,19 +146,6 @@ SavePresetDialog::Item::Item(Preset::Type type, const std::string &suffix, wxBox
 
     sizer->Add(radio_sizer, 0, wxEXPAND | wxTOP, BORDER_W);
 
-    // Add checkbox for "Detach from parent"
-    m_detach_checkbox = new wxCheckBox(parent, wxID_ANY, _L("Detach(remove inheritance)"));
-    sizer->Add(m_detach_checkbox, 0, wxALIGN_LEFT | wxALL, BORDER_W);
-
-    // Default state of checkbox is unchecked
-    m_detach_checkbox->SetValue(m_detach);
-
-    // Bind the checkbox event to update the detach state for this item
-    m_detach_checkbox->Bind(wxEVT_CHECKBOX, [this](wxCommandEvent&) { 
-        m_detach = m_detach_checkbox->GetValue(); 
-    });
-
-
     auto radio_clicked = [this](wxMouseEvent &e) {
         if (m_radio_user->GetId() == e.GetId()) {
             m_radio_user->SetValue(true);
@@ -424,14 +411,6 @@ bool SavePresetDialog::get_save_to_project_selection(Preset::Type type)
 {
     for (const Item *item : m_items)
         if (item->type() == type) return item->save_to_project();
-    return false;
-}
-
-bool SavePresetDialog::get_detach_value(Preset::Type type)
-{
-    for (const Item* item : m_items)
-        if (item->type() == type)
-            return item->is_detached();
     return false;
 }
 
