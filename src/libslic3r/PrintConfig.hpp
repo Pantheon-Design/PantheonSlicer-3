@@ -1082,8 +1082,8 @@ PRINT_CONFIG_CLASS_DEFINE(
 
     ((ConfigOptionFloat,               max_volumetric_extrusion_rate_slope))
     ((ConfigOptionInt,               max_volumetric_extrusion_rate_slope_segment_length))
-    ((ConfigOptionFloat,               pressure_release_before_retraction_speed))
-    ((ConfigOptionFloat,               pressure_release_before_retraction_length))
+    ((ConfigOptionFloat,               slow_down_before_retraction_speed))
+    ((ConfigOptionFloat,               slow_down_before_retraction_length))
     
     ((ConfigOptionPercents,            retract_before_wipe))
     ((ConfigOptionFloats,              retraction_length))
