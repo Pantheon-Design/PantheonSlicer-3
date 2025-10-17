@@ -2362,8 +2362,8 @@ void TabPrint::build()
         optgroup->append_single_option_line("max_volumetric_extrusion_rate_slope_segment_length", "extrusion-rate-smoothing");
         optgroup->append_single_option_line("extrusion_rate_smoothing_external_perimeter_only", "extrusion-rate-smoothing");
 
-        optgroup->append_single_option_line("pressure_release_before_retraction_speed");
-        optgroup->append_single_option_line("pressure_release_before_retraction_length");
+        optgroup->append_single_option_line("slow_down_before_retraction_speed");
+        optgroup->append_single_option_line("slow_down_before_retraction_length");
     page = add_options_page(L("Support"), "custom-gcode_support"); // ORCA: icon only visible on placeholders
         optgroup = page->new_optgroup(L("Support"), L"param_support");
     optgroup->append_single_option_line("enable_support", "support_settings_support");
