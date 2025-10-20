@@ -2171,12 +2171,12 @@ void TabPrint::build()
         optgroup->append_single_option_line("hole_to_polyhole_twisted");
 
         optgroup = page->new_optgroup(L("Ironing"), L"param_ironing");
-        optgroup->append_single_option_line("ironing_type", "parameter/ironing");
-        optgroup->append_single_option_line("ironing_pattern");
-        optgroup->append_single_option_line("ironing_flow");
-        optgroup->append_single_option_line("ironing_spacing");
-        optgroup->append_single_option_line("ironing_inset");
-        optgroup->append_single_option_line("ironing_angle");
+        optgroup->append_single_option_line("ironing_type", "quality_settings_ironing#type");
+        optgroup->append_single_option_line("ironing_pattern", "quality_settings_ironing#pattern");
+        optgroup->append_single_option_line("ironing_flow", "quality_settings_ironing#flow");
+        optgroup->append_single_option_line("ironing_spacing", "quality_settings_ironing#line-spacing");
+        optgroup->append_single_option_line("ironing_inset", "quality_settings_ironing#inset");
+        optgroup->append_single_option_line("ironing_angle", "quality_settings_ironing#angle-offset");
 
         optgroup = page->new_optgroup(L("Wall generator"), L"param_wall_generator");
         optgroup->append_single_option_line("wall_generator", "wall-generator");
