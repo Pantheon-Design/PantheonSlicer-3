@@ -63,8 +63,7 @@
 #define BBL_JSON_KEY_DEFAULT_MATERIALS          "default_materials"
 #define BBL_JSON_KEY_MODEL_ID                   "model_id"
 
-// Orca extension
-#define ORCA_JSON_KEY_RENAMED_FROM              "renamed_from"
+//BBL: json path
 
 
 namespace Slic3r {
