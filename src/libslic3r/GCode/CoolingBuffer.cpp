@@ -72,7 +72,7 @@ struct CoolingLine
 
     CoolingLine(unsigned int type, size_t  line_start, size_t  line_end) :
         type(type), line_start(line_start), line_end(line_end),
-        length(0.f), feedrate(0.f), time(0.f), time_max(0.f), slowdown(false), overhang_degree(0) {}
+        length(0.f), feedrate(0.f), time(0.f), time_max(0.f), slowdown(false) {}
 
     bool adjustable(bool slowdown_external_perimeters) const {
         return (this->type & TYPE_ADJUSTABLE) && 
@@ -99,7 +99,6 @@ struct CoolingLine
     float   time_max;
     // If marked with the "slowdown" flag, the line has been slowed down.
     bool    slowdown;
-    int     overhang_degree;
 };
 
 // Calculate the required per extruder time stretches.
@@ -513,7 +512,6 @@ std::vector<PerExtruderAdjustments> CoolingBuffer::parse_layer_gcode(const std::
             }
         } else if (boost::starts_with(sline, ";_OVERHANG_FAN_START")) {
             line.type = CoolingLine::TYPE_OVERHANG_FAN_START;
-            line.overhang_degree = std::stoi(sline.substr(sline.find('@') + 1));
         } else if (boost::starts_with(sline, ";_OVERHANG_FAN_END")) {
             line.type = CoolingLine::TYPE_OVERHANG_FAN_END;
         } else if (boost::starts_with(sline, ";_INTERNAL_BRIDGE_FAN_START")) { // ORCA: Add support for separate internal bridge fan speed control
@@ -729,33 +727,6 @@ std::string CoolingBuffer::apply_layer_cooldown(
         int full_fan_speed_layer = EXTRUDER_CONFIG(full_fan_speed_layer);
         supp_interface_fan_speed = EXTRUDER_CONFIG(support_material_interface_fan_speed);
 
-        switch (EXTRUDER_CONFIG(overhang_fan_threshold)) {
-        //    { "0%", Overhang_threshold_none },
-        //    { "10%", Overhang_threshold_1_4 },
-        //    { "25%", Overhang_threshold_2_4 },
-        //    { "50%", Overhang_threshold_3_4 },
-        //    { "75%", Overhang_threshold_4_4 },
-        //    { "95%", Overhang_threshold_bridge }
-        case (int)Overhang_threshold_none:
-          overhang_fan_threshold = 0;
-          break;
-        case (int)Overhang_threshold_1_4:
-          overhang_fan_threshold = 10;
-          break;
-        case (int)Overhang_threshold_2_4:
-          overhang_fan_threshold = 25;
-          break;
-        case (int)Overhang_threshold_3_4:
-          overhang_fan_threshold = 50;
-          break;
-        case (int)Overhang_threshold_4_4:
-          overhang_fan_threshold = 75;
-          break;
-        case (int)Overhang_threshold_bridge:
-          overhang_fan_threshold = 95;
-          break;
-        }
-
         if (close_fan_the_first_x_layers <= 0 && full_fan_speed_layer > 0) {
             // When ramping up fan speed from close_fan_the_first_x_layers to full_fan_speed_layer, force close_fan_the_first_x_layers above zero,
             // so there will be a zero fan speed at least at the 1st layer.
@@ -778,13 +749,11 @@ std::string CoolingBuffer::apply_layer_cooldown(
                 }
             //}
             overhang_fan_speed   = EXTRUDER_CONFIG(overhang_fan_speed);
-            bridge_fan_speed     = EXTRUDER_CONFIG(bridge_fan_speed);
             if (int(layer_id) >= close_fan_the_first_x_layers && int(layer_id) + 1 < full_fan_speed_layer) {
                 // Ramp up the fan speed from close_fan_the_first_x_layers to full_fan_speed_layer.
                 float factor = float(int(layer_id + 1) - close_fan_the_first_x_layers) / float(full_fan_speed_layer - close_fan_the_first_x_layers);
                 fan_speed_new    = std::clamp(int(float(fan_speed_new) * factor + 0.5f), 0, 255);
                 overhang_fan_speed = std::clamp(int(float(overhang_fan_speed) * factor + 0.5f), 0, 255);
-                bridge_fan_speed   = std::clamp(int(float(bridge_fan_speed)   * factor + 0.5f), 0, 255);
             }
             supp_interface_fan_speed = EXTRUDER_CONFIG(support_material_interface_fan_speed);
             supp_interface_fan_control = supp_interface_fan_speed >= 0;
@@ -804,7 +773,6 @@ std::string CoolingBuffer::apply_layer_cooldown(
         } else {
             overhang_fan_control = false;
             overhang_fan_speed   = 0;
-            bridge_fan_speed     = 0;
             fan_speed_new      = 0;
             additional_fan_speed_new = 0;
             supp_interface_fan_control = false; 
@@ -854,7 +822,7 @@ std::string CoolingBuffer::apply_layer_cooldown(
             }
             new_gcode.append(line_start, line_end - line_start);
         } else if (line->type & CoolingLine::TYPE_OVERHANG_FAN_START) {
-            if (overhang_fan_control) {
+            if (overhang_fan_control && !fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START]) {
                 need_set_fan = true;
                 fan_speed_change_requests[CoolingLine::TYPE_OVERHANG_FAN_START] = true;
            }
@@ -992,10 +960,9 @@ std::string CoolingBuffer::apply_layer_cooldown(
             else if(fan_speed_change_requests[CoolingLine::TYPE_FORCE_RESUME_FAN] && m_current_fan_speed != -1){
                 new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, m_current_fan_speed);
                 fan_speed_change_requests[CoolingLine::TYPE_FORCE_RESUME_FAN] = false;
-            } else {
-                    new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, m_fan_speed);
-                    m_current_fan_speed = m_fan_speed;
             }
+            else
+                new_gcode += GCodeWriter::set_fan(m_config.gcode_flavor, m_fan_speed);
             need_set_fan = false;
         }
         pos = line_end;

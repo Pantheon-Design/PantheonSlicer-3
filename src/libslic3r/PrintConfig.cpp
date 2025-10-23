@@ -936,16 +936,6 @@ void PrintConfigDef::init_fff_params()
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInts { 100 });
 
-    def = this->add("bridge_fan_speed", coInts);
-    def->label = L("Fan speed for bridge");
-    def->tooltip = L("Force part cooling fan to be this speed when printing bridge. If this value is less than fan speed for overhang latter is used. "
-                     "Forcing cooling for bridge can get better quality for these parts");
-    def->sidetext = L("%");
-    def->min = 0;
-    def->max = 100;
-    def->mode = comAdvanced;
-    def->set_default_value(new ConfigOptionInts { 0 });
-
     def = this->add("overhang_fan_threshold", coEnums);
     def->label = L("Overhang cooling activation threshold");
     def->tooltip = L("When the overhang exceeds this specified threshold, force the cooling fan to run at the 'Overhang Fan Speed' set below. "
@@ -6354,6 +6344,8 @@ void PrintConfigDef::handle_legacy(t_config_option_key &opt_key, std::string &va
         opt_key = "prime_tower_brim_width";
     } else if (opt_key == "tool_change_gcode") {
         opt_key = "change_filament_gcode";
+    } else if (opt_key == "bridge_fan_speed") {
+        opt_key = "overhang_fan_speed";
     } else if (opt_key == "infill_extruder") {
         opt_key = "sparse_infill_filament";
     }else if (opt_key == "solid_infill_extruder") {

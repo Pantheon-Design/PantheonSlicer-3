@@ -5598,7 +5598,6 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
                             gcode += ";_OVERHANG_FAN_START\n";
                             m_is_overhang_fan_on = true;
                         }
-                        m_is_overhang_fan_on = true;
                     } else {
                         if (m_is_overhang_fan_on) {
                             m_is_overhang_fan_on = false;
@@ -5762,13 +5761,12 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
             Vec2d p = this->point_to_gcode_quantized(processed_point.p);
             if (m_enable_cooling_markers) {
                 if (enable_overhang_bridge_fan) {
-                    //Modern
                     cur_fan_enabled = check_overhang_fan(processed_point.overlap, path.role());
-                    float overlap = is_bridge(path.role()) ? 0 : std::max(std::abs(processed_point.overlap), std::abs(pre_processed_point.overlap));
-
                     if (pre_fan_enabled && cur_fan_enabled) {
-                        gcode += ";_OVERHANG_FAN_START@" + std::to_string(int(100 - overlap*100))+"\n";
-                        m_is_overhang_fan_on = true;
+                        if (!m_is_overhang_fan_on) {
+                            gcode += ";_OVERHANG_FAN_START\n";
+                            m_is_overhang_fan_on = true;
+                        }
                     } else {
                         if (m_is_overhang_fan_on) {
                             m_is_overhang_fan_on = false;
