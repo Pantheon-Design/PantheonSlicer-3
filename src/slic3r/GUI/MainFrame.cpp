@@ -2185,6 +2185,13 @@ void MainFrame::on_sys_color_changed()
     this->Refresh();
 }
 
+void MainFrame::set_print_slice_btn_colour()
+{
+    m_print_btn->SetForegroundColour(wxColour(250, 250, 250));
+    m_slice_btn->SetForegroundColour(wxColour(250, 250, 250));
+    this->Refresh();
+}
+
 // On macOS, we use system menu bar, which handles the key accelerators automatically and breaks key handling in normal typing
 // See https://github.com/SoftFever/OrcaSlicer/issues/8152
 // So we disable some of the accelerators on macOS, by replacing the accelerator seperator to a hyphen.
