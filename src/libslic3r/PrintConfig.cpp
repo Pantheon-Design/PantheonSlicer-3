@@ -81,7 +81,6 @@ static t_config_enum_values s_keys_map_PrintHostType {
     { "prusalink",      htPrusaLink },
     { "prusaconnect",   htPrusaConnect },
     { "octoprint",      htOctoPrint },
-    { "crealityprint",  htCrealityPrint },
     { "duet",           htDuet },
     { "flashair",       htFlashAir },
     { "astrobox",       htAstroBox },
@@ -91,7 +90,6 @@ static t_config_enum_values s_keys_map_PrintHostType {
     { "obico",          htObico },
     { "flashforge",     htFlashforge },
     { "simplyprint",    htSimplyPrint },
-    { "elegoolink",     htElegooLink }
 };
 CONFIG_OPTION_ENUM_DEFINE_STATIC_MAPS(PrintHostType)
 
