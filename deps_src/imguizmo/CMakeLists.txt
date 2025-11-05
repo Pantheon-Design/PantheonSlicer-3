@@ -7,11 +7,9 @@ add_library(imguizmo STATIC
     ImGuizmo.cpp
 )
 
-target_include_directories(imguizmo SYSTEM
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/..
+target_include_directories(imguizmo 
+    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/..
 )
 
 target_link_libraries(imguizmo PUBLIC imgui)

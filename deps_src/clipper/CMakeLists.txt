@@ -9,9 +9,8 @@ add_library(clipper STATIC
     clipper_z.hpp
 )
 
-target_include_directories(clipper SYSTEM
-    PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+target_include_directories(clipper PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 target_link_libraries(clipper 
