@@ -912,7 +912,7 @@ PRINT_CONFIG_CLASS_DEFINE(
     ((ConfigOptionFloat,              tree_support_branch_angle_organic))
     ((ConfigOptionEnum<GapFillTarget>,gap_fill_target))
     ((ConfigOptionFloat,              min_length_factor))
-
+    ((ConfigOptionBool,               tree_support_low_poly_tree))
     // Move all acceleration and jerk settings to object
     ((ConfigOptionFloat,              default_acceleration))
     ((ConfigOptionFloat,              outer_wall_acceleration))

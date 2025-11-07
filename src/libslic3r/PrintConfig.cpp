@@ -4952,6 +4952,13 @@ void PrintConfigDef::init_fff_params()
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionBool(true));
 
+    def           = this->add("tree_support_low_poly_tree", coBool);
+    def->label    = L("Low-poly organic tree support");
+    def->category = L("Support");
+    def->tooltip  = L("Low-poly organic tree support helps reducing the gcode file size.");
+    def->mode     = comAdvanced;
+    def->set_default_value(new ConfigOptionBool(false));
+
     // BBS: change type to common float.
     // It may be rounded to mulitple layer height when independent_support_layer_height is false.
     def = this->add("support_top_z_distance", coFloat);
