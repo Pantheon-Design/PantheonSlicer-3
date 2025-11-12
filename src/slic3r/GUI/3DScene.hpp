@@ -439,7 +439,8 @@ public:
         int                      obj_idx,
         const std::vector<int>	&instance_idxs,
         const std::string 		&color_by,
-        bool 					 opengl_initialized);
+        bool 					 opengl_initialized,
+        bool                     need_raycaster = true);
 
     int load_object_volume(
         const ModelObject *model_object,
@@ -449,7 +450,8 @@ public:
         const std::string &color_by,
         bool 			   opengl_initialized,
         bool               in_assemble_view = false,
-        bool               use_loaded_id = false);
+        bool               use_loaded_id = false,
+        bool               need_raycaster = true);
     // Load SLA auxiliary GLVolumes (for support trees or pad).
     void load_object_auxiliary(
         const SLAPrintObject           *print_object,
@@ -469,8 +471,14 @@ public:
     int get_selection_support_threshold_angle(bool&) const;
     // Render the volumes by OpenGL.
     //BBS: add outline drawing logic
-    void render(ERenderType type, bool disable_cullface, const Transform3d& view_matrix, const Transform3d& projection_matrix, const GUI::Size& cnv_size,
-                std::function<bool(const GLVolume &)> filter_func  = std::function<bool(const GLVolume &)>()) const;
+    void render(ERenderType                           type,
+                bool                                  disable_cullface,
+                const Transform3d &                   view_matrix,
+                const Transform3d&                    projection_matrix,
+                const GUI::Size&                      cnv_size,
+                std::function<bool(const GLVolume &)> filter_func   = std::function<bool(const GLVolume &)>(),
+                bool                                  partly_inside_enable =true
+           ) const;
 
     // Clear the geometry
     void clear() { for (auto *v : volumes) delete v; volumes.clear(); }

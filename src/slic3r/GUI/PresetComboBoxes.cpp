@@ -263,6 +263,28 @@ wxColor PresetComboBox::different_color(wxColor const &clr)
 wxString PresetComboBox::get_tooltip(const Preset &preset)
 {
     wxString tooltip = from_u8(preset.name);
+    
+    // Add filament notes if available for filament presets
+    if (m_type == Preset::TYPE_FILAMENT) {
+        const DynamicConfig* config = &preset.config;
+        Tab* tab = wxGetApp().get_tab(m_type);
+        if (tab && tab->current_preset_is_dirty() && tab->get_presets()->get_selected_preset().name == preset.name) {
+            config = tab->get_config();
+        }
+
+        if (config->has("filament_notes")) {
+            const ConfigOptionStrings* notes_opt = config->option<ConfigOptionStrings>("filament_notes");
+            if (notes_opt && !notes_opt->values.empty() && !notes_opt->values[0].empty()) {
+                std::string notes = notes_opt->values[0];
+                // Truncate if longer than 200 characters
+                if (notes.length() > 200) {
+                    notes = notes.substr(0, 197) + "...";
+                }
+                tooltip += "\n" + from_u8(notes);
+            }
+        }
+    }
+    
     // BBS: FIXME
 #if 0
     if (m_type == Preset::TYPE_FILAMENT) {
@@ -520,31 +542,61 @@ wxBitmap* PresetComboBox::get_bmp(  std::string bitmap_key, bool wide_icons, con
 #endif
 }
 
-wxBitmap *PresetComboBox::get_bmp(Preset const &preset)
+wxBitmap* PresetComboBox::get_bmp(Preset const& preset)
 {
     static wxBitmap sbmp;
+
+    // Only show compatibility indicators in develop mode
+    bool show_compatibility = (wxGetApp().get_mode() == comDevelop);
+    bool is_compatible      = preset.is_compatible;
+
     if (m_type == Preset::TYPE_FILAMENT) {
-        Preset const & preset2 = &m_collection->get_selected_preset() == &preset ? m_collection->get_edited_preset() : preset;
-        wxString color = preset2.config.opt_string("default_filament_colour", 0);
-        wxColour clr(color);
+        Preset const& preset2 = &m_collection->get_selected_preset() == &preset ? m_collection->get_edited_preset() : preset;
+        wxString      color   = preset2.config.opt_string("default_filament_colour", 0);
+        wxColour      clr(color);
         if (clr.IsOk()) {
             std::string bitmap_key = "default_filament_colour_" + color.ToStdString();
-            wxBitmap *bmp        = bitmap_cache().find(bitmap_key);
+            // Include mode in bitmap key to cache separately
+            if (show_compatibility) {
+                bitmap_key += is_compatible ? "_compatible" : "_incompatible";
+            } else {
+                bitmap_key += "_nocompat";
+            }
+
+            wxBitmap* bmp = bitmap_cache().find(bitmap_key);
             if (bmp == nullptr) {
                 wxImage img(16, 16);
-                if (clr.Red() > 224 && clr.Blue() > 224 && clr.Green() > 224) {
-                    img.SetRGB(wxRect({0, 0}, img.GetSize()), 128, 128, 128);
+
+                if (show_compatibility && !is_compatible) {
+                    // Show red border for incompatible in develop mode
+                    img.SetRGB(wxRect({0, 0}, img.GetSize()), 255, 0, 0);
+                    img.SetRGB(wxRect({1, 1}, img.GetSize() - wxSize{2, 2}), clr.Red(), clr.Green(), clr.Blue());
+                } else if (show_compatibility && is_compatible) {
+                    // Show green border for compatible in develop mode
+                    img.SetRGB(wxRect({0, 0}, img.GetSize()), 0, 255, 0);
                     img.SetRGB(wxRect({1, 1}, img.GetSize() - wxSize{2, 2}), clr.Red(), clr.Green(), clr.Blue());
                 } else {
+                    // No compatibility indicator - just show the color
                     img.SetRGB(wxRect({0, 0}, img.GetSize()), clr.Red(), clr.Green(), clr.Blue());
                 }
+
                 bmp = new wxBitmap(img);
                 bmp = bitmap_cache().insert(bitmap_key, *bmp);
             }
             return bmp;
         }
     }
-    return &sbmp;
+
+    if (m_type == Preset::TYPE_PRINTER) {
+        return &sbmp;
+    }
+
+    // For other types, only show compatibility icons in develop mode
+    if (show_compatibility) {
+        return is_compatible ? &m_bitmapCompatible.bmp() : &m_bitmapIncompatible.bmp();
+    } else {
+        return &sbmp; // Return empty bitmap when not in develop mode
+    }
 }
 
 wxBitmap *PresetComboBox::get_bmp(std::string        bitmap_key,
@@ -670,7 +722,7 @@ PlaterPresetComboBox::PlaterPresetComboBox(wxWindow *parent, Preset::Type preset
     if (m_type == Preset::TYPE_FILAMENT) {
         int em = wxGetApp().em_unit();
         clr_picker = new wxBitmapButton(parent, wxID_ANY, {}, wxDefaultPosition, wxSize(FromDIP(20), FromDIP(20)), wxBU_EXACTFIT | wxBU_AUTODRAW | wxBORDER_NONE);
-        clr_picker->SetToolTip(_L("Click to pick filament color"));
+        clr_picker->SetToolTip(_L("Click to select filament color"));
         clr_picker->Bind(wxEVT_BUTTON, [this](wxCommandEvent& e) {
             m_clrData.SetColour(clr_picker->GetBackgroundColour());
             m_clrData.SetChooseFull(true);
@@ -681,7 +733,7 @@ PlaterPresetComboBox::PlaterPresetComboBox(wxWindow *parent, Preset::Type preset
                  m_clrData.SetCustomColour(i, string_to_wxColor(colors[i]));
             }
             wxColourDialog dialog(this, &m_clrData);
-            dialog.SetTitle(_L("Please choose the filament colour"));
+            dialog.SetTitle(_L("Please choose the filament color"));
             if ( dialog.ShowModal() == wxID_OK )
             {
                 m_clrData = dialog.GetColourData();
@@ -799,15 +851,6 @@ bool PlaterPresetComboBox::switch_to_tab()
     if (!tab)
         return false;
 
-    //BBS  Select NoteBook Tab params
-    if (tab->GetParent() == wxGetApp().params_panel())
-        wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
-    else {
-        wxGetApp().params_dialog()->Popup();
-        tab->OnActivate();
-    }
-    tab->restore_last_select_item();
-
     const Preset* selected_filament_preset = nullptr;
     if (m_type == Preset::TYPE_FILAMENT)
     {
@@ -818,7 +861,6 @@ bool PlaterPresetComboBox::switch_to_tab()
             if (wxGetApp().get_tab(m_type)->select_preset(preset_name))
                 wxGetApp().get_tab(m_type)->get_combo_box()->set_filament_idx(m_filament_idx);
             else {
-                wxGetApp().params_dialog()->Hide();
                 return false;
             }
         }
@@ -845,6 +887,15 @@ bool PlaterPresetComboBox::switch_to_tab()
         }
     }
     */
+
+    //BBS  Select NoteBook Tab params
+    if (tab->GetParent() == wxGetApp().params_panel())
+        wxGetApp().mainframe->select_tab(MainFrame::tp3DEditor);
+    else {
+        wxGetApp().params_dialog()->Popup();
+        tab->OnActivate();
+    }
+    tab->restore_last_select_item();
 
     return true;
 }
@@ -948,6 +999,7 @@ void PlaterPresetComboBox::update()
         selected_filament_preset = m_collection->find_preset(m_preset_bundle->filament_presets[m_filament_idx]);
         if (!selected_filament_preset) {
             //can not find this filament, should be caused by project embedded presets, will be updated later
+            Thaw();
             return;
         }
         //assert(selected_filament_preset);
@@ -1105,7 +1157,7 @@ void PlaterPresetComboBox::update()
         else if (m_type == Preset::TYPE_SLA_MATERIAL)
             set_label_marker(Append(separator(L("Add/Remove materials")), *bmp), LABEL_ITEM_WIZARD_MATERIALS);
         else {
-            set_label_marker(Append(separator(L("Select/Remove printers(system presets)")), *bmp), LABEL_ITEM_WIZARD_PRINTERS);
+            set_label_marker(Append(separator(L("Select/Remove printers (system presets)")), *bmp), LABEL_ITEM_WIZARD_PRINTERS);
             set_label_marker(Append(separator(L("Create printer")), *bmp), LABEL_ITEM_WIZARD_ADD_PRINTERS);
         }
     }

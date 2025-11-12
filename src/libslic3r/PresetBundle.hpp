@@ -113,6 +113,7 @@ public:
     void            export_selections(AppConfig &config);
 
     // BBS
+    void            set_num_filaments(unsigned int n, std::vector<std::string> new_colors);
     void            set_num_filaments(unsigned int n, std::string new_col = "");
     unsigned int sync_ams_list(unsigned int & unknowns);
     //BBS: check whether this is the only edited filament
@@ -275,12 +276,7 @@ public:
     }
 
     // Orca: for validation only
-    bool has_errors() const
-    {
-        if (m_errors != 0 || printers.m_errors != 0 || filaments.m_errors != 0 || prints.m_errors != 0)
-            return true;
-        return false;
-    }
+    bool has_errors() const;
 
 private:
     //std::pair<PresetsConfigSubstitutions, std::string> load_system_presets(ForwardCompatibilitySubstitutionRule compatibility_rule);

@@ -73,8 +73,9 @@ func_get_user_nickanme              NetworkAgent::get_user_nickanme_ptr = nullpt
 func_build_login_cmd                NetworkAgent::build_login_cmd_ptr = nullptr;
 func_build_logout_cmd               NetworkAgent::build_logout_cmd_ptr = nullptr;
 func_build_login_info               NetworkAgent::build_login_info_ptr = nullptr;
-func_get_model_id_from_desgin_id    NetworkAgent::get_model_id_from_desgin_id_ptr = nullptr;
 func_ping_bind                      NetworkAgent::ping_bind_ptr = nullptr;
+func_bind_detect                    NetworkAgent::bind_detect_ptr = nullptr;
+func_set_server_callback            NetworkAgent::set_server_callback_ptr = nullptr;
 func_bind                           NetworkAgent::bind_ptr = nullptr;
 func_unbind                         NetworkAgent::unbind_ptr = nullptr;
 func_get_bambulab_host              NetworkAgent::get_bambulab_host_ptr = nullptr;
@@ -107,7 +108,6 @@ func_modify_printer_name            NetworkAgent::modify_printer_name_ptr = null
 func_get_camera_url                 NetworkAgent::get_camera_url_ptr = nullptr;
 func_get_design_staffpick           NetworkAgent::get_design_staffpick_ptr = nullptr;
 func_start_pubilsh                  NetworkAgent::start_publish_ptr = nullptr;
-func_get_profile_3mf                NetworkAgent::get_profile_3mf_ptr = nullptr;
 func_get_model_publish_url          NetworkAgent::get_model_publish_url_ptr = nullptr;
 func_get_model_mall_home_url        NetworkAgent::get_model_mall_home_url_ptr = nullptr;
 func_get_model_mall_detail_url      NetworkAgent::get_model_mall_detail_url_ptr = nullptr;
@@ -144,6 +144,31 @@ NetworkAgent::~NetworkAgent()
     BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", this %1%, network_agent=%2%, destroy_agent_ptr=%3%, ret %4%")%this %network_agent %destroy_agent_ptr %ret;
 }
 
+std::string NetworkAgent::get_libpath_in_current_directory(std::string library_name)
+{
+    std::string lib_path;
+#if defined(_MSC_VER) || defined(_WIN32)
+    wchar_t file_name[512];
+    DWORD ret = GetModuleFileNameW(NULL, file_name, 512);
+    if (!ret) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", GetModuleFileNameW return error, can not Load Library for %1%") % library_name;
+        return lib_path;
+    }
+    int size_needed = ::WideCharToMultiByte(0, 0, file_name, wcslen(file_name), nullptr, 0, nullptr, nullptr);
+    std::string file_name_string(size_needed, 0);
+    ::WideCharToMultiByte(0, 0, file_name, wcslen(file_name), file_name_string.data(), size_needed, nullptr, nullptr);
+
+    std::size_t found = file_name_string.find("bambu-studio.exe");
+    if (found == (file_name_string.size() - 16)) {
+        lib_path = library_name + ".dll";
+        lib_path = file_name_string.replace(found, 16, lib_path);
+    }
+#else
+#endif
+    return lib_path;
+}
+
+
 int NetworkAgent::initialize_network_module(bool using_backup)
 {
     //int ret = -1;
@@ -158,7 +183,7 @@ int NetworkAgent::initialize_network_module(bool using_backup)
 
     //first load the library
 #if defined(_MSC_VER) || defined(_WIN32)
-    library = plugin_folder.string() + "/" + std::string(BAMBU_NETWORK_LIBRARY) + ".dll";
+    library = plugin_folder.string() + "\\" + std::string(BAMBU_NETWORK_LIBRARY) + ".dll";
     wchar_t lib_wstr[128];
     memset(lib_wstr, 0, sizeof(lib_wstr));
     ::MultiByteToWideChar(CP_UTF8, NULL, library.c_str(), strlen(library.c_str())+1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
@@ -169,6 +194,19 @@ int NetworkAgent::initialize_network_module(bool using_backup)
         ::MultiByteToWideChar(CP_UTF8, NULL, library.c_str(), strlen(library.c_str()) + 1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
         netwoking_module = LoadLibrary(lib_wstr);
     }*/
+    if (!netwoking_module) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", try load library directly from current directory");
+
+        std::string library_path = get_libpath_in_current_directory(std::string(BAMBU_NETWORK_LIBRARY));
+        if (library_path.empty()) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", can not get path in current directory for %1%") % BAMBU_NETWORK_LIBRARY;
+            return -1;
+        }
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", current path %1%")%library_path;
+        memset(lib_wstr, 0, sizeof(lib_wstr));
+        ::MultiByteToWideChar(CP_UTF8, NULL, library_path.c_str(), strlen(library_path.c_str())+1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
+        netwoking_module = LoadLibrary(lib_wstr);
+    }
 #else
     #if defined(__WXMAC__)
     library = plugin_folder.string() + "/" + std::string("lib") + std::string(BAMBU_NETWORK_LIBRARY) + ".dylib";
@@ -245,7 +283,8 @@ int NetworkAgent::initialize_network_module(bool using_backup)
     build_logout_cmd_ptr              =  reinterpret_cast<func_build_logout_cmd>(get_network_function("bambu_network_build_logout_cmd"));
     build_login_info_ptr              =  reinterpret_cast<func_build_login_info>(get_network_function("bambu_network_build_login_info"));
     ping_bind_ptr                     =  reinterpret_cast<func_ping_bind>(get_network_function("bambu_network_ping_bind"));
-    get_model_id_from_desgin_id_ptr   =  reinterpret_cast<func_get_model_id_from_desgin_id>(get_network_function("bambu_network_get_model_id_from_desgin_id"));
+    bind_detect_ptr                   =  reinterpret_cast<func_bind_detect>(get_network_function("bambu_network_bind_detect"));
+    set_server_callback_ptr           =  reinterpret_cast<func_set_server_callback>(get_network_function("bambu_network_set_server_callback"));
     bind_ptr                          =  reinterpret_cast<func_bind>(get_network_function("bambu_network_bind"));
     unbind_ptr                        =  reinterpret_cast<func_unbind>(get_network_function("bambu_network_unbind"));
     get_bambulab_host_ptr             =  reinterpret_cast<func_get_bambulab_host>(get_network_function("bambu_network_get_bambulab_host"));
@@ -278,7 +317,6 @@ int NetworkAgent::initialize_network_module(bool using_backup)
     get_camera_url_ptr                =  reinterpret_cast<func_get_camera_url>(get_network_function("bambu_network_get_camera_url"));
     get_design_staffpick_ptr          =  reinterpret_cast<func_get_design_staffpick>(get_network_function("bambu_network_get_design_staffpick"));
     start_publish_ptr                 =  reinterpret_cast<func_start_pubilsh>(get_network_function("bambu_network_start_publish"));
-    get_profile_3mf_ptr               =  reinterpret_cast<func_get_profile_3mf>(get_network_function("bambu_network_get_profile_3mf"));
     get_model_publish_url_ptr         =  reinterpret_cast<func_get_model_publish_url>(get_network_function("bambu_network_get_model_publish_url"));
     get_subtask_ptr                   =  reinterpret_cast<func_get_subtask>(get_network_function("bambu_network_get_subtask"));
     get_model_mall_home_url_ptr       =  reinterpret_cast<func_get_model_mall_home_url>(get_network_function("bambu_network_get_model_mall_home_url"));
@@ -296,7 +334,7 @@ int NetworkAgent::initialize_network_module(bool using_backup)
     get_model_mall_rating_result_ptr  = reinterpret_cast<func_get_model_mall_rating_result>(get_network_function("bambu_network_get_model_mall_rating"));
 
     get_mw_user_preference_ptr = reinterpret_cast<func_get_mw_user_preference>(get_network_function("bambu_network_get_mw_user_preference"));
-    get_mw_user_4ulist_ptr     = reinterpret_cast<func_get_mw_user_4ulist>(get_network_function("bambu_network_get_mw_user_4ulist")); 
+    get_mw_user_4ulist_ptr     = reinterpret_cast<func_get_mw_user_4ulist>(get_network_function("bambu_network_get_mw_user_4ulist"));
 
     return 0;
 }
@@ -365,7 +403,6 @@ int NetworkAgent::unload_network_module()
     build_login_cmd_ptr               =  nullptr;
     build_logout_cmd_ptr              =  nullptr;
     build_login_info_ptr              =  nullptr;
-    get_model_id_from_desgin_id_ptr   =  nullptr;
     ping_bind_ptr                     =  nullptr;
     bind_ptr                          =  nullptr;
     unbind_ptr                        =  nullptr;
@@ -398,7 +435,6 @@ int NetworkAgent::unload_network_module()
     get_camera_url_ptr                =  nullptr;
     get_design_staffpick_ptr          =  nullptr;
     start_publish_ptr                 =  nullptr;
-    get_profile_3mf_ptr               =  nullptr;
     get_model_publish_url_ptr         =  nullptr;
     get_subtask_ptr                   =  nullptr;
     get_model_mall_home_url_ptr       =  nullptr;
@@ -414,7 +450,7 @@ int NetworkAgent::unload_network_module()
     put_rating_picture_oss_ptr        =  nullptr;
     put_model_mall_rating_url_ptr     =  nullptr;
     get_model_mall_rating_result_ptr  = nullptr;
-    
+
     get_mw_user_preference_ptr        = nullptr;
     get_mw_user_4ulist_ptr            = nullptr;
 
@@ -443,12 +479,18 @@ void* NetworkAgent::get_bambu_source_entry()
     memset(lib_wstr, 0, sizeof(lib_wstr));
     ::MultiByteToWideChar(CP_UTF8, NULL, library.c_str(), strlen(library.c_str())+1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
     source_module = LoadLibrary(lib_wstr);
-    /*if (!source_module) {
-        library = std::string(BAMBU_SOURCE_LIBRARY) + ".dll";
+    if (!source_module) {
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", try load BambuSource directly from current directory");
+        std::string library_path = get_libpath_in_current_directory(std::string(BAMBU_SOURCE_LIBRARY));
+        if (library_path.empty()) {
+            BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", can not get path in current directory for %1%") % BAMBU_SOURCE_LIBRARY;
+            return source_module;
+        }
+        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(", current path %1%")%library_path;
         memset(lib_wstr, 0, sizeof(lib_wstr));
-        ::MultiByteToWideChar(CP_UTF8, NULL, library.c_str(), strlen(library.c_str()) + 1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
+        ::MultiByteToWideChar(CP_UTF8, NULL, library_path.c_str(), strlen(library_path.c_str()) + 1, lib_wstr, sizeof(lib_wstr) / sizeof(lib_wstr[0]));
         source_module = LoadLibrary(lib_wstr);
-    }*/
+    }
 #else
 #if defined(__WXMAC__)
     library = plugin_folder.string() + "/" + std::string("lib") + std::string(BAMBU_SOURCE_LIBRARY) + ".dylib";
@@ -878,11 +920,11 @@ bool NetworkAgent::is_user_login()
     return ret;
 }
 
-int  NetworkAgent::user_logout()
+int  NetworkAgent::user_logout(bool request)
 {
     int ret = 0;
     if (network_agent && user_logout_ptr) {
-        ret = user_logout_ptr(network_agent);
+        ret = user_logout_ptr(network_agent, request);
         if (ret)
             BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%")%network_agent %ret;
     }
@@ -952,18 +994,6 @@ std::string NetworkAgent::build_login_info()
     return ret;
 }
 
-int NetworkAgent::get_model_id_from_desgin_id(std::string& desgin_id, std::string& model_id)
-{
-    int ret = 0;
-    if (network_agent && get_model_id_from_desgin_id_ptr) {
-        ret = get_model_id_from_desgin_id_ptr(network_agent, desgin_id, model_id);
-        if (ret)
-            BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%, pin code=%3%")
-            % network_agent % ret % desgin_id;
-    }
-    return ret;
-}
-
 int NetworkAgent::ping_bind(std::string ping_code)
 {
     int ret = 0;
@@ -972,6 +1002,30 @@ int NetworkAgent::ping_bind(std::string ping_code)
         if (ret)
             BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%, pin code=%3%")
             % network_agent % ret % ping_code;
+    }
+    return ret;
+}
+
+int NetworkAgent::bind_detect(std::string dev_ip, std::string sec_link, detectResult& detect)
+{
+    int ret = 0;
+    if (network_agent && bind_detect_ptr) {
+        ret = bind_detect_ptr(network_agent, dev_ip, sec_link, detect);
+        if (ret)
+            BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%, dev_ip=%3%")
+            % network_agent % ret % dev_ip;
+    }
+    return ret;
+}
+
+int NetworkAgent::set_server_callback(OnServerErrFn fn)
+{
+    int ret = 0;
+    if (network_agent && set_server_callback_ptr) {
+        ret = set_server_callback_ptr(network_agent, fn);
+        if (ret)
+            BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%")
+            % network_agent % ret;
     }
     return ret;
 }
@@ -1095,7 +1149,7 @@ std::string NetworkAgent::request_setting_id(std::string name, std::map<std::str
 
 int NetworkAgent::put_setting(std::string setting_id, std::string name, std::map<std::string, std::string>* values_map, unsigned int* http_code)
 {
-    int ret;
+    int ret = 0;
     if (network_agent && put_setting_ptr) {
         ret = put_setting_ptr(network_agent, setting_id, name, values_map, http_code);
         BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(" : network_agent=%1%, setting_id=%2%, name=%3%, http_code=%4%, ret=%5%")
@@ -1255,7 +1309,7 @@ int NetworkAgent::get_subtask_info(std::string subtask_id, std::string* task_jso
 
 int NetworkAgent::get_slice_info(std::string project_id, std::string profile_id, int plate_index, std::string* slice_json)
 {
-    int ret;
+    int ret = 0;
     if (network_agent && get_slice_info_ptr) {
         ret = get_slice_info_ptr(network_agent, project_id, profile_id, plate_index, slice_json);
         BOOST_LOG_TRIVIAL(debug) << __FUNCTION__ << boost::format(" : network_agent=%1%, project_id=%2%, profile_id=%3%, plate_index=%4%, slice_json=%5%")
@@ -1266,7 +1320,7 @@ int NetworkAgent::get_slice_info(std::string project_id, std::string profile_id,
 
 int NetworkAgent::query_bind_status(std::vector<std::string> query_list, unsigned int* http_code, std::string* http_body)
 {
-    int ret;
+    int ret = 0;
     if (network_agent && query_bind_status_ptr) {
         ret = query_bind_status_ptr(network_agent, query_list, http_code, http_body);
         if (ret)
@@ -1336,16 +1390,6 @@ int NetworkAgent::start_publish(PublishParams params, OnUpdateStatusFn update_fn
         ret = start_publish_ptr(network_agent, params, update_fn, cancel_fn, out);
         if (ret)
             BOOST_LOG_TRIVIAL(error) << __FUNCTION__ << boost::format(" error: network_agent=%1%, ret=%2%") % network_agent % ret;
-    }
-    return ret;
-}
-
-int NetworkAgent::get_profile_3mf(BBLProfile* profile)
-{
-    int ret = -1;
-    if (network_agent && get_profile_3mf_ptr) {
-        ret = get_profile_3mf_ptr(network_agent, profile);
-        BOOST_LOG_TRIVIAL(info) << __FUNCTION__ << boost::format(" : network_agent=%1%, ret=%2%") % network_agent % ret;
     }
     return ret;
 }

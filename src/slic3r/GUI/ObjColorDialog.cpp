@@ -43,9 +43,9 @@ static void update_ui(wxWindow* window)
 static const char g_min_cluster_color = 1;
 //static const char g_max_cluster_color = 15;
 static const char g_max_color = 16;
-const  StateColor ok_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-                     std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                     std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+const  StateColor ok_btn_bg(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed),
+                     std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                     std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
 const StateColor  ok_btn_disable_bg(std::pair<wxColour, int>(wxColour(205, 201, 201), StateColor::Pressed),
                                    std::pair<wxColour, int>(wxColour(205, 201, 201), StateColor::Hovered),
                                    std::pair<wxColour, int>(wxColour(205, 201, 201), StateColor::Normal));
@@ -55,7 +55,7 @@ wxBoxSizer* ObjColorDialog::create_btn_sizer(long flags)
     btn_sizer->AddStretchSpacer();
 
     StateColor ok_btn_bd(
-        std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal)
+        std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal)
     );
     StateColor ok_btn_text(
         std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal)
@@ -72,12 +72,12 @@ wxBoxSizer* ObjColorDialog::create_btn_sizer(long flags)
         std::pair<wxColour, int>(wxColour(38, 46, 48), StateColor::Normal)
     );
     StateColor calc_btn_bg(
-        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed),
-        std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-        std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal)
+        std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed),
+        std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+        std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal)
     );
     StateColor calc_btn_bd(
-        std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal)
+        std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal)
     );
     StateColor calc_btn_text(
         std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal)
@@ -146,9 +146,6 @@ ObjColorDialog::ObjColorDialog(wxWindow *                      parent,
     , m_filament_ids(filament_ids)
     , m_first_extruder_id(first_extruder_id)
 {
-    std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % Slic3r::resources_dir()).str();
-    SetIcon(wxIcon(Slic3r::encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
-
     auto m_line_top = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 1));
     m_line_top->SetBackgroundColour(wxColour(166, 169, 170));
 
@@ -264,15 +261,14 @@ ObjColorPanel::ObjColorPanel(wxWindow *                       parent,
         specify_color_cluster_title->SetFont(Label::Head_14);
         specify_cluster_sizer->Add(specify_color_cluster_title, 0, wxALIGN_CENTER | wxALL, FromDIP(5));
 
-        m_color_cluster_num_by_user_ebox = new wxTextCtrl(m_page_simple, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(FromDIP(25), -1), wxTE_PROCESS_ENTER);
+        m_color_cluster_num_by_user_ebox = new SpinInput(m_page_simple, "", wxEmptyString, wxDefaultPosition, wxSize(FromDIP(45), -1), wxTE_PROCESS_ENTER);
         m_color_cluster_num_by_user_ebox->SetValue(std::to_string(m_color_cluster_num_by_algo).c_str());
         {//event
             auto on_apply_color_cluster_text_modify = [this](wxEvent &e) {
-                wxString str        = m_color_cluster_num_by_user_ebox->GetValue();
-                int      number = wxAtoi(str);
+                int number = m_color_cluster_num_by_user_ebox->GetValue();
                 if (number > m_color_num_recommend || number < g_min_cluster_color) {
-                    number = number < g_min_cluster_color ? g_min_cluster_color : m_color_num_recommend;
-                    str    = wxString::Format(("%d"), number);
+                    number   = number < g_min_cluster_color ? g_min_cluster_color : m_color_num_recommend;
+                    auto str = wxString::Format(("%d"), number);
                     m_color_cluster_num_by_user_ebox->SetValue(str);
                     MessageDialog dlg(nullptr, wxString::Format(_L("The color count should be in range [%d, %d]."), g_min_cluster_color, m_color_num_recommend),
                                       _L("Warning"), wxICON_WARNING | wxOK);
@@ -283,18 +279,16 @@ ObjColorPanel::ObjColorPanel(wxWindow *                       parent,
             m_color_cluster_num_by_user_ebox->Bind(wxEVT_TEXT_ENTER, on_apply_color_cluster_text_modify);
             m_color_cluster_num_by_user_ebox->Bind(wxEVT_KILL_FOCUS, on_apply_color_cluster_text_modify);
             m_color_cluster_num_by_user_ebox->Bind(wxEVT_COMMAND_TEXT_UPDATED, [this](wxCommandEvent &) {
-                wxString str        = m_color_cluster_num_by_user_ebox->GetValue();
-                int    number = wxAtof(str);
+                int number = m_color_cluster_num_by_user_ebox->GetValue();
                 if (number > m_color_num_recommend || number < g_min_cluster_color) {
-                    number = number < g_min_cluster_color ? g_min_cluster_color : m_color_num_recommend;
-                    str    = wxString::Format(("%d"), number);
+                    number   = number < g_min_cluster_color ? g_min_cluster_color : m_color_num_recommend;
+                    auto str = wxString::Format(("%d"), number);
                     m_color_cluster_num_by_user_ebox->SetValue(str);
-                    m_color_cluster_num_by_user_ebox->SetInsertionPointEnd();
+                    // m_color_cluster_num_by_user_ebox->SetInsertionPointEnd();
                 }
                 if (m_last_cluster_num != number) {
                     deal_algo(number, true);
                     Layout();
-                    //Fit();
                     Refresh();
                     Update();
                     m_last_cluster_num = number;
@@ -415,9 +409,9 @@ void ObjColorPanel::update_filament_ids()
 wxBoxSizer *ObjColorPanel::create_approximate_match_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                           std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
-    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                           std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
+    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));
     //create btn
     m_quick_approximate_match_btn = new Button(parent, _L("Color match"));
@@ -440,9 +434,9 @@ wxBoxSizer *ObjColorPanel::create_approximate_match_btn_sizer(wxWindow *parent)
 wxBoxSizer *ObjColorPanel::create_add_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                           std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
-    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                           std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
+    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));
     // create btn
     m_quick_add_btn = new Button(parent, _L("Append"));
@@ -465,9 +459,9 @@ wxBoxSizer *ObjColorPanel::create_add_btn_sizer(wxWindow *parent)
 wxBoxSizer *ObjColorPanel::create_reset_btn_sizer(wxWindow *parent)
 {
     auto       btn_sizer = new wxBoxSizer(wxHORIZONTAL);
-    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Pressed), std::pair<wxColour, int>(wxColour(129, 170, 147), StateColor::Hovered),
-                           std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
-    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(148, 209, 176), StateColor::Normal));
+    StateColor calc_btn_bg(std::pair<wxColour, int>(wxColour(0, 137, 123), StateColor::Pressed), std::pair<wxColour, int>(wxColour(38, 166, 154), StateColor::Hovered),
+                           std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
+    StateColor calc_btn_bd(std::pair<wxColour, int>(wxColour(0, 150, 136), StateColor::Normal));
     StateColor calc_btn_text(std::pair<wxColour, int>(wxColour(255, 255, 254), StateColor::Normal));
     // create btn
     m_quick_reset_btn = new Button(parent, _L("Reset"));
@@ -640,7 +634,7 @@ void ObjColorPanel::draw_table()
 
     m_color_cluster_icon_list.clear();
     m_extruder_icon_list.clear();
-    float row_height ;
+    float row_height = 0;
     for (size_t ii = 0; ii < row; ii++) {
         wxPanel *row_panel = new wxPanel(m_scrolledWindow);
         row_panel->SetBackgroundColour(ii % 2 == 0 ? *wxWHITE : wxColour(238, 238, 238));
@@ -722,7 +716,7 @@ void ObjColorPanel::deal_default_strategy()
 {
     deal_add_btn();
     deal_approximate_match_btn();
-    m_warning_text->SetLabelText(_L("Note:The color has been selected, you can choose OK \n to continue or manually adjust it."));
+    m_warning_text->SetLabelText(_L("Note: The color has been selected, you can choose OK \nto continue or manually adjust it."));
 }
 
 void ObjColorPanel::deal_add_btn()
@@ -760,7 +754,7 @@ void ObjColorPanel::deal_add_btn()
     }
     if (is_exceed) {
         deal_approximate_match_btn();
-        m_warning_text->SetLabelText(_L("Waring:The count of newly added and \n current extruders exceeds 16."));
+        m_warning_text->SetLabelText(_L("Warning: The count of newly added and \ncurrent extruders exceeds 16."));
     }
     m_is_add_filament = true;
 }

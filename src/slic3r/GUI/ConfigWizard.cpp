@@ -1279,7 +1279,7 @@ PageBedShape::PageBedShape(ConfigWizard* parent)
 {
     append_text(_L("Set the shape of your printer's bed."));
 
-    shape_panel->build_panel(*wizard_p()->custom_config->option<ConfigOptionPoints>("printable_area"),
+    shape_panel->build_panel(wizard_p()->custom_config->option<ConfigOptionPoints>("printable_area")->values,
         *wizard_p()->custom_config->option<ConfigOptionString>("bed_custom_texture"),
         *wizard_p()->custom_config->option<ConfigOptionString>("bed_custom_model"));
 
@@ -1449,7 +1449,7 @@ PageTemperatures::PageTemperatures(ConfigWizard *parent)
 
     auto *sizer_extr = new wxFlexGridSizer(3, 5, 5);
     auto *text_extr = new wxStaticText(this, wxID_ANY, _L("Extrusion Temperature:"));
-    auto *unit_extr = new wxStaticText(this, wxID_ANY, _L("°C"));
+    auto *unit_extr = new wxStaticText(this, wxID_ANY, "°C");
     sizer_extr->AddGrowableCol(0, 1);
     sizer_extr->Add(text_extr, 0, wxALIGN_CENTRE_VERTICAL);
     sizer_extr->Add(spin_extr);
@@ -1463,7 +1463,7 @@ PageTemperatures::PageTemperatures(ConfigWizard *parent)
 
     auto *sizer_bed = new wxFlexGridSizer(3, 5, 5);
     auto *text_bed = new wxStaticText(this, wxID_ANY, _L("Bed Temperature:"));
-    auto *unit_bed = new wxStaticText(this, wxID_ANY, _L("°C"));
+    auto *unit_bed = new wxStaticText(this, wxID_ANY, "°C");
     sizer_bed->AddGrowableCol(0, 1);
     sizer_bed->Add(text_bed, 0, wxALIGN_CENTRE_VERTICAL);
     sizer_bed->Add(spin_bed);
