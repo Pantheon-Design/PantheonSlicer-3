@@ -1027,7 +1027,7 @@ void PrintConfigDef::init_fff_params()
                      "Note: Bridge density that is too high can cause warping or overextrusion.");
     def->sidetext = "%";
     def->min = 10;
-    def->max = 120;
+    def->max = 200;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionPercent(100));
 
@@ -1041,7 +1041,7 @@ void PrintConfigDef::init_fff_params()
                      "further improving internal bridging structure before solid infill is extruded.");
     def->sidetext = "%";
     def->min = 10;
-    def->max = 100;
+    def->max = 200;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionPercent(100));
 
