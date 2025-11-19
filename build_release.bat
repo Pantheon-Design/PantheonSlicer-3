@@ -58,6 +58,8 @@ IF "%PS_CURRENT_STEP%" NEQ "arguments" (
     @ECHO Total Build Time Elapsed %ELAPSED_TIME%
 )
 
+exit /b 0
+
 :DIFF_TIME
 :: %1 = output variable name
 :: %2 = start time
@@ -91,5 +93,5 @@ set /a mm=diff%%60, diff/=60
 set /a hh=diff
 
 :: Return value
-endlocal & set "%1=%hh%:%mm%:%ss%.%cc%"
+endlocal & set "%~1=%hh%:%mm%:%ss%.%cc%"
 goto :EOF
