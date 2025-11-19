@@ -80,18 +80,18 @@ using Interval = std::array<std::size_t, 2>;
 enum class EViewType : uint8_t
 {
     FeatureType,
-    Height,
-    Width,
+    ColorPrint,
     Speed,
     ActualSpeed,
-    FanSpeed,
-    Temperature,
+    Height,
+    Width,
     VolumetricFlowRate,
     ActualVolumetricFlowRate,
     LayerTimeLinear,
     LayerTimeLogarithmic,
+    FanSpeed,
+    Temperature,
     Tool,
-    ColorPrint,
     COUNT
 };
 
