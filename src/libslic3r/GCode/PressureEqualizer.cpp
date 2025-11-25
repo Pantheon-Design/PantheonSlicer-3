@@ -736,7 +736,7 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
         return;
     }
 
-    float MIN_VOLUMETRIC_RATE = PRE_RETRACT_MIN_FEED_MM_S * 6;
+    unsigned int TARGET_ACCELERATION = static_cast<unsigned int>(PRE_RETRACT_MIN_FEED_MM_S);
 
     // Process in reverse to handle insertions safely
     for (size_t line_idx = m_gcode_lines.size() - 1; line_idx != size_t(-1); --line_idx) {
@@ -767,84 +767,83 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
                 }
             }
 
-            // Only apply pressure reduction if next feature is outer wall
+            // Only apply acceleration change if next feature is outer wall
             if (!next_is_outer_wall) {
                 continue;
             }
 
             // Track accumulated extrusion distance going backwards
-            float  remaining_reduction_distance = PRE_RETRACT_REDUCTION_DISTANCE;
-            size_t look_back_start              = (line_idx > max_look_back_limit) ? line_idx - max_look_back_limit : 0;
+            float  remaining_distance = PRE_RETRACT_REDUCTION_DISTANCE;
+            size_t look_back_start    = (line_idx > max_look_back_limit) ? line_idx - max_look_back_limit : 0;
 
-            // Track which lines we've already modified to avoid double-processing
-            std::unordered_set<size_t> already_modified;
-
-            // Look backwards from the retract
+            // Look backwards from the retract to find injection point
             for (size_t back_idx = line_idx - 1; back_idx != size_t(-1) && back_idx >= look_back_start; --back_idx) {
                 GCodeLine& back_line = m_gcode_lines[back_idx];
 
                 if (back_line.type == GCODELINETYPE_EXTRUDE) {
-                    // Skip if already processed
-                    if (already_modified.find(back_idx) != already_modified.end()) {
-                        continue;
-                    }
-
                     float line_distance = back_line.dist_xyz();
 
-                    if (remaining_reduction_distance > EPS) {
-                        if (line_distance <= remaining_reduction_distance) {
-                            // Entire line is within reduction distance - apply full reduction
-                            if (back_line.volumetric_extrusion_rate_start > MIN_VOLUMETRIC_RATE) {
-                                back_line.volumetric_extrusion_rate_start = MIN_VOLUMETRIC_RATE;
-                            }
-                            if (back_line.volumetric_extrusion_rate_end > MIN_VOLUMETRIC_RATE) {
-                                back_line.volumetric_extrusion_rate_end = MIN_VOLUMETRIC_RATE;
-                            }
-
-                            back_line.modified = true;
-                            already_modified.insert(back_idx);
-                            remaining_reduction_distance -= line_distance;
+                    if (remaining_distance > EPS) {
+                        if (line_distance < remaining_distance) {
+                            // Haven't reached target distance yet, keep going back
+                            remaining_distance -= line_distance;
+                        } else if (is_approx(line_distance, remaining_distance)) {
+                            // Exact boundary - inject acceleration command BEFORE this line
+                            GCodeLine accel_line;
+                            
+                            // Manually construct the SET_VELOCITY_LIMIT command
+                            std::ostringstream gcode;
+                            gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
+                            gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
+                            gcode << " ; pre-retract acceleration reduction\n";
+                            std::string accel_cmd = gcode.str();
+                            
+                            accel_line.raw_length = accel_cmd.length();
+                            accel_line.raw.resize(accel_line.raw_length);
+                            memcpy(accel_line.raw.data(), accel_cmd.c_str(), accel_line.raw_length);
+                            accel_line.type = GCODELINETYPE_OTHER;
+                            
+                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx, accel_line);
+                            break;
                         } else {
-                            // Need to split this line - only part needs reduction
-                            float split_fraction = remaining_reduction_distance / line_distance;
-                            
-                            // Create a new line for the reduced portion (closer to retract)
-                            GCodeLine reduced_line = back_line;
-                            
+                            // Target point is within this line - need to split
+                            float split_fraction = remaining_distance / line_distance;
+
                             // Calculate split position
                             float split_pos[5];
                             for (size_t i = 0; i < 5; ++i) {
                                 split_pos[i] = back_line.pos_start[i] + 
                                               (back_line.pos_end[i] - back_line.pos_start[i]) * (1.0f - split_fraction);
                             }
-                            
-                            // Set up the reduced portion (from split point to end)
-                            memcpy(reduced_line.pos_start, split_pos, sizeof(float) * 5);
-                            // pos_end stays the same as back_line.pos_end
-                            
-                            // Apply minimum rate to reduced portion
-                            if (reduced_line.volumetric_extrusion_rate_start > MIN_VOLUMETRIC_RATE) {
-                                reduced_line.volumetric_extrusion_rate_start = MIN_VOLUMETRIC_RATE;
-                            }
-                            if (reduced_line.volumetric_extrusion_rate_end > MIN_VOLUMETRIC_RATE) {
-                                reduced_line.volumetric_extrusion_rate_end = MIN_VOLUMETRIC_RATE;
-                            }
-                            reduced_line.modified = true;
-                            
-                            // Modify the original line to end at split point (non-reduced portion)
+
+                            // Create second segment (from split point to original end)
+                            GCodeLine second_segment = back_line;
+                            memcpy(second_segment.pos_start, split_pos, sizeof(float) * 5);
+                            // pos_end stays as original end
+                            second_segment.modified = true;
+
+                            // Modify original line to end at split point (first segment)
                             memcpy(back_line.pos_end, split_pos, sizeof(float) * 5);
-                            // back_line keeps its original start position and rates
                             back_line.modified = true;
+
+                            // Create acceleration command line
+                            GCodeLine accel_line;
+                            std::ostringstream gcode;
+                            gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
+                            gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
+                            gcode << " ; pre-retract acceleration reduction\n";
+                            std::string accel_cmd = gcode.str();
                             
-                            // Insert the reduced portion after the original line
-                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 1, reduced_line);
+                            accel_line.raw_length = accel_cmd.length();
+                            accel_line.raw.resize(accel_line.raw_length);
+                            memcpy(accel_line.raw.data(), accel_cmd.c_str(), accel_line.raw_length);
+                            accel_line.type = GCODELINETYPE_OTHER;
+
+                            // Insert: [first_segment] [accel_command] [second_segment]
+                            // back_idx is first segment, insert after it
+                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 1, accel_line);
+                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 2, second_segment);
                             
-                            // Mark both as modified
-                            already_modified.insert(back_idx);
-                            already_modified.insert(back_idx + 1);
-                            
-                            // We've handled all the remaining distance
-                            remaining_reduction_distance = 0;
                             break;
                         }
                     } else {
