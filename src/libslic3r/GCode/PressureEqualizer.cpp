@@ -738,126 +738,179 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
 
     unsigned int TARGET_ACCELERATION = static_cast<unsigned int>(PRE_RETRACT_MIN_FEED_MM_S);
 
-    // Process in reverse to handle insertions safely
-    for (size_t line_idx = m_gcode_lines.size() - 1; line_idx != size_t(-1); --line_idx) {
+    // Search forward for outer wall type markers
+    for (size_t line_idx = 0; line_idx < m_gcode_lines.size(); ++line_idx) {
         GCodeLine& line = m_gcode_lines[line_idx];
 
-        // Found a retract
-        if (line.type == GCODELINETYPE_RETRACT) {
-            // Look ahead to see if next feature is outer wall
-            bool         next_is_outer_wall = false;
-            const size_t look_ahead_limit   = std::min(line_idx + 30, m_gcode_lines.size());
+        // Look for ;TYPE:Outer wall marker
+        bool is_outer_wall_marker = false;
+        if (line.raw_length > 0) {
+            std::string line_str(line.raw.data(), line.raw_length);
+            if (line_str.find(";TYPE:Outer wall") != std::string::npos) {
+                is_outer_wall_marker = true;
+            }
+        }
 
-            for (size_t ahead_idx = line_idx + 1; ahead_idx < look_ahead_limit; ++ahead_idx) {
-                const GCodeLine& ahead_line = m_gcode_lines[ahead_idx];
+        if (!is_outer_wall_marker) {
+            continue;
+        }
 
-                if (ahead_line.raw_length > 0) {
-                    std::string line_str(ahead_line.raw.data(), ahead_line.raw_length);
+        // Find the first extrusion after this marker to get outer wall's extrusion rate
+        float outer_wall_rate = 0.0f;
+        size_t outer_wall_start_idx = line_idx;
+        
+        for (size_t ahead_idx = line_idx + 1; ahead_idx < std::min(line_idx + 50, m_gcode_lines.size()); ++ahead_idx) {
+            const GCodeLine& ahead_line = m_gcode_lines[ahead_idx];
+            if (ahead_line.type == GCODELINETYPE_EXTRUDE) {
+                outer_wall_rate = ahead_line.volumetric_extrusion_rate_start;
+                outer_wall_start_idx = ahead_idx;
+                break;
+            }
+        }
 
-                    if (line_str.find(";TYPE:") != std::string::npos) {
-                        if (line_str.find(";TYPE:Outer wall") != std::string::npos) {
-                            next_is_outer_wall = true;
+        if (outer_wall_rate <= EPS) {
+            continue; // Couldn't find outer wall extrusion rate
+        }
+
+        // Look backwards to find where to inject acceleration
+        float  remaining_distance = PRE_RETRACT_REDUCTION_DISTANCE;
+        size_t look_back_start    = (line_idx > max_look_back_limit) ? line_idx - max_look_back_limit : 0;
+        bool   found_faster_extrusion = false;
+        size_t injection_idx = line_idx;
+
+        // First pass: check if there's any faster extrusion and find injection point
+        for (size_t back_idx = line_idx - 1; back_idx != size_t(-1) && back_idx >= look_back_start; --back_idx) {
+            GCodeLine& back_line = m_gcode_lines[back_idx];
+
+            if (back_line.type == GCODELINETYPE_EXTRUDE) {
+                // Check if this extrusion is faster than outer wall
+                if (back_line.volumetric_extrusion_rate_start > outer_wall_rate + EPS ||
+                    back_line.volumetric_extrusion_rate_end > outer_wall_rate + EPS) {
+                    found_faster_extrusion = true;
+                }
+
+                float line_distance = back_line.dist_xyz();
+
+                if (remaining_distance > EPS) {
+                    if (line_distance < remaining_distance) {
+                        // Haven't reached target distance yet, keep going back
+                        remaining_distance -= line_distance;
+                    } else if (is_approx(line_distance, remaining_distance)) {
+                        // Exact boundary - inject BEFORE this line
+                        injection_idx = back_idx;
+                        break;
+                    } else {
+                        // Target point is within this line - need to split
+                        float split_fraction = remaining_distance / line_distance;
+
+                        // Calculate split position
+                        float split_pos[5];
+                        for (size_t i = 0; i < 5; ++i) {
+                            split_pos[i] = back_line.pos_start[i] + 
+                                          (back_line.pos_end[i] - back_line.pos_start[i]) * (1.0f - split_fraction);
+                        }
+
+                        // Create second segment (from split point to original end)
+                        GCodeLine second_segment = back_line;
+                        memcpy(second_segment.pos_start, split_pos, sizeof(float) * 5);
+                        second_segment.modified = true;
+
+                        // Modify original line to end at split point (first segment)
+                        memcpy(back_line.pos_end, split_pos, sizeof(float) * 5);
+                        back_line.modified = true;
+
+                        // Insert second segment after original
+                        m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 1, second_segment);
+                        
+                        // Injection point is after the first segment
+                        injection_idx = back_idx + 1;
+                        
+                        // Update line_idx since we inserted a line before it
+                        if (back_idx < line_idx) {
+                            line_idx++;
+                            outer_wall_start_idx++;
                         }
                         break;
                     }
                 }
+            } else if (back_line.type == GCODELINETYPE_MOVE) {
+                // Travel move - don't accumulate distance but keep looking back
+                continue;
+            } else if (back_line.type == GCODELINETYPE_RETRACT || back_line.type == GCODELINETYPE_UNRETRACT) {
+                // Continue through retracts and unretracts
+                continue;
+            } else if (back_line.type == GCODELINETYPE_TOOL_CHANGE) {
+                // Stop at tool changes
+                break;
+            }
+        }
 
-                if (ahead_line.type == GCODELINETYPE_EXTRUDE) {
-                    break;
+        if (!found_faster_extrusion) {
+            continue; // No need to inject if nothing is faster
+        }
+
+        // Find the last SET_VELOCITY_LIMIT before outer wall starts (don't modify this one)
+        size_t last_velocity_limit_idx = size_t(-1);
+        for (size_t search_idx = injection_idx; search_idx < outer_wall_start_idx; ++search_idx) {
+            const GCodeLine& search_line = m_gcode_lines[search_idx];
+            if (search_line.raw_length > 0) {
+                std::string line_str(search_line.raw.data(), search_line.raw_length);
+                if (line_str.find("SET_VELOCITY_LIMIT") != std::string::npos) {
+                    last_velocity_limit_idx = search_idx;
                 }
             }
+        }
 
-            // Only apply acceleration change if next feature is outer wall
-            if (!next_is_outer_wall) {
+        // Create and inject acceleration command
+        GCodeLine accel_line;
+        std::ostringstream gcode;
+        gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
+        gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
+        gcode << " ; pre-outer-wall acceleration reduction\n";
+        std::string accel_cmd = gcode.str();
+        
+        accel_line.raw_length = accel_cmd.length();
+        accel_line.raw.resize(accel_line.raw_length);
+        memcpy(accel_line.raw.data(), accel_cmd.c_str(), accel_line.raw_length);
+        accel_line.type = GCODELINETYPE_OTHER;
+        
+        m_gcode_lines.insert(m_gcode_lines.begin() + injection_idx, accel_line);
+        
+        // Update indices after insertion
+        if (injection_idx <= line_idx) {
+            line_idx++;
+        }
+        if (injection_idx < outer_wall_start_idx) {
+            outer_wall_start_idx++;
+        }
+        if (last_velocity_limit_idx != size_t(-1) && injection_idx <= last_velocity_limit_idx) {
+            last_velocity_limit_idx++;
+        }
+
+        // Second pass: modify any existing SET_VELOCITY_LIMIT commands between injection and outer wall
+        // BUT exclude the last one (which is meant for the outer wall itself)
+        for (size_t modify_idx = injection_idx + 1; modify_idx < outer_wall_start_idx; ++modify_idx) {
+            // Skip the last SET_VELOCITY_LIMIT (it's for the outer wall)
+            if (modify_idx == last_velocity_limit_idx) {
                 continue;
             }
 
-            // Track accumulated extrusion distance going backwards
-            float  remaining_distance = PRE_RETRACT_REDUCTION_DISTANCE;
-            size_t look_back_start    = (line_idx > max_look_back_limit) ? line_idx - max_look_back_limit : 0;
-
-            // Look backwards from the retract to find injection point
-            for (size_t back_idx = line_idx - 1; back_idx != size_t(-1) && back_idx >= look_back_start; --back_idx) {
-                GCodeLine& back_line = m_gcode_lines[back_idx];
-
-                if (back_line.type == GCODELINETYPE_EXTRUDE) {
-                    float line_distance = back_line.dist_xyz();
-
-                    if (remaining_distance > EPS) {
-                        if (line_distance < remaining_distance) {
-                            // Haven't reached target distance yet, keep going back
-                            remaining_distance -= line_distance;
-                        } else if (is_approx(line_distance, remaining_distance)) {
-                            // Exact boundary - inject acceleration command BEFORE this line
-                            GCodeLine accel_line;
-                            
-                            // Manually construct the SET_VELOCITY_LIMIT command
-                            std::ostringstream gcode;
-                            gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
-                            gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
-                            gcode << " ; pre-retract acceleration reduction\n";
-                            std::string accel_cmd = gcode.str();
-                            
-                            accel_line.raw_length = accel_cmd.length();
-                            accel_line.raw.resize(accel_line.raw_length);
-                            memcpy(accel_line.raw.data(), accel_cmd.c_str(), accel_line.raw_length);
-                            accel_line.type = GCODELINETYPE_OTHER;
-                            
-                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx, accel_line);
-                            break;
-                        } else {
-                            // Target point is within this line - need to split
-                            float split_fraction = remaining_distance / line_distance;
-
-                            // Calculate split position
-                            float split_pos[5];
-                            for (size_t i = 0; i < 5; ++i) {
-                                split_pos[i] = back_line.pos_start[i] + 
-                                              (back_line.pos_end[i] - back_line.pos_start[i]) * (1.0f - split_fraction);
-                            }
-
-                            // Create second segment (from split point to original end)
-                            GCodeLine second_segment = back_line;
-                            memcpy(second_segment.pos_start, split_pos, sizeof(float) * 5);
-                            // pos_end stays as original end
-                            second_segment.modified = true;
-
-                            // Modify original line to end at split point (first segment)
-                            memcpy(back_line.pos_end, split_pos, sizeof(float) * 5);
-                            back_line.modified = true;
-
-                            // Create acceleration command line
-                            GCodeLine accel_line;
-                            std::ostringstream gcode;
-                            gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
-                            gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
-                            gcode << " ; pre-retract acceleration reduction\n";
-                            std::string accel_cmd = gcode.str();
-                            
-                            accel_line.raw_length = accel_cmd.length();
-                            accel_line.raw.resize(accel_line.raw_length);
-                            memcpy(accel_line.raw.data(), accel_cmd.c_str(), accel_line.raw_length);
-                            accel_line.type = GCODELINETYPE_OTHER;
-
-                            // Insert: [first_segment] [accel_command] [second_segment]
-                            // back_idx is first segment, insert after it
-                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 1, accel_line);
-                            m_gcode_lines.insert(m_gcode_lines.begin() + back_idx + 2, second_segment);
-                            
-                            break;
-                        }
-                    } else {
-                        break;
-                    }
-                } else if (back_line.type == GCODELINETYPE_MOVE) {
-                    // Travel move - don't accumulate distance but keep looking back
-                    continue;
-                } else if (back_line.type == GCODELINETYPE_RETRACT || back_line.type == GCODELINETYPE_UNRETRACT) {
-                    // Continue through retracts and unretracts
-                    continue;
-                } else if (back_line.type == GCODELINETYPE_TOOL_CHANGE) {
-                    // Stop at tool changes
-                    break;
+            GCodeLine& modify_line = m_gcode_lines[modify_idx];
+            
+            if (modify_line.raw_length > 0) {
+                std::string line_str(modify_line.raw.data(), modify_line.raw_length);
+                
+                if (line_str.find("SET_VELOCITY_LIMIT") != std::string::npos) {
+                    // Replace with our target acceleration
+                    std::ostringstream new_gcode;
+                    new_gcode << "SET_VELOCITY_LIMIT ACCEL=" << TARGET_ACCELERATION;
+                    new_gcode << " ACCEL_TO_DECEL=" << (TARGET_ACCELERATION / 2);
+                    new_gcode << " ; modified for pre-outer-wall reduction\n";
+                    std::string new_cmd = new_gcode.str();
+                    
+                    modify_line.raw_length = new_cmd.length();
+                    modify_line.raw.resize(modify_line.raw_length);
+                    memcpy(modify_line.raw.data(), new_cmd.c_str(), modify_line.raw_length);
                 }
             }
         }
