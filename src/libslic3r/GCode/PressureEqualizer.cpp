@@ -772,6 +772,19 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
             continue; // Couldn't find outer wall extrusion rate
         }
 
+        // Find the last SET_VELOCITY_LIMIT before outer wall starts
+        size_t last_velocity_limit_idx = size_t(-1);
+        for (size_t search_idx = line_idx; search_idx > 0 && search_idx < outer_wall_start_idx; --search_idx) {
+            const GCodeLine& search_line = m_gcode_lines[search_idx];
+            if (search_line.raw_length > 0) {
+                std::string line_str(search_line.raw.data(), search_line.raw_length);
+                if (line_str.find("SET_VELOCITY_LIMIT") != std::string::npos) {
+                    last_velocity_limit_idx = search_idx;
+                    break; // Found the last one (searching backwards)
+                }
+            }
+        }
+
         // Look backwards to find where to inject acceleration
         float  remaining_distance = PRE_RETRACT_REDUCTION_DISTANCE;
         size_t look_back_start    = (line_idx > max_look_back_limit) ? line_idx - max_look_back_limit : 0;
@@ -829,6 +842,9 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
                         if (back_idx < line_idx) {
                             line_idx++;
                             outer_wall_start_idx++;
+                            if (last_velocity_limit_idx != size_t(-1)) {
+                                last_velocity_limit_idx++;
+                            }
                         }
                         break;
                     }
@@ -849,16 +865,9 @@ void PressureEqualizer::apply_pre_retract_pressure_reduction()
             continue; // No need to inject if nothing is faster
         }
 
-        // Find the last SET_VELOCITY_LIMIT before outer wall starts (don't modify this one)
-        size_t last_velocity_limit_idx = size_t(-1);
-        for (size_t search_idx = injection_idx; search_idx < outer_wall_start_idx; ++search_idx) {
-            const GCodeLine& search_line = m_gcode_lines[search_idx];
-            if (search_line.raw_length > 0) {
-                std::string line_str(search_line.raw.data(), search_line.raw_length);
-                if (line_str.find("SET_VELOCITY_LIMIT") != std::string::npos) {
-                    last_velocity_limit_idx = search_idx;
-                }
-            }
+        // If injection point is at or after the last SET_VELOCITY_LIMIT, move it before
+        if (last_velocity_limit_idx != size_t(-1) && injection_idx >= last_velocity_limit_idx) {
+            injection_idx = last_velocity_limit_idx;
         }
 
         // Create and inject acceleration command
