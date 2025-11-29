@@ -1069,7 +1069,7 @@ void ViewerImpl::load(GCodeInputData&& gcode_data)
         int old_bound_texture = 0;
         glsafe(glGetIntegerv(GL_TEXTURE_BINDING_BUFFER, &old_bound_texture));
 
-        // create and fill positions buffer
+        // create and fill positions buffer (static - never changes)
         glsafe(glGenBuffers(1, &m_positions_buf_id));
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_positions_buf_id));
         glsafe(glBufferData(GL_TEXTURE_BUFFER, positions.size() * sizeof(Vec4), positions.data(), GL_STATIC_DRAW));
@@ -1083,23 +1083,29 @@ void ViewerImpl::load(GCodeInputData&& gcode_data)
         glsafe(glGenTextures(1, &m_heights_widths_angles_tex_id));
         glsafe(glBindTexture(GL_TEXTURE_BUFFER, m_heights_widths_angles_tex_id));
 
-        // create (but do not fill) colors buffer (data is set in update_colors())
+        // create colors buffer (will be filled in update_colors() - use DYNAMIC_DRAW)
         glsafe(glGenBuffers(1, &m_colors_buf_id));
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_colors_buf_id));
         glsafe(glGenTextures(1, &m_colors_tex_id));
         glsafe(glBindTexture(GL_TEXTURE_BUFFER, m_colors_tex_id));
+        // Initialize size tracking to 0 (will be set in update_colors_texture)
+        m_colors_tex_size = 0;
 
-        // create (but do not fill) enabled segments buffer (data is set in update_enabled_entities())
+        // create enabled segments buffer (will be filled in update_enabled_entities() - use DYNAMIC_DRAW)
         glsafe(glGenBuffers(1, &m_enabled_segments_buf_id));
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_enabled_segments_buf_id));
         glsafe(glGenTextures(1, &m_enabled_segments_tex_id));
         glsafe(glBindTexture(GL_TEXTURE_BUFFER, m_enabled_segments_tex_id));
+        // Initialize size tracking to 0 (will be set in update_enabled_entities)
+        m_enabled_segments_tex_size = 0;
 
-        // create (but do not fill) enabled options buffer (data is set in update_enabled_entities())
+        // create enabled options buffer (will be filled in update_enabled_entities() - use DYNAMIC_DRAW)
         glsafe(glGenBuffers(1, &m_enabled_options_buf_id));
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_enabled_options_buf_id));
         glsafe(glGenTextures(1, &m_enabled_options_tex_id));
         glsafe(glBindTexture(GL_TEXTURE_BUFFER, m_enabled_options_tex_id));
+        // Initialize size tracking to 0 (will be set in update_enabled_entities)
+        m_enabled_options_tex_size = 0;
 
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, 0));
         glsafe(glBindTexture(GL_TEXTURE_BUFFER, old_bound_texture));
@@ -1175,24 +1181,41 @@ void ViewerImpl::update_enabled_entities()
     m_enabled_segments_count = enabled_segments.size();
     m_enabled_options_count = enabled_options.size();
 
-    m_enabled_segments_tex_size = enabled_segments.size() * sizeof(uint32_t);
-    m_enabled_options_tex_size = enabled_options.size() * sizeof(uint32_t);
-
-    // update gpu buffer for enabled segments
+    // Update enabled segments buffer
     assert(m_enabled_segments_buf_id > 0);
     glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_enabled_segments_buf_id));
-    if (!enabled_segments.empty())
-        glsafe(glBufferData(GL_TEXTURE_BUFFER, enabled_segments.size() * sizeof(uint32_t), enabled_segments.data(), GL_STATIC_DRAW));
-    else
-        glsafe(glBufferData(GL_TEXTURE_BUFFER, 0, nullptr, GL_STATIC_DRAW));
+    
+    const size_t new_segments_size = enabled_segments.size() * sizeof(uint32_t);
+    if (new_segments_size > m_enabled_segments_tex_size) {
+        // Need to grow buffer - reallocate
+        glsafe(glBufferData(GL_TEXTURE_BUFFER, new_segments_size, enabled_segments.data(), GL_DYNAMIC_DRAW));
+        m_enabled_segments_tex_size = new_segments_size;
+    } else if (!enabled_segments.empty()) {
+        // Buffer is big enough - just update data without reallocation
+        glsafe(glBufferSubData(GL_TEXTURE_BUFFER, 0, new_segments_size, enabled_segments.data()));
+    } else {
+        // Empty data - allocate minimal buffer
+        glsafe(glBufferData(GL_TEXTURE_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW));
+        m_enabled_segments_tex_size = 0;
+    }
 
-    // update gpu buffer for enabled options
+    // Update enabled options buffer
     assert(m_enabled_options_buf_id > 0);
     glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_enabled_options_buf_id));
-    if (!enabled_options.empty())
-        glsafe(glBufferData(GL_TEXTURE_BUFFER, enabled_options.size() * sizeof(uint32_t), enabled_options.data(), GL_STATIC_DRAW));
-    else
-        glsafe(glBufferData(GL_TEXTURE_BUFFER, 0, nullptr, GL_STATIC_DRAW));
+    
+    const size_t new_options_size = enabled_options.size() * sizeof(uint32_t);
+    if (new_options_size > m_enabled_options_tex_size) {
+        // Need to grow buffer - reallocate
+        glsafe(glBufferData(GL_TEXTURE_BUFFER, new_options_size, enabled_options.data(), GL_DYNAMIC_DRAW));
+        m_enabled_options_tex_size = new_options_size;
+    } else if (!enabled_options.empty()) {
+        // Buffer is big enough - just update data without reallocation
+        glsafe(glBufferSubData(GL_TEXTURE_BUFFER, 0, new_options_size, enabled_options.data()));
+    } else {
+        // Empty data - allocate minimal buffer
+        glsafe(glBufferData(GL_TEXTURE_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW));
+        m_enabled_options_tex_size = 0;
+    }
 
     glsafe(glBindBuffer(GL_TEXTURE_BUFFER, 0));
 #endif // ENABLE_OPENGL_ES
@@ -1233,11 +1256,19 @@ void ViewerImpl::update_colors_texture()
             // update gpu buffer for colors
             m_texture_data.set_colors(colors);
     #else
-        m_colors_tex_size = colors.size() * sizeof(float);
-
-        // update gpu buffer for colors
+        const size_t new_colors_size = colors.size() * sizeof(float);
+        
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, m_colors_buf_id));
-        glsafe(glBufferData(GL_TEXTURE_BUFFER, colors.size() * sizeof(float), colors.data(), GL_STATIC_DRAW));
+        
+        if (new_colors_size > m_colors_tex_size) {
+            // Need to grow buffer - reallocate
+            glsafe(glBufferData(GL_TEXTURE_BUFFER, new_colors_size, colors.data(), GL_DYNAMIC_DRAW));
+            m_colors_tex_size = new_colors_size;
+        } else if (!colors.empty()) {
+            // Buffer is big enough - just update data without reallocation
+            glsafe(glBufferSubData(GL_TEXTURE_BUFFER, 0, new_colors_size, colors.data()));
+        }
+        
         glsafe(glBindBuffer(GL_TEXTURE_BUFFER, 0));
     #endif // ENABLE_OPENGL_ES
 }
