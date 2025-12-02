@@ -6842,20 +6842,44 @@ ConfigManipulation Tab::get_config_manipulation()
         reload_config();
         update();
     };
-
+    
     auto cb_toggle_field = [this](const t_config_option_key& opt_key, bool toggle, int opt_index) {
         return toggle_option(opt_key, toggle, opt_index);
     };
-
+    
     auto cb_toggle_line = [this](const t_config_option_key& opt_key, bool toggle) {
         return toggle_line(opt_key, toggle);
     };
-
+    
     auto cb_value_change = [this](const std::string& opt_key, const boost::any& value) {
         return on_value_change(opt_key, value);
     };
-
-    return ConfigManipulation(load_config, cb_toggle_field, cb_toggle_line, cb_value_change, nullptr, this);
+    
+    // Create the ConfigManipulation object
+    ConfigManipulation config_manipulation(load_config, cb_toggle_field, cb_toggle_line, cb_value_change, nullptr, this);
+    
+    // ADD THESE NEW CALLBACKS for developer mode enable/disable functionality
+    config_manipulation.set_cb_enable_field([this](const std::string& opt_key, bool enable, int opt_index) {
+        Field* field = get_field(opt_key);
+        if (field) {
+            enable ? field->enable() : field->disable();
+        }
+    });
+    
+    config_manipulation.set_cb_enable_line([this](const std::string& opt_key, bool enable) {
+        Line* line = get_line(opt_key);
+        if (line) {
+            // Enable/disable all fields in the line
+            for (const auto& opt : line->get_options()) {
+                Field* field = get_field(opt.opt_id);
+                if (field) {
+                    enable ? field->enable() : field->disable();
+                }
+            }
+        }
+    });
+    
+    return config_manipulation;
 }
 
 
