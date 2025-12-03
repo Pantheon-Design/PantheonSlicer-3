@@ -6970,7 +6970,7 @@ void PrintConfigDef::handle_legacy(t_config_option_key &opt_key, std::string &va
     } else if (opt_key == "rotate_solid_infill_direction") {
         opt_key = "solid_infill_rotate_template";
         if (value == "1") {
-            value = "0,90";
+            value = "45";
         } else if (value == "0") {
             value = "0";
         }
