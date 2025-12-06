@@ -2430,7 +2430,7 @@ void TabPrint::build()
         optgroup->append_single_option_line("tree_support_angle_slow", "support_settings_tree#preferred-branch-angle");
         optgroup->append_single_option_line("tree_support_auto_brim", "support_settings_tree");
         optgroup->append_single_option_line("tree_support_brim_width", "support_settings_tree");
-
+        optgroup->append_single_option_line("tree_support_low_poly_tree", "support_settings_tree");
     page = add_options_page(L("Multimaterial"), "custom-gcode_multi_material"); // ORCA: icon only visible on placeholders
         optgroup = page->new_optgroup(L("Prime tower"), L"param_tower");
         optgroup->append_single_option_line("enable_prime_tower");
