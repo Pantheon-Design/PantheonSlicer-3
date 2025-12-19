@@ -962,9 +962,10 @@ void PrintConfigDef::init_fff_params()
                      "the value set in the 'Overhangs cooling threshold' parameter above. Increasing the cooling specifically for overhangs "
                      "and bridges can improve the overall print quality of these features.\n\n"
                      "Please note, this fan speed is clamped on the lower end by the minimum fan speed threshold set above. It is also adjusted "
-                     "upwards up to the maximum fan speed threshold when the minimum layer time threshold is not met.");
+                     "upwards up to the maximum fan speed threshold when the minimum layer time threshold is not met. "
+                     "Negative values forces this setting to take priority over min&max fan settings. eg: -50 here will force overhang fan speed to be 50%");
     def->sidetext = "%";
-    def->min = 0;
+    def->min = -100;
     def->max = 100;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInts { 100 });

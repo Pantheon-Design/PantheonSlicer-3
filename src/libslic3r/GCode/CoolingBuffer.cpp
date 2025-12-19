@@ -774,8 +774,17 @@ std::string CoolingBuffer::apply_layer_cooldown(
             supp_interface_fan_speed = EXTRUDER_CONFIG(support_material_interface_fan_speed);
             supp_interface_fan_control = supp_interface_fan_speed >= 0;
 
-            overhang_fan_control = overhang_fan_speed > fan_speed_new;
-            
+            if (overhang_fan_speed < 0) {
+                overhang_fan_control = true;
+
+                if (overhang_fan_speed == -1)
+                    overhang_fan_speed = 0;
+                else
+                    overhang_fan_speed = -overhang_fan_speed;
+            }
+            else {
+                overhang_fan_control = (overhang_fan_speed > fan_speed_new);
+            }          
             // ORCA: Add support for separate internal bridge fan speed control
             internal_bridge_fan_speed   = EXTRUDER_CONFIG(internal_bridge_fan_speed);
             internal_bridge_fan_control = internal_bridge_fan_speed >=0;
