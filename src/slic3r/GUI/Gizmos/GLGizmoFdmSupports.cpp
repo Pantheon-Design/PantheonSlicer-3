@@ -55,7 +55,7 @@ void GLGizmoFdmSupports::on_shutdown()
 //BBS: add on_open
 void GLGizmoFdmSupports::on_opening()
 {
-    m_angle_threshold_deg = 40;
+    m_angle_threshold_deg = 35;
     m_parent.set_slope_normal_angle(90.f - m_angle_threshold_deg);
     if (! m_parent.is_using_slope()) {
         m_parent.use_slope(true);
@@ -182,7 +182,7 @@ void GLGizmoFdmSupports::on_render_input_window(float x, float y, float bottom_l
     int support_threshold_angle = get_selection_support_threshold_angle();
     // when support painting tool is on, reset highlight threshold angle
     if (m_support_threshold_angle == -1) {
-        m_highlight_by_angle_threshold_deg = 40.0f;
+        m_highlight_by_angle_threshold_deg = 35.0f;
         m_parent.set_slope_normal_angle(90.f - m_highlight_by_angle_threshold_deg);
     }
     m_support_threshold_angle = support_threshold_angle;
@@ -291,8 +291,8 @@ void GLGizmoFdmSupports::on_render_input_window(float x, float y, float bottom_l
             // PantheonSlicer:this is the default values for fill type paint
             if (m_current_tool == ImGui::FillButtonIcon) {
                 m_paint_on_overhangs_only = true;
-                m_highlight_by_angle_threshold_deg = 40.f;
-                m_smart_fill_angle                 = 40.0f;
+                m_highlight_by_angle_threshold_deg = 35.f;
+                m_smart_fill_angle                 = 35.0f;
             }
         }
 
