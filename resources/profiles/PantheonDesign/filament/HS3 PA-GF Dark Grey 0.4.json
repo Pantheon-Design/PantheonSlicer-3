@@ -22,17 +22,17 @@
         "0"
     ],
     "chamber_temperature": [
-        "35"
+        "50"
     ],
     "close_fan_the_first_x_layers": [
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.6 nozzle"
+        "Pantheon HS3 0.4 nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "HS3 FLEX-95A 0.6"
+        "HS3 PA-GF Dark Grey 0.4"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
@@ -57,7 +57,7 @@
         "1"
     ],
     "enable_pressure_advance": [
-        "0"
+        "1"
     ],
     "eng_plate_temp": [
         "45"
@@ -66,13 +66,13 @@
         "45"
     ],
     "fan_cooling_layer_time": [
-        "80"
+        "60"
     ],
     "fan_max_speed": [
-        "30"
+        "20"
     ],
     "fan_min_speed": [
-        "15"
+        "0"
     ],
     "filament_cooling_final_speed": [
         "3.4"
@@ -84,13 +84,13 @@
         "4"
     ],
     "filament_cost": [
-        "57"
+        "115"
     ],
     "filament_density": [
-        "1.15"
+        "1.16"
     ],
     "filament_deretraction_speed": [
-        "15"
+        "20"
     ],
     "filament_diameter": [
         "1.75"
@@ -99,9 +99,9 @@
         " "
     ],
     "filament_flow_ratio": [
-        "1.02"
+        "0.989"
     ],
-    "filament_id": "PD04",
+    "filament_id": "Pba6d7",
     "filament_is_support": [
         "0"
     ],
@@ -157,19 +157,19 @@
         "nil"
     ],
     "filament_retraction_length": [
-        "1"
+        "0.5"
     ],
     "filament_retraction_minimum_travel": [
         "2"
     ],
     "filament_retraction_speed": [
-        "20"
+        "40"
     ],
     "filament_settings_id": [
-        "HS3 FLEX-95A 0.6 RC 3.0.11"
+        "HS3 PA-GF Dark Grey 0.4"
     ],
     "filament_shrink": [
-        "100%"
+        "99.729%"
     ],
     "filament_shrinkage_compensation_z": [
         "100%"
@@ -184,13 +184,13 @@
         "0"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_GCODE_OFFSET Z=0.05"
     ],
     "filament_toolchange_delay": [
         "0"
     ],
     "filament_type": [
-        "TPU"
+        "PA-GF"
     ],
     "filament_unloading_speed": [
         "90"
@@ -202,7 +202,7 @@
         "Pantheon"
     ],
     "filament_wipe": [
-        "1"
+        "0"
     ],
     "filament_wipe_distance": [
         "2"
@@ -218,10 +218,10 @@
         "0"
     ],
     "hot_plate_temp": [
-        "50"
+        "90"
     ],
     "hot_plate_temp_initial_layer": [
-        "50"
+        "90"
     ],
     "idle_temperature": [
         "100"
@@ -233,18 +233,18 @@
         "-1"
     ],
     "is_custom_defined": "0",
-    "name": "HS3 FLEX-95A 0.6",
+    "name": "HS3 PA-GF Dark Grey 0.4",
     "nozzle_temperature": [
-        "225"
+        "310"
     ],
     "nozzle_temperature_initial_layer": [
-        "225"
+        "300"
     ],
     "nozzle_temperature_range_high": [
-        "225"
+        "310"
     ],
     "nozzle_temperature_range_low": [
-        "205"
+        "300"
     ],
     "overhang_fan_speed": [
         "90"
@@ -283,7 +283,7 @@
         "0"
     ],
     "temperature_vitrification": [
-        "200"
+        "240"
     ],
     "textured_cool_plate_temp": [
         "40"

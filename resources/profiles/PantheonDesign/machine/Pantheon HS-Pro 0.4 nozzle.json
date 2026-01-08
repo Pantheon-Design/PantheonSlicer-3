@@ -19,13 +19,16 @@
     "change_filament_gcode": "",
     "cooling_tube_length": "5",
     "cooling_tube_retraction": "91.5",
+    "default_bed_type": "",
     "default_filament_profile": [
-        "HS-Pro PETG-CF Speed",
-        "HS-Pro PETG-CF Detail",
-        "HS-Pro PA-CF Quality",
-        "HS-Pro FLEX-95A 0.4"
+        "HS-Pro PETG-CF Speed 0.4",
+        "HS-Pro PETG-CF Detail 0.4",
+        "HS-Pro PA-CF Quality 0.4",
+        "HS-Pro FLEX-95A Detail 0.4",
+        "HS-Pro PA-GF Dark Grey 0.4",
+        "HS-Pro PA-GF Quality 0.4"
     ],
-    "default_print_profile": "HS-Pro PETG-CF Speed",
+    "default_print_profile": "HS-Pro PETG-CF Speed 0.4",
     "deretraction_speed": [
         "35"
     ],
@@ -44,7 +47,7 @@
         "0x0"
     ],
     "fan_kickstart": "0",
-    "fan_speedup_overhangs": "0",
+    "fan_speedup_overhangs": "1",
     "fan_speedup_time": "0",
     "gcode_flavor": "klipper",
     "head_wrap_detect_zone": [],
@@ -58,13 +61,13 @@
     "machine_end_gcode": "_END_PRINT",
     "machine_load_filament_time": "0",
     "machine_max_acceleration_e": [
-        "150000"
+        "35000"
     ],
     "machine_max_acceleration_extruding": [
         "150000"
     ],
     "machine_max_acceleration_retracting": [
-        "10000"
+        "35000"
     ],
     "machine_max_acceleration_travel": [
         "0",
@@ -91,17 +94,21 @@
     "machine_max_jerk_z": [
         "5"
     ],
+    "machine_max_junction_deviation": [
+        "0",
+        "0"
+    ],
     "machine_max_speed_e": [
-        "750"
+        "80"
     ],
     "machine_max_speed_x": [
-        "750"
+        "500"
     ],
     "machine_max_speed_y": [
-        "750"
+        "500"
     ],
     "machine_max_speed_z": [
-        "30"
+        "20"
     ],
     "machine_min_extruding_rate": [
         "0"
@@ -109,16 +116,19 @@
     "machine_min_travel_rate": [
         "0"
     ],
-    "machine_pause_gcode": "M601",
-    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[first_layer_bed_temperature] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]",
+    "machine_pause_gcode": "PAUSE",
+    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[hot_plate_temp_initial_layer] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]",
+    "machine_tool_change_time": "0",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
     "max_layer_height": [
         "0.3"
     ],
+    "max_resonance_avoidance_speed": "120",
     "min_layer_height": [
         "0.125"
     ],
+    "min_resonance_avoidance_speed": "70",
     "name": "Pantheon HS-Pro 0.4 nozzle",
     "nozzle_diameter": [
         "0.4"
@@ -154,6 +164,7 @@
     "printhost_user": "",
     "printing_by_object_gcode": "",
     "purge_in_prime_tower": "1",
+    "resonance_avoidance": "0",
     "retract_before_wipe": [
         "70%"
     ],
@@ -195,7 +206,7 @@
     "single_extruder_multi_material": "0",
     "support_air_filtration": "0",
     "support_chamber_temp_control": "0",
-    "support_multi_bed_types": "1",
+    "support_multi_bed_types": "0",
     "template_custom_gcode": "; ---\n; printer:\n;   process: FFF\n;   axes-limits:\n;     x: 404\n;     y: 402\n;     z: 314\n;   hardware:\n;     chassis: hspro\n;     printhead: original\n; ...",
     "thumbnails": "300x300/PNG",
     "thumbnails_format": "PNG",
@@ -207,7 +218,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.10.0",
+    "version": "3.1.0.0",
     "wipe": [
         "0"
     ],

@@ -4,16 +4,16 @@
         "0"
     ],
     "activate_chamber_temp_control": [
-        "1"
+        "0"
     ],
     "adaptive_pressure_advance": [
-        "0"
+        "1"
     ],
     "adaptive_pressure_advance_bridges": [
         "0"
     ],
     "adaptive_pressure_advance_model": [
-        "0,0,0\n0,0,0"
+        "0.0075,10.871,5000\n0.0025,9.059,5000\n0.0005,5.798,5000\n0.0015,14.495,8000\n0.0065,7.247,8000\n0.005,3.624,8000"
     ],
     "adaptive_pressure_advance_overhangs": [
         "0"
@@ -22,21 +22,21 @@
         "0"
     ],
     "chamber_temperature": [
-        "35"
+        "45"
     ],
     "close_fan_the_first_x_layers": [
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.6 nozzle"
+        "Pantheon HS-Pro 0.4 nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "HS3 FLEX-95A 0.6"
+        "HS-Pro PA-GF Quality 0.4"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
-        "80"
+        "0"
     ],
     "cool_plate_temp": [
         "35"
@@ -45,19 +45,19 @@
         "35"
     ],
     "default_filament_colour": [
-        "#707070"
+        "#FEFFD8"
     ],
     "dont_slow_down_outer_wall": [
-        "0"
+        "1"
     ],
     "during_print_exhaust_fan_speed": [
-        "60"
+        "0"
     ],
     "enable_overhang_bridge_fan": [
         "1"
     ],
     "enable_pressure_advance": [
-        "0"
+        "1"
     ],
     "eng_plate_temp": [
         "45"
@@ -66,13 +66,13 @@
         "45"
     ],
     "fan_cooling_layer_time": [
-        "80"
+        "50"
     ],
     "fan_max_speed": [
-        "30"
+        "35"
     ],
     "fan_min_speed": [
-        "15"
+        "0"
     ],
     "filament_cooling_final_speed": [
         "3.4"
@@ -84,13 +84,13 @@
         "4"
     ],
     "filament_cost": [
-        "57"
+        "116"
     ],
     "filament_density": [
-        "1.15"
+        "1.16"
     ],
     "filament_deretraction_speed": [
-        "15"
+        "10"
     ],
     "filament_diameter": [
         "1.75"
@@ -99,9 +99,9 @@
         " "
     ],
     "filament_flow_ratio": [
-        "1.02"
+        "0.961"
     ],
-    "filament_id": "PD04",
+    "filament_id": "PD05",
     "filament_is_support": [
         "0"
     ],
@@ -115,7 +115,7 @@
         "nil"
     ],
     "filament_max_volumetric_speed": [
-        "10"
+        "15"
     ],
     "filament_minimal_purge_on_wipe_tower": [
         "15"
@@ -130,7 +130,7 @@
         "10"
     ],
     "filament_notes": [
-        ""
+        "old xy shrinkage: 99.729\nold xy hole: 0.0375"
     ],
     "filament_ramming_parameters": [
         "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
@@ -163,16 +163,16 @@
         "2"
     ],
     "filament_retraction_speed": [
-        "20"
+        "10"
     ],
     "filament_settings_id": [
-        "HS3 FLEX-95A 0.6 RC 3.0.11"
+        "HS-Pro PA-GF Quality RC 3.0.11"
     ],
     "filament_shrink": [
-        "100%"
+        "99.72%"
     ],
     "filament_shrinkage_compensation_z": [
-        "100%"
+        "99.74%"
     ],
     "filament_soluble": [
         "0"
@@ -184,13 +184,13 @@
         "0"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
+        "SET_VELOCITY_LIMIT ACCEL=150000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=75000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.03\n\nSET_GCODE_OFFSET Z=0.07"
     ],
     "filament_toolchange_delay": [
         "0"
     ],
     "filament_type": [
-        "TPU"
+        "PA-GF"
     ],
     "filament_unloading_speed": [
         "90"
@@ -218,10 +218,10 @@
         "0"
     ],
     "hot_plate_temp": [
-        "50"
+        "90"
     ],
     "hot_plate_temp_initial_layer": [
-        "50"
+        "90"
     ],
     "idle_temperature": [
         "100"
@@ -233,36 +233,36 @@
         "-1"
     ],
     "is_custom_defined": "0",
-    "name": "HS3 FLEX-95A 0.6",
+    "name": "HS-Pro PA-GF Quality 0.4",
     "nozzle_temperature": [
-        "225"
+        "305"
     ],
     "nozzle_temperature_initial_layer": [
-        "225"
+        "305"
     ],
     "nozzle_temperature_range_high": [
-        "225"
+        "330"
     ],
     "nozzle_temperature_range_low": [
-        "205"
+        "300"
     ],
     "overhang_fan_speed": [
-        "90"
+        "75"
     ],
     "overhang_fan_threshold": [
-        "95%"
+        "25%"
     ],
     "pellet_flow_coefficient": [
         "0.4157"
     ],
     "pressure_advance": [
-        "0.02"
+        "0.001"
     ],
     "reduce_fan_stop_start_freq": [
         "1"
     ],
     "required_nozzle_HRC": [
-        "0"
+        "60"
     ],
     "slow_down_for_layer_cooling": [
         "1"
@@ -280,16 +280,16 @@
         "35"
     ],
     "support_material_interface_fan_speed": [
-        "0"
+        "-1"
     ],
     "temperature_vitrification": [
-        "200"
+        "220"
     ],
     "textured_cool_plate_temp": [
-        "40"
+        "90"
     ],
     "textured_cool_plate_temp_initial_layer": [
-        "40"
+        "90"
     ],
     "textured_plate_temp": [
         "45"

@@ -28,11 +28,11 @@
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.6 nozzle"
+        "Pantheon HS3 0.4 nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
-        "HS3 FLEX-95A 0.6"
+        "HS3 PETG-CF 0.4"
     ],
     "compatible_prints_condition": "",
     "complete_print_exhaust_fan_speed": [
@@ -45,7 +45,7 @@
         "35"
     ],
     "default_filament_colour": [
-        "#707070"
+        "#505050"
     ],
     "dont_slow_down_outer_wall": [
         "0"
@@ -66,13 +66,13 @@
         "45"
     ],
     "fan_cooling_layer_time": [
-        "80"
+        "40"
     ],
     "fan_max_speed": [
-        "30"
+        "60"
     ],
     "fan_min_speed": [
-        "15"
+        "30"
     ],
     "filament_cooling_final_speed": [
         "3.4"
@@ -84,13 +84,13 @@
         "4"
     ],
     "filament_cost": [
-        "57"
+        "75"
     ],
     "filament_density": [
-        "1.15"
+        "1.27"
     ],
     "filament_deretraction_speed": [
-        "15"
+        "0"
     ],
     "filament_diameter": [
         "1.75"
@@ -99,9 +99,9 @@
         " "
     ],
     "filament_flow_ratio": [
-        "1.02"
+        "1"
     ],
-    "filament_id": "PD04",
+    "filament_id": "Pba6d7",
     "filament_is_support": [
         "0"
     ],
@@ -115,7 +115,7 @@
         "nil"
     ],
     "filament_max_volumetric_speed": [
-        "10"
+        "25"
     ],
     "filament_minimal_purge_on_wipe_tower": [
         "15"
@@ -136,7 +136,7 @@
         "120 100 6.6 6.8 7.2 7.6 7.9 8.2 8.7 9.4 9.9 10.0| 0.05 6.6 0.45 6.8 0.95 7.8 1.45 8.3 1.95 9.7 2.45 10 2.95 7.6 3.45 7.6 3.95 7.6 4.45 7.6 4.95 7.6"
     ],
     "filament_retract_before_wipe": [
-        "100%"
+        "0%"
     ],
     "filament_retract_lift_above": [
         "0"
@@ -157,19 +157,19 @@
         "nil"
     ],
     "filament_retraction_length": [
-        "1"
+        "0.7"
     ],
     "filament_retraction_minimum_travel": [
         "2"
     ],
     "filament_retraction_speed": [
-        "20"
+        "15"
     ],
     "filament_settings_id": [
-        "HS3 FLEX-95A 0.6 RC 3.0.11"
+        "HS3 PETG-CF RC 3.0.11"
     ],
     "filament_shrink": [
-        "100%"
+        "99.8103%"
     ],
     "filament_shrinkage_compensation_z": [
         "100%"
@@ -184,13 +184,13 @@
         "0"
     ],
     "filament_start_gcode": [
-        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=5\n\nSET_PRESSURE_ADVANCE ADVANCE=0\nSET_GCODE_OFFSET Z=0.05"
+        "SET_VELOCITY_LIMIT ACCEL=14000\nSET_VELOCITY_LIMIT ACCEL_TO_DECEL=7000\nSET_VELOCITY_LIMIT VELOCITY=500\nSET_VELOCITY_LIMIT SQUARE_CORNER_VELOCITY=4\n\nSET_PRESSURE_ADVANCE ADVANCE=0.013\nSET_PRESSURE_ADVANCE SMOOTH_TIME=0.001\nSET_GCODE_OFFSET Z=0.02"
     ],
     "filament_toolchange_delay": [
         "0"
     ],
     "filament_type": [
-        "TPU"
+        "PETG-CF"
     ],
     "filament_unloading_speed": [
         "90"
@@ -208,7 +208,7 @@
         "2"
     ],
     "filament_z_hop": [
-        "0.3"
+        "0.1"
     ],
     "filament_z_hop_types": [
         "Normal Lift"
@@ -218,10 +218,10 @@
         "0"
     ],
     "hot_plate_temp": [
-        "50"
+        "80"
     ],
     "hot_plate_temp_initial_layer": [
-        "50"
+        "80"
     ],
     "idle_temperature": [
         "100"
@@ -233,21 +233,21 @@
         "-1"
     ],
     "is_custom_defined": "0",
-    "name": "HS3 FLEX-95A 0.6",
+    "name": "HS3 PETG-CF 0.4",
     "nozzle_temperature": [
-        "225"
+        "280"
     ],
     "nozzle_temperature_initial_layer": [
-        "225"
+        "270"
     ],
     "nozzle_temperature_range_high": [
-        "225"
+        "280"
     ],
     "nozzle_temperature_range_low": [
-        "205"
+        "270"
     ],
     "overhang_fan_speed": [
-        "90"
+        "95"
     ],
     "overhang_fan_threshold": [
         "95%"
@@ -268,7 +268,7 @@
         "1"
     ],
     "slow_down_layer_time": [
-        "10"
+        "5"
     ],
     "slow_down_min_speed": [
         "10"
@@ -283,7 +283,7 @@
         "0"
     ],
     "temperature_vitrification": [
-        "200"
+        "220"
     ],
     "textured_cool_plate_temp": [
         "40"

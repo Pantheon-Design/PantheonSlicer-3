@@ -21,9 +21,6 @@
     "additional_cooling_fan_speed": [
         "0"
     ],
-    "bridge_fan_speed": [
-        "0"
-    ],
     "chamber_temperature": [
         "35"
     ],
@@ -31,7 +28,7 @@
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.4 Nozzle"
+        "Pantheon HS3 0.4 nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
@@ -229,6 +226,12 @@
     "idle_temperature": [
         "100"
     ],
+    "internal_bridge_fan_speed": [
+        "-1"
+    ],
+    "ironing_fan_speed": [
+        "-1"
+    ],
     "is_custom_defined": "0",
     "name": "HS3 FLEX-95A 0.4",
     "nozzle_temperature": [
@@ -270,6 +273,12 @@
     "slow_down_min_speed": [
         "10"
     ],
+    "supertack_plate_temp": [
+        "35"
+    ],
+    "supertack_plate_temp_initial_layer": [
+        "35"
+    ],
     "support_material_interface_fan_speed": [
         "0"
     ],
@@ -288,5 +297,5 @@
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.0.10.0"
+    "version": "3.1.0.0"
 }
