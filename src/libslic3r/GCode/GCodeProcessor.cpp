@@ -4657,6 +4657,7 @@ void GCodeProcessor::store_move_vertex(EMoveType type, EMovePathType path_type, 
         m_fan_speed,
         m_extruder_temps[m_extruder_id],
         { 0.0f, 0.0f }, // time
+        static_cast<float>(m_layer_id), //layer_duration: set later
         std::max<unsigned int>(1, m_layer_id) - 1,
         internal_only
     });
