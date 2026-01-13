@@ -962,9 +962,10 @@ void PrintConfigDef::init_fff_params()
                      "the value set in the 'Overhangs cooling threshold' parameter above. Increasing the cooling specifically for overhangs "
                      "and bridges can improve the overall print quality of these features.\n\n"
                      "Please note, this fan speed is clamped on the lower end by the minimum fan speed threshold set above. It is also adjusted "
-                     "upwards up to the maximum fan speed threshold when the minimum layer time threshold is not met.");
+                     "upwards up to the maximum fan speed threshold when the minimum layer time threshold is not met. "
+                     "Negative values forces this setting to take priority over min&max fan settings. eg: -50 here will force overhang fan speed to be 50%");
     def->sidetext = "%";
-    def->min = 0;
+    def->min = -100;
     def->max = 100;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionInts { 100 });
@@ -1027,7 +1028,7 @@ void PrintConfigDef::init_fff_params()
                      "Note: Bridge density that is too high can cause warping or overextrusion.");
     def->sidetext = "%";
     def->min = 10;
-    def->max = 120;
+    def->max = 200;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionPercent(100));
 
@@ -1041,7 +1042,7 @@ void PrintConfigDef::init_fff_params()
                      "further improving internal bridging structure before solid infill is extruded.");
     def->sidetext = "%";
     def->min = 10;
-    def->max = 100;
+    def->max = 200;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionPercent(100));
 
@@ -1794,7 +1795,7 @@ void PrintConfigDef::init_fff_params()
                    "on the outer wall speed setting above. Set to zero for auto.");
     def->sidetext = L("mm/s or %");
     def->ratio_over = "outer_wall_speed";
-    def->min = 1;
+    def->min = 0;
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionFloatOrPercent(50, true));
 
@@ -3906,6 +3907,26 @@ void PrintConfigDef::init_fff_params()
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionBool(false));
 
+
+    def = this->add("slow_down_before_retraction_speed", coFloat);
+    def->label   = L("Set acceleration before seam");
+    def->tooltip = L(
+        "Slowing down before the seam can help releasing the pressure build-up in the nozzle, results in better seam quality. \n\n"
+        "xx is recommended. 0 will disable this feature.");
+    def->sidetext = L("mm/s");
+    def->min      = 0;
+    def->mode     = comAdvanced;
+    def->set_default_value(new ConfigOptionFloat(0));
+
+    def = this->add("slow_down_before_retraction_length", coFloat);
+    def->label   = L("The slowdown distance before seam");
+    def->tooltip = L(
+        "Slowing down before the seam can help releasing the pressure build-up in the nozzle, results in better seam quality. \n\n"
+        "30 is usually enough. 0 will disable this feature.");
+    def->sidetext = L("mm");
+    def->min      = 0;
+    def->mode     = comAdvanced;
+    def->set_default_value(new ConfigOptionFloat(0));
 
     def = this->add("fan_min_speed", coFloats);
     def->label = L("Fan speed");
@@ -6950,7 +6971,7 @@ void PrintConfigDef::handle_legacy(t_config_option_key &opt_key, std::string &va
     } else if (opt_key == "rotate_solid_infill_direction") {
         opt_key = "solid_infill_rotate_template";
         if (value == "1") {
-            value = "0,90";
+            value = "45";
         } else if (value == "0") {
             value = "0";
         }

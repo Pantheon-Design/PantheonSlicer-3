@@ -1826,8 +1826,8 @@ void generate_support_toolpaths(
                 } else if (support_params.support_style == SupportMaterialStyle::smsTreeOrganic) {
                     // if the tree supports are too tall, use double wall to make it stronger
                     SupportParameters support_params2 = support_params;
-                    if (support_layer.print_z > 100.0)
-                        support_params2.tree_branch_diameter_double_wall_area_scaled = 0.1;
+                    //if (support_layer.print_z > 200.0)
+                    //    support_params2.tree_branch_diameter_double_wall_area_scaled = 0.1;
                     tree_supports_generate_paths(base_layer.extrusions, base_layer.polygons_to_extrude(), flow, support_params2);
                     done = true;
                 }

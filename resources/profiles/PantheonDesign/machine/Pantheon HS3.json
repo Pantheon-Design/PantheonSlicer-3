@@ -8,5 +8,5 @@
   "bed_model": "M5-bed.stl",
   "bed_texture": "pantheon_bed_texture.svg",
   "hotend_model": "HS-Pro-Hotend.stl",
-  "default_materials": "HS3 PA-CF;HS3 PA-GF;HS3 PETG-CF;HS3 FLEX-95A 0.6;HS3 FLEX-95A 0.4;HS3 PA-GF Dark Grey"
+  "default_materials": "HS3 PA-GF Dark Grey 0.4;HS3 PETG-CF 0.4;HS3 PA-CF 0.4;HS3 FLEX-95A 0.6;HS3 FLEX-95A 0.4;HS3 PA-GF 0.4"
 }

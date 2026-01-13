@@ -6,6 +6,18 @@
     "activate_chamber_temp_control": [
         "1"
     ],
+    "adaptive_pressure_advance": [
+        "0"
+    ],
+    "adaptive_pressure_advance_bridges": [
+        "0"
+    ],
+    "adaptive_pressure_advance_model": [
+        "0,0,0\n0,0,0"
+    ],
+    "adaptive_pressure_advance_overhangs": [
+        "0"
+    ],
     "additional_cooling_fan_speed": [
         "0"
     ],
@@ -16,7 +28,7 @@
         "1"
     ],
     "compatible_printers": [
-        "Pantheon HS3 0.6 Nozzle"
+        "Pantheon HS3 0.6 nozzle"
     ],
     "compatible_printers_condition": "",
     "compatible_prints": [
@@ -93,9 +105,6 @@
     "filament_is_support": [
         "0"
     ],
-    "filament_load_time": [
-        "0"
-    ],
     "filament_loading_speed": [
         "28"
     ],
@@ -157,12 +166,21 @@
         "20"
     ],
     "filament_settings_id": [
-        "HS3 FLEX-95A 0.6"
+        "HS3 FLEX-95A 0.6 RC 3.0.11"
     ],
     "filament_shrink": [
         "100%"
     ],
+    "filament_shrinkage_compensation_z": [
+        "100%"
+    ],
     "filament_soluble": [
+        "0"
+    ],
+    "filament_stamping_distance": [
+        "0"
+    ],
+    "filament_stamping_loading_speed": [
         "0"
     ],
     "filament_start_gcode": [
@@ -173,9 +191,6 @@
     ],
     "filament_type": [
         "TPU"
-    ],
-    "filament_unload_time": [
-        "0"
     ],
     "filament_unloading_speed": [
         "90"
@@ -210,6 +225,12 @@
     ],
     "idle_temperature": [
         "100"
+    ],
+    "internal_bridge_fan_speed": [
+        "-1"
+    ],
+    "ironing_fan_speed": [
+        "-1"
     ],
     "is_custom_defined": "0",
     "name": "HS3 FLEX-95A 0.6",
@@ -252,11 +273,23 @@
     "slow_down_min_speed": [
         "10"
     ],
+    "supertack_plate_temp": [
+        "35"
+    ],
+    "supertack_plate_temp_initial_layer": [
+        "35"
+    ],
     "support_material_interface_fan_speed": [
         "0"
     ],
     "temperature_vitrification": [
         "200"
+    ],
+    "textured_cool_plate_temp": [
+        "40"
+    ],
+    "textured_cool_plate_temp_initial_layer": [
+        "40"
     ],
     "textured_plate_temp": [
         "45"
@@ -264,5 +297,5 @@
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.0.10.0"
+    "version": "3.1.0.0"
 }
