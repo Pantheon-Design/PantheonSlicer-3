@@ -208,7 +208,7 @@
         "2"
     ],
     "filament_z_hop": [
-        "0.1"
+        "0"
     ],
     "filament_z_hop_types": [
         "Normal Lift"
@@ -297,5 +297,5 @@
     "textured_plate_temp_initial_layer": [
         "45"
     ],
-    "version": "3.1.0.0"
+    "version": "3.1.1.0"
 }
