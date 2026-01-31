@@ -5191,6 +5191,151 @@ bool GCode::_needSAFC(const ExtrusionPath &path)
     });
 }
 
+
+
+double GCode::get_stamina_flow_multiplier(double stamina) const
+{
+    double pct = stamina / m_stamina_max;
+    return (pct > 0.5) ? 1.0 : (pct > 0.0 ? m_stamina_comp_medium : m_stamina_comp_high);
+}
+
+void GCode::update_stamina_regeneration(double dt)
+{
+    if (dt > 0.0)
+        m_stamina_current = std::min(m_stamina_max, m_stamina_current + dt * m_stamina_regen_rate);
+}
+
+std::vector<GCode::StaminaSegment> GCode::calculate_stamina_segments(double len,   // Line length (mm)
+                                                                     double time,  // Time to complete this segment (seconds)
+                                                                     double mm3mm) // Material flow rate (mm³/mm)
+{
+    std::vector<StaminaSegment> segs;
+
+    double total_mm3 = len * mm3mm;
+
+    // Zero-flow move (travel, etc.)
+    if (total_mm3 < EPSILON) {
+        // Pure regeneration during travel
+        double regen         = time * m_stamina_regen_rate;
+        double final_stamina = std::min(m_stamina_max, m_stamina_current + regen);
+        segs.push_back({0.0, 1.0, 1.0, m_stamina_current, final_stamina});
+        m_stamina_current = final_stamina;
+        return segs;
+    }
+
+    // === KEY CHANGE: Calculate NET stamina change ===
+    // During extrusion, both consumption and regeneration happen simultaneously
+    double consumption  = total_mm3;                   // Total material consumed
+    double regeneration = time * m_stamina_regen_rate; // Total regeneration during this time
+    double net_change   = regeneration - consumption;  // Net change (can be positive or negative!)
+
+    // If net change is positive or zero and we don't cross any threshold, simple case
+    double final_stamina_simple = std::max(0.0, std::min(m_stamina_max, m_stamina_current + net_change));
+
+    double thresh_50 = m_stamina_max * 0.5;
+    double thresh_0  = 0.0;
+
+    // Check if we'll cross any thresholds
+    bool crosses_threshold = false;
+
+    // Check 50% threshold crossing (in either direction)
+    if ((m_stamina_current > thresh_50 && final_stamina_simple <= thresh_50) ||
+        (m_stamina_current <= thresh_50 && final_stamina_simple > thresh_50)) {
+        crosses_threshold = true;
+    }
+
+    // Check 0% threshold crossing (in either direction)
+    if ((m_stamina_current > thresh_0 && final_stamina_simple <= thresh_0) ||
+        (m_stamina_current <= thresh_0 && final_stamina_simple > thresh_0)) {
+        crosses_threshold = true;
+    }
+
+    // Simple case: no threshold crossing
+    if (!crosses_threshold) {
+        segs.push_back({0.0, 1.0, get_stamina_flow_multiplier(m_stamina_current), m_stamina_current, final_stamina_simple});
+        m_stamina_current = final_stamina_simple;
+        return segs;
+    }
+
+    // Complex case: we cross at least one threshold, need to split
+    // We'll simulate the move step by step to find threshold crossings
+
+    double ratio = 0.0;
+    double stam  = m_stamina_current;
+
+    for (int i = 0; i < 10 && ratio < 1.0; i++) {
+        double remain_ratio = 1.0 - ratio;
+        double remain_time  = remain_ratio * time;
+        double remain_mm3   = remain_ratio * total_mm3;
+
+        // Calculate net change for remaining segment
+        double remain_regen = remain_time * m_stamina_regen_rate;
+        double remain_net   = remain_regen - remain_mm3;
+
+        double mult = get_stamina_flow_multiplier(stam);
+        double end_ratio, end_stam;
+
+        // Determine which threshold we might cross
+        double next_threshold = -1.0;
+        bool   will_cross     = false;
+
+        // Check if we're moving toward 50% threshold
+        if (remain_net < 0) { // Depleting
+            if (stam > thresh_50) {
+                double stam_after = stam + remain_net;
+                if (stam_after <= thresh_50) {
+                    next_threshold = thresh_50;
+                    will_cross     = true;
+                }
+            } else if (stam > thresh_0) {
+                double stam_after = stam + remain_net;
+                if (stam_after <= thresh_0) {
+                    next_threshold = thresh_0;
+                    will_cross     = true;
+                }
+            }
+        } else { // Increasing
+            if (stam < thresh_50) {
+                double stam_after = stam + remain_net;
+                if (stam_after >= thresh_50) {
+                    next_threshold = thresh_50;
+                    will_cross     = true;
+                }
+            }
+        }
+
+        if (will_cross && next_threshold >= 0.0) {
+            // Calculate what ratio gets us to the threshold
+            // stam + (ratio_to_thresh * net_change) = threshold
+            // ratio_to_thresh = (threshold - stam) / net_change
+            double ratio_to_thresh = (next_threshold - stam) / net_change;
+
+            // Clamp to valid range
+            ratio_to_thresh = std::max(0.0, std::min(1.0, ratio_to_thresh));
+
+            end_ratio = ratio + ratio_to_thresh * remain_ratio;
+            end_stam  = next_threshold;
+        } else {
+            // No crossing, consume rest
+            end_ratio = 1.0;
+            end_stam  = std::max(0.0, std::min(m_stamina_max, stam + remain_net));
+        }
+
+        if (end_ratio > 1.0)
+            end_ratio = 1.0;
+
+        segs.push_back({ratio, end_ratio, mult, stam, end_stam});
+        ratio = end_ratio;
+        stam  = end_stam;
+
+        if (std::abs(ratio - 1.0) < EPSILON)
+            break;
+    }
+
+    m_stamina_current = stam;
+    return segs;
+}
+
 std::string GCode::_extrude(const ExtrusionPath &path, std::string description, double speed)
 {
     std::string gcode;
@@ -5776,35 +5921,54 @@ std::string GCode::_extrude(const ExtrusionPath &path, std::string description, 
                 double path_length = 0.;
                 double total_length = sloped == nullptr ? 0. : path.polyline.length() * SCALING_FACTOR;
                 for (const Line& line : path.polyline.lines()) {
-                    std::string tempDescription = description;
-                    const double line_length = line.length() * SCALING_FACTOR;
+                    std::string  tempDescription = description;
+                    const double line_length     = line.length() * SCALING_FACTOR;
                     if (line_length < EPSILON)
                         continue;
                     path_length += line_length;
-                    auto dE = e_per_mm * line_length;
-                    if (_needSAFC(path)) {
-                        auto oldE = dE;
-                        dE = m_small_area_infill_flow_compensator->modify_flow(line_length, dE, path.role());
 
-                        if (m_config.gcode_comments && oldE > 0 && oldE != dE) {
-                            tempDescription += Slic3r::format(" | Old Flow Value: %0.5f Length: %0.5f",oldE, line_length);
+                    // === STAMINA CODE BEGINS ===
+                    double seg_time = line_length / speed;
+                    auto stamina_segs = calculate_stamina_segments(line_length, seg_time, _mm3_per_mm);
+
+                    for (const auto& ss : stamina_segs) {
+                        double seg_len = (ss.end_ratio - ss.start_ratio) * line_length;
+                        if (seg_len < EPSILON)
+                            continue;
+
+                        auto dE = e_per_mm * seg_len;
+
+                        if (_needSAFC(path)) {
+                            auto oldE = dE;
+                            dE        = m_small_area_infill_flow_compensator->modify_flow(seg_len, dE, path.role());
+                            if (m_config.gcode_comments && oldE > 0 && oldE != dE) {
+                                tempDescription += Slic3r::format(" | SAFC: %0.5f->%0.5f", oldE, dE);
+                            }
                         }
-                    }
-                    if (sloped == nullptr) {
-                        // Normal extrusion
-                        gcode += m_writer.extrude_to_xy(
-                            this->point_to_gcode(line.b),
-                            dE,
-                            GCodeWriter::full_gcode_comment ? tempDescription : "", path.is_force_no_extrusion());
-                    } else {
-                        // Sloped extrusion
-                        const auto [z_ratio, e_ratio] = sloped->interpolate(path_length / total_length);
-                        Vec2d dest2d = this->point_to_gcode(line.b);
-                        Vec3d dest3d(dest2d(0), dest2d(1), get_sloped_z(z_ratio));
-                        gcode += m_writer.extrude_to_xyz(
-                            dest3d,
-                            dE * e_ratio,
-                            GCodeWriter::full_gcode_comment ? tempDescription : "", path.is_force_no_extrusion());
+
+                        double stam_dE = dE * ss.flow_multiplier;
+                        if (m_config.gcode_comments && std::abs(ss.flow_multiplier - 1.0) > EPSILON) {
+                            tempDescription += Slic3r::format(" | Stam:%0.0f%% E:%0.4f->%0.4f L:%0.2f", ss.flow_multiplier * 100, dE,
+                                                              stam_dE, ss.stamina_at_start);
+                        }
+
+                        Point seg_end = (std::abs(ss.end_ratio - 1.0) < EPSILON) ?
+                                            line.b :
+                                            Point(line.a.x() + (line.b.x() - line.a.x()) * ss.end_ratio,
+                                                  line.a.y() + (line.b.y() - line.a.y()) * ss.end_ratio);
+
+                        if (sloped == nullptr) {
+                            gcode += m_writer.extrude_to_xy(this->point_to_gcode(seg_end), stam_dE,
+                                                            GCodeWriter::full_gcode_comment ? tempDescription : "",
+                                                            path.is_force_no_extrusion());
+                        } else {
+                            double sp                     = path_length - line_length + seg_len;
+                            const auto [z_ratio, e_ratio] = sloped->interpolate(sp / total_length);
+                            Vec2d d2d                     = this->point_to_gcode(seg_end);
+                            Vec3d d3d(d2d(0), d2d(1), get_sloped_z(z_ratio));
+                            gcode += m_writer.extrude_to_xyz(d3d, stam_dE * e_ratio, GCodeWriter::full_gcode_comment ? tempDescription : "",
+                                                             path.is_force_no_extrusion());
+                        }
                     }
                 }
             } else {

@@ -186,7 +186,12 @@ public:
         m_last_obj_copy(nullptr, Point(std::numeric_limits<coord_t>::max(), std::numeric_limits<coord_t>::max())),
         // BBS
         m_toolchange_count(0),
-        m_nominal_z(0.)
+        m_nominal_z(0.), 
+        m_stamina_current(10.0), 
+        m_stamina_max(10.0), 
+        m_stamina_regen_rate(2), 
+        m_stamina_comp_medium(1.10), 
+        m_stamina_comp_high(1.50)
         {}
     ~GCode() = default;
 
@@ -614,6 +619,22 @@ private:
     }
     // To control print speed of 1st object layer over raft interface.
     bool                                object_layer_over_raft() const { return m_object_layer_over_raft; }
+
+    double m_stamina_current;
+    double m_stamina_max;
+    double m_stamina_regen_rate;
+    double m_stamina_comp_medium;
+    double m_stamina_comp_high;
+
+    struct StaminaSegment
+    {
+        double start_ratio, end_ratio, flow_multiplier;
+        double stamina_at_start, stamina_at_end;
+    };
+
+    std::vector<StaminaSegment> calculate_stamina_segments(double len, double time, double mm3mm);
+    double                      get_stamina_flow_multiplier(double stamina) const;
+    void                        update_stamina_regeneration(double dt);
 
     friend ObjectByExtruder& object_by_extruder(
         std::map<unsigned int, std::vector<ObjectByExtruder>> &by_extruder,
