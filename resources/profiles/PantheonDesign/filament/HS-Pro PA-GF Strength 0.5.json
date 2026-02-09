@@ -115,7 +115,7 @@
         "nil"
     ],
     "filament_max_volumetric_speed": [
-        "20"
+        "17"
     ],
     "filament_minimal_purge_on_wipe_tower": [
         "15"
@@ -297,5 +297,5 @@
     "textured_plate_temp_initial_layer": [
         "90"
     ],
-    "version": "3.1.0.0"
+    "version": "3.1.1.0"
 }

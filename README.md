@@ -1,4 +1,52 @@
-<div align="center">
+# PantheonSlicer-3 Build for Mac
+### Build for current architecture (arm64 or x86_64):
+```bash
+./pantheon_build_release_macos.sh
+```
+
+### Build for specific architecture:
+```bash
+./pantheon_build_release_macos.sh -a arm64
+./pantheon_build_release_macos.sh -a x86_64
+```
+
+### Build universal binary (arm64 + x86_64):
+```bash
+./pantheon_build_release_macos.sh -a universal
+```
+
+### Build only dependencies:
+```bash
+./pantheon_build_release_macos.sh -d
+```
+
+### Build only slicer (deps already built):
+```bash
+./pantheon_build_release_macos.sh -s
+```
+
+### Build with Ninja instead of Xcode:
+```bash
+./pantheon_build_release_macos.sh -x
+```
+
+### Rebuild without reconfiguring CMake:
+```bash
+./pantheon_build_release_macos.sh -b
+```
+### Signing:
+```bash
+./sign_and_notarize_fixed.sh
+```
+# PantheonSlicer-3 Build for Windows
+### Build for debug mode:
+```bash
+.\build_release.bat debuginfo
+```
+### Build for release:
+```bash
+.\build_release.bat
+```
 
 <picture>
   <img alt="OrcaSlicer logo" src="resources/images/OrcaSlicer.png" width="15%" height="15%">
