@@ -81,6 +81,7 @@ extern unsigned get_logging_level();
 extern void trace(unsigned int level, const char *message);
 // Format memory allocated, separate thousands by comma.
 extern std::string format_memsize_MB(size_t n);
+extern std::string format_memsize(size_t bytes, unsigned int decimals = 1);
 // Return string to be added to the boost::log output to inform about the current process memory allocation.
 // The string is non-empty if the loglevel >= info (3) or ignore_loglevel==true.
 // Latter is used to get the memory info from SysInfoDialog.
@@ -680,6 +681,8 @@ void copy_directory_recursively(const boost::filesystem::path &source, const boo
 // Orca: Since 1.7.9 Boost deprecated save_string_file and load_string_file, copy and modified from boost 1.7.8
 void save_string_file(const boost::filesystem::path& p, const std::string& str);
 void load_string_file(const boost::filesystem::path& p, std::string& str);
+
+bool check_layer_id_pattern(const std::string& pattern, int layer_id);
 
 } // namespace Slic3r
 

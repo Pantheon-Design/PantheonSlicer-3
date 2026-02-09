@@ -22,6 +22,7 @@
 #include "MsgDialog.hpp"
 #include "Widgets/ProgressDialog.hpp"
 #include "SingleChoiceDialog.hpp"
+#include "StepMeshDialog.hpp"
 
 #include <boost/algorithm/string.hpp>
 #include <wx/progdlg.h>
@@ -83,15 +84,49 @@ class wxRenderer : public wxDelegateRendererNative
 {
 public:
     wxRenderer() : wxDelegateRendererNative(wxRendererNative::Get()) {}
-    virtual void DrawItemSelectionRect(wxWindow *win,
-                                       wxDC& dc,
-                                       const wxRect& rect,
-                                       int flags = 0) wxOVERRIDE
-        { GetGeneric().DrawItemSelectionRect(win, dc, rect, flags); }
+    virtual void DrawItemSelectionRect(wxWindow *win, wxDC& dc, const wxRect& rect, int flags = 0) override
+    {   // ORCA draw selection background to improve consistency between platforms
+        dc.SetBrush(StateColor::darkModeColorFor(wxColour("#BFE1DE")));
+        dc.DrawRectangle(rect);
+        //GetGeneric().DrawItemSelectionRect(win, dc, rect, flags);
+    }
+    virtual void DrawFocusRect(        wxWindow *win, wxDC& dc, const wxRect& rect, int flags = 0) override
+    {   // ORCA draw focus rectangle to improve consistency between platforms
+        dc.SetPen(  StateColor::darkModeColorFor(wxColour("#009688")));
+        dc.DrawRectangle(rect);
+    }
+    virtual void DrawTreeItemButton(   wxWindow *win, wxDC& dc, const wxRect& rect, int flags = 0) override
+    {   // ORCA draw custom triangle to improve consistency between platforms
+        dc.SetPen(  StateColor::darkModeColorFor(wxColour("#7C8282")));
+        dc.SetBrush(StateColor::darkModeColorFor(wxColour("#7C8282")));
+        bool expanded = (flags == wxCONTROL_EXPANDED || flags == (wxCONTROL_CURRENT | wxCONTROL_EXPANDED));
+        wxRect r = rect;
+        // stretch rectangle depends on orientation
+        r.Deflate((expanded ? wxSize(4, 6) : wxSize(6, 4)) * (wxGetApp().em_unit() * .1));
+        wxPoint triangle[3];
+        triangle[0] = wxPoint(r.x, r.y);
+        triangle[1] = triangle[0] + wxPoint(r.width, expanded ? 0 :r.height/2);
+        triangle[2] = triangle[0] + wxPoint(expanded ? r.width/2 : 0, r.height);
+        dc.DrawPolygon(3, &triangle[0]);
+    }
+    virtual void DrawItemText(
+        wxWindow* win,
+        wxDC& dc,
+        const wxString& text,
+        const wxRect& rect,
+        int align = wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL,
+        int flags = 0, // wxCONTROL_SELECTED wxCONTROL_FOCUSED wxCONTROL_DISABLED 
+        wxEllipsizeMode ellipsizeMode = wxELLIPSIZE_END
+    ) override
+    {   // ORCA draw custom text to improve consistency between platforms
+        //dc.SetFont(win->GetFont()); Without SetFont it pulls font from window
+        dc.SetTextForeground(StateColor::darkModeColorFor(wxColour("#262E30"))); // use same color for selected / non-selected
+        dc.DrawText(text,wxPoint(rect.x, rect.y));
+    }
 };
 
 ObjectList::ObjectList(wxWindow* parent) :
-    wxDataViewCtrl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE)
+    wxDataViewCtrl(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxNO_BORDER | wxDV_NO_HEADER) // ORCA: Remove border and header
 {
     wxGetApp().UpdateDVCDarkUI(this, true);
 
@@ -103,7 +138,6 @@ ObjectList::ObjectList(wxWindow* parent) :
 
     SetFont(Label::sysFont(13));
 #ifdef __WXMSW__
-    GenericGetHeader()->SetFont(Label::sysFont(13));
     static auto render = new wxRenderer;
     wxRendererNative::Set(render);
 #endif
@@ -289,18 +323,12 @@ ObjectList::ObjectList(wxWindow* parent) :
              } else {
                  m_last_size = this->GetSize();
              }
-#ifdef __WXGTK__
-        // On GTK, the EnsureVisible call is postponed to Idle processing (see wxDataViewCtrl::m_ensureVisibleDefered).
-        // So the postponed EnsureVisible() call is planned for an item, which may not exist at the Idle processing time, if this wxEVT_SIZE
-        // event is succeeded by a delete of the currently active item. We are trying our luck by postponing the wxEVT_SIZE triggered EnsureVisible(),
-        // which seems to be working as of now.
-        this->CallAfter([this](){ ensure_current_item_visible(); });
-#else
+
         update_name_column_width();
 
         // BBS
         this->CallAfter([this]() { ensure_current_item_visible(); });
-#endif
+
         e.Skip();
     }));
     m_last_size = this->GetSize();
@@ -390,7 +418,7 @@ void ObjectList::create_objects_ctrl()
     AppendColumn(name_col);
 
     // column PrintableProperty (Icon) of the view control:
-    AppendBitmapColumn(" ", colPrint, wxOSX ? wxDATAVIEW_CELL_EDITABLE : wxDATAVIEW_CELL_INERT, 3*em,
+    AppendBitmapColumn(" ", colPrint, wxOSX ? wxDATAVIEW_CELL_EDITABLE : wxDATAVIEW_CELL_INERT, m_columns_width[colPrint]*em,
         wxALIGN_CENTER_HORIZONTAL, 0);
 
     // column Extruder of the view control:
@@ -426,11 +454,11 @@ void ObjectList::create_objects_ctrl()
 
     // For some reason under OSX on 4K(5K) monitors in wxDataViewColumn constructor doesn't set width of column.
     // Therefore, force set column width.
-    if (wxOSX)
-    {
+#ifdef __WXOSX__
+        dataview_remove_insets(this);
         for (int cn = colName; cn < colCount; cn++)
             GetColumn(cn)->SetWidth(m_columns_width[cn] * em);
-    }
+#endif
 }
 
 void ObjectList::get_selected_item_indexes(int& obj_idx, int& vol_idx, const wxDataViewItem& input_item/* = wxDataViewItem(nullptr)*/)
@@ -530,7 +558,7 @@ MeshErrorsInfo ObjectList::get_mesh_errors_info(const int obj_idx, const int vol
         *non_manifold_edges = stats.open_edges;
 
     if (is_windows10() && !sidebar_info)
-        tooltip += "\n" + _L("Right click the icon to fix model object");
+        tooltip += "\n" + _L("Click the icon to repair model object");
 
     return { tooltip, get_warning_icon_name(stats) };
 }
@@ -831,7 +859,8 @@ void ObjectList::update_objects_list_filament_column(size_t filaments_count)
     // set show/hide for this column
     set_filament_column_hidden(filaments_count == 1);
     //a workaround for a wrong last column width updating under OSX
-    GetColumn(colEditing)->SetWidth(25);
+    auto em = em_unit(this);
+    GetColumn(colEditing)->SetWidth(m_columns_width[colEditing]*em);
 
     m_prevent_update_filament_in_config = false;
 }
@@ -859,7 +888,7 @@ void ObjectList::update_name_column_width() const
         }
     }
 
-    GetColumn(colName)->SetWidth(client_size.x - (others_width)*em);
+    GetColumn(colName)->SetWidth(max(0, client_size.x - (others_width)*em));
 }
 
 void ObjectList::set_filament_column_hidden(const bool hide) const
@@ -1087,38 +1116,95 @@ void ObjectList::copy_settings_to_clipboard()
     if (m_objects_model->GetItemType(item) & itSettings)
         item = m_objects_model->GetParent(item);
 
-    m_clipboard.get_config_cache() = get_item_config(item).get();
+    wxDataViewItemArray items;
+    items.push_back(item);
+    while ((m_objects_model->GetItemType(items.back()) & itObject) == 0) {
+        if (m_objects_model->GetItemType(items.back()) & itLayerRoot)
+            items.back() = m_objects_model->GetParent(items.back());
+        else
+            items.push_back(m_objects_model->GetParent(items.back()));
+    }
+    auto &config = m_clipboard.get_config_cache();
+    config.clear();
+    while (!items.empty()) {
+        config.apply(get_item_config(items.back()).get());
+        items.pop_back();
+    }
+
+    m_clipboard.set_type(ItemType(m_objects_model->GetItemType(item) | itSettings));
+}
+
+bool GUI::ObjectList::can_paste_settings_into_list()
+{
+    wxDataViewItemArray sels;
+    GetSelections(sels);
+    if (sels.empty())
+        return false;
+    return m_clipboard.get_type() == (m_objects_model->GetItemType(sels.front()) | itSettings);
 }
 
 void ObjectList::paste_settings_into_list()
 {
-    wxDataViewItem item = GetSelection();
-    assert(item.IsOk());
-    if (m_objects_model->GetItemType(item) & itSettings)
-        item = m_objects_model->GetParent(item);
+    wxDataViewItemArray sels;
+    GetSelections(sels);
+    take_snapshot("Paste settings");
 
-    ItemType item_type = m_objects_model->GetItemType(item);
-    if(!(item_type & (itObject | itVolume |itLayer)))
-        return;
+    std::unique_ptr<t_config_option_keys> global_keys; // need copy from global
 
-    DynamicPrintConfig& config_cache = m_clipboard.get_config_cache();
-    assert(!config_cache.empty());
+    for (auto item : sels) {
 
-    auto keys = config_cache.keys();
-    auto part_options = SettingsFactory::get_options(true);
+        if (m_objects_model->GetItemType(item) & itSettings)
+            item = m_objects_model->GetParent(item);
 
-    for (const std::string& opt_key: keys) {
-        if (item_type & (itVolume | itLayer) &&
-            std::find(part_options.begin(), part_options.end(), opt_key) == part_options.end())
-            continue; // we can't to add object specific options for the part's(itVolume | itLayer) config
+        ItemType item_type = m_objects_model->GetItemType(item);
+        if(!(item_type & (itObject | itVolume |itLayer)))
+            return;
 
-        const ConfigOption* option = config_cache.option(opt_key);
-        if (option)
-            m_config->set_key_value(opt_key, option->clone());
+        DynamicPrintConfig& config_cache = m_clipboard.get_config_cache();
+        assert(!config_cache.empty());
+
+        auto keys = config_cache.keys();
+        auto part_options = SettingsFactory::get_options(true);
+        auto config       = &get_item_config(item);
+        auto extruder     = config->option("extruder") ? config->option("extruder")->clone() : nullptr;
+        config->reset();
+
+        if (item_type & (itVolume | itLayer)) {
+            if (global_keys == nullptr) {
+                auto object = m_objects_model->GetParent(item);
+                DynamicPrintConfig config;
+                config.apply_only(*wxGetApp().get_tab(Preset::TYPE_PRINT)->get_config(), keys);
+                config.apply_only(get_item_config(object).get(), keys);
+                auto equals = config.equal(config_cache);
+                global_keys.reset(new t_config_option_keys);
+                auto keys2 = get_item_config(object).keys();
+                std::copy_if(keys2.begin(), keys2.end(), std::back_inserter(*global_keys),
+                             [&equals](auto &e) { return std::find(equals.begin(), equals.end(), e) == equals.end(); });
+                keys.erase(std::remove_if(keys.begin(), keys.end(),
+                             [&equals](auto &e) { return std::find(equals.begin(), equals.end(), e) != equals.end(); }), keys.end());
+            }
+            config->apply_only(*wxGetApp().get_tab(Preset::TYPE_PRINT)->get_config(), *global_keys);
+        }
+
+        for (const std::string& opt_key: keys) {
+            if (item_type & (itVolume | itLayer) &&
+                std::find(part_options.begin(), part_options.end(), opt_key) == part_options.end())
+                continue; // we can't to add object specific options for the part's(itVolume | itLayer) config
+
+            const ConfigOption* option = config_cache.option(opt_key);
+            if (option)
+                config->set_key_value(opt_key, option->clone());
+        }
+        if (extruder)
+            config->set_key_value("extruder", extruder);
+        else
+            config->erase("extruder");
+
+        // Add settings item for object/sub-object and show them
+        add_settings_item(item, &config->get());
     }
 
-    // Add settings item for object/sub-object and show them
-    show_settings(add_settings_item(item, &m_config->get()));
+    part_selection_changed();
 }
 
 void ObjectList::paste_volumes_into_list(int obj_idx, const ModelVolumePtrs& volumes)
@@ -1192,6 +1278,8 @@ void ObjectList::OnContextMenu(wxDataViewEvent& evt)
 
 void ObjectList::list_manipulation(const wxPoint& mouse_pos, bool evt_context_menu/* = false*/)
 {
+    if (m_prevent_list_manipulation) return;
+
     // Interesting fact: when mouse_pos.x < 0, HitTest(mouse_pos, item, col) returns item = null, but column = last column.
     // So, when mouse was moved to scene immediately after clicking in ObjectList, in the scene will be shown context menu for the Editing column.
     if (mouse_pos.x < 0)
@@ -1259,8 +1347,8 @@ void ObjectList::list_manipulation(const wxPoint& mouse_pos, bool evt_context_me
                 ObjectDataViewModelNode* node = (ObjectDataViewModelNode*)item.GetID();
                 if (node && node->HasColorPainting()) {
                     GLGizmosManager& gizmos_mgr = wxGetApp().plater()->get_view3D_canvas3D()->get_gizmos_manager();
-                    if (gizmos_mgr.get_current_type() != GLGizmosManager::EType::MmuSegmentation)
-                        gizmos_mgr.open_gizmo(GLGizmosManager::EType::MmuSegmentation);
+                    if (gizmos_mgr.get_current_type() != GLGizmosManager::EType::MmSegmentation)
+                        gizmos_mgr.open_gizmo(GLGizmosManager::EType::MmSegmentation);
                     else
                         gizmos_mgr.reset_all_states();
                 }
@@ -1289,7 +1377,7 @@ void ObjectList::list_manipulation(const wxPoint& mouse_pos, bool evt_context_me
                 dynamic_cast<TabPrintPlate*>(wxGetApp().get_plate_tab())->reset_model_config();
             else if (m_objects_model->GetItemType(item) & itLayer)
                 dynamic_cast<TabPrintLayer*>(wxGetApp().get_layer_tab())->reset_model_config();
-            else
+            else if (item.IsOk())
                 dynamic_cast<TabPrintModel*>(wxGetApp().get_model_tab(vol_idx >= 0))->reset_model_config();
         }
         else if (col_num == colName)
@@ -1459,7 +1547,7 @@ bool ObjectList::paste_from_clipboard()
 
     if (m_clipboard.get_type() & itSettings)
         paste_settings_into_list();
-    if (m_clipboard.get_type() & (itLayer | itLayerRoot))
+    else if (m_clipboard.get_type() & (itLayer | itLayerRoot))
         paste_layers_into_list();
 
     return true;
@@ -2001,15 +2089,49 @@ void ObjectList::load_modifier(const wxArrayString& input_files, ModelObject& mo
         dlg.Update(static_cast<int>(100.0f * static_cast<float>(i) / static_cast<float>(input_files.size())),
             _L("Loading file") + ": " + from_path(boost::filesystem::path(input_file).filename()));
         dlg.Fit();
-
+        
+        bool is_user_cancel = false;
         Model model;
         try {
-            model = Model::read_from_file(input_file, nullptr, nullptr, LoadStrategy::LoadModel);
+            if (boost::iends_with(input_file, ".stp") ||
+                boost::iends_with(input_file, ".step")) {
+                double linear  = string_to_double_decimal_point(wxGetApp().app_config->get("linear_defletion"));
+                if (linear <= 0) linear = 0.003;
+                double angle = string_to_double_decimal_point(wxGetApp().app_config->get("angle_defletion"));
+                if (angle <= 0) angle = 0.5;
+                bool split_compound = wxGetApp().app_config->get_bool("is_split_compound");
+                model = Model::read_from_step(
+                    input_file, LoadStrategy::LoadModel, nullptr, nullptr,
+                    [this, &is_user_cancel, &linear, &angle, &split_compound](Slic3r::Step& file, double& linear_value,
+                                                                                     double& angle_value, bool& is_split) -> int {
+                        if (wxGetApp().app_config->get_bool("enable_step_mesh_setting")) {
+                            StepMeshDialog mesh_dlg(nullptr, file, linear, angle);
+                            if (mesh_dlg.ShowModal() == wxID_OK) {
+                                linear_value = mesh_dlg.get_linear_defletion();
+                                angle_value  = mesh_dlg.get_angle_defletion();
+                                is_split     = mesh_dlg.get_split_compound_value();
+                                return 1;
+                            }
+                        } else {
+                            linear_value = linear;
+                            angle_value  = angle;
+                            is_split     = split_compound;
+                            return 1;
+                        }
+                        is_user_cancel = true;
+                        return -1;
+                    },
+                    linear, angle, split_compound);
+            } else {
+                model = Model::read_from_file(input_file, nullptr, nullptr, LoadStrategy::LoadModel);
+            }
         }
         catch (std::exception&) {
-            // auto msg = _L("Error!") + " " + input_file + " : " + e.what() + ".";
-            auto msg = _L("Error!") + " " + _L("Failed to get the model data in the current file.");
-            show_error(parent, msg);
+            if (!is_user_cancel) {
+                // auto msg = _L("Error!") + " " + input_file + " : " + e.what() + ".";
+                auto msg = _L("Error!") + " " + _L("Failed to get the model data in the current file.");
+                show_error(parent, msg);
+            }
             return;
         }
 
@@ -2082,17 +2204,17 @@ static TriangleMesh create_mesh(const std::string& type_name, const BoundingBoxf
     else if (type_name == "Sphere")
         // Centered around 0, half the sphere below the print bed, half above.
         // The sphere has the same volume as the box above.
-        mesh = TriangleMesh(its_make_sphere(0.5 * side, PI / 18));
+        mesh = TriangleMesh(its_make_sphere(0.5 * side, PI / 90));
     else if (type_name == "Slab")
         // Sitting on the print bed, left front front corner at (0, 0).
         mesh = TriangleMesh(its_make_cube(bb.size().x() * 1.5, bb.size().y() * 1.5, bb.size().z() * 0.5));
     else if (type_name == "Cone")
         mesh = TriangleMesh(its_make_cone(0.5 * side, side));
     else if (type_name == "Disc")
-        mesh.ReadSTLFile((Slic3r::resources_dir() + "/handy_models/helper_disk.stl").c_str(), true, nullptr);
+        mesh = TriangleMesh(its_make_cylinder(0.5 * side, 0.2f));
     else if (type_name == "Torus")
-        mesh.ReadSTLFile((Slic3r::resources_dir() + "/handy_models/torus.stl").c_str(), true, nullptr);
-    return TriangleMesh(mesh);
+        mesh = TriangleMesh(its_make_torus(0.5 * side, 0.125 * side,(PI / 60)));
+    return mesh;
 }
 
 void ObjectList::load_generic_subobject(const std::string& type_name, const ModelVolumeType type)
@@ -2336,18 +2458,26 @@ void ObjectList::del_info_item(const int obj_idx, InfoItemType type)
         break;
 
     // BBS: remove CustomSeam
-    case InfoItemType::MmuSegmentation:
-        cnv->get_gizmos_manager().reset_all_states();
-        Plater::TakeSnapshot(plater, "Remove color painting");
-        for (ModelVolume* mv : (*m_objects)[obj_idx]->volumes)
-            mv->mmu_segmentation_facets.reset();
-        break;
 
     case InfoItemType::CutConnectors:
         if (!del_from_cut_object(true)) {
             // there is no need to post EVT_GLCANVAS_SCHEDULE_BACKGROUND_PROCESS if nothing was changed
             return;
         }
+        break;
+
+    case InfoItemType::MmSegmentation:
+        cnv->get_gizmos_manager().reset_all_states();
+        Plater::TakeSnapshot(plater, "Remove color painting");
+        for (ModelVolume* mv : (*m_objects)[obj_idx]->volumes)
+            mv->mmu_segmentation_facets.reset();
+        break;
+
+    case InfoItemType::FuzzySkin:
+        cnv->get_gizmos_manager().reset_all_states();
+        Plater::TakeSnapshot(plater, _u8L("Remove paint-on fuzzy skin"));
+        for (ModelVolume* mv : (*m_objects)[obj_idx]->volumes)
+            mv->fuzzy_skin_facets.reset();
         break;
 
     // BBS: remove Sinking
@@ -2432,7 +2562,7 @@ bool ObjectList::del_from_cut_object(bool is_cut_connector, bool is_model_part/*
 
     InfoDialog dialog(wxGetApp().plater(), title,
                       (_L("This action will break a cut correspondence.\n"
-                         "After that model consistency can't be guaranteed .\n"
+                         "After that model consistency can't be guaranteed.\n"
                          "\n"
                          "To manipulate with solid parts or negative volumes you have to invalidate cut infornation first.") + msg_end ),
                       false, buttons_style | wxCANCEL_DEFAULT | wxICON_WARNING);
@@ -3270,11 +3400,13 @@ void ObjectList::part_selection_changed()
                     case InfoItemType::CustomSupports:
                     // BBS: remove CustomSeam
                     //case InfoItemType::CustomSeam:
-                    case InfoItemType::MmuSegmentation:
+                    case InfoItemType::MmSegmentation:
+                    case InfoItemType::FuzzySkin:
                     {
                         GLGizmosManager::EType gizmo_type = info_type == InfoItemType::CustomSupports ? GLGizmosManager::EType::FdmSupports :
                                                             /*info_type == InfoItemType::CustomSeam ? GLGizmosManager::EType::Seam :*/
-                                                            GLGizmosManager::EType::MmuSegmentation;
+                                                            info_type == InfoItemType::FuzzySkin        ? GLGizmosManager::EType::FuzzySkin :
+                                                            GLGizmosManager::EType::MmSegmentation;
                         GLGizmosManager& gizmos_mgr = wxGetApp().plater()->get_view3D_canvas3D()->get_gizmos_manager();
                         if (gizmos_mgr.get_current_type() != gizmo_type)
                             gizmos_mgr.open_gizmo(gizmo_type);
@@ -4668,6 +4800,7 @@ void ObjectList::select_item(std::function<wxDataViewItem()> get_item)
         return;
 
     m_prevent_list_events = true;
+    m_prevent_list_manipulation = true;
 
     wxDataViewItem item = get_item();
     if (item.IsOk()) {
@@ -4676,6 +4809,7 @@ void ObjectList::select_item(std::function<wxDataViewItem()> get_item)
         part_selection_changed();
     }
 
+    m_prevent_list_manipulation = false;
     m_prevent_list_events = false;
 }
 
@@ -4728,6 +4862,7 @@ void ObjectList::select_items(const std::vector<ObjectVolumeID>& ov_ids)
 void ObjectList::select_items(const wxDataViewItemArray& sels)
 {
     m_prevent_list_events = true;
+    m_prevent_list_manipulation = true;
     m_last_selected_item = sels.empty() ? wxDataViewItem(nullptr) : sels.back();
 
     UnselectAll();
@@ -4742,6 +4877,7 @@ void ObjectList::select_items(const wxDataViewItemArray& sels)
 
     part_selection_changed();
 
+    m_prevent_list_manipulation = false;
     m_prevent_list_events = false;
 }
 
@@ -4753,6 +4889,9 @@ void ObjectList::select_all()
 
 void ObjectList::select_item_all_children()
 {
+    if (wxGetApp().plater()  && !wxGetApp().plater()->canvas3D()->get_gizmos_manager().is_allow_select_all()) {
+        return;
+    }
     wxDataViewItemArray sels;
 
     // There is no selection before OR some object is selected   =>  select all objects
@@ -4837,11 +4976,11 @@ bool ObjectList::check_last_selection(wxString& msg_str)
 
         if (m_selection_mode == smInstance) {
             msg_str = wxString::Format(_(L("Selection conflicts")) + "\n\n" +
-                _(L("If first selected item is an object, the second one should also be object.")) + "\n");
+                _(L("If the first selected item is an object, the second should also be an object.")) + "\n");
         }
         else {
             msg_str = wxString::Format(_(L("Selection conflicts")) + "\n\n" +
-                _(L("If first selected item is a part, the second one should be part in the same object.")) + "\n");
+                _(L("If the first selected item is a part, the second should be a part in the same object.")) + "\n");
         }
 
         // Unselect last selected item, if selection is without SHIFT
@@ -5418,7 +5557,7 @@ void ObjectList::fix_through_netfabb()
     }
     if (msg.IsEmpty())
         msg = _L("Repairing was canceled");
-    plater->get_notification_manager()->push_notification(NotificationType::NetfabbFinished, NotificationManager::NotificationLevel::PrintInfoShortNotificationLevel, boost::nowide::narrow(msg));
+    plater->get_notification_manager()->push_notification(NotificationType::NetfabbFinished, NotificationManager::NotificationLevel::PrintInfoShortNotificationLevel, into_u8(msg));
 }
 
 void ObjectList::simplify()
@@ -5461,14 +5600,8 @@ void ObjectList::msw_rescale()
 
     const int em = wxGetApp().em_unit();
 
-    GetColumn(colName    )->SetWidth(20 * em);
-    GetColumn(colPrint   )->SetWidth( 3 * em);
-    GetColumn(colFilament)->SetWidth( 5 * em);
-    // BBS
-    GetColumn(colSupportPaint)->SetWidth(3 * em);
-    GetColumn(colColorPaint)->SetWidth(3 * em);
-    GetColumn(colSinking)->SetWidth(3 * em);
-    GetColumn(colEditing )->SetWidth( 3 * em);
+    for (int cn = colName; cn < colCount; cn++)
+        GetColumn(cn)->SetWidth(m_columns_width[cn] * em);
 
     // rescale/update existing items with bitmaps
     m_objects_model->Rescale();
@@ -5541,8 +5674,8 @@ void ObjectList::OnEditingStarted(wxDataViewEvent &event)
         ObjectDataViewModelNode* node = (ObjectDataViewModelNode*)item.GetID();
         if (node->HasColorPainting()) {
             GLGizmosManager& gizmos_mgr = wxGetApp().plater()->get_view3D_canvas3D()->get_gizmos_manager();
-            if (gizmos_mgr.get_current_type() != GLGizmosManager::EType::MmuSegmentation)
-                gizmos_mgr.open_gizmo(GLGizmosManager::EType::MmuSegmentation);
+            if (gizmos_mgr.get_current_type() != GLGizmosManager::EType::MmSegmentation)
+                gizmos_mgr.open_gizmo(GLGizmosManager::EType::MmSegmentation);
             else
                 gizmos_mgr.reset_all_states();
         }
@@ -5877,11 +6010,6 @@ ModelObject* ObjectList::object(const int obj_idx) const
         return nullptr;
 
     return (*m_objects)[obj_idx];
-}
-
-bool ObjectList::has_paint_on_segmentation()
-{
-    return m_objects_model->HasInfoItem(InfoItemType::MmuSegmentation);
 }
 
 void ObjectList::apply_object_instance_transfrom_to_all_volumes(ModelObject *model_object, bool need_update_assemble_matrix)

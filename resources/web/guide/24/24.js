@@ -105,7 +105,7 @@ function HandleModelList( pVal )
 		let CoverImage=OneModel['cover'];
 		ModelHtml[strVendor]+='<div class="PrinterBlock">'+
 '	<div class="PImg"><img src="'+CoverImage+'"  /></div>'+
-'    <div class="PName">'+OneModel['model']+'</div>'+ HtmlNozzel +'</div>';
+'    <div class="PName">'+OneModel['name']+'</div>'+ HtmlNozzel +'</div>';
 	}
 	
 	//Update Nozzel Html Append
@@ -223,8 +223,9 @@ function FilterModelList(keyword) {
 		let OneModel = pModel[n];
 
 		let strVendor = OneModel['vendor'];
-		let ModelName = OneModel['model'];
-		if (ModelName.toLowerCase().indexOf(keyword.toLowerCase()) == -1)
+		let search = (OneModel['name'] + '\0' + strVendor).toLowerCase();
+
+		if (!kwSplit.every(s => search.includes(s)))
 			continue;
 
 		//Add Vendor Html Node
@@ -267,7 +268,7 @@ function FilterModelList(keyword) {
 		let CoverImage = OneModel['cover'];
 		ModelHtml[strVendor] += '<div class="PrinterBlock">' +
 			'	<div class="PImg"><img src="' + CoverImage + '"  /></div>' +
-			'    <div class="PName">' + OneModel['model'] + '</div>' + HtmlNozzel + '</div>';
+			'    <div class="PName">' + OneModel['name'] + '</div>' + HtmlNozzel + '</div>';
 	}
 
 	//Update Nozzel Html Append

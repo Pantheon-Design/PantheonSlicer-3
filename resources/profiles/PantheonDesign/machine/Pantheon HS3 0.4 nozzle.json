@@ -112,7 +112,7 @@
     "min_layer_height": [
         "0.08"
     ],
-    "name": "Pantheon HS3 0.4 Nozzle",
+    "name": "Pantheon HS3 0.4 nozzle",
     "nozzle_diameter": [
         "0.4"
     ],
@@ -133,7 +133,7 @@
     "printable_height": "310",
     "printer_model": "Pantheon HS3",
     "printer_notes": "",
-    "printer_settings_id": "Pantheon HS3",
+    "printer_settings_id": "Pantheon HS3 0.4 nozzle",
     "printer_structure": "undefine",
     "printer_technology": "FFF",
     "printer_variant": "0.4",
@@ -198,7 +198,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.0.10.0",
+    "version": "3.1.0.0",
     "wipe": [
         "0"
     ],

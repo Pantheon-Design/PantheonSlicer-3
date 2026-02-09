@@ -39,14 +39,12 @@ END_EVENT_TABLE()
 
 int ZUserLogin::web_sequence_id = 20000;
 
-ZUserLogin::ZUserLogin() : wxDialog((wxWindow *) (wxGetApp().mainframe), wxID_ANY, "PantheonSlicer")
+ZUserLogin::ZUserLogin() : wxDialog((wxWindow *) (wxGetApp().mainframe), wxID_ANY, "OrcaSlicer")
 {
     SetBackgroundColour(*wxWHITE);
     // Url
     NetworkAgent* agent = wxGetApp().getAgent();
     if (!agent) {
-        std::string icon_path = (boost::format("%1%/images/PantheonSlicerTitle.ico") % resources_dir()).str();
-        SetIcon(wxIcon(encode_path(icon_path.c_str()), wxBITMAP_TYPE_ICO));
 
         SetBackgroundColour(*wxWHITE);
 

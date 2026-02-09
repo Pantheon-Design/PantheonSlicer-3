@@ -117,7 +117,6 @@ private:
 
     friend class PartPlateList;
 
-    Pointfs m_raw_shape;
     Pointfs m_shape;
     Pointfs m_exclude_area;
     BoundingBoxf3 m_bounding_box;
@@ -198,9 +197,8 @@ private:
     int picking_id_component(int idx) const;
 
 public:
-    static const unsigned int PLATE_BASE_ID = 255 * 255 * 253;
-    static const unsigned int PLATE_NAME_HOVER_ID = 6;
-    static const unsigned int GRABBER_COUNT = 8;
+    static constexpr unsigned int PLATE_NAME_HOVER_ID = 6;
+    static constexpr unsigned int GRABBER_COUNT = 8;
 
     static ColorRGBA SELECT_COLOR;
     static ColorRGBA UNSELECT_COLOR;
@@ -229,6 +227,9 @@ public:
     BedType get_bed_type(bool load_from_project = false) const;
     void set_bed_type(BedType bed_type);
     void reset_bed_type();
+
+    void reset_skirt_start_angle();
+
     DynamicPrintConfig* config() { return &m_config; }
 
     // set print sequence per plate
@@ -364,7 +365,7 @@ public:
     bool contains(const BoundingBoxf3& bb) const;
     bool intersects(const BoundingBoxf3& bb) const;
 
-    void render(const Transform3d& view_matrix, const Transform3d& projection_matrix, bool bottom, bool only_body = false, bool force_background_color = false, HeightLimitMode mode = HEIGHT_LIMIT_NONE, int hover_id = -1, bool render_cali = false);
+    void render(const Transform3d& view_matrix, const Transform3d& projection_matrix, bool bottom, bool only_body = false, bool force_background_color = false, HeightLimitMode mode = HEIGHT_LIMIT_NONE, int hover_id = -1, bool render_cali = false, bool show_grid = true);
 
     void set_selected();
     void set_unselected();
@@ -629,10 +630,11 @@ public:
         void                     reset();
     };
 
-    static const unsigned int MAX_PLATES_COUNT = MAX_PLATE_COUNT;
+    static constexpr unsigned int MAX_PLATES_COUNT = MAX_PLATE_COUNT;
     static GLTexture bed_textures[(unsigned int)btCount];
     static bool is_load_bedtype_textures;
     static bool is_load_cali_texture;
+    static bool is_load_extruder_only_area_textures;
 
     PartPlateList(int width, int depth, int height, Plater* platerObj, Model* modelObj, PrinterTechnology tech = ptFFF);
     PartPlateList(Plater* platerObj, Model* modelObj, PrinterTechnology tech = ptFFF);
@@ -691,11 +693,6 @@ public:
     void set_height_limits_mode(PartPlate::HeightLimitMode mode)
     {
         m_height_limit_mode = mode;
-    }
-
-    // SoftFever
-    const std::string& get_logo_texture_filename() const { 
-        return m_logo_texture_filename;
     }
 
     int get_curr_plate_index() const { return m_current_plate; }
@@ -787,7 +784,7 @@ public:
 
     /*rendering related functions*/
     void on_change_color_mode(bool is_dark) { m_is_dark = is_dark; }
-    void render(const Transform3d& view_matrix, const Transform3d& projection_matrix, bool bottom, bool only_current = false, bool only_body = false, int hover_id = -1, bool render_cali = false);
+    void render(const Transform3d& view_matrix, const Transform3d& projection_matrix, bool bottom, bool only_current = false, bool only_body = false, int hover_id = -1, bool render_cali = false, bool show_grid = true);
     void set_render_option(bool bedtype_texture, bool plate_settings);
     void set_render_cali(bool value = true) { render_cali_logo = value; }
     void register_raycasters_for_picking(GLCanvas3D& canvas)
@@ -854,7 +851,9 @@ public:
     }
 
     void init_bed_type_info();
+    void init_extruder_only_area_info();
     void load_bedtype_textures();
+    void load_extruder_only_area_textures();
 
     void show_cali_texture(bool show = true);
     void init_cali_texture_info();
@@ -862,6 +861,7 @@ public:
 
     BedTextureInfo bed_texture_info[btCount];
     BedTextureInfo cali_texture_info;
+    BedTextureInfo extruder_only_area_info[(unsigned char) ExtruderOnlyAreaType::btAreaCount];
 };
 
 } // namespace GUI

@@ -75,23 +75,27 @@ GLGizmoPainterBase::ClippingPlaneDataWrapper GLGizmoPainterBase::get_clipping_pl
 
 void GLGizmoPainterBase::render_triangles(const Selection& selection) const
 {
-    auto* shader = wxGetApp().get_shader("gouraud");
-    if (! shader)
+    auto* shader = wxGetApp().get_shader("mm_gouraud");
+    if (!shader)
         return;
     shader->start_using();
-    shader->set_uniform("slope.actived", false);
-    shader->set_uniform("print_volume.type", 0);
-    shader->set_uniform("clipping_plane", this->get_clipping_plane_data().clp_dataf);
     ScopeGuard guard([shader]() { if (shader) shader->stop_using(); });
 
-    const ModelObject *mo      = m_c->selection_info()->model_object();
+    ClippingPlaneDataWrapper clp_data = this->get_clipping_plane_data();
+    shader->set_uniform("clipping_plane", clp_data.clp_dataf);
+    shader->set_uniform("z_range", clp_data.z_range);
+
+    // BBS: to improve the random white pixel issue
+    glsafe(::glDisable(GL_CULL_FACE));
+
+    const ModelObject* mo = m_c->selection_info()->model_object();
     int                mesh_id = -1;
     for (const ModelVolume* mv : mo->volumes) {
-        if (! mv->is_model_part())
+        if (!mv->is_model_part())
             continue;
 
         ++mesh_id;
-        
+
         Transform3d trafo_matrix;
         if (m_parent.get_canvas_type() == GLCanvas3D::CanvasAssembleView) {
             trafo_matrix = mo->instances[selection.get_instance_idx()]->get_assemble_transformation().get_matrix() * mv->get_matrix();
@@ -112,13 +116,16 @@ void GLGizmoPainterBase::render_triangles(const Selection& selection) const
         const Matrix3d view_normal_matrix = view_matrix.matrix().block(0, 0, 3, 3) * trafo_matrix.matrix().block(0, 0, 3, 3).inverse().transpose();
         shader->set_uniform("view_normal_matrix", view_normal_matrix);
 
-        // For printers with multiple extruders, it is necessary to pass trafo_matrix
-        // to the shader input variable print_box.volume_world_matrix before
-        // rendering the painted triangles. When this matrix is not set, the
-        // wrong transformation matrix is used for "Clipping of view".
-        shader->set_uniform("volume_world_matrix", trafo_matrix);
+        float normal_z = -::cos(Geometry::deg2rad(m_highlight_by_angle_threshold_deg));
+        Matrix3f normal_matrix = static_cast<Matrix3f>(trafo_matrix.matrix().block(0, 0, 3, 3).inverse().transpose().cast<float>());
 
+        shader->set_uniform("volume_world_matrix", trafo_matrix);
+        shader->set_uniform("volume_mirrored", is_left_handed);
+        shader->set_uniform("slope.actived", m_parent.is_using_slope());
+        shader->set_uniform("slope.volume_world_normal_matrix", normal_matrix);
+        shader->set_uniform("slope.normal_z", normal_z);
         m_triangle_selectors[mesh_id]->render(m_imgui, trafo_matrix);
+
         if (is_left_handed)
             glsafe(::glFrontFace(GL_CCW));
     }
@@ -174,14 +181,23 @@ void GLGizmoPainterBase::render_cursor_circle()
     const float cnv_inv_height = 1.0f / cnv_height;
 
     const Vec2d center = m_parent.get_local_mouse_position();
+    const float zoom = float(wxGetApp().plater()->get_camera().get_zoom());
     const float radius = m_cursor_radius * float(wxGetApp().plater()->get_camera().get_zoom());
 
-    glsafe(::glLineWidth(1.5f));
+#if !SLIC3R_OPENGL_ES
+    if (!OpenGLManager::get_gl_info().is_core_profile())
+        glsafe(::glLineWidth(1.5f));
+#endif // !SLIC3R_OPENGL_ES
+
     glsafe(::glDisable(GL_DEPTH_TEST));
 
-    glsafe(::glPushAttrib(GL_ENABLE_BIT));
-    glsafe(::glLineStipple(4, 0xAAAA));
-    glsafe(::glEnable(GL_LINE_STIPPLE));
+#if !SLIC3R_OPENGL_ES
+    if (!OpenGLManager::get_gl_info().is_core_profile()) {
+        glsafe(::glPushAttrib(GL_ENABLE_BIT));
+        glsafe(::glLineStipple(4, 0xAAAA));
+        glsafe(::glEnable(GL_LINE_STIPPLE));
+    }
+#endif // !SLIC3R_OPENGL_ES
 
     if (!m_circle.is_initialized() || !m_old_center.isApprox(center) || std::abs(m_old_cursor_radius - radius) > EPSILON) {
         m_old_cursor_radius = radius;
@@ -189,19 +205,49 @@ void GLGizmoPainterBase::render_cursor_circle()
         m_circle.reset();
 
         GLModel::Geometry init_data;
-        static const unsigned int StepsCount = 32;
-        static const float StepSize = 2.0f * float(PI) / float(StepsCount);
-        init_data.format = { GLModel::Geometry::EPrimitiveType::LineLoop, GLModel::Geometry::EVertexLayout::P2 };
+        unsigned int steps_count = 0;
+#if !SLIC3R_OPENGL_ES
+        if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+            steps_count = (unsigned int)(2 * (4 + int(252 * (zoom - 1.0f) / (250.0f - 1.0f))));
+            init_data.format = { GLModel::Geometry::EPrimitiveType::Lines, GLModel::Geometry::EVertexLayout::P2 };
+#if !SLIC3R_OPENGL_ES
+        }
+        else {
+            steps_count = 32;
+            init_data.format = { GLModel::Geometry::EPrimitiveType::LineLoop, GLModel::Geometry::EVertexLayout::P2 };
+        }
+#endif // !SLIC3R_OPENGL_ES
+        const float step_size = 2.0f * float(PI) / float(steps_count);
         init_data.color  = { 0.0f, 1.0f, 0.3f, 1.0f };
-        init_data.reserve_vertices(StepsCount);
-        init_data.reserve_indices(StepsCount);
+        init_data.reserve_vertices(steps_count);
+        init_data.reserve_indices(steps_count);
 
         // vertices + indices
-        for (unsigned int i = 0; i < StepsCount; ++i) {
-            const float angle = float(i * StepSize);
-            init_data.add_vertex(Vec2f(2.0f * ((center.x() + ::cos(angle) * radius) * cnv_inv_width - 0.5f),
-                                       -2.0f * ((center.y() + ::sin(angle) * radius) * cnv_inv_height - 0.5f)));
-            init_data.add_index(i);
+        for (unsigned int i = 0; i < steps_count; ++i) {
+#if !SLIC3R_OPENGL_ES
+            if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+                if (i % 2 != 0) continue;
+
+                const float angle_i = float(i) * step_size;
+                const unsigned int j = (i + 1) % steps_count;
+                const float angle_j = float(j) * step_size;
+                const Vec2d v_i(::cos(angle_i), ::sin(angle_i));
+                const Vec2d v_j(::cos(angle_j), ::sin(angle_j));
+                init_data.add_vertex(Vec2f(v_i.x(), v_i.y()));
+                init_data.add_vertex(Vec2f(v_j.x(), v_j.y()));
+                const size_t vcount = init_data.vertices_count();
+                init_data.add_line(vcount - 2, vcount - 1);
+#if !SLIC3R_OPENGL_ES
+            }
+            else {
+                const float angle = float(i) * step_size;
+                init_data.add_vertex(Vec2f(2.0f * ((center.x() + ::cos(angle) * radius) * cnv_inv_width - 0.5f),
+                  -2.0f * ((center.y() + ::sin(angle) * radius) * cnv_inv_height - 0.5f)));
+                init_data.add_index(i);
+            }
+#endif // !SLIC3R_OPENGL_ES
         }
 
         m_circle.init_from(std::move(init_data));
@@ -216,16 +262,43 @@ void GLGizmoPainterBase::render_cursor_circle()
 
     m_circle.set_color(render_color);
 
-    GLShaderProgram* shader = GUI::wxGetApp().get_shader("flat");
+#if SLIC3R_OPENGL_ES
+    GLShaderProgram* shader = wxGetApp().get_shader("dashed_lines");
+#else
+    GLShaderProgram* shader = OpenGLManager::get_gl_info().is_core_profile() ? wxGetApp().get_shader("dashed_thick_lines") : wxGetApp().get_shader("flat");
+#endif // SLIC3R_OPENGL_ES
     if (shader != nullptr) {
         shader->start_using();
-        shader->set_uniform("view_model_matrix", Transform3d::Identity());
+#if !SLIC3R_OPENGL_ES
+        if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+            const Transform3d view_model_matrix = Geometry::translation_transform(Vec3d(2.0f * (center.x() * cnv_inv_width - 0.5f), -2.0f * (center.y() * cnv_inv_height - 0.5f), 0.0)) *
+                Geometry::scale_transform(Vec3d(2.0f * radius * cnv_inv_width, 2.0f * radius * cnv_inv_height, 1.0f));
+            shader->set_uniform("view_model_matrix", view_model_matrix);
+#if !SLIC3R_OPENGL_ES
+        }
+        else
+            shader->set_uniform("view_model_matrix", Transform3d::Identity());
+#endif // !SLIC3R_OPENGL_ES
         shader->set_uniform("projection_matrix", Transform3d::Identity());
+#if !SLIC3R_OPENGL_ES
+        if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+            const std::array<int, 4>& viewport = wxGetApp().plater()->get_camera().get_viewport();
+            shader->set_uniform("viewport_size", Vec2d(double(viewport[2]), double(viewport[3])));
+            shader->set_uniform("width", 0.25f);
+            shader->set_uniform("gap_size", 0.0f);
+#if !SLIC3R_OPENGL_ES
+        }
+#endif // !SLIC3R_OPENGL_ES
         m_circle.render();
         shader->stop_using();
     }
 
-    glsafe(::glPopAttrib());
+#if !SLIC3R_OPENGL_ES
+    if (!OpenGLManager::get_gl_info().is_core_profile())
+        glsafe(::glPopAttrib());
+#endif // !SLIC3R_OPENGL_ES
     glsafe(::glEnable(GL_DEPTH_TEST));
 }
 
@@ -319,7 +392,11 @@ void GLGizmoPainterBase::render_cursor_height_range(const Transform3d& trafo) co
 
             shader->set_uniform("view_model_matrix", view_model_matrix);
             shader->set_uniform("projection_matrix", camera.get_projection_matrix());
-            glsafe(::glLineWidth(2.0f));
+            // ORCA: OpenGL Core Profile
+#if !SLIC3R_OPENGL_ES
+            if (!OpenGLManager::get_gl_info().is_core_profile())
+                glsafe(::glLineWidth(2.0f));
+#endif // !SLIC3R_OPENGL_ES
             m_cut_contours[m_volumes_index].contours.render();
             m_volumes_index++;
         }
@@ -1061,6 +1138,7 @@ void GLGizmoPainterBase::on_set_state()
         return;
 
     if (m_state == On && m_old_state != On) { // the gizmo was just turned on
+        m_parent.enable_picking(false);
         on_opening();
 
         const Selection& selection = m_parent.get_selection();
@@ -1072,6 +1150,7 @@ void GLGizmoPainterBase::on_set_state()
         //camera.look_at(position, rotate_target, Vec3d::UnitZ());
     }
     if (m_state == Off && m_old_state != Off) { // the gizmo was just turned Off
+        m_parent.enable_picking(true);
         // we are actually shutting down
         on_shutdown();
         m_old_mo_id = -1;
@@ -1519,6 +1598,13 @@ void TriangleSelectorPatch::render(int triangle_indices_idx, bool show_wireframe
 {
     assert(triangle_indices_idx < this->m_triangle_indices_VBO_ids.size());
     assert(this->m_triangle_patches.size() == this->m_triangle_indices_VBO_ids.size());
+#if !SLIC3R_OPENGL_ES
+    if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+        assert(this->m_vertices_VAO_id != 0);
+#if !SLIC3R_OPENGL_ES
+    }
+#endif // !SLIC3R_OPENGL_ES
     //assert(this->m_vertices_VBO_id != 0);
     assert(this->m_triangle_patches.size() == this->m_vertices_VBO_ids.size());
     assert(this->m_vertices_VBO_ids[triangle_indices_idx] != 0);
@@ -1528,6 +1614,13 @@ void TriangleSelectorPatch::render(int triangle_indices_idx, bool show_wireframe
     if (shader == nullptr)
         return;
 
+#if !SLIC3R_OPENGL_ES
+    if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+        glsafe(::glBindVertexArray(this->m_vertices_VAO_id));
+#if !SLIC3R_OPENGL_ES
+    }
+#endif // !SLIC3R_OPENGL_ES
     // the following binding is needed to set the vertex attributes
     glsafe(::glBindBuffer(GL_ARRAY_BUFFER, this->m_vertices_VBO_ids[triangle_indices_idx]));
     const GLint position_id = shader->get_attrib_location("v_position");
@@ -1571,6 +1664,16 @@ void TriangleSelectorPatch::release_geometry()
         glsafe(::glDeleteBuffers(1, &m_vertices_VBO_id));
         m_vertices_VBO_id = 0;
     }*/
+#if !SLIC3R_OPENGL_ES
+    if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+        if (this->m_vertices_VAO_id > 0) {
+            glsafe(::glDeleteVertexArrays(1, &this->m_vertices_VAO_id));
+            this->m_vertices_VAO_id = 0;
+        }
+#if !SLIC3R_OPENGL_ES
+    }
+#endif // !SLIC3R_OPENGL_ES
     for (auto& vertice_VBO_id : m_vertices_VBO_ids) {
         glsafe(::glDeleteBuffers(1, &vertice_VBO_id));
         vertice_VBO_id = 0;
@@ -1598,6 +1701,13 @@ void TriangleSelectorPatch::finalize_vertices()
 
 void TriangleSelectorPatch::finalize_triangle_indices()
 {
+#if !SLIC3R_OPENGL_ES
+    if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+        assert(this->m_vertices_VAO_id == 0);
+#if !SLIC3R_OPENGL_ES
+    }
+#endif // !SLIC3R_OPENGL_ES
     m_vertices_VBO_ids.resize(m_triangle_patches.size());
     m_triangle_indices_VBO_ids.resize(m_triangle_patches.size());
     m_triangle_indices_sizes.resize(m_triangle_patches.size());
@@ -1625,6 +1735,15 @@ void TriangleSelectorPatch::finalize_triangle_indices()
             triangle_indices.clear();
         }
     }
+
+#if !SLIC3R_OPENGL_ES
+    if (OpenGLManager::get_gl_info().is_core_profile()) {
+#endif // !SLIC3R_OPENGL_ES
+        glsafe(::glGenVertexArrays(1, &this->m_vertices_VAO_id));
+        glsafe(::glBindVertexArray(this->m_vertices_VAO_id));
+#if !SLIC3R_OPENGL_ES
+    }
+#endif // !SLIC3R_OPENGL_ES
 }
 
 #ifdef PRUSASLICER_TRIANGLE_SELECTOR_DEBUG

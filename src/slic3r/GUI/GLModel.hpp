@@ -13,7 +13,7 @@ namespace Slic3r {
 
 class TriangleMesh;
 class Polygon;
-using Polygons = std::vector<Polygon>;
+using Polygons = std::vector<Polygon, PointsAllocator<Polygon>>;
 class BuildVolume;
 
 namespace GUI {
@@ -131,6 +131,7 @@ namespace GUI {
         struct RenderData
         {
             Geometry geometry;
+            unsigned int vao_id{ 0 };
             unsigned int vbo_id{ 0 };
             unsigned int ibo_id{ 0 };
             size_t vertices_count{ 0 };
@@ -247,7 +248,15 @@ namespace GUI {
     // the origin of the torus is in its center
     GLModel::Geometry smooth_torus(unsigned int primary_resolution, unsigned int secondary_resolution, float radius, float thickness);
 
-} // namespace GUI
+    GLModel::Geometry init_plane_data(const indexed_triangle_set &its, const std::vector<int> &triangle_indices,float normal_offset = 0.0f);
+    GLModel::Geometry init_torus_data(unsigned int       primary_resolution,
+                                      unsigned int       secondary_resolution,
+                                      const Vec3f &      center,
+                                      float              radius,
+                                      float              thickness,
+                                      const Vec3f &      model_axis,
+                                      const Transform3f &world_trafo);
+    } // namespace GUI
 } // namespace Slic3r
 
 #endif // slic3r_GLModel_hpp_

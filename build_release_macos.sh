@@ -24,7 +24,7 @@ while getopts ":dpa:snt:xbc:h" opt; do
         export OSX_DEPLOYMENT_TARGET="$OPTARG"
         ;;
     x )
-        export SLICER_CMAKE_GENERATOR="Ninja"
+        export SLICER_CMAKE_GENERATOR="Ninja Multi-Config"
         export SLICER_BUILD_TARGET="all"
         export DEPS_CMAKE_GENERATOR="Ninja"
         ;;
@@ -43,7 +43,7 @@ while getopts ":dpa:snt:xbc:h" opt; do
         echo "   -s: Build slicer only"
         echo "   -n: Nightly build"
         echo "   -t: Specify minimum version of the target platform, default is 11.3"
-        echo "   -x: Use Ninja CMake generator, default is Xcode"
+        echo "   -x: Use Ninja Multi-Config CMake generator, default is Xcode"
         echo "   -b: Build without reconfiguring CMake"
         echo "   -c: Set CMake build configuration, default is Release"
         echo "   -1: Use single job for building"
@@ -112,12 +112,8 @@ DEPS_DIR="$PROJECT_DIR/deps"
 DEPS_BUILD_DIR="$DEPS_DIR/build_$ARCH"
 DEPS="$DEPS_BUILD_DIR/PantheonSlicer_dep_$ARCH"
 
-# Fix for Multi-config generators
-if [ "$SLICER_CMAKE_GENERATOR" == "Xcode" ]; then
-    export BUILD_DIR_CONFIG_SUBDIR="/$BUILD_CONFIG"
-else
-    export BUILD_DIR_CONFIG_SUBDIR=""
-fi
+# For Multi-config generators like Ninja and Xcode
+export BUILD_DIR_CONFIG_SUBDIR="/$BUILD_CONFIG"
 
 function build_deps() {
     echo "Building deps..."
@@ -195,14 +191,11 @@ function build_slicer() {
         find ./PantheonSlicer-3.app/ -name '.DS_Store' -delete
     )
 
-    # extract version
-    # export ver=$(grep '^#define SoftFever_VERSION' ../src/libslic3r/libslic3r_version.h | cut -d ' ' -f3)
-    # ver="_V${ver//\"}"
-    # echo $PWD
-    # if [ "1." != "$NIGHTLY_BUILD". ];
-    # then
-    #     ver=${ver}_dev
-    # fi
+        echo "Verify localization with gettext..."
+        (
+            cd "$PROJECT_DIR"
+            ./scripts/run_gettext.sh
+        )
 
     # zip -FSr PantheonSlicer${ver}_Mac_${ARCH}.zip PantheonSlicer.app
 }

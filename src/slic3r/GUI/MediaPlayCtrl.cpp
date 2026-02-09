@@ -85,7 +85,10 @@ MediaPlayCtrl::MediaPlayCtrl(wxWindow *parent, wxMediaCtrl2 *media_ctrl, const w
 
     m_button_play->Bind(wxEVT_COMMAND_BUTTON_CLICKED, [this](auto &e) { TogglePlay(); });
     m_button_play->Bind(wxEVT_RIGHT_UP, [this](auto & e) { m_media_ctrl->Play(); });
-
+    // m_label_status->Bind(wxEVT_LEFT_UP, [this](auto &e) {
+    //     auto url = wxString::Format(L"https://wiki.bambulab.com/%s/software/bambu-studio/faq/live-view", L"en");
+    //     wxLaunchDefaultBrowser(url);
+    // });
 
     Bind(wxEVT_RIGHT_UP, [this](auto & e) {
         wxClipboard & c = *wxTheClipboard;
@@ -147,7 +150,7 @@ void MediaPlayCtrl::SetMachineObject(MachineObject* obj)
         m_dev_ver        = obj->get_ota_version();
         m_lan_mode       = obj->is_lan_mode_printer();
         m_lan_proto      = obj->liveview_local;
-        m_remote_support = obj->liveview_remote;
+        m_remote_proto   = obj->liveview_remote;
         m_lan_ip         = obj->dev_ip;
         m_lan_passwd     = obj->get_access_code();
         m_device_busy    = obj->is_camera_busy_off();
@@ -160,7 +163,7 @@ void MediaPlayCtrl::SetMachineObject(MachineObject* obj)
         m_lan_passwd.clear();
         m_dev_ver.clear();
         m_tutk_state.clear();
-        m_remote_support = true;
+        m_remote_proto = 0;
         m_device_busy = false;
     }
     Enable(obj && obj->is_connected() && obj->m_push_count > 0);
@@ -209,6 +212,7 @@ wxString hide_id_middle_string(wxString const &str, size_t offset = 0, size_t le
 
 wxString hide_passwd(wxString url, std::vector<wxString> const &passwords)
 {
+#if BBL_RELEASE_TO_PUBLIC
     for (auto &p : passwords) {
         auto i = url.find(p);
         if (i == wxString::npos)
@@ -225,7 +229,20 @@ wxString hide_passwd(wxString url, std::vector<wxString> const &passwords)
         else if (j == url.length() || url[j] == '@' || url[j] == '&')
             url.replace(i, l, l, wxUniChar('*'));
     }
+#endif
     return url;
+}
+
+void refresh_agora_url(char const* device, char const* dev_ver, char const* channel, void* context, void (*callback)(void* context, char const* url))
+{
+    std::string device2 =device;
+    device2 += "|";
+    device2 += dev_ver;
+    device2 += "|\"agora\"|";
+    device2 += channel;
+    wxGetApp().getAgent()->get_camera_url(device2, [context, callback](std::string url) {
+        callback(context, url.c_str());
+    });
 }
 
 void MediaPlayCtrl::Play()
@@ -256,18 +273,17 @@ void MediaPlayCtrl::Play()
         return;
     }
 
-    m_button_play->SetIcon("media_stop");
     NetworkAgent *agent = wxGetApp().getAgent();
     std::string  agent_version = agent ? agent->get_version() : "";
-    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support) && !m_disable_lan && !m_lan_ip.empty()) {
-        m_disable_lan = m_remote_support && !m_lan_mode; // try remote next time
+    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_proto) && !m_disable_lan && !m_lan_ip.empty()) {
+        m_disable_lan = m_remote_proto && !m_lan_mode; // try remote next time
         std::string url;
         if (m_lan_proto == MachineObject::LVL_Local)
-            url = "";
+            url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
         else if (m_lan_proto == MachineObject::LVL_Rtsps)
-            url = "";
+            url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
         else if (m_lan_proto == MachineObject::LVL_Rtsp)
-            url = "";
+            url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
         url += "&device=" + m_machine;
         url += "&net_ver=" + agent_version;
         url += "&dev_ver=" + m_dev_ver;
@@ -276,20 +292,21 @@ void MediaPlayCtrl::Play()
         BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl: " << hide_passwd(hide_id_middle_string(url, url.find(m_lan_ip), m_lan_ip.length()), {m_lan_passwd});
         m_url = url;
         load();
+        m_button_play->SetIcon("media_stop");
         return;
     }
 
     // m_lan_mode && m_lan_proto > LVL_Disable (use local tunnel)
     // m_lan_mode && m_lan_proto == LVL_Disable (*)
     // m_lan_mode && m_lan_proto == LVL_None (x)
-    // !m_lan_mode && m_remote_support (go on)
-    // !m_lan_mode && !m_remote_support && m_lan_proto > LVL_None (use local tunnel)
-    // !m_lan_mode && !m_remote_support && m_lan_proto == LVL_Disable (*)
-    // !m_lan_mode && !m_remote_support && m_lan_proto == LVL_None (x)
+    // !m_lan_mode && m_remote_proto (go on)
+    // !m_lan_mode && !m_remote_proto && m_lan_proto > LVL_None (use local tunnel)
+    // !m_lan_mode && !m_remote_proto && m_lan_proto == LVL_Disable (*)
+    // !m_lan_mode && !m_remote_proto && m_lan_proto == LVL_None (x)
 
-    if (m_lan_proto <= MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support)) {
+    if (m_lan_proto <= MachineObject::LVL_Disable && (m_lan_mode || !m_remote_proto)) {
         Stop(m_lan_proto == MachineObject::LVL_None 
-            ? _L("Problem occured. Please update the printer firmware and try again.")
+            ? _L("A problem occurred. Please update the printer firmware and try again.")
             : _L("LAN Only Liveview is off. Please turn on the liveview on printer screen."));
         return;
     }
@@ -297,10 +314,11 @@ void MediaPlayCtrl::Play()
     m_disable_lan = false;
     m_failed_code = 0;
     m_last_state  = MEDIASTATE_INITIALIZING;
-    
-    if (!m_remote_support) { // not support tutk
+    m_button_play->SetIcon("media_stop");
+
+    if (!m_remote_proto) { // not support tutk
         m_failed_code = -1;
-        m_url = "";
+        m_url = "bambu:///local/";
         Stop(_L("Please enter the IP of printer to connect."));
         return;
     }
@@ -309,12 +327,14 @@ void MediaPlayCtrl::Play()
     SetStatus(_L("Initializing..."));
 
     if (agent) {
-        agent->get_camera_url(m_machine, 
+        std::string protocols[] = {"", "\"tutk\"", "\"agora\"", "\"tutk\",\"agora\""};
+        agent->get_camera_url(m_machine + "|" + m_dev_ver + "|" + protocols[m_remote_proto],
             [this, m = m_machine, v = agent_version, dv = m_dev_ver](std::string url) {
-            if (boost::algorithm::starts_with(url, "")) {
+            if (boost::algorithm::starts_with(url, "bambu:///")) {
                 url += "&device=" + into_u8(m);
                 url += "&net_ver=" + v;
                 url += "&dev_ver=" + dv;
+                url += "&refresh_url=" + boost::lexical_cast<std::string>(&refresh_agora_url);
                 url += "&cli_id=" + wxGetApp().app_config->get("slicer_uuid");
                 url += "&cli_ver=" + std::string(SLIC3R_VERSION);
             }
@@ -326,9 +346,9 @@ void MediaPlayCtrl::Play()
                     return;
                 }
                 if (m_last_state == MEDIASTATE_INITIALIZING) {
-                    if (url.empty() || !boost::algorithm::starts_with(url, "")) {
+                    if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
                         m_failed_code = 3;
-                        Stop(_L("Connection Failed. Please check the network and try again"));
+                        Stop(_L("Connection Failed. Please check the network and try again"), from_u8(url));
                     } else {
                         m_url = url;
                         load();
@@ -343,7 +363,7 @@ void MediaPlayCtrl::Play()
 
 void start_ping_test();
 
-void MediaPlayCtrl::Stop(wxString const &msg)
+void MediaPlayCtrl::Stop(wxString const &msg, wxString const &msg2)
 {
     int last_state = m_last_state;
 
@@ -358,7 +378,7 @@ void MediaPlayCtrl::Stop(wxString const &msg)
         else if (m_failed_code) {
             auto iter = error_messages.find(m_failed_code);
             auto msg2 = iter == error_messages.end()
-                ? _L("Please check the network and try again, You can restart or update the printer if the issue persists.")
+                ? _L("Please check the network and try again. You can restart or update the printer if the issue persists.")
                 : _L(iter->second.c_str());
             if (m_failed_code == 1) {
                 if (m_last_state == wxMEDIASTATE_PLAYING)
@@ -372,7 +392,7 @@ void MediaPlayCtrl::Stop(wxString const &msg)
 #endif
             SetStatus(msg2);
         } else
-            SetStatus(_L("Stopped."), false);
+            SetStatus(_L("Video Stopped."), false);
         m_last_state = MEDIASTATE_IDLE;
         bool auto_retry = wxGetApp().app_config->get("liveview", "auto_retry") != "false";
         if (!auto_retry || m_failed_code >= 100 || m_failed_code == 1) // not keep retry on local error or EOS
@@ -386,7 +406,7 @@ void MediaPlayCtrl::Stop(wxString const &msg)
     }
 
     auto tunnel = m_url.empty() ? "" : into_u8(wxURI(m_url).GetPath()).substr(1);
-    if (auto n = tunnel.find_first_of('/_'); n != std::string::npos)
+    if (auto n = tunnel.find_first_of("/_"); n != std::string::npos)
         tunnel = tunnel.substr(0, n);
     if (last_state != wxMEDIASTATE_PLAYING && m_failed_code != 0 
             && m_last_failed_codes.find(m_failed_code) == m_last_failed_codes.end()
@@ -490,14 +510,14 @@ void MediaPlayCtrl::ToggleStream()
             wxGetApp().app_config->set("not_show_vcamera_stop_prev", "1");
         if (res == wxID_CANCEL) return;
     }
-    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_support) && !m_disable_lan && !m_lan_ip.empty()) {
+    if (m_lan_proto > MachineObject::LVL_Disable && (m_lan_mode || !m_remote_proto) && !m_disable_lan && !m_lan_ip.empty()) {
         std::string url;
         if (m_lan_proto == MachineObject::LVL_Local)
-            url = "";
+            url = "bambu:///local/" + m_lan_ip + ".?port=6000&user=" + m_lan_user + "&passwd=" + m_lan_passwd;
         else if (m_lan_proto == MachineObject::LVL_Rtsps)
-            url = "";
+            url = "bambu:///rtsps___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsps";
         else if (m_lan_proto == MachineObject::LVL_Rtsp)
-            url = "";
+            url = "bambu:///rtsp___" + m_lan_user + ":" + m_lan_passwd + "@" + m_lan_ip + "/streaming/live/1?proto=rtsp";
         url += "&device=" + into_u8(m_machine);
         url += "&dev_ver=" + m_dev_ver;
         BOOST_LOG_TRIVIAL(info) << "MediaPlayCtrl::ToggleStream: " << hide_passwd(hide_id_middle_string(url, url.find(m_lan_ip), m_lan_ip.length()), {m_lan_passwd});
@@ -512,10 +532,11 @@ void MediaPlayCtrl::ToggleStream()
     NetworkAgent *agent = wxGetApp().getAgent();
     if (!agent) return;
     agent->get_camera_url(m_machine, [this, m = m_machine, v = agent->get_version(), dv = m_dev_ver](std::string url) {
-        if (boost::algorithm::starts_with(url, "")) {
+        if (boost::algorithm::starts_with(url, "bambu:///")) {
             url += "&device=" + m;
             url += "&net_ver=" + v;
             url += "&dev_ver=" + dv;
+            url += "&refresh_url=" + boost::lexical_cast<std::string>(&refresh_agora_url);
             url += "&cli_id=" + wxGetApp().app_config->get("slicer_uuid");
             url += "&cli_ver=" + std::string(SLIC3R_VERSION);
         }
@@ -523,7 +544,7 @@ void MediaPlayCtrl::ToggleStream()
                 {"?uid=", "authkey=", "passwd=", "license=", "token="});
         CallAfter([this, m, url] {
             if (m != m_machine) return;
-            if (url.empty() || !boost::algorithm::starts_with(url, "")) {
+            if (url.empty() || !boost::algorithm::starts_with(url, "bambu:///")) {
                 MessageDialog(this->GetParent(), wxString::Format(_L("Virtual camera initialize failed (%s)!"), url.empty() ? _L("Network unreachable") : from_u8(url)), _L("Information"),
                               wxICON_INFORMATION)
                     .ShowModal();
@@ -714,7 +735,7 @@ bool MediaPlayCtrl::start_stream_service(bool *need_install)
         boost::nowide::ofstream file(file_url);
         file.close();
     }
-    wxString file_url2 = L"" + from_u8(file_url);
+    wxString file_url2 = L"bambu:///camera/" + from_u8(file_url);
     file_url2.Replace("\\", "/");
     file_url2 = wxURI(file_url2).BuildURI();
     try {

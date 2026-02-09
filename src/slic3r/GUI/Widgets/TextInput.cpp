@@ -6,7 +6,7 @@
 #include <wx/dcclient.h>
 #include <wx/dcgraph.h>
 
-BEGIN_EVENT_TABLE(TextInput, wxPanel)
+BEGIN_EVENT_TABLE(TextInput, StaticBox)
 
 EVT_PAINT(TextInput::paintEvent)
 
@@ -206,7 +206,7 @@ void TextInput::render(wxDC& dc)
         wxSize szIcon = icon.GetBmpSize();
         pt.y = (size.y - szIcon.y) / 2;
         dc.DrawBitmap(icon.bmp(), pt);
-        pt.x += szIcon.x + 0;
+        pt.x += szIcon.x + 4;
     }
     auto text = wxWindow::GetLabel();
     if (!text.IsEmpty()) {

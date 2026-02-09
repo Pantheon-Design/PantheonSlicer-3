@@ -1,6 +1,6 @@
 {
     "name": "PantheonDesign",
-    "version": "03.00.10.00",
+    "version": "03.1.01.00",
     "force_update": "1",
     "description": "PantheonDesign configurations",
     "machine_model_list": [
@@ -15,102 +15,134 @@
     ],
     "process_list": [
         {
-            "name": "0.20mm Standard @Pantheon HS3",
-            "sub_path": "process/0.20mm Standard @Pantheon HS3.json"
+            "name": "HS3 PA-GF Dark Grey 0.4",
+            "sub_path": "process/HS3 PA-GF Dark Grey 0.4.json"
         },
         {
-            "name": "Quality PA-CF Rev3.7",
-            "sub_path": "process/Quality PA-CF Rev3.7.json"
+            "name": "HS3 PETG-CF 0.4",
+            "sub_path": "process/HS3 PETG-CF 0.4.json"
         },
         {
-            "name": "Quality PA-GF Rev3.7",
-            "sub_path": "process/Quality PA-GF Rev3.7.json"
+            "name": "HS3 PA-CF 0.4",
+            "sub_path": "process/HS3 PA-CF 0.4.json"
         },
         {
-            "name": "HS3 PA-CF",
-            "sub_path": "process/HS3 PA-CF.json"
-        },
-        {
-            "name": "HS3 PA-GF",
-            "sub_path": "process/HS3 PA-GF.json"
-        },
-        {
-            "name": "PETG-CF Rev3.7",
-            "sub_path": "process/PETG-CF Rev3.7.json"
-        },
-        {
-            "name": "HS3 PETG-CF",
-            "sub_path": "process/HS3 PETG-CF.json"
-        },
-        {
-            "name": "HS-Pro PA-CF Strength",
-            "sub_path": "process/HS-Pro PA-CF Strength.json"
-        },
-        {
-            "name": "HS-Pro PETG-CF Speed",
-            "sub_path": "process/HS-Pro PETG-CF Speed.json"
-        },
-        {
-            "name": "HS-Pro PETG-CF Detail",
-            "sub_path": "process/HS-Pro PETG-CF Detail.json"
-        },
-        {
-            "name": "HS3 FLEX-95A 0.6",
-            "sub_path": "process/HS3 FLEX-95A 0.6.json"
+            "name": "HS3 PA-GF 0.4",
+            "sub_path": "process/HS3 PA-GF 0.4.json"
         },
         {
             "name": "HS3 FLEX-95A 0.4",
             "sub_path": "process/HS3 FLEX-95A 0.4.json"
         },
         {
-            "name": "HS3 PA-GF Dark Grey",
-            "sub_path": "process/HS3 PA-GF Dark Grey.json"
+            "name": "HS3 FLEX-95A 0.6",
+            "sub_path": "process/HS3 FLEX-95A 0.6.json"
         },
         {
-            "name": "HS-Pro PA-CF Quality",
-            "sub_path": "process/HS-Pro PA-CF Quality.json"
+            "name": "HS-Pro PA-CF Quality 0.4",
+            "sub_path": "process/HS-Pro PA-CF Quality 0.4.json"
         },
         {
-            "name": "HS-Pro FLEX-95A 0.4",
-            "sub_path": "process/HS-Pro FLEX-95A 0.4.json"
+            "name": "HS-Pro PETG-CF Speed 0.4",
+            "sub_path": "process/HS-Pro PETG-CF Speed 0.4.json"
         },
         {
-            "name": "HS-Pro PA-GF Strength",
-            "sub_path": "process/HS-Pro PA-GF Strength.json"
+            "name": "HS-Pro PETG-CF Detail 0.4",
+            "sub_path": "process/HS-Pro PETG-CF Detail 0.4.json"
         },
         {
-            "name": "HS-Pro FLEX-95A 0.6",
-            "sub_path": "process/HS-Pro FLEX-95A 0.6.json"
+            "name": "HS-Pro FLEX-95A Detail 0.4",
+            "sub_path": "process/HS-Pro FLEX-95A Detail 0.4.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Dark Grey Quality 0.4",
+            "sub_path": "process/HS-Pro PA-GF Dark Grey Quality 0.4.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Quality 0.4",
+            "sub_path": "process/HS-Pro PA-GF Quality 0.4.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Strength 0.5",
+            "sub_path": "process/HS-Pro PA-GF Strength 0.5.json"
+        },
+        {
+            "name": "HS-Pro PA-CF Strength 0.5",
+            "sub_path": "process/HS-Pro PA-CF Strength 0.5.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Dark Grey Strength 0.5",
+            "sub_path": "process/HS-Pro PA-GF Dark Grey Strength 0.5.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A Speed 0.6",
+            "sub_path": "process/HS-Pro FLEX-95A Speed 0.6.json"
         }
     ],
     "filament_list": [
 		{
-            "name": "PA-CF Rev3.7",
-            "sub_path": "filament/PA-CF Rev3.7.json"
+            "name": "HS3 PA-GF Dark Grey 0.4",
+            "sub_path": "filament/HS3 PA-GF Dark Grey 0.4.json"
         },
 		{
-            "name": "Quality PA-CF Rev3.7",
-            "sub_path": "filament/Quality PA-CF Rev3.7.json"
+            "name": "HS3 PETG-CF 0.4",
+            "sub_path": "filament/HS3 PETG-CF 0.4.json"
         },
 		{
-            "name": "Quality PA-GF Rev3.7",
-            "sub_path": "filament/Quality PA-GF Rev3.7.json"
+            "name": "HS3 PA-CF 0.4",
+            "sub_path": "filament/HS3 PA-CF 0.4.json"
         },
         {
-            "name": "HS3 PA-CF",
-            "sub_path": "filament/HS3 PA-CF.json"
+            "name": "HS3 PA-GF 0.4",
+            "sub_path": "filament/HS3 PA-GF 0.4.json"
         },
 		{
-            "name": "HS3 PA-GF",
-            "sub_path": "filament/HS3 PA-GF.json"
+            "name": "HS3 FLEX-95A 0.4",
+            "sub_path": "filament/HS3 FLEX-95A 0.4.json"
         },
 		{
-            "name": "PETG-CF Rev3.7",
-            "sub_path": "filament/PETG-CF Rev3.7.json"
+            "name": "HS3 FLEX-95A 0.6",
+            "sub_path": "filament/HS3 FLEX-95A 0.6.json"
         },
 		{
-            "name": "HS3 PETG-CF",
-            "sub_path": "filament/HS3 PETG-CF.json"
+            "name": "HS-Pro PA-CF Quality 0.4",
+            "sub_path": "filament/HS-Pro PA-CF Quality 0.4.json"
+        },
+		{
+            "name": "HS-Pro PETG-CF Speed 0.4",
+            "sub_path": "filament/HS-Pro PETG-CF Speed 0.4.json"
+        },
+		{
+            "name": "HS-Pro PETG-CF Detail 0.4",
+            "sub_path": "filament/HS-Pro PETG-CF Detail 0.4.json"
+        },
+        {
+            "name": "HS-Pro FLEX-95A Detail 0.4",
+            "sub_path": "filament/HS-Pro FLEX-95A Detail 0.4.json"
+        },
+		{
+            "name": "HS-Pro PA-GF Dark Grey Quality 0.4",
+            "sub_path": "filament/HS-Pro PA-GF Dark Grey Quality 0.4.json"
+        },
+		{
+            "name": "HS-Pro PA-GF Quality 0.4",
+            "sub_path": "filament/HS-Pro PA-GF Quality 0.4.json"
+        },
+		{
+            "name": "HS-Pro PA-CF Strength 0.5",
+            "sub_path": "filament/HS-Pro PA-CF Strength 0.5.json"
+        },
+        {
+            "name": "HS-Pro PA-GF Strength 0.5",
+            "sub_path": "filament/HS-Pro PA-GF Strength 0.5.json"
+        },
+		{
+            "name": "HS-Pro PA-GF Dark Grey Strength 0.5",
+            "sub_path": "filament/HS-Pro PA-GF Dark Grey Strength 0.5.json"
+        },
+		{
+            "name": "HS-Pro FLEX-95A Speed 0.6",
+            "sub_path": "filament/HS-Pro FLEX-95A Speed 0.6.json"
         },
         {
             "name": "fdm_filament_common",
@@ -187,64 +219,24 @@
         {
             "name": "My Generic PA-CF",
             "sub_path": "filament/My Generic PA-CF.json"
-        },
-        {
-            "name": "HS-Pro PA-CF Strength",
-            "sub_path": "filament/HS-Pro PA-CF Strength.json"
-        },
-        {
-            "name": "HS-Pro PETG-CF Speed",
-            "sub_path": "filament/HS-Pro PETG-CF Speed.json"
-        },
-        {
-            "name": "HS-Pro PETG-CF Detail",
-            "sub_path": "filament/HS-Pro PETG-CF Detail.json"
-        },
-        {
-            "name": "HS3 FLEX-95A 0.6",
-            "sub_path": "filament/HS3 FLEX-95A 0.6.json"
-        },
-        {
-            "name": "HS3 FLEX-95A 0.4",
-            "sub_path": "filament/HS3 FLEX-95A 0.4.json"
-        },
-        {
-            "name": "HS3 PA-GF Dark Grey",
-            "sub_path": "filament/HS3 PA-GF Dark Grey.json"
-        },
-        {
-            "name": "HS-Pro PA-CF Quality",
-            "sub_path": "filament/HS-Pro PA-CF Quality.json"
-        },
-        {
-            "name": "HS-Pro FLEX-95A 0.4",
-            "sub_path": "filament/HS-Pro FLEX-95A 0.4.json"
-        },
-        {
-            "name": "HS-Pro PA-GF Strength",
-            "sub_path": "filament/HS-Pro PA-GF Strength.json"
-        },
-        {
-            "name": "HS-Pro FLEX-95A 0.6",
-            "sub_path": "filament/HS-Pro FLEX-95A 0.6.json"
         }
     ],
     "machine_list": [
         {
-            "name": "Pantheon HS3 0.4 Nozzle",
-            "sub_path": "machine/Pantheon HS3 0.4 Nozzle.json"
+            "name": "Pantheon HS3 0.4 nozzle",
+            "sub_path": "machine/Pantheon HS3 0.4 nozzle.json"
         },        
         {
-            "name": "Pantheon HS3 0.6 Nozzle",
-            "sub_path": "machine/Pantheon HS3 0.6 Nozzle.json"
-        },
-        {
-            "name": "Pantheon HS-Pro 0.5 nozzle",
-            "sub_path": "machine/Pantheon HS-Pro 0.5 nozzle.json"
+            "name": "Pantheon HS3 0.6 nozzle",
+            "sub_path": "machine/Pantheon HS3 0.6 nozzle.json"
         },
         {
             "name": "Pantheon HS-Pro 0.4 nozzle",
             "sub_path": "machine/Pantheon HS-Pro 0.4 nozzle.json"
+        },
+        {
+            "name": "Pantheon HS-Pro 0.5 nozzle",
+            "sub_path": "machine/Pantheon HS-Pro 0.5 nozzle.json"
         },
         {
             "name": "Pantheon HS-Pro 0.6 nozzle",

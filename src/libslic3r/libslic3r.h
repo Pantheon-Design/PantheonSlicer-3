@@ -64,10 +64,12 @@ static constexpr double LARGE_BED_THRESHOLD = 2147;
 // Orca: maximum number of extruders is 64. For SEMM printers, it defines maximum filament number.
 static constexpr size_t MAXIMUM_EXTRUDER_NUMBER = 64;
 
+// Orca: maximum line width is 5 times the nozzle diameter
+static constexpr float MAX_LINE_WIDTH_MULTIPLIER = 5;
+
 extern double SCALING_FACTOR;
-// for creating circles (for brim_ear)
-#define POLY_SIDES 24
 static constexpr double PI = 3.141592653589793238;
+#define POLY_SIDE_COUNT 24 // for brim ear circle
 // When extruding a closed loop, the loop is interrupted and shortened a bit to reduce the seam.
 // SoftFever: replaced by seam_gap now
 // static constexpr double LOOP_CLIPPING_LENGTH_OVER_NOZZLE_DIAMETER = 0.15;
@@ -138,8 +140,8 @@ enum Axis {
 	NUM_AXES_WITH_UNKNOWN,
 };
 
-template <typename T>
-inline void append(std::vector<T>& dest, const std::vector<T>& src)
+template <typename T, typename Alloc, typename Alloc2>
+inline void append(std::vector<T, Alloc> &dest, const std::vector<T, Alloc2> &src)
 {
     if (dest.empty())
         dest = src;
@@ -147,8 +149,8 @@ inline void append(std::vector<T>& dest, const std::vector<T>& src)
         dest.insert(dest.end(), src.begin(), src.end());
 }
 
-template <typename T>
-inline void append(std::vector<T>& dest, std::vector<T>&& src)
+template <typename T, typename Alloc>
+inline void append(std::vector<T, Alloc> &dest, std::vector<T, Alloc> &&src)
 {
     if (dest.empty())
         dest = std::move(src);

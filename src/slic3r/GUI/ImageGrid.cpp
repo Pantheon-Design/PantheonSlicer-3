@@ -12,7 +12,7 @@
 
 wxDEFINE_EVENT(EVT_ITEM_ACTION, wxCommandEvent);
 
-BEGIN_EVENT_TABLE(Slic3r::GUI::ImageGrid, wxPanel)
+BEGIN_EVENT_TABLE(Slic3r::GUI::ImageGrid, wxWindow)
 
 EVT_MOTION(Slic3r::GUI::ImageGrid::mouseMoved)
 EVT_ENTER_WINDOW(Slic3r::GUI::ImageGrid::mouseEnterWindow)
@@ -652,7 +652,8 @@ void Slic3r::GUI::ImageGrid::renderContent1(wxDC &dc, wxPoint const &pt, int ind
         if (hit) {
             texts.Add(_L("Delete"));
             texts.Add(secondAction);
-            texts.Add(thirdAction);
+            if (!thirdAction.IsEmpty())
+                texts.Add(thirdAction);
             renderButtons(dc, texts, rect, m_hit_type == HIT_ACTION ? m_hit_item & 3 : -1, states);
         } else if (!nonHoverText.IsEmpty()) {
             texts.Add(nonHoverText);

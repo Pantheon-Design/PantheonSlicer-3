@@ -26,7 +26,8 @@ class Selection;
 enum class PainterGizmoType {
     FDM_SUPPORTS,
     SEAM,
-    MMU_SEGMENTATION
+    MM_SEGMENTATION,
+    FUZZY_SKIN
 };
 
 class TriangleSelectorGUI : public TriangleSelector {
@@ -161,6 +162,7 @@ protected:
 
     // IDs of the Vertex Array Objects, into which the geometry has been loaded.
     // Zero if the VBOs are not sent to GPU yet.
+    unsigned int                m_vertices_VAO_id{ 0 };
     //unsigned int                m_vertices_VBO_id{ 0 };
     std::vector<unsigned int>   m_vertices_VBO_ids;
     std::vector<unsigned int>   m_triangle_indices_VBO_ids;
@@ -274,7 +276,7 @@ protected:
 
     bool     m_triangle_splitting_enabled = true;
     ToolType m_tool_type                  = ToolType::BRUSH;
-    float    m_smart_fill_angle           = 40.f;
+    float    m_smart_fill_angle           = 35.f;
 
     bool     m_paint_on_overhangs_only          = true;
     float    m_highlight_by_angle_threshold_deg = 0.f;
