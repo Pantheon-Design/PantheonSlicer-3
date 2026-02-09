@@ -88,7 +88,7 @@ jobs:
     - name: "Remove unneeded stuff to free disk space"
       run:
         sudo rm -rf /usr/share/dotnet /opt/ghc "/usr/local/share/boost" "$AGENT_TOOLSDIRECTORY"
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Get the version and date
       run: |
         ver_pure=$(grep 'set(SoftFever_VERSION' version.inc | cut -d '"' -f2)
