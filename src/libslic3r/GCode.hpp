@@ -187,9 +187,9 @@ public:
         // BBS
         m_toolchange_count(0),
         m_nominal_z(0.), 
-        m_stamina_current(10.0), 
-        m_stamina_max(10.0), 
-        m_stamina_regen_rate(2), 
+        m_stamina_current(30.0), 
+        m_stamina_max(30.0), 
+        m_stamina_regen_rate(10), 
         m_stamina_comp_medium(1.10), 
         m_stamina_comp_high(1.50)
         {}

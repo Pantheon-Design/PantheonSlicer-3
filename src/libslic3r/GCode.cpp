@@ -5196,7 +5196,14 @@ bool GCode::_needSAFC(const ExtrusionPath &path)
 double GCode::get_stamina_flow_multiplier(double stamina) const
 {
     double pct = stamina / m_stamina_max;
-    return (pct > 0.5) ? 1.0 : (pct > 0.0 ? m_stamina_comp_medium : m_stamina_comp_high);
+
+    if (pct > 0.5) {
+        return 1.0;
+    } else if (pct > 0.0) {
+        return m_stamina_comp_medium;
+    } else {
+        return m_stamina_comp_high;
+    }
 }
 
 void GCode::update_stamina_regeneration(double dt)
