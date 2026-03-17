@@ -749,8 +749,15 @@ wxMenuItem* MenuFactory::append_menu_item_settings(wxMenu* menu_)
 wxMenuItem* MenuFactory::append_menu_item_change_type(wxMenu* menu)
 {
     return append_menu_item(menu, wxID_ANY, _L("Change type"), "",
-        [](wxCommandEvent&) { obj_list()->change_part_type(); }, "", menu,
+        [](wxCommandEvent&) {
+            if (obj_list()->GetSelectedItemsCount() > 1)
+                obj_list()->change_part_type_for_selected_items();
+            else
+                obj_list()->change_part_type();
+        }, "", menu,
         []() {
+            if (obj_list()->GetSelectedItemsCount() > 1)
+                return true;
             wxDataViewItem item = obj_list()->GetSelection();
             return item.IsOk() || obj_list()->GetModel()->GetItemType(item) == itVolume;
         }, m_parent);
@@ -1734,6 +1741,7 @@ wxMenu* MenuFactory::multi_selection_menu()
         append_menu_item_delete(menu);
         append_menu_items_convert_unit(menu);
         append_menu_item_replace_all_with_stl(menu);
+        append_menu_item_change_type(menu);
         append_menu_item_change_filament(menu);
         wxMenu* split_menu = new wxMenu();
         if (split_menu) {

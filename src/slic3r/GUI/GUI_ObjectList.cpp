@@ -5182,6 +5182,107 @@ void ObjectList::change_part_type()
         select_item(sel.front());
 }
 
+void ObjectList::change_part_type_for_selected_items()
+{
+    wxDataViewItemArray sels;
+    GetSelections(sels);
+
+    if (sels.empty())
+        return;
+
+    // Collect all selected volumes and validate
+    struct VolInfo {
+        int obj_idx;
+        int vol_idx;
+        ModelVolume* volume;
+    };
+    std::vector<VolInfo> volumes;
+
+    bool has_svg_or_text = false;
+    for (const wxDataViewItem& item : sels) {
+        if (!(m_objects_model->GetItemType(item) & itVolume))
+            continue;
+        const int obj_idx = m_objects_model->GetObjectIdByItem(item);
+        const int vol_idx = m_objects_model->GetVolumeIdByItem(item);
+        if (obj_idx < 0 || vol_idx < 0)
+            continue;
+        ModelVolume* vol = (*m_objects)[obj_idx]->volumes[vol_idx];
+        volumes.push_back({obj_idx, vol_idx, vol});
+        if (vol->is_svg() || vol->is_text())
+            has_svg_or_text = true;
+    }
+
+    if (volumes.empty())
+        return;
+
+    // If only one volume selected, fall back to single-item behavior
+    if (volumes.size() == 1) {
+        change_part_type();
+        return;
+    }
+
+    // Build type choices
+    wxArrayString names;
+    names.Add(_L("Part"));
+    names.Add(_L("Negative Part"));
+    names.Add(_L("Modifier"));
+    if (!has_svg_or_text) {
+        names.Add(_L("Support Blocker"));
+        names.Add(_L("Support Enforcer"));
+    }
+
+    SingleChoiceDialog dlg(_L("Type:"), _L("Choose part type"), names, 0);
+    auto new_type = ModelVolumeType(dlg.GetSingleChoiceIndex());
+
+    if (new_type == ModelVolumeType::INVALID)
+        return;
+
+    // Validate: check that we won't remove the last MODEL_PART from any object
+    if (new_type != ModelVolumeType::MODEL_PART) {
+        // Count MODEL_PART volumes per object, minus those we're changing away
+        std::map<int, int> model_part_counts;
+        std::map<int, int> changing_model_parts;
+
+        for (const auto& vi : volumes) {
+            if (model_part_counts.find(vi.obj_idx) == model_part_counts.end()) {
+                int cnt = 0;
+                for (auto v : (*m_objects)[vi.obj_idx]->volumes)
+                    if (v->type() == ModelVolumeType::MODEL_PART)
+                        ++cnt;
+                model_part_counts[vi.obj_idx] = cnt;
+                changing_model_parts[vi.obj_idx] = 0;
+            }
+            if (vi.volume->type() == ModelVolumeType::MODEL_PART)
+                changing_model_parts[vi.obj_idx]++;
+        }
+
+        for (auto& [obj_idx, cnt] : model_part_counts) {
+            if (cnt - changing_model_parts[obj_idx] < 1) {
+                Slic3r::GUI::show_error(nullptr, _(L("The type of the last solid object part is not to be changed.")));
+                return;
+            }
+        }
+    }
+
+    take_snapshot("Change part type");
+
+    // Apply type changes and track which objects need reordering
+    std::set<int> affected_objects;
+    for (const auto& vi : volumes) {
+        if (vi.volume->type() != new_type) {
+            vi.volume->set_type(new_type);
+            affected_objects.insert(vi.obj_idx);
+        }
+    }
+
+    // Reorder volumes for all affected objects
+    for (int obj_idx : affected_objects)
+        reorder_volumes_and_get_selection(obj_idx);
+
+    // Update scene
+    wxGetApp().plater()->update();
+}
+
 void ObjectList::last_volume_is_deleted(const int obj_idx)
 {
     // BBS: object (obj_idx calc in obj list) is already removed from m_objects in Plater::priv::remove().
