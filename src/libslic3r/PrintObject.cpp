@@ -480,6 +480,44 @@ void PrintObject::prepare_infill()
     this->process_external_surfaces();
     m_print->throw_if_canceled();
 
+    // Apply solid_infill_wall_overlap correction to stInternalSolid surfaces.
+    // The infill/wall overlap was applied uniformly in PerimeterGenerator using infill_wall_overlap.
+    // Now that surfaces are classified, adjust stInternalSolid boundaries by the delta between
+    // solid_infill_wall_overlap and infill_wall_overlap, using the same base calculation.
+    for (auto *layer : m_layers) {
+        for (auto *region : layer->m_regions) {
+            const PrintRegionConfig &region_config = region->region().config();
+            if (region_config.solid_infill_wall_overlap.value == 0)
+                continue; // use infill_wall_overlap for everything (default)
+
+            // Compute base value matching PerimeterGenerator's overlap calculation
+            Flow perimeter_flow    = region->flow(frPerimeter);
+            Flow solid_infill_flow = region->flow(frSolidInfill);
+            double base;
+            if (this->config().wall_generator.value == PerimeterGeneratorType::Arachne)
+                base = perimeter_flow.spacing();
+            else
+                base = perimeter_flow.spacing() / 2.0 + solid_infill_flow.spacing() / 2.0;
+
+            double sparse_overlap = region_config.infill_wall_overlap.get_abs_value(base);
+            double solid_overlap  = region_config.solid_infill_wall_overlap.get_abs_value(base);
+            double delta = solid_overlap - sparse_overlap;
+
+            if (std::abs(delta) < EPSILON)
+                continue;
+
+            coord_t delta_scaled = coord_t(scale_(delta));
+            for (Surface &surface : region->fill_surfaces.surfaces) {
+                if (surface.surface_type == stInternalSolid) {
+                    ExPolygons adjusted = offset_ex(ExPolygons{surface.expolygon}, delta_scaled);
+                    if (!adjusted.empty())
+                        surface.expolygon = adjusted.front();
+                }
+            }
+        }
+        m_print->throw_if_canceled();
+    }
+
     // Debugging output.
 #ifdef SLIC3R_DEBUG_SLICE_PROCESSING
     for (size_t region_id = 0; region_id < this->num_printing_regions(); ++ region_id) {
@@ -1085,7 +1123,8 @@ bool PrintObject::invalidate_state_by_config_options(
             || opt_key == "internal_bridge_angle" // ORCA: Internal bridge angle override
             //BBS
             || opt_key == "bridge_density"
-            || opt_key == "internal_bridge_density") {
+            || opt_key == "internal_bridge_density"
+            || opt_key == "solid_infill_wall_overlap") {
             steps.emplace_back(posPrepareInfill);
         } else if (
                opt_key == "top_surface_pattern"

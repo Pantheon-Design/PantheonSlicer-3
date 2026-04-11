@@ -158,6 +158,7 @@ bool Layer::is_perimeter_compatible(const PrintRegion& a, const PrintRegion& b)
 		&& config.opt_serialize("outer_wall_line_width") == other_config.opt_serialize("outer_wall_line_width")
 		&& config.detect_thin_wall                  == other_config.detect_thin_wall
 		&& config.infill_wall_overlap              == other_config.infill_wall_overlap
+        && config.solid_infill_wall_overlap        == other_config.solid_infill_wall_overlap
         && config.top_bottom_infill_wall_overlap              == other_config.top_bottom_infill_wall_overlap
         && config.seam_slope_type         == other_config.seam_slope_type
         && config.seam_slope_conditional == other_config.seam_slope_conditional
