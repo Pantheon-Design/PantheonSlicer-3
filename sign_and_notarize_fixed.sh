@@ -106,7 +106,9 @@ if [ ! -L "Applications" ]; then
     ln -s /Applications Applications
 fi
 
-hdiutil create -volname "$BundleName" -srcfolder . -ov -format UDZO "$BundleName.dmg"
+# Use HFS+ filesystem (-fs HFS+) because APFS DMGs do not support ticket stapling.
+# macOS 26+ defaults to APFS, which causes stapling to fail with Error 65.
+hdiutil create -volname "$BundleName" -srcfolder . -ov -format UDZO -fs HFS+ "$BundleName.dmg"
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to create DMG!"
@@ -116,36 +118,9 @@ fi
 
 echo "✓ DMG created successfully"
 
-# Sign the DMG
-echo ""
-echo "=== Signing DMG ==="
-if [ "$USE_ENTITLEMENTS" = true ]; then
-    codesign --deep --force --verbose --options runtime --timestamp \
-        --entitlements "../../../$ENTITLEMENTS_PATH" \
-        -s "$SIGN_IDENTITY" "$BundleName.dmg"
-else
-    codesign --deep --force --verbose --options runtime --timestamp \
-        -s "$SIGN_IDENTITY" "$BundleName.dmg"
-fi
-
-if [ $? -ne 0 ]; then
-    echo "❌ Failed to sign DMG!"
-    popd > /dev/null
-    exit 1
-fi
-
-# Verify DMG signature
-echo ""
-echo "=== Verifying DMG Signature ==="
-codesign --verify --deep --strict --verbose=2 "$BundleName.dmg"
-
-if [ $? -ne 0 ]; then
-    echo "❌ DMG signature verification failed!"
-    popd > /dev/null
-    exit 1
-fi
-
-echo "✓ DMG signed successfully"
+# Note: DMGs are NOT code-signed. Signing a DMG with codesign conflicts with
+# stapling, because stapling modifies the file and invalidates the code signature.
+# Gatekeeper validates DMGs via the stapled notarization ticket, not a code signature.
 
 # Submit for notarization
 echo ""
@@ -158,12 +133,20 @@ if [ $? -eq 0 ]; then
     echo ""
     echo "✓ Notarization successful!"
     
-    # Staple the ticket
+    # Staple the ticket (may need retries — Apple's CDN can lag behind acceptance)
     echo ""
     echo "=== Stapling Ticket ==="
-    xcrun stapler staple "$BundleName.dmg"
-    
-    if [ $? -eq 0 ]; then
+    STAPLE_SUCCESS=false
+    for i in 1 2 3 4 5; do
+        if xcrun stapler staple "$BundleName.dmg"; then
+            STAPLE_SUCCESS=true
+            break
+        fi
+        echo "Stapling attempt $i failed, waiting 30 seconds before retry..."
+        sleep 30
+    done
+
+    if [ "$STAPLE_SUCCESS" = true ]; then
         echo ""
         echo "✅ SUCCESS!"
         echo "Signed and notarized DMG created at:"
