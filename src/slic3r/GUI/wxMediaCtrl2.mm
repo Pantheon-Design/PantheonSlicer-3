@@ -18,6 +18,8 @@
 
 wxDEFINE_EVENT(EVT_MEDIA_CTRL_STAT, wxCommandEvent);
 
+const wxMediaState wxMediaCtrl2::MEDIASTATE_BUFFERING = static_cast<wxMediaState>(6);
+
 #define BAMBU_DYNAMIC
 
 void wxMediaCtrl2::bambu_log(void const * ctx, int level, char const * msg)

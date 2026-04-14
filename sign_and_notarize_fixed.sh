@@ -20,7 +20,7 @@ fi
 echo "Signing and notarizing for architecture: $ARCH"
 
 # Updated directory structure to match your setup
-BuildDir="build/$ARCH/PantheonSlicer-3"
+BuildDir="build_$ARCH/PantheonSlicer-3"
 BundleName="PantheonSlicer-3"
 AppBundle="$BundleName.app"
 SIGN_IDENTITY="Developer ID Application: Pantheon Design Ltd. (LXVCBJ7HN9)"
@@ -72,7 +72,7 @@ echo ""
 echo "=== Signing App Bundle ==="
 if [ "$USE_ENTITLEMENTS" = true ]; then
     codesign --deep --force --verbose --options runtime --timestamp \
-        --entitlements "../../../$ENTITLEMENTS_PATH" \
+        --entitlements "../../$ENTITLEMENTS_PATH" \
         -s "$SIGN_IDENTITY" "$AppBundle"
 else
     codesign --deep --force --verbose --options runtime --timestamp \

@@ -8,6 +8,10 @@ endif ()
 
 if (SLIC3R_ENC_CHECK)
     add_executable(encoding-check encoding-check.cpp)
+    set_target_properties(encoding-check PROPERTIES
+        MACOSX_BUNDLE FALSE
+        XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+    )
 
     # A global no-op target which depends on all encodings checks,
     # and on which in turn all checked targets depend.

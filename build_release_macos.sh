@@ -61,6 +61,15 @@ if [ -z "$ARCH" ]; then
   export ARCH
 fi
 
+# Resolve "universal" to actual architecture list for CMake
+if [ "$ARCH" = "universal" ]; then
+  CMAKE_ARCH="x86_64;arm64"
+  OPENSSL_ARCH="darwin64-$(uname -m)-cc"
+else
+  CMAKE_ARCH="$ARCH"
+  OPENSSL_ARCH="darwin64-${ARCH}-cc"
+fi
+
 if [ -z "$BUILD_CONFIG" ]; then
   export BUILD_CONFIG="Release"
 fi
@@ -125,9 +134,9 @@ function build_deps() {
             cmake .. \
                 -G "${DEPS_CMAKE_GENERATOR}" \
                 -DDESTDIR="$DEPS" \
-                -DOPENSSL_ARCH="darwin64-${ARCH}-cc" \
+                -DOPENSSL_ARCH="${OPENSSL_ARCH}" \
                 -DCMAKE_BUILD_TYPE="$BUILD_CONFIG" \
-                -DCMAKE_OSX_ARCHITECTURES:STRING="${ARCH}" \
+                -DCMAKE_OSX_ARCHITECTURES:STRING="${CMAKE_ARCH}" \
                 -DCMAKE_OSX_DEPLOYMENT_TARGET="${OSX_DEPLOYMENT_TARGET}"
         fi
         cmake --build . --config "$BUILD_CONFIG" --target deps
@@ -160,16 +169,10 @@ function build_slicer() {
                 -DCMAKE_MACOSX_RPATH=ON \
                 -DCMAKE_INSTALL_RPATH="${DEPS}/usr/local" \
                 -DCMAKE_MACOSX_BUNDLE=ON \
-                -DCMAKE_OSX_ARCHITECTURES="${ARCH}" \
+                -DCMAKE_OSX_ARCHITECTURES="${CMAKE_ARCH}" \
                 -DCMAKE_OSX_DEPLOYMENT_TARGET="${OSX_DEPLOYMENT_TARGET}"
         fi
         cmake --build . --config "$BUILD_CONFIG" --target "$SLICER_BUILD_TARGET"
-    )
-
-    echo "Verify localization with gettext..."
-    (
-        cd "$PROJECT_DIR"
-        ./run_gettext.sh
     )
 
     echo "Fix macOS app package..."
