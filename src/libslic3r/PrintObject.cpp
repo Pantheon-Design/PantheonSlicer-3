@@ -484,7 +484,12 @@ void PrintObject::prepare_infill()
     // The infill/wall overlap was applied uniformly in PerimeterGenerator using infill_wall_overlap.
     // Now that surfaces are classified, adjust stInternalSolid boundaries by the delta between
     // solid_infill_wall_overlap and infill_wall_overlap, using the same base calculation.
+    // Skip the first and topmost layers — PerimeterGenerator used top_bottom_infill_wall_overlap
+    // for those, not infill_wall_overlap, so our delta would be incorrect.
     for (auto *layer : m_layers) {
+        // Skip first layer and topmost layer (no upper layer) — these used top_bottom_infill_wall_overlap
+        if (layer->id() == 0 || layer->upper_layer == nullptr)
+            continue;
         for (auto *region : layer->m_regions) {
             const PrintRegionConfig &region_config = region->region().config();
             if (region_config.solid_infill_wall_overlap.value == 0)
