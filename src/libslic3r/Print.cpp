@@ -1855,6 +1855,10 @@ std::map<ObjectID, unsigned int> getObjectExtruderMap(const Print& print) {
 // Slicing process, running at a background thread.
 void Print::process(long long *time_cost_with_cache, bool use_cache)
 {
+    BOOST_LOG_TRIVIAL(warning) << "[orca-profile] Print::process entered";
+    m_profile_stats.reset();
+    ORCA_PROFILE_SCOPE(m_profile_stats.us_print_process_total);
+
     long long start_time = 0, end_time = 0;
     if (time_cost_with_cache)
         *time_cost_with_cache = 0;
@@ -2070,19 +2074,24 @@ void Print::process(long long *time_cost_with_cache, bool use_cache)
     }
 
     if (this->set_started(psWipeTower)) {
+        ORCA_PROFILE_SCOPE(m_profile_stats.us_wipe_tower);
         m_wipe_tower_data.clear();
         m_tool_ordering.clear();
         if (this->has_wipe_tower()) {
             this->_make_wipe_tower();
         } else if (this->config().print_sequence != PrintSequence::ByObject) {
         	// Initialize the tool ordering, so it could be used by the G-code preview slider for planning tool changes and filament switches.
-        	m_tool_ordering = ToolOrdering(*this, -1, false);
+            {
+                ORCA_PROFILE_SCOPE(m_profile_stats.us_tool_ordering);
+                m_tool_ordering = ToolOrdering(*this, -1, false);
+            }
             if (m_tool_ordering.empty() || m_tool_ordering.last_extruder() == unsigned(-1))
                 throw Slic3r::SlicingError("The print is empty. The model is not printable with current print settings.");
         }
         this->set_done(psWipeTower);
     }
     if (this->set_started(psSkirtBrim)) {
+        ORCA_PROFILE_SCOPE(m_profile_stats.us_skirt_brim);
         this->set_status(70, L("Generating skirt & brim"));
 
         if (time_cost_with_cache)
@@ -2223,6 +2232,7 @@ void Print::process(long long *time_cost_with_cache, bool use_cache)
 // It is up to the caller to show an error message.
 std::string Print::export_gcode(const std::string& path_template, GCodeProcessorResult* result, ThumbnailsGeneratorCallback thumbnail_cb)
 {
+    BOOST_LOG_TRIVIAL(warning) << "[orca-profile] Print::export_gcode entered";
     // output everything to a G-code file
     // The following call may die if the filename_format template substitution fails.
     std::string path = this->output_filepath(path_template);
@@ -2971,6 +2981,7 @@ void Print::set_gcode_file_invalidated()
 //BBS: add gcode file preload logic
 void Print::export_gcode_from_previous_file(const std::string& file, GCodeProcessorResult* result, ThumbnailsGeneratorCallback thumbnail_cb)
 {
+    BOOST_LOG_TRIVIAL(warning) << "[orca-profile] Print::export_gcode_from_previous_file entered (cached path - no profile stats will be emitted)";
     try {
         GCodeProcessor processor;
         GCodeProcessor::s_IsBBLPrinter = is_BBL_printer();
@@ -4377,6 +4388,66 @@ PrintRegion *PrintObjectRegions::FuzzySkinPaintedRegion::parent_print_object_reg
 int PrintObjectRegions::FuzzySkinPaintedRegion::parent_print_object_region_id(const LayerRangeRegions &layer_range) const
 {
     return this->parent_print_object_region(layer_range)->print_object_region_id();
+}
+
+void Print::log_profile_stats() const
+{
+    // Use warning severity so the block always appears regardless of the user's
+    // log_severity_level config (which defaults to "warning" in release builds
+    // and would otherwise filter out info-level output).
+    BOOST_LOG_TRIVIAL(warning) << "Print::log_profile_stats() entered";
+    const SliceProfileStats &s = m_profile_stats;
+    auto sec = [](const std::atomic<int64_t> &us) {
+        return double(us.load(std::memory_order_relaxed)) / 1'000'000.0;
+    };
+    auto cnt = [](const std::atomic<int64_t> &v) {
+        return v.load(std::memory_order_relaxed);
+    };
+
+    const int64_t  layers = cnt(s.count_layers_processed);
+    const double   process_layer_avg_ms = layers > 0
+        ? (sec(s.us_process_layer_cumulative) * 1000.0 / double(layers))
+        : 0.0;
+
+    BOOST_LOG_TRIVIAL(warning) << "===== SLICE PROFILE =====";
+    BOOST_LOG_TRIVIAL(warning) << "layers_processed=" << layers;
+    BOOST_LOG_TRIVIAL(warning) << boost::format("Print::process total=%.3fs") % sec(s.us_print_process_total);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  make_perimeters=%.3fs (parallel_for=%.3fs)")
+        % sec(s.us_make_perimeters_total) % sec(s.us_make_perimeters_parallel);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  prepare_infill=%.3fs") % sec(s.us_prepare_infill_total);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  infill=%.3fs (parallel_for=%.3fs)")
+        % sec(s.us_infill_total) % sec(s.us_infill_parallel);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  ironing=%.3fs") % sec(s.us_ironing_total);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  generate_support_material=%.3fs") % sec(s.us_generate_support_material);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  simplify walls/infill/support=%.3fs/%.3fs/%.3fs")
+        % sec(s.us_simplify_walls) % sec(s.us_simplify_infill) % sec(s.us_simplify_support);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  tool_ordering=%.3fs  wipe_tower=%.3fs  skirt_brim=%.3fs")
+        % sec(s.us_tool_ordering) % sec(s.us_wipe_tower) % sec(s.us_skirt_brim);
+
+    BOOST_LOG_TRIVIAL(warning) << boost::format("GCode::do_export total=%.3fs") % sec(s.us_gcode_do_export_total);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  setup_pre_pipeline=%.3fs (seam_placer_init=%.3fs)")
+        % sec(s.us_gcode_setup_pre_pipeline) % sec(s.us_seam_placer_init);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("  process_layers total=%.3fs") % sec(s.us_process_layers_total);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("    process_layer cumulative=%.3fs  (avg per layer=%.3fms)")
+        % sec(s.us_process_layer_cumulative) % process_layer_avg_ms;
+    BOOST_LOG_TRIVIAL(warning) << boost::format("    filters: spiral=%.3fs  pressure_eq=%.3fs  cooling=%.3fs")
+        % sec(s.us_filter_spiral_vase) % sec(s.us_filter_pressure_equalizer) % sec(s.us_filter_cooling);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("             fan_mover=%.3fs  pa_processor=%.3fs  output_write=%.3fs")
+        % sec(s.us_filter_fan_mover) % sec(s.us_filter_pa_processor) % sec(s.us_filter_output_write);
+    BOOST_LOG_TRIVIAL(warning) << "    process_layer breakdown (cumulative):";
+    BOOST_LOG_TRIVIAL(warning) << boost::format("      change_layer=%.3fs  seam_placement=%.3fs (count=%d)")
+        % sec(s.us_inlayer_change_layer) % sec(s.us_inlayer_seam_placement) % cnt(s.count_seam_placements);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("      acp_init_layer=%.3fs  extrude_perimeters=%.3fs")
+        % sec(s.us_inlayer_acp_init_layer) % sec(s.us_inlayer_extrude_perimeters);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("      extrude_infill=%.3fs  extrude_loop=%.3fs (count=%d)")
+        % sec(s.us_inlayer_extrude_infill) % sec(s.us_inlayer_extrude_loop) % cnt(s.count_extrude_loop_calls);
+    BOOST_LOG_TRIVIAL(warning) << boost::format("      extrude_path=%.3fs  placeholder_parser=%.3fs")
+        % sec(s.us_inlayer_extrude_path) % sec(s.us_inlayer_placeholder_parser);
+    BOOST_LOG_TRIVIAL(warning) << "===== END SLICE PROFILE =====";
+
+    // The Boost.Log file sink buffers output until full / sink destruction.
+    // Force a flush so the profile block is visible in the log file while the slicer is still running.
+    flush_logs();
 }
 
 } // namespace Slic3r

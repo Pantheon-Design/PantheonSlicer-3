@@ -194,6 +194,7 @@ std::string BackgroundSlicingProcess::output_filepath_for_project(const boost::f
 // from the G-code generator.
 void BackgroundSlicingProcess::process_fff()
 {
+    BOOST_LOG_TRIVIAL(warning) << "[orca-profile] BackgroundSlicingProcess::process_fff entered";
     assert(m_print == m_fff_print);
     m_fff_print->is_BBL_printer() = wxGetApp().preset_bundle->is_bbl_vendor();
 	//BBS: add the logic to process from an existed gcode file
