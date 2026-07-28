@@ -17,6 +17,7 @@
 #include "GCode/ThumbnailData.hpp"
 #include "GCode/GCodeProcessor.hpp"
 #include "MultiMaterialSegmentation.hpp"
+#include "SliceProfileStats.hpp"
 #include "libslic3r.h"
 
 #include <Eigen/Geometry>
@@ -929,6 +930,11 @@ public:
     const PrintStatistics&      print_statistics() const { return m_print_statistics; }
     PrintStatistics&            print_statistics() { return m_print_statistics; }
 
+    // Profiling: per-slice wall-time accumulators. Reset at the start of process()
+    // and dumped via log_profile_stats() after export_gcode() completes.
+    SliceProfileStats&          profile_stats() const { return m_profile_stats; }
+    void                        log_profile_stats() const;
+
     // Wipe tower support.
     bool                        has_wipe_tower() const;
     const WipeTowerData&        wipe_tower_data(size_t filaments_cnt = 0) const;
@@ -1054,6 +1060,9 @@ private:
     // Estimated print time, filament consumed.
     PrintStatistics                         m_print_statistics;
     bool                                    m_support_used {false};
+
+    // Profiling counters — mutable so const accessors used in the export path can update them.
+    mutable SliceProfileStats               m_profile_stats;
 
     //BBS: plate's origin
     Vec3d   m_origin;

@@ -10,6 +10,11 @@ project(hints)
 add_executable(hintsToPot
     HintsToPot.cpp)
 
+set_target_properties(hintsToPot PROPERTIES
+    MACOSX_BUNDLE FALSE
+    XCODE_ATTRIBUTE_CODE_SIGNING_ALLOWED "NO"
+)
+
 # Set include directories for the executable
 target_include_directories(hintsToPot 
     PRIVATE 

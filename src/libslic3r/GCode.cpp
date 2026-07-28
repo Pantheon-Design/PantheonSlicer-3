@@ -1434,6 +1434,10 @@ bool GCode::is_BBL_Printer()
 
 void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* result, ThumbnailsGeneratorCallback thumbnail_cb)
 {
+    BOOST_LOG_TRIVIAL(warning) << "[orca-profile] GCode::do_export entered, path=" << path;
+    // Manual timer (not ORCA_PROFILE_SCOPE) so we can stop it BEFORE the log dump runs;
+    // a scoped timer's destructor would only fire after log_profile_stats() returns.
+    const auto _orca_t_do_export_start = std::chrono::steady_clock::now();
     PROFILE_CLEAR();
 
     // BBS
@@ -1443,8 +1447,10 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
     CNumericLocalesSetter locales_setter;
 
     // Does the file exist? If so, we hope that it is still valid.
-    if (print->is_step_done(psGCodeExport) && boost::filesystem::exists(boost::filesystem::path(path)))
+    if (print->is_step_done(psGCodeExport) && boost::filesystem::exists(boost::filesystem::path(path))) {
+        BOOST_LOG_TRIVIAL(warning) << "[orca-profile] GCode::do_export early-return: psGCodeExport already done and file exists";
         return;
+    }
 
     BOOST_LOG_TRIVIAL(info) << boost::format("Will export G-code to %1% soon")%path;
 
@@ -1595,13 +1601,23 @@ void GCode::do_export(Print* print, const char* path, GCodeProcessorResult* resu
 
     BOOST_LOG_TRIVIAL(info) << "Exporting G-code finished" << log_memory_info();
     print->set_done(psGCodeExport);
-    
+
     if(is_BBL_Printer())
         result->label_object_enabled = m_enable_exclude_object;
 
     // Write the profiler measurements to file
     PROFILE_UPDATE();
     PROFILE_OUTPUT(debug_out_path("gcode-export-profile.txt").c_str());
+
+    // Stop the do_export wall-clock timer before the log dump so the number is non-zero in the block.
+    {
+        const auto _orca_us_do_export = std::chrono::duration_cast<std::chrono::microseconds>(
+            std::chrono::steady_clock::now() - _orca_t_do_export_start).count();
+        print->profile_stats().us_gcode_do_export_total.fetch_add(_orca_us_do_export, std::memory_order_relaxed);
+    }
+
+    // Dump the per-slice profile block into the log.
+    print->log_profile_stats();
 }
 
 // free functions called by GCode::_do_export()
@@ -1832,6 +1848,18 @@ static BambuBedType to_bambu_bed_type(BedType type)
 void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGeneratorCallback thumbnail_cb)
 {
     PROFILE_FUNC();
+
+    // Profiling: time from entry to first process_layers() call. Captured at most once.
+    const auto _orca_prof_t_pre_pipeline = std::chrono::steady_clock::now();
+    bool _orca_prof_pre_pipeline_recorded = false;
+    auto _orca_prof_record_pre_pipeline = [&]() {
+        if (!_orca_prof_pre_pipeline_recorded) {
+            const auto us = std::chrono::duration_cast<std::chrono::microseconds>(
+                std::chrono::steady_clock::now() - _orca_prof_t_pre_pipeline).count();
+            print.profile_stats().us_gcode_setup_pre_pipeline.fetch_add(us, std::memory_order_relaxed);
+            _orca_prof_pre_pipeline_recorded = true;
+        }
+    };
 
     // modifies m_silent_time_estimator_enabled
     DoExport::init_gcode_processor(print.config(), m_processor, m_silent_time_estimator_enabled);
@@ -2426,7 +2454,10 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
 
     // Collect custom seam data from all objects.
     std::function<void(void)> throw_if_canceled_func = [&print]() { print.throw_if_canceled(); };
-    m_seam_placer.init(print, throw_if_canceled_func);
+    {
+        ORCA_PROFILE_SCOPE(print.profile_stats().us_seam_placer_init);
+        m_seam_placer.init(print, throw_if_canceled_func);
+    }
 
     // BBS: get path for change filament
     if (m_writer.multiple_extruders) {
@@ -2546,6 +2577,7 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
                 // Process all layers of a single object instance (sequential mode) with a parallel pipeline:
                 // Generate G-code, run the filters (vase mode, cooling buffer), run the G-code analyser
                 // and export G-code into file.
+                _orca_prof_record_pre_pipeline();
                 this->process_layers(print, tool_ordering, collect_layers_to_print(object), *print_object_instance_sequential_active - object.instances().data(), file, prime_extruder);
                 //BBS: close powerlost recovery
                 {
@@ -2610,6 +2642,7 @@ void GCode::_do_export(Print& print, GCodeOutputStream &file, ThumbnailsGenerato
             // Process all layers of all objects (non-sequential mode) with a parallel pipeline:
             // Generate G-code, run the filters (vase mode, cooling buffer), run the G-code analyser
             // and export G-code into file.
+            _orca_prof_record_pre_pipeline();
             this->process_layers(print, tool_ordering, print_object_instances_ordering, layers_to_print, file);
             //BBS: close powerlost recovery
             {
@@ -2758,10 +2791,12 @@ void GCode::process_layers(
     const std::vector<std::pair<coordf_t, std::vector<LayerToPrint>>>   &layers_to_print,
     GCodeOutputStream                                                   &output_stream)
 {
+    ORCA_PROFILE_SCOPE(print.profile_stats().us_process_layers_total);
+    SliceProfileStats &_orca_stats = print.profile_stats();
     // The pipeline is variable: The vase mode filter is optional.
     size_t layer_to_print_idx = 0;
     const auto generator = tbb::make_filter<void, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [this, &print, &tool_ordering, &print_object_instances_ordering, &layers_to_print, &layer_to_print_idx](tbb::flow_control& fc) -> LayerResult {
+        [this, &print, &tool_ordering, &print_object_instances_ordering, &layers_to_print, &layer_to_print_idx, &_orca_stats](tbb::flow_control& fc) -> LayerResult {
             if (layer_to_print_idx >= layers_to_print.size()) {
                 if (layer_to_print_idx == layers_to_print.size() + (m_pressure_equalizer ? 1 : 0)) {
                     fc.stop();
@@ -2781,6 +2816,7 @@ void GCode::process_layers(
                 //BBS
                 check_placeholder_parser_failed();
                 print.throw_if_canceled();
+                ORCA_PROFILE_SCOPE(_orca_stats.us_process_layer_cumulative);
                 return this->process_layer(print, layer.second, layer_tools, &layer == &layers_to_print.back(), &print_object_instances_ordering, size_t(-1));
             }
         });
@@ -2790,37 +2826,45 @@ void GCode::process_layers(
         this->m_spiral_vase->set_max_xy_smoothing(max_xy_smoothing);
     }
     const auto spiral_mode = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [&spiral_mode = *this->m_spiral_vase.get(), &layers_to_print](LayerResult in) -> LayerResult {
+        [&spiral_mode = *this->m_spiral_vase.get(), &layers_to_print, &_orca_stats](LayerResult in) -> LayerResult {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_spiral_vase);
         	if (in.nop_layer_result)
                 return in;
-                
+
             spiral_mode.enable(in.spiral_vase_enable);
             bool last_layer = in.layer_id == layers_to_print.size() - 1;
             return { spiral_mode.process_layer(std::move(in.gcode), last_layer), in.layer_id, in.spiral_vase_enable, in.cooling_buffer_flush};
         });
     const auto pressure_equalizer = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [pressure_equalizer = this->m_pressure_equalizer.get()](LayerResult in) -> LayerResult {
+        [pressure_equalizer = this->m_pressure_equalizer.get(), &_orca_stats](LayerResult in) -> LayerResult {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_pressure_equalizer);
             return pressure_equalizer->process_layer(std::move(in));
         });
     const auto cooling = tbb::make_filter<LayerResult, std::string>(slic3r_tbb_filtermode::serial_in_order,
-        [&cooling_buffer = *this->m_cooling_buffer.get()](LayerResult in) -> std::string {
+        [&cooling_buffer = *this->m_cooling_buffer.get(), &_orca_stats](LayerResult in) -> std::string {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_cooling);
         	if (in.nop_layer_result)
                 return in.gcode;
             return cooling_buffer.process_layer(std::move(in.gcode), in.layer_id, in.cooling_buffer_flush);
         });
     const auto pa_processor_filter = tbb::make_filter<std::string, std::string>(slic3r_tbb_filtermode::serial_in_order,
-            [&pa_processor = *this->m_pa_processor](std::string in) -> std::string {
+            [&pa_processor = *this->m_pa_processor, &_orca_stats](std::string in) -> std::string {
+                ORCA_PROFILE_SCOPE(_orca_stats.us_filter_pa_processor);
                 return pa_processor.process_layer(std::move(in));
             }
         );
-    
+
     const auto output = tbb::make_filter<std::string, void>(slic3r_tbb_filtermode::serial_in_order,
-        [&output_stream](std::string s) { output_stream.write(s); }
+        [&output_stream, &_orca_stats](std::string s) {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_output_write);
+            output_stream.write(s);
+        }
     );
 
     const auto fan_mover = tbb::make_filter<std::string, std::string>(slic3r_tbb_filtermode::serial_in_order,
-            [&fan_mover = this->m_fan_mover, &config = this->config(), &writer = this->m_writer](std::string in)->std::string {
+            [&fan_mover = this->m_fan_mover, &config = this->config(), &writer = this->m_writer, &_orca_stats](std::string in)->std::string {
 
+        ORCA_PROFILE_SCOPE(_orca_stats.us_filter_fan_mover);
         CNumericLocalesSetter locales_setter;
 
         if (config.fan_speedup_time.value != 0 || config.fan_kickstart.value > 0) {
@@ -2861,10 +2905,12 @@ void GCode::process_layers(
     // BBS
     const bool                               prime_extruder)
 {
+    ORCA_PROFILE_SCOPE(print.profile_stats().us_process_layers_total);
+    SliceProfileStats &_orca_stats = print.profile_stats();
     // The pipeline is variable: The vase mode filter is optional.
     size_t layer_to_print_idx = 0;
     const auto generator = tbb::make_filter<void, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [this, &print, &tool_ordering, &layers_to_print, &layer_to_print_idx, single_object_idx, prime_extruder](tbb::flow_control& fc) -> LayerResult {
+        [this, &print, &tool_ordering, &layers_to_print, &layer_to_print_idx, single_object_idx, prime_extruder, &_orca_stats](tbb::flow_control& fc) -> LayerResult {
             if (layer_to_print_idx >= layers_to_print.size()) {
                 if (layer_to_print_idx == layers_to_print.size() + (m_pressure_equalizer ? 1 : 0)) {
                     fc.stop();
@@ -2881,6 +2927,7 @@ void GCode::process_layers(
                 //BBS
                 check_placeholder_parser_failed();
                 print.throw_if_canceled();
+                ORCA_PROFILE_SCOPE(_orca_stats.us_process_layer_cumulative);
                 return this->process_layer(print, { std::move(layer) }, tool_ordering.tools_for_layer(layer.print_z()), &layer == &layers_to_print.back(), nullptr, single_object_idx, prime_extruder);
             }
         });
@@ -2890,7 +2937,8 @@ void GCode::process_layers(
         this->m_spiral_vase->set_max_xy_smoothing(max_xy_smoothing);
     }
     const auto spiral_mode = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [&spiral_mode = *this->m_spiral_vase.get(), &layers_to_print](LayerResult in)->LayerResult {
+        [&spiral_mode = *this->m_spiral_vase.get(), &layers_to_print, &_orca_stats](LayerResult in)->LayerResult {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_spiral_vase);
             if (in.nop_layer_result)
                 return in;
             spiral_mode.enable(in.spiral_vase_enable);
@@ -2898,28 +2946,35 @@ void GCode::process_layers(
             return { spiral_mode.process_layer(std::move(in.gcode), last_layer), in.layer_id, in.spiral_vase_enable, in.cooling_buffer_flush };
         });
     const auto pressure_equalizer = tbb::make_filter<LayerResult, LayerResult>(slic3r_tbb_filtermode::serial_in_order,
-        [pressure_equalizer = this->m_pressure_equalizer.get()](LayerResult in) -> LayerResult {
-             return pressure_equalizer->process_layer(std::move(in));
+        [pressure_equalizer = this->m_pressure_equalizer.get(), &_orca_stats](LayerResult in) -> LayerResult {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_pressure_equalizer);
+            return pressure_equalizer->process_layer(std::move(in));
         });
     const auto cooling = tbb::make_filter<LayerResult, std::string>(slic3r_tbb_filtermode::serial_in_order,
-        [&cooling_buffer = *this->m_cooling_buffer.get()](LayerResult in)->std::string {
+        [&cooling_buffer = *this->m_cooling_buffer.get(), &_orca_stats](LayerResult in)->std::string {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_cooling);
             if (in.nop_layer_result)
                 return in.gcode;
             return cooling_buffer.process_layer(std::move(in.gcode), in.layer_id, in.cooling_buffer_flush);
         });
     const auto pa_processor_filter = tbb::make_filter<std::string, std::string>(slic3r_tbb_filtermode::serial_in_order,
-        [&pa_processor = *this->m_pa_processor](std::string in) -> std::string {
+        [&pa_processor = *this->m_pa_processor, &_orca_stats](std::string in) -> std::string {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_pa_processor);
             return pa_processor.process_layer(std::move(in));
         }
     );
-    
+
     const auto output = tbb::make_filter<std::string, void>(slic3r_tbb_filtermode::serial_in_order,
-        [&output_stream](std::string s) { output_stream.write(s); }
+        [&output_stream, &_orca_stats](std::string s) {
+            ORCA_PROFILE_SCOPE(_orca_stats.us_filter_output_write);
+            output_stream.write(s);
+        }
     );
 
     const auto fan_mover = tbb::make_filter<std::string, std::string>(slic3r_tbb_filtermode::serial_in_order,
-        [&fan_mover = this->m_fan_mover, &config = this->config(), &writer = this->m_writer](std::string in)->std::string {
+        [&fan_mover = this->m_fan_mover, &config = this->config(), &writer = this->m_writer, &_orca_stats](std::string in)->std::string {
 
+        ORCA_PROFILE_SCOPE(_orca_stats.us_filter_fan_mover);
         if (config.fan_speedup_time.value != 0 || config.fan_kickstart.value > 0) {
             if (fan_mover.get() == nullptr)
                 fan_mover.reset(new Slic3r::FanMover(
@@ -3605,6 +3660,8 @@ LayerResult GCode::process_layer(
     // Either printing all copies of all objects, or just a single copy of a single object.
     assert(single_object_instance_idx == size_t(-1) || layers.size() == 1);
 
+    print.profile_stats().count_layers_processed.fetch_add(1, std::memory_order_relaxed);
+
     // First object, support and raft layer, if available.
     const Layer         *object_layer  = nullptr;
     const SupportLayer  *support_layer = nullptr;
@@ -3686,6 +3743,7 @@ LayerResult GCode::process_layer(
         config.set_key_value("layer_num",   new ConfigOptionInt(m_layer_index + 1));
         config.set_key_value("layer_z",     new ConfigOptionFloat(print_z));
         config.set_key_value("max_layer_z", new ConfigOptionFloat(m_max_layer_z));
+        ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_placeholder_parser);
         gcode += this->placeholder_parser_process("before_layer_change_gcode",
             print.config().before_layer_change_gcode.value, m_writer.extruder()->id(), &config)
             + "\n";
@@ -3709,13 +3767,17 @@ LayerResult GCode::process_layer(
             config.set_key_value("layer_num", new ConfigOptionInt(m_layer_index));
             config.set_key_value("layer_z", new ConfigOptionFloat(print_z));
             config.set_key_value("max_layer_z", new ConfigOptionFloat(m_max_layer_z));
+            ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_placeholder_parser);
             gcode_res = this->placeholder_parser_process("timelapse_gcode", print.config().time_lapse_gcode.value, m_writer.extruder()->id(), &config) + "\n";
         }
         return gcode_res;
     };
 
     // BBS: don't use lazy_raise when enable spiral vase
-    gcode += this->change_layer(print_z);  // this will increase m_layer_index
+    {
+        ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_change_layer);
+        gcode += this->change_layer(print_z);  // this will increase m_layer_index
+    }
     m_layer = &layer;
     m_object_layer_over_raft = false;
     if(is_BBL_Printer()){
@@ -3739,6 +3801,7 @@ LayerResult GCode::process_layer(
             config.set_key_value("layer_num", new ConfigOptionInt(m_layer_index));
             config.set_key_value("layer_z", new ConfigOptionFloat(print_z));
             config.set_key_value("max_layer_z", new ConfigOptionFloat(m_max_layer_z));
+            ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_placeholder_parser);
             gcode += this->placeholder_parser_process("timelapse_gcode", print.config().time_lapse_gcode.value, m_writer.extruder()->id(),
                                                       &config) +
                      "\n";
@@ -3748,6 +3811,7 @@ LayerResult GCode::process_layer(
         DynamicConfig config;
         config.set_key_value("layer_num", new ConfigOptionInt(m_layer_index));
         config.set_key_value("layer_z",   new ConfigOptionFloat(print_z));
+        ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_placeholder_parser);
         gcode += this->placeholder_parser_process("layer_change_gcode",
             print.config().layer_change_gcode.value, m_writer.extruder()->id(), &config)
             + "\n";
@@ -4255,8 +4319,10 @@ LayerResult GCode::process_layer(
                 m_config.apply(instance_to_print.print_object.config(), true);
                 m_layer = layer_to_print.layer();
                 m_object_layer_over_raft = object_layer_over_raft;
-                if (m_config.reduce_crossing_wall)
+                if (m_config.reduce_crossing_wall) {
+                    ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_acp_init_layer);
                     m_avoid_crossing_perimeters.init_layer(*m_layer);
+                }
 
                 if (this->config().gcode_label_objects) {
                     gcode += std::string("; printing object ") + instance_to_print.print_object.model_object()->name +
@@ -4378,7 +4444,10 @@ LayerResult GCode::process_layer(
                     };
                     {
                         // Print perimeters of regions that has is_infill_first == false
-                        gcode += this->extrude_perimeters(print, by_region_specific, first_layer, false);
+                        {
+                            ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_extrude_perimeters);
+                            gcode += this->extrude_perimeters(print, by_region_specific, first_layer, false);
+                        }
                         if (!has_wipe_tower && need_insert_timelapse_gcode_for_traditional && !has_insert_timelapse_gcode && has_infill(by_region_specific)) {
                             gcode += this->retract(false, false, LiftType::NormalLift);
 
@@ -4397,12 +4466,21 @@ LayerResult GCode::process_layer(
                             has_insert_timelapse_gcode = true;
                         }
                         // Then print infill
-                        gcode += this->extrude_infill(print, by_region_specific, false);
+                        {
+                            ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_extrude_infill);
+                            gcode += this->extrude_infill(print, by_region_specific, false);
+                        }
                         // Then print perimeters of regions that has is_infill_first == true
-                        gcode += this->extrude_perimeters(print, by_region_specific, first_layer, true);
+                        {
+                            ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_extrude_perimeters);
+                            gcode += this->extrude_perimeters(print, by_region_specific, first_layer, true);
+                        }
                     }
                     // ironing
-                    gcode += this->extrude_infill(print,by_region_specific, true);
+                    {
+                        ORCA_PROFILE_SCOPE(print.profile_stats().us_inlayer_extrude_infill);
+                        gcode += this->extrude_infill(print,by_region_specific, true);
+                    }
                 }
 
                 if (this->config().gcode_label_objects) {
@@ -4655,7 +4733,9 @@ static std::unique_ptr<EdgeGrid::Grid> calculate_layer_edge_grid(const Layer& la
 
 std::string GCode::extrude_loop(ExtrusionLoop loop, std::string description, double speed, const ExtrusionEntitiesPtr& region_perimeters, const Point* start_point)
 {
-    
+    ORCA_PROFILE_SCOPE(m_curr_print->profile_stats().us_inlayer_extrude_loop);
+    m_curr_print->profile_stats().count_extrude_loop_calls.fetch_add(1, std::memory_order_relaxed);
+
     // get a copy; don't modify the orientation of the original loop object otherwise
     // next copies (if any) would not detect the correct orientation
 
@@ -4675,6 +4755,8 @@ std::string GCode::extrude_loop(ExtrusionLoop loop, std::string description, dou
     float seam_overhang = std::numeric_limits<float>::lowest();
     if (!m_config.spiral_mode && description == "perimeter") {
         assert(m_layer != nullptr);
+        m_curr_print->profile_stats().count_seam_placements.fetch_add(1, std::memory_order_relaxed);
+        ORCA_PROFILE_SCOPE(m_curr_print->profile_stats().us_inlayer_seam_placement);
         m_seam_placer.place_seam(m_layer, loop, last_pos, seam_overhang);
     } else
         loop.split_at(last_pos, false);
@@ -4987,6 +5069,7 @@ std::string GCode::extrude_entity(const ExtrusionEntity &entity, std::string des
 
 std::string GCode::extrude_path(ExtrusionPath path, std::string description, double speed)
 {
+    ORCA_PROFILE_SCOPE(m_curr_print->profile_stats().us_inlayer_extrude_path);
     // Orca: Reset average multipath flow as this is a single line, single extrude volumetric speed path
     m_multi_flow_segment_path_pa_set = false;
     m_multi_flow_segment_path_average_mm3_per_mm = 0;

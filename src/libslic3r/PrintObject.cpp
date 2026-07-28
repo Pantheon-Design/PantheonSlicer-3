@@ -298,6 +298,8 @@ void PrintObject::make_perimeters()
     if (! this->set_started(posPerimeters))
         return;
 
+    ORCA_PROFILE_SCOPE(m_print->profile_stats().us_make_perimeters_total);
+
     m_print->set_status(15, L("Generating walls"));
     BOOST_LOG_TRIVIAL(info) << "Generating walls..." << log_memory_info();
 
@@ -382,15 +384,18 @@ void PrintObject::make_perimeters()
     }
 
     BOOST_LOG_TRIVIAL(debug) << "Generating perimeters in parallel - start";
-    tbb::parallel_for(
-        tbb::blocked_range<size_t>(0, m_layers.size()),
-        [this](const tbb::blocked_range<size_t>& range) {
-            for (size_t layer_idx = range.begin(); layer_idx < range.end(); ++ layer_idx) {
-                m_print->throw_if_canceled();
-                m_layers[layer_idx]->make_perimeters();
+    {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_make_perimeters_parallel);
+        tbb::parallel_for(
+            tbb::blocked_range<size_t>(0, m_layers.size()),
+            [this](const tbb::blocked_range<size_t>& range) {
+                for (size_t layer_idx = range.begin(); layer_idx < range.end(); ++ layer_idx) {
+                    m_print->throw_if_canceled();
+                    m_layers[layer_idx]->make_perimeters();
+                }
             }
-        }
-    );
+        );
+    }
     m_print->throw_if_canceled();
     BOOST_LOG_TRIVIAL(debug) << "Generating perimeters in parallel - end";
 
@@ -401,6 +406,7 @@ void PrintObject::prepare_infill()
 {
     if (! this->set_started(posPrepareInfill))
         return;
+    ORCA_PROFILE_SCOPE(m_print->profile_stats().us_prepare_infill_total);
     m_print->set_status(25, L("Generating infill regions"));
     if (m_typed_slices) {
         // To improve robustness of detect_surfaces_type() when reslicing (working with typed slices), see GH issue #7442.
@@ -480,6 +486,49 @@ void PrintObject::prepare_infill()
     this->process_external_surfaces();
     m_print->throw_if_canceled();
 
+    // Apply solid_infill_wall_overlap correction to stInternalSolid surfaces.
+    // The infill/wall overlap was applied uniformly in PerimeterGenerator using infill_wall_overlap.
+    // Now that surfaces are classified, adjust stInternalSolid boundaries by the delta between
+    // solid_infill_wall_overlap and infill_wall_overlap, using the same base calculation.
+    // Skip the first and topmost layers — PerimeterGenerator used top_bottom_infill_wall_overlap
+    // for those, not infill_wall_overlap, so our delta would be incorrect.
+    for (auto *layer : m_layers) {
+        // Skip first layer and topmost layer (no upper layer) — these used top_bottom_infill_wall_overlap
+        if (layer->id() == 0 || layer->upper_layer == nullptr)
+            continue;
+        for (auto *region : layer->m_regions) {
+            const PrintRegionConfig &region_config = region->region().config();
+            if (region_config.solid_infill_wall_overlap.value == 0)
+                continue; // use infill_wall_overlap for everything (default)
+
+            // Compute base value matching PerimeterGenerator's overlap calculation
+            Flow perimeter_flow    = region->flow(frPerimeter);
+            Flow solid_infill_flow = region->flow(frSolidInfill);
+            double base;
+            if (this->config().wall_generator.value == PerimeterGeneratorType::Arachne)
+                base = perimeter_flow.spacing();
+            else
+                base = perimeter_flow.spacing() / 2.0 + solid_infill_flow.spacing() / 2.0;
+
+            double sparse_overlap = region_config.infill_wall_overlap.get_abs_value(base);
+            double solid_overlap  = region_config.solid_infill_wall_overlap.get_abs_value(base);
+            double delta = solid_overlap - sparse_overlap;
+
+            if (std::abs(delta) < EPSILON)
+                continue;
+
+            coord_t delta_scaled = coord_t(scale_(delta));
+            for (Surface &surface : region->fill_surfaces.surfaces) {
+                if (surface.surface_type == stInternalSolid) {
+                    ExPolygons adjusted = offset_ex(ExPolygons{surface.expolygon}, delta_scaled);
+                    if (!adjusted.empty())
+                        surface.expolygon = adjusted.front();
+                }
+            }
+        }
+        m_print->throw_if_canceled();
+    }
+
     // Debugging output.
 #ifdef SLIC3R_DEBUG_SLICE_PROCESSING
     for (size_t region_id = 0; region_id < this->num_printing_regions(); ++ region_id) {
@@ -542,20 +591,24 @@ void PrintObject::infill()
     this->prepare_infill();
 
     if (this->set_started(posInfill)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_infill_total);
         m_print->set_status(35, L("Generating infill toolpath"));
         const auto& adaptive_fill_octree = this->m_adaptive_fill_octrees.first;
         const auto& support_fill_octree = this->m_adaptive_fill_octrees.second;
 
         BOOST_LOG_TRIVIAL(debug) << "Filling layers in parallel - start";
-        tbb::parallel_for(
-            tbb::blocked_range<size_t>(0, m_layers.size()),
-            [this, &adaptive_fill_octree = adaptive_fill_octree, &support_fill_octree = support_fill_octree](const tbb::blocked_range<size_t>& range) {
-                for (size_t layer_idx = range.begin(); layer_idx < range.end(); ++ layer_idx) {
-                    m_print->throw_if_canceled();
-                    m_layers[layer_idx]->make_fills(adaptive_fill_octree.get(), support_fill_octree.get(), this->m_lightning_generator.get());
+        {
+            ORCA_PROFILE_SCOPE(m_print->profile_stats().us_infill_parallel);
+            tbb::parallel_for(
+                tbb::blocked_range<size_t>(0, m_layers.size()),
+                [this, &adaptive_fill_octree = adaptive_fill_octree, &support_fill_octree = support_fill_octree](const tbb::blocked_range<size_t>& range) {
+                    for (size_t layer_idx = range.begin(); layer_idx < range.end(); ++ layer_idx) {
+                        m_print->throw_if_canceled();
+                        m_layers[layer_idx]->make_fills(adaptive_fill_octree.get(), support_fill_octree.get(), this->m_lightning_generator.get());
+                    }
                 }
-            }
-        );
+            );
+        }
         m_print->throw_if_canceled();
         BOOST_LOG_TRIVIAL(debug) << "Filling layers in parallel - end";
         /*  we could free memory now, but this would make this step not idempotent
@@ -568,6 +621,7 @@ void PrintObject::infill()
 void PrintObject::ironing()
 {
     if (this->set_started(posIroning)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_ironing_total);
         BOOST_LOG_TRIVIAL(debug) << "Ironing in parallel - start";
         tbb::parallel_for(
             // Ironing starting with layer 0 to support ironing all surfaces.
@@ -631,6 +685,7 @@ void PrintObject::detect_overhangs_for_lift()
 void PrintObject::generate_support_material()
 {
     if (this->set_started(posSupportMaterial)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_generate_support_material);
         this->clear_support_layers();
 
         if(!has_support() && !m_print->get_no_check_flag()) {
@@ -697,6 +752,7 @@ void PrintObject::estimate_curled_extrusions()
 void PrintObject::simplify_extrusion_path()
 {
     if (this->set_started(posSimplifyPath)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_simplify_walls);
         m_print->set_status(75, L("Optimizing toolpath"));
         BOOST_LOG_TRIVIAL(debug) << "Simplify extrusion path of object in parallel - start";
         //BBS: infill and walls
@@ -715,6 +771,7 @@ void PrintObject::simplify_extrusion_path()
     }
 
     if (this->set_started(posSimplifyInfill)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_simplify_infill);
         m_print->set_status(75, L("Optimizing toolpath"));
         BOOST_LOG_TRIVIAL(debug) << "Simplify infill extrusion path of object in parallel - start";
         //BBS: infills
@@ -733,6 +790,7 @@ void PrintObject::simplify_extrusion_path()
     }
 
     if (this->set_started(posSimplifySupportPath)) {
+        ORCA_PROFILE_SCOPE(m_print->profile_stats().us_simplify_support);
         m_print->set_status(75, L("Optimizing toolpath"));
         BOOST_LOG_TRIVIAL(debug) << "Simplify extrusion path of support in parallel - start";
         tbb::parallel_for(
@@ -1085,7 +1143,8 @@ bool PrintObject::invalidate_state_by_config_options(
             || opt_key == "internal_bridge_angle" // ORCA: Internal bridge angle override
             //BBS
             || opt_key == "bridge_density"
-            || opt_key == "internal_bridge_density") {
+            || opt_key == "internal_bridge_density"
+            || opt_key == "solid_infill_wall_overlap") {
             steps.emplace_back(posPrepareInfill);
         } else if (
                opt_key == "top_surface_pattern"

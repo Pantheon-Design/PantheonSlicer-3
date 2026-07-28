@@ -193,6 +193,17 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "AppleClang" AND ${CMAKE_CXX_COMPILER_VERS
     add_compile_definitions(BOOST_NO_CXX98_FUNCTION_BASE _HAS_AUTO_PTR_ETC=0)
 endif()
 
+# Ensure NDEBUG is defined for Release builds (Xcode generator doesn't always add it)
+add_compile_definitions($<$<CONFIG:Release>:NDEBUG>
+                        $<$<CONFIG:RelWithDebInfo>:NDEBUG>)
+
+# Ensure proper optimization flags for Xcode generator
+if (CMAKE_GENERATOR MATCHES "Xcode")
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL[variant=Release] "s")
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL[variant=RelWithDebInfo] "s")
+    set(CMAKE_XCODE_ATTRIBUTE_GCC_OPTIMIZATION_LEVEL[variant=Debug] "0")
+endif()
+
 if (MINGW)
     add_compile_options(-Wa,-mbig-obj)
 endif ()

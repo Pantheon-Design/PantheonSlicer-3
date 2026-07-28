@@ -3404,7 +3404,21 @@ void PrintConfigDef::init_fff_params()
     def->ratio_over = "inner_wall_line_width";
     def->mode = comAdvanced;
     def->set_default_value(new ConfigOptionPercent(15));
-    
+
+    def = this->add("solid_infill_wall_overlap", coPercent);
+    def->label = L("Solid Infill/Wall overlap");
+    def->category = L("Strength");
+    // xgettext:no-c-format, no-boost-format
+    def->tooltip = L("Overlap between internal solid infill and walls. "
+                     "This applies to all solid infill regions (internal solid layers supporting top/bottom surfaces, "
+                     "and all infill when sparse infill density is 100%). "
+                     "Set to 0 to use the same value as Infill/Wall overlap. "
+                     "The percentage value is relative to inner wall line width.");
+    def->sidetext = "%";
+    def->ratio_over = "inner_wall_line_width";
+    def->mode = comAdvanced;
+    def->set_default_value(new ConfigOptionPercent(0));
+
     def = this->add("top_bottom_infill_wall_overlap", coPercent);
     def->label = L("Top/Bottom solid infill/wall overlap");
     def->category = L("Strength");

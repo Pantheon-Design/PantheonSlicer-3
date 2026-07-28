@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -E \"\\\\.\\(cpp|h|hpp\\)$\")",
+      "Bash(xargs grep:*)",
+      "Bash(grep -rn \"posSlice\\\\|posPerimeters\\\\|posInfill\" /d/gitlab/orcaslicerfork/src/libslic3r/*.hpp --include=\"*.hpp\")",
+      "Bash(grep:*)"
+    ]
+  }
+}

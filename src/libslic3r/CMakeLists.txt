@@ -308,6 +308,7 @@ set(lisbslic3r_sources
     SLAPrintSteps.cpp
     SLAPrintSteps.hpp
     SLAPrint.hpp
+    SliceProfileStats.hpp
     Slicing.cpp
     Slicing.hpp
     SlicesToTriangleMesh.hpp
