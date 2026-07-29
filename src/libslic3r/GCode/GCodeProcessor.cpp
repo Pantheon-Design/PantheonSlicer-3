@@ -72,7 +72,8 @@ const std::vector<std::string> GCodeProcessor::Reserved_Tags = {
     "_DURING_PRINT_EXHAUST_FAN",
     " WIPE_TOWER_START",
     " WIPE_TOWER_END",
-    " PA_CHANGE:"
+    " PA_CHANGE:",
+    "_GP_FIRST_LAYER_TIME_PLACEHOLDER"
 };
 
 const std::vector<std::string> GCodeProcessor::Reserved_Tags_compatible = {
@@ -93,7 +94,8 @@ const std::vector<std::string> GCodeProcessor::Reserved_Tags_compatible = {
     "_DURING_PRINT_EXHAUST_FAN",
     " WIPE_TOWER_START",
     " WIPE_TOWER_END",
-    " PA_CHANGE:"
+    " PA_CHANGE:",
+    "_GP_FIRST_LAYER_TIME_PLACEHOLDER"
 };
 
 
@@ -4370,6 +4372,27 @@ void GCodeProcessor::run_post_process()
         return ret;
     };
 
+    // replace _GP_FIRST_LAYER_TIME_PLACEHOLDER anywhere in the line with the first layer
+    // printing time (start gcode + layer 1, matching the viewer and the footer comment) in
+    // whole seconds, so that custom start gcode can pass it as a macro parameter,
+    // e.g. _START_PRINT FIRST_LAYER_TIME=283
+    auto process_first_layer_time_placeholder = [this](std::string& gcode_line) {
+        // skip comment lines so the raw config value stored in the CONFIG_BLOCK
+        // (; machine_start_gcode = ...) keeps the placeholder untouched
+        if (gcode_line.empty() || gcode_line[0] == ';')
+            return;
+        const std::string& tag = reserved_tag(ETags::First_Layer_Time_Placeholder);
+        size_t pos = gcode_line.find(tag);
+        if (pos == std::string::npos)
+            return;
+        const TimeMachine& machine = m_time_processor.machines[static_cast<size_t>(PrintEstimatedStatistics::ETimeMode::Normal)];
+        const std::string seconds = std::to_string((int)std::round(machine.first_layer_time));
+        do {
+            gcode_line.replace(pos, tag.length(), seconds);
+            pos = gcode_line.find(tag, pos);
+        } while (pos != std::string::npos);
+    };
+
     // check for temporary lines
     auto is_temporary_decoration = [](const std::string_view gcode_line) {
         // remove trailing '\n'
@@ -4584,6 +4607,9 @@ void GCodeProcessor::run_post_process()
                         gcode_line.clear();
                     if (!processed)
                         processed = process_used_filament(gcode_line);
+                    if (!processed)
+                        // mutates the line in place (if the placeholder is present), the line is exported by the code below
+                        process_first_layer_time_placeholder(gcode_line);
                     if (!processed && !is_temporary_decoration(gcode_line)) {
                         if (GCodeReader::GCodeLine::cmd_is(gcode_line, "G0") || GCodeReader::GCodeLine::cmd_is(gcode_line, "G1")) {
                             export_lines.append_line(gcode_line);
