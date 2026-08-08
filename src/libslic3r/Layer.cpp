@@ -157,6 +157,8 @@ bool Layer::is_perimeter_compatible(const PrintRegion& a, const PrintRegion& b)
 		&& config.opt_serialize("inner_wall_line_width") == other_config.opt_serialize("inner_wall_line_width")
 		&& config.opt_serialize("outer_wall_line_width") == other_config.opt_serialize("outer_wall_line_width")
 		&& config.detect_thin_wall                  == other_config.detect_thin_wall
+		&& config.infill_wall_overlap              == other_config.infill_wall_overlap
+		&& config.top_bottom_infill_wall_overlap   == other_config.top_bottom_infill_wall_overlap
 		&& config.seam_slope_type         == other_config.seam_slope_type
         && config.seam_slope_conditional == other_config.seam_slope_conditional
         && config.scarf_angle_threshold  == other_config.scarf_angle_threshold
@@ -247,39 +249,6 @@ void Layer::make_perimeters()
 	                    (*l)->fill_surfaces.set(std::move(expp), fill_surfaces.surfaces.front());
                         //BBS: Separate fill_no_overlap
                         (*l)->fill_no_overlap_expolygons = intersection_ex((*l)->slices.surfaces, fill_no_overlap);
-	                }
-
-	                // Apply per-region infill/wall overlap correction.
-	                // Perimeters were generated using layerm_config's overlap value.
-	                // Regions with different overlap need their fill surfaces adjusted.
-	                const PrintRegionConfig &base_config = layerm_config->region().config();
-	                for (LayerRegion *l : layerms) {
-	                    const PrintRegionConfig &region_config = l->region().config();
-	                    if (region_config.infill_wall_overlap == base_config.infill_wall_overlap)
-	                        continue;
-
-	                    // Compute base value matching PerimeterGenerator's overlap calculation
-	                    Flow perimeter_flow    = l->flow(frPerimeter);
-	                    Flow solid_infill_flow = l->flow(frSolidInfill);
-	                    double base;
-	                    if (this->object()->config().wall_generator.value == PerimeterGeneratorType::Arachne)
-	                        base = perimeter_flow.spacing();
-	                    else
-	                        base = perimeter_flow.spacing() / 2.0 + solid_infill_flow.spacing() / 2.0;
-
-	                    double base_overlap   = base_config.infill_wall_overlap.get_abs_value(base);
-	                    double region_overlap  = region_config.infill_wall_overlap.get_abs_value(base);
-	                    double delta = region_overlap - base_overlap;
-
-	                    if (std::abs(delta) < EPSILON)
-	                        continue;
-
-	                    coord_t delta_scaled = coord_t(scale_(delta));
-	                    for (Surface &surface : l->fill_surfaces.surfaces) {
-	                        ExPolygons adjusted = offset_ex(ExPolygons{surface.expolygon}, delta_scaled);
-	                        if (!adjusted.empty())
-	                            surface.expolygon = adjusted.front();
-	                    }
 	                }
 	            }
 	        }

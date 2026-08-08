@@ -488,45 +488,95 @@ void PrintObject::prepare_infill()
 
     // Apply solid_infill_wall_overlap correction to stInternalSolid surfaces.
     // The infill/wall overlap was applied uniformly in PerimeterGenerator using infill_wall_overlap.
-    // Now that surfaces are classified, adjust stInternalSolid boundaries by the delta between
-    // solid_infill_wall_overlap and infill_wall_overlap, using the same base calculation.
+    // Now that surfaces are classified, adjust the wall-adjacent boundary of stInternalSolid surfaces
+    // by the delta between solid_infill_wall_overlap and infill_wall_overlap, using the same base
+    // calculation. Interfaces between solid and other fill surfaces in the interior are left
+    // untouched and the disjointness of fill_surfaces is preserved — bridge_over_infill() and the
+    // fill generator rely on the fill surfaces forming a non-overlapping partition.
     // Skip the first and topmost layers — PerimeterGenerator used top_bottom_infill_wall_overlap
     // for those, not infill_wall_overlap, so our delta would be incorrect.
-    for (auto *layer : m_layers) {
-        // Skip first layer and topmost layer (no upper layer) — these used top_bottom_infill_wall_overlap
-        if (layer->id() == 0 || layer->upper_layer == nullptr)
-            continue;
-        for (auto *region : layer->m_regions) {
-            const PrintRegionConfig &region_config = region->region().config();
-            if (region_config.solid_infill_wall_overlap.value == 0)
-                continue; // use infill_wall_overlap for everything (default)
+    // NOTE: region->fill_expolygons must not be modified here. prepare_infill() may re-run on the
+    // same layers and rebuilds fill_surfaces from that invariant boundary
+    // (see LayerRegion::slices_to_fill_surfaces_clipped()); growing it would accumulate the delta.
+    {
+        bool has_solid_overlap = false;
+        for (size_t region_id = 0; region_id < this->num_printing_regions(); ++region_id)
+            if (this->printing_region(region_id).config().solid_infill_wall_overlap.value != 0) {
+                has_solid_overlap = true;
+                break;
+            }
+        if (has_solid_overlap) {
+            const bool arachne = this->config().wall_generator.value == PerimeterGeneratorType::Arachne;
+            for (Layer *layer : m_layers) {
+                // Skip first layer and topmost layer (no upper layer) — these used top_bottom_infill_wall_overlap.
+                // Arachne additionally treats the layer right above the raft as a bottom layer.
+                if (layer->id() == 0 || layer->upper_layer == nullptr
+                    || (arachne && layer->id() == size_t(m_config.raft_layers.value)))
+                    continue;
 
-            // Compute base value matching PerimeterGenerator's overlap calculation
-            Flow perimeter_flow    = region->flow(frPerimeter);
-            Flow solid_infill_flow = region->flow(frSolidInfill);
-            double base;
-            if (this->config().wall_generator.value == PerimeterGeneratorType::Arachne)
-                base = perimeter_flow.spacing();
-            else
-                base = perimeter_flow.spacing() / 2.0 + solid_infill_flow.spacing() / 2.0;
+                // Snapshot the pre-correction geometry of the whole layer, so that the adjustment
+                // of one region never sees another region's already adjusted state.
+                const size_t          n_regions = layer->m_regions.size();
+                std::vector<Polygons> region_solids(n_regions);
+                std::vector<Polygons> region_others(n_regions);
+                Polygons              layer_fill;
+                for (size_t i = 0; i < n_regions; ++i)
+                    for (const Surface &s : layer->m_regions[i]->fill_surfaces.surfaces) {
+                        Polygons p = to_polygons(s.expolygon);
+                        append(s.surface_type == stInternalSolid ? region_solids[i] : region_others[i], p);
+                        append(layer_fill, std::move(p));
+                    }
+                // The outer contours of this union (including hole islands) are the wall-adjacent
+                // edges; interfaces between fill surfaces are interior to it.
+                const ExPolygons layer_boundary = union_safety_offset_ex(layer_fill);
 
-            double sparse_overlap = region_config.infill_wall_overlap.get_abs_value(base);
-            double solid_overlap  = region_config.solid_infill_wall_overlap.get_abs_value(base);
-            double delta = solid_overlap - sparse_overlap;
+                for (size_t i = 0; i < n_regions; ++i) {
+                    LayerRegion             *region        = layer->m_regions[i];
+                    const PrintRegionConfig &region_config = region->region().config();
+                    if (region_config.solid_infill_wall_overlap.value == 0 || region_solids[i].empty())
+                        continue; // use infill_wall_overlap for everything (default)
+                    // With no walls PerimeterGenerator applied no infill/wall overlap at all.
+                    int wall_loops = region_config.wall_loops.value;
+                    if (wall_loops <= 0)
+                        continue;
 
-            if (std::abs(delta) < EPSILON)
-                continue;
+                    // Compute base value matching PerimeterGenerator's overlap calculation.
+                    Flow   wall_flow = wall_loops == 1 ? region->flow(frExternalPerimeter) : region->flow(frPerimeter);
+                    double base      = arachne ? wall_flow.spacing()
+                                               : wall_flow.spacing() / 2.0 + region->flow(frSolidInfill).spacing() / 2.0;
+                    double delta     = region_config.solid_infill_wall_overlap.get_abs_value(base)
+                                     - region_config.infill_wall_overlap.get_abs_value(base);
+                    if (std::abs(delta) < EPSILON)
+                        continue;
+                    float delta_scaled = float(scale_(delta));
 
-            coord_t delta_scaled = coord_t(scale_(delta));
-            for (Surface &surface : region->fill_surfaces.surfaces) {
-                if (surface.surface_type == stInternalSolid) {
-                    ExPolygons adjusted = offset_ex(ExPolygons{surface.expolygon}, delta_scaled);
-                    if (!adjusted.empty())
-                        surface.expolygon = adjusted.front();
+                    ExPolygons new_solids;
+                    if (delta < 0.) {
+                        // Less overlap than sparse infill: pull the solids back from the walls only.
+                        // The vacated band near the wall intentionally stays unfilled.
+                        new_solids = intersection_ex(region_solids[i], offset_ex(layer_boundary, delta_scaled));
+                    } else {
+                        // More overlap: grow the solids, but only into the free band towards the
+                        // walls, never over other fill surfaces of this or any other region.
+                        // Dilation is bounded by delta, no further clamping is needed.
+                        Polygons obstacles = region_others[i];
+                        for (size_t j = 0; j < n_regions; ++j)
+                            if (j != i) {
+                                append(obstacles, region_solids[j]);
+                                append(obstacles, region_others[j]);
+                            }
+                        new_solids = diff_ex(offset_ex(union_ex(region_solids[i]), delta_scaled), obstacles);
+                    }
+
+                    // Rebuild the solid surfaces keeping every resulting piece. An empty result
+                    // means all solids fell inside the reduced-overlap band and are dropped.
+                    Surface templ = *region->fill_surfaces.filter_by_type(stInternalSolid).front();
+                    region->fill_surfaces.remove_type(stInternalSolid);
+                    region->fill_surfaces.append(std::move(new_solids), templ);
                 }
+                m_print->throw_if_canceled();
             }
         }
-        m_print->throw_if_canceled();
     }
 
     // Debugging output.
@@ -2887,6 +2937,11 @@ void PrintObject::bridge_over_infill()
                     total_top_area.insert(total_top_area.end(), top_polys.begin(), top_polys.end());
                     Polygons internal_polys = to_polygons(region->fill_surfaces.filter_by_types({stInternal, stInternalSolid}));
                     expansion_area.insert(expansion_area.end(), internal_polys.begin(), internal_polys.end());
+                    // When solid_infill_wall_overlap grows internal solids beyond the original fill
+                    // contour, include the surfaces themselves so bridging areas (clipped by
+                    // total_fill_area below) are not cut back to the stale contour.
+                    if (region->region().config().solid_infill_wall_overlap.value != 0)
+                        total_fill_area.insert(total_fill_area.end(), internal_polys.begin(), internal_polys.end());
                     Polygons fill_polys = to_polygons(region->fill_expolygons);
                     total_fill_area.insert(total_fill_area.end(), fill_polys.begin(), fill_polys.end());
                     if (region->region().config().sparse_infill_pattern == ipLightning) {
