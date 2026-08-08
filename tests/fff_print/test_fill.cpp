@@ -476,3 +476,99 @@ bool test_if_solid_surface_filled(const ExPolygon& expolygon, double flow_spacin
 
     return uncovered.empty(); // solid surface is fully filled
 }
+
+// Regression test for solid_infill_wall_overlap: a non-zero value must adjust the
+// wall-adjacent boundary of internal solid infill without dropping solid surfaces or
+// internal bridges and without breaking the non-overlapping partition of fill_surfaces
+// (see the correction in PrintObject::prepare_infill()).
+TEST_CASE("solid_infill_wall_overlap keeps fill surfaces consistent", "[Fill]") {
+    struct LayerFillStats {
+        double solid_area  = 0.; // stInternalSolid, mm^2
+        double bridge_area = 0.; // stInternalBridge, mm^2
+        double sparse_area = 0.; // stInternal, mm^2
+        double sum_area    = 0.; // sum over all fill surfaces, mm^2
+        double union_area  = 0.; // area of the union of all fill surfaces, mm^2
+    };
+    auto slice_and_gather = [](const char *wall_generator, int solid_infill_wall_overlap) {
+        // 40x40x10 base with a 20x20 tower on top: the layers right below the base's top
+        // mix sparse infill (under the tower), an internal solid ring (under the exposed
+        // top ring) and internal bridges in the same layer — the geometry the
+        // solid_infill_wall_overlap correction must handle.
+        TriangleMesh combined = Slic3r::make_cube(40., 40., 10.);
+        TriangleMesh tower    = Slic3r::make_cube(20., 20., 10.2);
+        tower.translate(10.f, 10.f, 9.8f);
+        combined.merge(tower);
+        DynamicPrintConfig config = DynamicPrintConfig::full_print_config();
+        config.set_deserialize_strict({
+            { "sparse_infill_density",     10 },
+            { "top_shell_layers",          3 },
+            { "bottom_shell_layers",       3 },
+            { "wall_loops",                2 },
+            { "infill_wall_overlap",       15 },
+            { "solid_infill_wall_overlap", solid_infill_wall_overlap },
+            { "wall_generator",            wall_generator },
+        });
+        Slic3r::Print print;
+        Slic3r::Model model;
+        Slic3r::Test::init_print(std::vector<TriangleMesh>{std::move(combined)}, print, model, config);
+        print.process();
+        const PrintObject &object = *print.objects().front();
+        std::vector<LayerFillStats> stats(object.layer_count());
+        for (size_t lidx = 0; lidx < object.layer_count(); ++lidx) {
+            const Layer    *layer = object.get_layer(int(lidx));
+            LayerFillStats &s     = stats[lidx];
+            Polygons        all;
+            for (const LayerRegion *region : layer->regions())
+                for (const Surface &surface : region->fill_surfaces.surfaces) {
+                    double a = surface.expolygon.area() * SCALING_FACTOR * SCALING_FACTOR;
+                    s.sum_area += a;
+                    if (surface.surface_type == stInternalSolid)
+                        s.solid_area += a;
+                    else if (surface.surface_type == stInternalBridge)
+                        s.bridge_area += a;
+                    else if (surface.surface_type == stInternal)
+                        s.sparse_area += a;
+                    polygons_append(all, to_polygons(surface.expolygon));
+                }
+            for (const ExPolygon &ep : union_ex(all))
+                s.union_area += ep.area() * SCALING_FACTOR * SCALING_FACTOR;
+        }
+        return stats;
+    };
+
+    const double AREA_EPS = 1.0;  // mm^2, presence / overlap tolerance
+    const double AREA_TOL = 15.0; // mm^2, generous bound for the wall-overlap band of a 20mm cube
+    for (const char *wall_generator : { "classic", "arachne" }) {
+        std::vector<LayerFillStats> baseline = slice_and_gather(wall_generator, 0);
+        // sanity: the baseline must exercise internal bridges (solid infill over sparse infill)
+        CHECK(std::any_of(baseline.begin(), baseline.end(),
+                          [AREA_EPS](const LayerFillStats &s) { return s.bridge_area > AREA_EPS; }));
+        // sanity: the baseline must contain mixed layers (sparse and solid/bridge fill
+        // side by side) — the geometry the reported bug manifested on
+        CHECK(std::any_of(baseline.begin(), baseline.end(), [AREA_EPS](const LayerFillStats &s) {
+            return s.sparse_area > AREA_EPS && s.solid_area + s.bridge_area > AREA_EPS;
+        }));
+        // 5% and 25% vs infill_wall_overlap = 15% cover both a negative and a positive delta
+        for (int overlap : { 5, 25 }) {
+            std::vector<LayerFillStats> variant = slice_and_gather(wall_generator, overlap);
+            REQUIRE(variant.size() == baseline.size());
+            for (size_t lidx = 0; lidx < baseline.size(); ++lidx) {
+                const LayerFillStats &b = baseline[lidx];
+                const LayerFillStats &v = variant[lidx];
+                CAPTURE(wall_generator, overlap, lidx);
+                // fill_surfaces must remain a non-overlapping partition
+                CHECK(v.sum_area - v.union_area < AREA_EPS);
+                // solid + bridge fill must neither disappear nor change beyond the overlap band
+                if (b.solid_area + b.bridge_area > AREA_EPS) {
+                    CHECK(v.solid_area + v.bridge_area > AREA_EPS);
+                    CHECK(std::abs((v.solid_area + v.bridge_area) - (b.solid_area + b.bridge_area)) < AREA_TOL);
+                }
+                // layers with internal bridges must keep them
+                if (b.bridge_area > AREA_EPS)
+                    CHECK(v.bridge_area > 0.5 * b.bridge_area);
+                if (b.sparse_area > AREA_EPS)
+                    CHECK(std::abs(v.sparse_area - b.sparse_area) < AREA_TOL);
+            }
+        }
+    }
+}

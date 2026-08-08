@@ -22,6 +22,7 @@ add_executable(${_TEST_NAME}_tests
     # test_png_io.cpp
     test_indexed_triangle_set.cpp
     ../libnest2d/printer_parts.cpp
+    ../nanosvg_impl.cpp
     )
 
 if (TARGET OpenVDB::openvdb)

@@ -209,8 +209,16 @@ void init_print(std::vector<TriangleMesh> &&meshes, Slic3r::Print &print, Slic3r
 		object->add_volume(std::move(t));
 		object->add_instance();
 	}
-    arrange_objects(model, InfiniteBed{}, ArrangeParams{ scaled(min_object_distance(config))});
+    // Orca: the arrangement engine (reworked for multi-plate printing) no longer handles
+    // the plain InfiniteBed arrangement this harness used ("Objects could not fit on the
+    // bed"). Tests do not care about the exact layout, so place the objects in a row.
+    coordf_t gap      = min_object_distance(config);
+    coordf_t offset_x = 0.;
 	for (ModelObject *mo : model.objects) {
+        const BoundingBoxf3 bb = mo->bounding_box_exact();
+        mo->instances.front()->set_offset(Vec3d(offset_x - bb.min.x(), -bb.min.y(), 0.));
+        offset_x += bb.size().x() + gap;
+        mo->invalidate_bounding_box();
         mo->ensure_on_bed();
 		print.auto_assign_extruders(mo);
     }

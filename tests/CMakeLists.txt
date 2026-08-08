@@ -22,6 +22,16 @@ add_library(test_common INTERFACE)
 target_compile_definitions(test_common INTERFACE TEST_DATA_DIR=R"\(${TEST_DATA_DIR}\)" CATCH_CONFIG_FAST_COMPILE)
 target_link_libraries(test_common INTERFACE Catch2::Catch2)
 
+# libslic3r references symbols whose implementations the application links from elsewhere:
+# MD5_* from OpenSSL (utils.cpp, bbs_3mf.cpp) and BCrypt* (AppConfig.cpp on Windows).
+# Provide them to every test executable as well. The nanosvg C API implementation
+# (compiled into the GUI lib via BitmapCache.cpp) is added per test target instead —
+# see nanosvg_impl.cpp — because targets linking libslic3r_gui already contain it.
+target_link_libraries(test_common INTERFACE OpenSSL::Crypto)
+if (WIN32)
+    target_link_libraries(test_common INTERFACE bcrypt.lib)
+endif()
+
 if (APPLE)
     target_link_libraries(test_common INTERFACE "-liconv -framework IOKit" "-framework CoreFoundation" -lc++)
 endif()

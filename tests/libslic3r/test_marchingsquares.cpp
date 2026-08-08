@@ -489,7 +489,8 @@ static constexpr float  gsizef = 100.0; // grid size in mm (box volume side leng
 static constexpr float  wsizef = 0.50;  // grid window size in mm (roughly line segment length).
 static constexpr float  psizef = 0.01;  // raster pixel size in mm (roughly point accuracy).
 static constexpr float  isoval = 0.0;   // iso value threshold to use.
-static constexpr size_t wsize  = std::round(wsizef / psizef);
+// std::round is not constexpr on MSVC; the operands are positive, +0.5f rounds correctly.
+static constexpr size_t wsize  = size_t(wsizef / psizef + 0.5f);
 
 static float period = 10.0;            // gyroid "wavelength" in mm (2x line spacing).
 static float freq   = 2 * PI / period; // gyroid frequency in waves per mm.
@@ -540,7 +541,7 @@ template<> struct _RasterTraits<size_t>
 Rings get_gyroids(size_t l)
 {
     size_t layer = l;
-    Rings  rings = execute(layer, isoval, {wsize, wsize});
+    Rings  rings = execute(layer, isoval, {long(wsize), long(wsize)});
     layer_n++;
     ring_n += rings.size();
     for (auto r : rings)

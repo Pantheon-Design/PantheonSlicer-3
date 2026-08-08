@@ -3,6 +3,15 @@ add_executable(${_TEST_NAME}_tests
     ${_TEST_NAME}_tests_main.cpp
     )
 
+# libslic3r_gui (GUI_App) references CBaseException, which the application target
+# compiles from dev-utils on Windows (see src/CMakeLists.txt) — do the same here.
+if (WIN32)
+    target_sources(${_TEST_NAME}_tests PRIVATE
+        ${PROJECT_SOURCE_DIR}/src/dev-utils/BaseException.cpp
+        ${PROJECT_SOURCE_DIR}/src/dev-utils/StackWalker.cpp
+        )
+endif()
+
 target_link_libraries(${_TEST_NAME}_tests test_common libslic3r_gui libslic3r)
 if (MSVC)
     target_link_libraries(${_TEST_NAME}_tests Setupapi.lib)
