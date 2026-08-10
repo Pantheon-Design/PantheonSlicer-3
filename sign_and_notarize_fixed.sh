@@ -67,19 +67,30 @@ echo "Cleaning up old distribution files..."
 echo "Unlocking keychain..."
 security unlock-keychain ~/Library/Keychains/login.keychain-db || echo "⚠️  Could not unlock keychain, you may be prompted for password"
 
-# Sign the app bundle
+# Sign the app bundle (retry — timestamp.apple.com is occasionally unavailable)
 echo ""
 echo "=== Signing App Bundle ==="
-if [ "$USE_ENTITLEMENTS" = true ]; then
-    codesign --deep --force --verbose --options runtime --timestamp \
-        --entitlements "../../$ENTITLEMENTS_PATH" \
-        -s "$SIGN_IDENTITY" "$AppBundle"
-else
-    codesign --deep --force --verbose --options runtime --timestamp \
-        -s "$SIGN_IDENTITY" "$AppBundle"
-fi
+SIGN_OK=false
+for attempt in 1 2 3; do
+    if [ "$USE_ENTITLEMENTS" = true ]; then
+        if codesign --deep --force --verbose --options runtime --timestamp \
+            --entitlements "../../$ENTITLEMENTS_PATH" \
+            -s "$SIGN_IDENTITY" "$AppBundle"; then
+            SIGN_OK=true
+            break
+        fi
+    else
+        if codesign --deep --force --verbose --options runtime --timestamp \
+            -s "$SIGN_IDENTITY" "$AppBundle"; then
+            SIGN_OK=true
+            break
+        fi
+    fi
+    echo "Signing attempt $attempt failed, retrying in 15 seconds..."
+    sleep 15
+done
 
-if [ $? -ne 0 ]; then
+if [ "$SIGN_OK" != true ]; then
     echo "❌ Failed to sign app bundle!"
     popd > /dev/null
     exit 1
@@ -108,7 +119,21 @@ fi
 
 # Use HFS+ filesystem (-fs HFS+) because APFS DMGs do not support ticket stapling.
 # macOS 26+ defaults to APFS, which causes stapling to fail with Error 65.
-hdiutil create -volname "$BundleName" -srcfolder . -ov -format UDZO -fs HFS+ "$BundleName.dmg"
+#
+# Build under a staging volume name, then rename before converting. macOS App
+# Management (TCC) blocks writing an app bundle at
+# /Volumes/$BundleName/$AppBundle because that path is registered to the app
+# installed in /Applications, so `hdiutil create -volname $BundleName` fails
+# with "Operation not permitted" unless the terminal app has the App
+# Management privacy permission. Renaming the volume afterwards never writes
+# the protected path.
+TEMP_DMG="$(mktemp -d)/temp.dmg"
+hdiutil create -volname "$BundleName-staging" -srcfolder . -ov -format UDRW -fs HFS+ "$TEMP_DMG"
+STAGING_DEV=$(hdiutil attach "$TEMP_DMG" -nobrowse | grep Apple_HFS | awk '{print $1}')
+diskutil rename "$STAGING_DEV" "$BundleName"
+hdiutil detach "$STAGING_DEV"
+hdiutil convert "$TEMP_DMG" -format UDZO -o "$BundleName.dmg" -ov
+rm -f "$TEMP_DMG"
 
 if [ $? -ne 0 ]; then
     echo "❌ Failed to create DMG!"
