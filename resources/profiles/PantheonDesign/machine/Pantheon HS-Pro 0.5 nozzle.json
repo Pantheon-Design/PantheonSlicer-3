@@ -114,7 +114,7 @@
         "0"
     ],
     "machine_pause_gcode": "PAUSE",
-    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[hot_plate_temp_initial_layer] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification]",
+    "machine_start_gcode": "_START_PRINT CHAMBER_TEMP=[chamber_temperature] CHASSIS_TEMP=20 BED_TEMP=[hot_plate_temp_initial_layer] NOZZLE_TEMP=[first_layer_temperature] PROBING_TEMP=[temperature_vitrification] FIRST_LAYER_TIME=_GP_FIRST_LAYER_TIME_PLACEHOLDER",
     "machine_tool_change_time": "0",
     "machine_unload_filament_time": "0",
     "manual_filament_change": "0",
@@ -215,7 +215,7 @@
     "upward_compatible_machine": [],
     "use_firmware_retraction": "0",
     "use_relative_e_distances": "1",
-    "version": "3.1.0.0",
+    "version": "3.1.3.0",
     "wipe": [
         "0"
     ],

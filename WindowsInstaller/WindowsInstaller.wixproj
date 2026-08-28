@@ -11,7 +11,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <!-- Set the output name and optionally the extension -->
-    <OutputName>PantheonSlicer-3_3.1.2</OutputName>
+    <OutputName>PantheonSlicer-3_3.1.3</OutputName>
     <OutputType>Package</OutputType>
   </PropertyGroup>
   <Target Name="HeatHarvest" BeforeTargets="BeforeBuild">
